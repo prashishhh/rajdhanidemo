@@ -1,0 +1,1429 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <title>राजधानी दैनिक</title>
+</head>
+<body>
+  
+  
+  <div class="header-container">
+    <!-- Top banner image -->
+    <div class="rd-top-banner sticky-banner">
+      <img src="{% static 'images/Screenshot 2025-07-20 at 8.06.04 AM.png' %}" alt="Top Banner">
+    </div>
+    
+
+  
+  
+    <!-- Header Row -->
+    <div class="rd-header-row">
+      <div class="rd-header-col rd-header-left">
+        <img src="{% static 'images/Screenshot_2025-07-20_at_9.18.18_AM-removebg-preview.png' %}" class="rd-header-img" alt="र Image">
+      </div>
+      <div class="rd-header-col rd-header-center">
+        <img src="{% static 'images/Screenshot_2025-07-20_at_7.48.43_AM-removebg-preview.png' %}" class="rd-header-img" alt="Main Logo">
+      </div>
+      <div class="rd-header-col rd-header-right">
+        <img src="{% static 'images/Screenshot_2025-07-20_at_9.17.22_AM-removebg-preview.png' %}" class="rd-header-img" alt="S TV">
+      </div>
+    </div>
+  
+    <!-- Bottom Bar (Date Section) -->
+    <!-- Bottom Bar (Date Section) -->
+<div class="bottom-bar-wrapper">
+  <div class="bottom-bar">
+    <div class="date-section">
+      <span>वर्ष २५ अंक ५३ आइतबार ११ साउन २०८० नेपाल संवत् ११४४</span>
+      <span>|</span>
+      <span>RAJDHANI Nepali National Daily</span>
+      <span>|</span>
+      <span>Sunday 27 July 2025</span>
+    </div>
+    <!-- Quick Access Button for Employment Ad Editor -->
+    <div class="quick-access-section">
+      <a href="{% url 'employment_ad_editor' %}" class="quick-access-btn">
+        📋 रोजगारी विज्ञापन बनाउनुहोस्
+      </a>
+    </div>
+  </div>
+</div>
+
+  
+  <!-- ✅ Sticky Navigation OUTSIDE the header-container -->
+  <nav class="navigation">
+    <ul class="nav-list" id="navMenu">
+      <li class="nav-item"><a href="#home">गृह पृष्ठ</a></li>
+      <li class="nav-item"><a href="#international">राजधानी विशेष</a></li>
+      <li class="nav-item"><a href="#politics">नेपाल </a>
+      <ul class="submenu">
+        <li><a href="#central">केन्द्र</a></li>
+        <li><a href="#province">प्रदेश</a></li>
+        <li><a href="#local">स्थानीय</a></li>
+      </ul>
+     </li>
+      <li class="nav-item"><a href="#tought">संसार </a>
+        <ul class="submenu">
+          <li><a href="#india">भारत</a></li>
+          <li><a href="#china">चीन</a></li>
+          <li><a href="#us">अमेरिका</a></li>
+          <li><a href="#uk">बेलायत</a></li>
+          <li><a href="#asia">एशिया</a></li>
+          <li><a href="#middleeast">मध्यपूर्व</a></li>
+        </ul>
+      </li>
+      <li class="nav-item"><a href="#society">अर्थ बजार</a></li>
+      <li class="nav-item"><a href="#foreign">विवेचना</a></li>
+
+      <li class="nav-item"><a href="#sports">कला/संस्कृति</a></li>
+      <li class="nav-item"><a href="#opinion">खेलकुद</a></li>
+      <li class="nav-item"><a href="#migration">ग्यालरी </a></li>
+      <li class="nav-item"><a href="#migration">अन्य</a></li>
+      <li class="nav-item"><a href="{% url 'employment_ad_editor' %}">📋 रोजगारी विज्ञापन</a></li>
+
+      <li class="nav-item"><a href="{% url 'login' %}">लगइन</a></li>
+      <li class="nav-item"><a href="{% url 'register' %}">साइन अप</a></li>
+      <li class="nav-item search-icon">
+        <svg fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+        </svg>
+      </li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+  
+
+
+
+
+  <main class="container">
+    <div class="newspaper-container">
+      <!-- Sidebar -->
+      <div class="newspaper-sidebar">
+        
+        <!-- Sidebar News Item -->
+        <div class="newspaper-sidebar-item">
+          <div class="newspaper-sidebar-image-container">
+            <img src="{% static 'images/economy.jpg' %}" alt="आर्थिक नीति सम्बन्धी महत्वपूर्ण निर्णय">
+          </div>
+          <div class="newspaper-sidebar-content">
+            <div class="newspaper-sidebar-title">आर्थिक नीति सम्बन्धी महत्वपूर्ण निर्णय</div>
+            <div class="newspaper-sidebar-date">२०८१ साउन ११</div>
+          </div>
+        </div>
+  
+        <div class="newspaper-sidebar-item">
+          <div class="newspaper-sidebar-image-container">
+            <img src="{% static 'images/football.webp' %}" alt="राष्ट्रिय फुटबल टोलीको तयारी">
+          </div>
+          <div class="newspaper-sidebar-content">
+            <div class="newspaper-sidebar-title">राष्ट्रिय फुटबल टोलीको तयारी सुरु</div>
+            <div class="newspaper-sidebar-date">२०८१ साउन ११</div>
+          </div>
+        </div>
+  
+        <div class="newspaper-sidebar-item">
+          <div class="newspaper-sidebar-image-container">
+            <img src="{% static 'images/tihar-min-1-scaled.jpg' %}" alt="पारम्परिक चाडपर्वको तयारी">
+          </div>
+          <div class="newspaper-sidebar-content">
+            <div class="newspaper-sidebar-title">पारम्परिक चाडपर्वको तयारी</div>
+            <div class="newspaper-sidebar-date">२०८१ साउन ११</div>
+          </div>
+        </div>
+  
+        <div class="newspaper-sidebar-item">
+          <div class="newspaper-sidebar-image-container">
+            <img src="{% static 'images/dev.jpg' %}" alt="विकास आयोजनाको प्रगति समीक्षा">
+          </div>
+          <div class="newspaper-sidebar-content">
+            <div class="newspaper-sidebar-title">विकास आयोजनाको प्रगति समीक्षा</div>
+            <div class="newspaper-sidebar-date">२०८१ साउन ११</div>
+          </div>
+        </div>
+  
+      </div>
+  
+      <!-- Main Content -->
+      <div class="newspaper-main">
+        
+        <!-- Main Article -->
+        <div class="newspaper-main-article">
+          <div class="newspaper-main-image-container">
+            <img src="{% static 'images/go.jpg' %}" alt="राष्ट्रिय विकासमा नयाँ दिशा">
+          </div>
+          <div class="newspaper-main-content">
+            <div class="news-link">
+              <h1 class="newspaper-headline">राष्ट्रिय विकासमा नयाँ दिशा प्रदान गर्ने महत्वपूर्ण निर्णय</h1>
+              <div class="newspaper-subheading">सरकारी नीति निर्माणमा नयाँ मोड</div>
+              <div class="newspaper-main-text">
+                काठमाडौं - राष्ट्रिय विकासका लागि नयाँ दिशा निर्धारण गर्ने उद्देश्यले सरकारले महत्वपूर्ण निर्णयहरू गरेको छ। यी निर्णयहरूले देशको आर्थिक, सामाजिक र राजनीतिक क्षेत्रमा दीर्घकालीन प्रभाव पार्ने अपेक्षा गरिएको छ। विशेषज्ञहरूले यी निर्णयहरूलाई सकारात्मक भन्दै राष्ट्रिय विकासमा नयाँ गति आउने बताएका छन्।
+              </div>
+            </div>
+            <!-- ✅ TTS controls for the main article -->
+            <button class="tts-btn"
+            data-text="काठमाडौं - राष्ट्रिय विकासका लागि नयाँ दिशा निर्धारण गर्ने उद्देश्यले सरकारले महत्वपूर्ण निर्णयहरू गरेको छ। यी निर्णयहरूले देशको आर्थिक, सामाजिक र राजनीतिक क्षेत्रमा दीर्घकालीन प्रभाव पार्ने अपेक्षा गरिएको छ। विशेषज्ञहरूले यी निर्णयहरूलाई सकारात्मक भन्दै राष्ट्रिय विकासमा नयाँ गति आउने बताएका छन्।">
+            🔊 सुन्नुहोस्
+            </button>
+            <audio class="tts-player" controls style="display:block;margin-top:8px;width:100%"></audio>
+
+            <div class="newspaper-author">
+              समाचारदाता संवाददाता, काठमाडौं • प्रकाशित: २०८१ साउन ११ गते
+            </div>
+          </div>
+        </div>
+  
+        <!-- Secondary Articles -->
+        <div class="newspaper-secondary">
+          <div class="newspaper-secondary-item">
+            <div class="newspaper-secondary-sub">शिक्षा मन्त्रालयको विशेष घोषणा</div>
+            <h2 class="newspaper-secondary-headline">शिक्षा क्षेत्रमा नयाँ सुधार कार्यक्रम घोषणा</h2>
+            <div class="newspaper-secondary-text">
+              सरकारले शिक्षा क्षेत्रमा व्यापक सुधार कार्यक्रम ल्याउने घोषणा गर्दै शिक्षाको गुणस्तर सुधार गर्ने दिशामा महत्वपूर्ण कदम चालेको छ। यस कार्यक्रमअन्तर्गत डिजिटल शिक्षा, शिक्षक तालिम र पूर्वाधार विकासमा विशेष जोड दिइने छ।
+            </div>
+          </div>
+  
+          <div class="newspaper-secondary-item">
+            <div class="newspaper-secondary-sub">स्वास्थ्य मन्त्रालयको नयाँ पहल</div>
+            <h2 class="newspaper-secondary-headline">स्वास्थ्य सेवामा सुधारका लागि नयाँ योजना</h2>
+            <div class="newspaper-secondary-text">
+              सरकारले सबै नेपाली नागरिकका लागि निःशुल्क स्वास्थ्य बीमा कार्यक्रम सुरु गर्ने घोषणा गरेको छ। यो योजनाले गरिब र पिछडिएका वर्गका मानिसहरूलाई गुणस्तरीय स्वास्थ्य सेवामा पहुँच पुर्याउने लक्ष्य राखेको छ।
+            </div>
+          </div>
+        </div>
+  
+      </div>
+    </div>
+
+  </section>
+  <div class="ad-banner">
+    <a href="https://www.prabhubank.com" target="_blank">
+      <img src="{% static 'techsectionimage/Prabhu-Khutruke-Saving-c.gif' %}" alt="विज्ञापन">
+    </a>
+  </div>
+    <section class="hero-section">
+      <div class="hero-container">
+        <div class="main-story-card">
+          <div class="main-story-wrapper">
+            <div class="main-story-image-container">
+              <img src="{% static 'images/RIRTP3AREZOZXK3STC6QWITZCY.jpg' %}" alt="प्रदर्शन">
+              <span class="main-story-category">राजनीति</span>
+            </div>
+            <div class="main-story-text">
+              <h1>नेपालमा प्रदर्शन सुरु</h1>
+              <p>नेपालका हजारौं मानिसहरूले नयाँ नीति परिवर्तनको विरोधमा सडकमा उत्रिएका छन्, जसले कानून प्रवर्तन र धेरै शहरहरूमा आपतकालिन अवस्था घोषणा गरेको छ।</p>
+            </div>
+          </div>
+        </div>
+        <div class="related-stories-card">
+          <div class="related-stories-wrapper">
+            <div class="related-stories-title">सम्बन्धित समाचार</div>
+            <div class="related-stories-list">
+              <div class="related-story-item">
+                <img src="{% static 'images/hh.jpg' %}" alt="प्रदर्शन">
+                <div class="related-story-content">
+                  <div>नेपालमा प्रदर्शन फैलियो</div>
+                  <div>आज</div>
+                </div>
+              </div>
+              <div class="related-story-item">
+                <img src="{% static 'images/Rising-Inflation.min_.jpg' %}" alt="इनफ्लेसन">
+                <div class="related-story-content">
+                  <div>इनफ्लेसन २०२४: बचतकर्ताहरूले उनीहरूको मार्च</div>
+                  <div>आज</div>
+                </div>
+              </div>
+              <div class="related-story-item">
+                <img src="{% static 'images/MIT-Polarization-Models-01-press.jpg' %}" alt="मत">
+                <div class="related-story-content">
+                  <div>मत: के यो निराशाजनक समय हुन सक्छ?</div>
+                  <div>आज</div>
+                </div>
+              </div>
+              <div class="related-story-item">
+                <img src="{% static 'images/081624_NewsomRetailCrime_FM_WIDE_CM_32.jpg.webp' %}" alt="कानून">
+                <div class="related-story-content">
+                  <div>नयाँ कानूनी चर्चा: क्यालिफोर्निया कानूनमा बहस</div>
+                  <div>आज</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="stay-connected-card">
+          <div class="stay-connected-wrapper">
+            <div class="stay-connected-list">
+              <div class="stay-connected-item">
+                <img src="{% static 'techsectionimage/facebook-logo-facebook-icon-transparent-free-png.webp' %}" alt="Facebook">
+                <span>16,193 Fans</span>
+                <span>LIKE</span>
+              </div>
+              <div class="stay-connected-item">
+                <img src="{% static 'techsectionimage/instagram-vector-logo-icon-social-media-logotype_901408-395.jpg.avif' %}" alt="Twitter">
+                <span>1,594 Followers</span>
+                <span>FOLLOW</span>
+              </div>
+              <div class="stay-connected-item">
+                <img src="{% static 'techsectionimage/YouTube-logo-social-media-video-sharing-transparent-PNG-image-jpg.webp' %}" alt="YouTube">
+                <span>13,039 Subscribers</span>
+                <span>SUBSCRIBE</span>
+              </div>
+            </div>
+          </div>
+          <div class="FIRST-ad-card">
+            <img src="{% static 'techsectionimage/ads-img-1-no-top.jpg' %}" alt="Advertisement">
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <section style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+      <h2 style="text-align: center; margin-bottom: 50px; font-weight: 800; color: #212529; font-size: 2.5rem;">नवीनतम समाचार
+      </h2>
+  
+      <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 30px;">
+          {% for news in news_combined %}
+          <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease;" 
+               onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 30px rgba(0,0,0,0.12)'" 
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'">
+              <h6 style="color: #0d6efd; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 15px;">ताजा खबर</h6>
+              <h3 style="font-weight: 700; font-size: 1.4rem; line-height: 1.3; margin-bottom: 15px; color: #212529;">{{ news.title }}</h3>
+              <p style="font-size: 16px; line-height: 1.6; color: #6c757d; margin: 0;">{{ news.content }}</p>
+              <!-- ✅ TTS controls per news card -->
+              <button class="tts-btn"
+              data-text="{{ news.content|striptags|truncatechars:1200 }}">
+              🔊 सुन्नुहोस्
+              </button>
+              <audio class="tts-player" controls style="display:block;margin-top:8px;width:100%"></audio>
+
+          </div>
+          {% endfor %}
+      </div>
+  </section>
+  
+  
+
+  
+
+    <div class="main-news">
+      <div class="main-news-image-container">
+        <img class="main-news-image" src="{% static 'images/ChatGPT Image Jul 13, 2025, 09_32_22 PM.png' %}" alt="स्वास्थ्य सुधार">
+      </div>
+      <div class="main-news-content">
+        <span class="category-tag">राजनीति</span>
+        <div class="author-meta">गोपाल शर्मा • आज</div>
+        <h1>गहिरो विश्लेषण: स्वास्थ्य सुधारको भविष्य</h1>
+        <p>स्वास्थ्य सुधार समानताले नीति निर्माताहरूमा व्यापक प्रभाव पार्छ, सरकारी खर्च र स्वास्थ्य सेवाको गुणस्तरमा प्रभाव पार्छ।</p>
+        <a href="#">पूरा पढ्नुहोस् →</a>
+      </div>
+    </div>
+
+    <div class="news-grid">
+      <!-- Breaking News Card -->
+      <div class="breaking-news-card">
+        <div>
+          <div class="title">🔴 ब्रेकिंग समाचार</div>
+          <div class="breaking-news-meta">
+            <span class="tag">नयाँ</span>
+            <span class="time">१०:०१ बिहान</span>
+          </div>
+          <div class="breaking-news-content">राजधानीमा आज उच्च-स्तरीय बैठक, नीति परिवर्तनको तयारी।</div>
+        </div>
+        <div class="breaking-news-details">
+          <div>• राजधानीको सडकमा विरोध प्रदर्शन</div>
+          <div>• संसदमा बजेटमाथि बहस सुरु</div>
+          <button>ट्र्याक गर्नुहोस्</button>
+        </div>
+      </div>
+      <!-- Weather Card -->
+      <div class="weather-card">
+        <div>
+          <div class="city">🌤️ काठमाडौं</div>
+          <div class="temperature">२४°</div>
+          <div class="time">११:०० बिहान</div>
+        </div>
+        <div class="info-box">
+          <div>📈 सेन्सेक्स: -26 (-1.0%)</div>
+          <div>🏏 नेपाल vs भारत</div>
+        </div>
+      </div>
+      <!-- More News Cards -->
+      <div class="news-card">
+        <img src="{% static 'images/official_group_photo_lowres.jpg' %}" alt="जलवायु संकट">
+        <div class="news-card-content">
+          <div>
+            <span class="category-tag">अर्थ</span>
+            <div class="author-meta">सीता राई • आज</div>
+            <h3>ग्लोबल समिट: जलवायु संकटमा नेताहरूको सम्बोधन</h3>
+            <p>नेताहरूले विश्वव्यापी जलवायु संकटका उपायबारे छलफल गरे...</p>
+          </div>
+          <a href="#">पूरा पढ्नुहोस् →</a>
+        </div>
+      </div>
+      <div class="news-card">
+        <img src="{% static 'images/corruption.jpg_guqU1GpDCs.png' %}" alt="भ्रष्टाचार">
+        <div class="news-card-content">
+          <div>
+            <span class="category-tag politics">राजनीति</span>
+            <div class="author-meta">कमला देवी • हिजो</div>
+            <h3>राजनीतिक स्क्यान्डल: भ्रष्टाचार विवाद</h3>
+            <p>भ्रष्टाचार विवादमा नयाँ खुलासा सार्वजनिक...</p>
+          </div>
+          <a href="#">पूरा पढ्नुहोस् →</a>
+        </div>
+      </div>
+      <div class="news-card">
+        <img src="{% static 'images/budget brief case.jpg' %}" alt="">
+        <div class="news-card-content">
+          <div>
+            <span class="category-tag">अर्थ</span>
+            <div class="author-meta">राम बहादुर • हिजो</div>
+            <h3>संसदीय विवादास्पद बजेट प्रस्ताव</h3>
+            <p>संसदमा बजेटमाथि आलोचना र समर्थन दुवै देखिएको छ। नीति निर्माताहरूले यसलाई लिएर गहन छलफल गरिरहेका छन्।</p>
+          </div>
+          <a href="#">पूरा पढ्नुहोस् →</a>
+        </div>
+      </div>
+      <div class="top-news-card">
+        <div class="top-news-header">
+          <div class="top-news-icon">५</div>
+          <div class="top-news-title">शीर्ष समाचार</div>
+        </div>
+        <div class="top-news-content">
+          <div class="top-news-item">
+            <div>प्रदर्शनका बीच राजधानीमा सुरक्षाकर्मी तैनाथ</div>
+            <div>राजधानीमा सुरक्षा व्यवस्था कडा</div>
+          </div>
+          <div class="top-news-divider"></div>
+          <div class="top-news-item">
+            <div>बजेट विवादले संसदमा बहस</div>
+            <div>संसदमा बजेट छलफल जारी</div>
+          </div>
+          <div class="top-news-divider"></div>
+          <div class="top-news-item">
+            <div>नयाँ नीति घोषणा</div>
+            <div>सरकारको नयाँ नीति</div>
+          </div>
+          <div class="ad-banner">
+            <a href="https://www.prabhubank.com" target="_blank">
+              <img src="{% static 'techsectionimage/Prabhu-Khutruke-Saving-c.gif' %}" alt="विज्ञापन">
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tech Section -->
+    <section class="tech-news-section">
+      <div class="tech-news-header">
+        <span class="tech-header-line"></span>
+        <h2>प्रविधि समाचार</h2>
+        <span class="tech-header-line"></span>
+      </div>
+      <!-- Hero/Featured Card -->
+      <div class="tech-featured-card" style="background-image: url('{% static 'images/AdobeStock_486455531-930x620.jpg' %}');">
+        <div class="tech-featured-overlay"></div>
+        <div class="tech-featured-content">
+          <div class="tech-card-meta">
+            <span class="tech-category-tag cyber">साइबर सुरक्षा</span>
+            <span class="tech-timestamp">हिजो</span>
+          </div>
+          <h2 class="tech-card-title">साइबर सुरक्षा: व्यक्तिगत डाटा कसरी सुरक्षित राख्ने?</h2>
+          <div class="tech-card-excerpt">
+            साइबर हमलाबाट बच्नका लागि पासवर्ड म्यानेजर, टू-फ्याक्टर प्रमाणीकरण जस्ता उपायहरू आवश्यक छन्। डिजिटल सचेतनाले सुरक्षा बढाउँछ।
+          </div>
+          <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+        </div>
+      </div>
+      <!-- Grid News Cards -->
+      <div class="tech-news-grid">
+        <div class="tech-news-card">
+          <img src="{% static 'images/5g-nepal.jpg' %}" class="tech-card-image" alt="५जी प्रविधि">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-category-tag">कनेक्टिभिटी</span>
+              <span class="tech-timestamp">आज</span>
+            </div>
+            <div class="tech-card-title">५जी क्रान्ति: नेपालमा कनेक्टिभिटीको नयाँ युग</div>
+            <div class="tech-card-excerpt">
+              ५जी प्रविधिले इन्टरनेटको गति र पहुँचमा अभूतपूर्व सुधार ल्याउने अपेक्षा गरिएको छ, जसले स्मार्ट सिटी र डिजिटल सेवामा क्रान्ति ल्याउनेछ।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+        <div class="tech-news-card">
+          <img src="{% static 'images/MIT-GSL-Winners-Group-Photo.jpg' %}" class="tech-card-image" alt="स्टार्टअप">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-category-tag startup">स्टार्टअप</span>
+              <span class="tech-timestamp">आज</span>
+            </div>
+            <div class="tech-card-title">प्रविधिमा नेपाली स्टार्टअपको उदय</div>
+            <div class="tech-card-excerpt">
+              नेपालमा नयाँ प्रविधि स्टार्टअपहरू बढ्दै गइरहेका छन्। युवा उद्यमीहरूले डिजिटल बजार, फिनटेक र ई–कमर्समा नवीनता ल्याइरहेका छन्।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+        <div class="tech-news-card">
+          <img src="{% static 'images/virtual-reality-2.jpg' %}" class="tech-card-image" alt="भर्चुअल रियालिटी">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-category-tag vr">भर्चुअल रियालिटी</span>
+              <span class="tech-timestamp">हिजो</span>
+            </div>
+            <div class="tech-card-title">दैनिक जीवनमा भर्चुअल रियालिटी</div>
+            <div class="tech-card-excerpt">
+              भर्चुअल रियालिटीको विकासले शिक्षादेखि मनोरञ्जन र स्वास्थ्य क्षेत्रमा नयाँ सम्भावना खोलिदिएको छ।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+        <div class="tech-news-card">
+          <img src="{% static 'images/cuJ2nHdA2cLngX4bhsHsye.jpg' %}" class="tech-card-image" alt="एआई">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-timestamp">२:३० PM • आज</span>
+            </div>
+            <div class="tech-card-title">एआई प्रविधि: नेपालका युवाहरुको नयाँ चासो</div>
+            <div class="tech-card-excerpt">
+              कृत्रिम बौद्धिकता (एआई) मा चासो बढेसँगै, नेपाली विद्यार्थी तथा युवा व्यवसायीहरू ग्लोबल प्रतिस्पर्धामा अघि बढ्दै छन्।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+        <div class="tech-news-card">
+          <img src="{% static 'images/What_Is_Digital_Security.jpg.avif' %}" class="tech-card-image" alt="गोपनीयता">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-timestamp">३:१० PM • हिजो</span>
+            </div>
+            <div class="tech-card-title">गोपनीयता र डिजिटल अधिकार</div>
+            <div class="tech-card-excerpt">
+              डिजिटल युगमा गोपनीयता अधिकार र डेटा सुरक्षाको महत्व बढ्दै गएको छ। डिजिटल साक्षरताले सजगता बढाउँछ।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+        <div class="tech-news-card">
+          <img src="{% static 'images/960x0.jpg.webp' %}" class="tech-card-image" alt="५जी विस्तार">
+          <div class="tech-card-content">
+            <div class="tech-card-meta">
+              <span class="tech-timestamp">१०:३० AM • आज</span>
+            </div>
+            <div class="tech-card-title">५जी विस्तार: ग्रामीण क्षेत्रमा पनि पहुँच</div>
+            <div class="tech-card-excerpt">
+              शहरसँगै ग्रामीण नेपालमा समेत ५जी इन्टरनेट विस्तार हुँदैछ, जसले डिजिटल अन्तर घटाउनेछ।
+            </div>
+            <a href="#" class="tech-continue">पूरा पढ्नुहोस्</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+
+    <div class="header-card" style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 15px; padding: 15px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden; width: 100%;">
+      <button class="refresh-btn" style="position: absolute; top: 10px; right: 10px; width: 30px; height: 30px; background: rgba(45, 90, 160, 0.1); border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2d5aa0" stroke-width="2">
+              <polyline points="23 4 23 10 17 10"></polyline>
+              <polyline points="1 20 1 14 7 14"></polyline>
+              <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+      </button>
+      
+      <div class="header-left" style="flex: 1; text-align: center;">
+          <h1 class="nepse-title" style="font-size: 32px; font-weight: 900; color: #1e4080; margin-bottom: 5px; letter-spacing: -1px;">नेप्से</h1>
+          <p class="nepse-subtitle" style="font-size: 14px; color: #64748b; margin-bottom: 10px; font-weight: 500;">नेप्से सूचकांक</p>
+          
+          <div class="market-info" style="display: flex; gap: 15px; margin-bottom: 10px; font-size: 12px; color: #475569; flex-wrap: wrap; justify-content: center;">
+              <span>कारोबार : <strong>रु. ९२.४३ करोड</strong></span>
+              <span>मात्रा : <strong>१८.८४ लाख</strong></span>
+          </div>
+          
+          <div class="current-price" style="font-size: 40px; font-weight: 800; color: #2d5aa0; margin-bottom: 5px; line-height: 1;">२८७०.५८</div>
+          <div class="price-change" style="display: flex; align-items: center; gap: 5px; font-size: 14px;">
+              <span class="change-positive" style="color: #059669; font-weight: 600;">११.६८ (०.४० %)</span>
+              <div class="arrow-up" style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 8px solid #059669;"></div>
+          </div>
+      </div>
+      
+      <div class="header-right" style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div class="date-info" style="color: #64748b; font-size: 12px; text-align: center;">मिति : २०२५-०८-०४</div>
+          <div class="timestamp" style="background: linear-gradient(135deg, #2d5aa0, #1e4080); color: white; padding: 8px 16px; border-radius: 20px; font-weight: 600; font-size: 12px; box-shadow: 0 4px 8px rgba(45, 90, 160, 0.3);">११:३० बिहान</div>
+          
+          <div class="mascot" style="width: 80px; height: 80px; position: relative;">
+              <div class="mascot-body" style="width: 50px; height: 60px; background: linear-gradient(145deg, #2d5aa0, #1e4080); border-radius: 25px; position: relative; margin: 0 auto; box-shadow: 0 5px 10px rgba(45, 90, 160, 0.3);">
+                  <div class="horn" style="width: 5px; height: 12px; background: #f59e0b; border-radius: 2px; position: absolute; top: -10px;"></div>
+                  <div class="horn" style="width: 5px; height: 12px; background: #f59e0b; border-radius: 2px; position: absolute; top: -10px; right: 15px; transform: rotate(15deg);"></div>
+                  <div class="mascot-face" style="position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 30px; height: 25px;">
+                      <div class="eye" style="width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: 5px;"></div>
+                      <div class="eye" style="width: 8px; height: 8px; background: white; border-radius: 50%; position: absolute; top: 5px; right: 8px;"></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  </section>
+
+  
+
+  
+    <!-- Sports Section -->
+    <section class="section sports-section" id="sports">
+      <div class="sports-header">
+        <span class="sports-header-line"></span>
+        <h2 class="sports-title">खेलकुद</h2>
+        <span class="sports-header-line"></span>
+      </div>
+      <div class="sports-three-col-grid">
+        <!-- Left Sidebar -->
+        <div class="sports-sidebar">
+          <div class="sports-post">
+            <img src="{% static 'techsectionimage/US2024.jpg.avif' %}" alt="क्रिकेट टोलीको नयाँ कप्तान घोषणा">
+            <div class="sports-meta">जुलाई १८, २०२५</div>
+            <h3>क्रिकेट टोलीको नयाँ कप्तान घोषणा</h3>
+            <p>नेपाली क्रिकेट टोलीको नयाँ कप्तानको रुपमा रोहित पौडेल नियुक्त भएका छन्।</p>
+          </div>
+          <div class="sports-post">
+            <img src="{% static 'techsectionimage/62PSK6LQPJHSLESKX7366VR5NM.JPG.avif' %}" alt="महिला भलिबल टोलीको तयारी">
+            <div class="sports-meta">जुलाई १७, २०२५</div>
+            <h3>महिला भलिबल टोलीको तयारी</h3>
+            <p>नेपाली महिला भलिबल टोलीले एसियन च्याम्पियनसिपको लागि कडा अभ्यास गरिरहेको छ।</p>
+          </div>
+        </div>
+        <!-- Main Article -->
+        <div class="sports-main-article">
+          <img src="{% static 'techsectionimage/202105301203-main.cropped_1622351059.jpg' %}" alt="नेपाली फुटबल टोली">
+          <div class="sports-meta">जुलाई १९, २०२५ • खेलकुद</div>
+          <h1>नेपाली फुटबल टोलीको विश्वकप छनोटमा शानदार प्रदर्शन</h1>
+          <p>नेपाली राष्ट्रिय फुटबल टोलीले विश्वकप छनोटको पहिलो चरणमा शानदार प्रदर्शन गर्दै इतिहास रचेको छ।</p>
+          <a href="#" class="sports-read-more">थप पढ्नुहोस् →</a>
+        </div>
+        <!-- Right Sidebar -->
+        <div class="sports-sidebar">
+          <div class="sports-post">
+            <img src="{% static 'techsectionimage/1778990126.0.jpg' %}" alt="एथलेटिक्स टोलीको ओलम्पिक लक्ष्य">
+            <div class="sports-meta">जुलाई १६, २०२५</div>
+            <h3>एथलेटिक्स टोलीको ओलम्पिक लक्ष्य</h3>
+            <p>नेपाली एथलेटिक्स टोलीले ओलम्पिकको लागि विदेशी प्रशिक्षणमा प्रशिक्षण सुरु गरेको छ।</p>
+          </div>
+          <div class="sports-post">
+            <img src="{% static 'techsectionimage/_133115976_gettyimages-1334885488.jpg' %}" alt="टेनिस प्रतियोगितामा ऐतिहासिक जीत">
+            <div class="sports-meta">जुलाई १५, २०२५</div>
+            <h3>टेनिस प्रतियोगितामा ऐतिहासिक जीत</h3>
+            <p>नेपाली टेनिस खेलाडीले अन्तर्राष्ट्रिय प्रतियोगितामा ऐतिहासिक जीत हासिल गरेका छन्।</p>
+          </div>
+        </div>
+      </div>
+      </section>
+
+      {% load static %}
+<div class="live-scores-section">
+    <div class="games-grid">
+        <!-- Game 1: Premier League -->
+        <div class="game-card premier-league">
+            <div class="game-header">
+                <div class="league-info">Premier League</div>
+                <div class="match-status">
+                    <div class="status-dot"></div>
+                    LIVE
+                </div>
+            </div>
+            <div class="teams-container">
+                <div class="team">
+                    <div class="team-logo">MCI</div>
+                    <div class="team-name">Man City</div>
+                </div>
+                <div class="score-section">
+                    <div class="score">2 - 1</div>
+                    <div class="match-time">78'</div>
+                </div>
+                <div class="team">
+                    <div class="team-logo">ARS</div>
+                    <div class="team-name">Arsenal</div>
+                </div>
+            </div>
+            <div class="game-details">
+                <div class="scorers">
+                    <div class="scorer">⚽ Haaland 23', 45'</div>
+                    <div class="scorer">⚽ Saka 67'</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 2: La Liga -->
+        <div class="game-card la-liga">
+            <div class="game-header">
+                <div class="league-info">La Liga</div>
+                <div class="match-status">
+                    <div class="status-dot"></div>
+                    LIVE
+                </div>
+            </div>
+            <div class="teams-container">
+                <div class="team">
+                    <div class="team-logo">FCB</div>
+                    <div class="team-name">Barcelona</div>
+                </div>
+                <div class="score-section">
+                    <div class="score">1 - 0</div>
+                    <div class="match-time">HT</div>
+                </div>
+                <div class="team">
+                    <div class="team-logo">RMA</div>
+                    <div class="team-name">Real Madrid</div>
+                </div>
+            </div>
+            <div class="game-details">
+                <div class="scorers">
+                    <div class="scorer">⚽ Lewandowski 34'</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+      
+  
+
+   
+    <div class="ad-banner">
+      <a href="https://century.com.np" target="_blank">
+        <img src="{% static 'techsectionimage/century-masala.gif' %}" alt="विज्ञापन">
+      </a>
+    </div>
+
+    <!-- Entertainment Section -->
+    <section class="rd-ent-section" id="entertainment">
+      <div class="section-header">
+        <span class="section-header-line"></span>
+        <h2 class="section-title">मनोरञ्जन</h2>
+        <span class="section-header-line"></span>
+      </div>
+      <!-- Featured Large Card -->
+      <div class="rd-ent-featured-card">
+        <img src="{% static 'techsectionimage/best-actor-tom-cruise-face-photo-wallpaper-preview.jpg' %}" alt="Featured Story">
+        <div class="rd-ent-featured-content">
+          <div class="rd-ent-featured-category">फिल्म</div>
+          <h1 class="rd-ent-featured-title">नयाँ नेपाली फिल्म 'हिमालय'ले चर्चा बटुल्दै</h1>
+          <div class="rd-ent-featured-meta">जुलाई १९, २०२५ • निर्देशक: रमेश अधिकारी</div>
+          <p class="rd-ent-featured-desc">
+            हिमालय क्षेत्रका रहस्य र साहसिकताको कथामा आधारित यो फिल्म नेपाली सिने जगतमा चर्चा बटुल्दै छ। निर्देशकले दर्शकलाई नयाँ अनुभव दिने वाचा गरेका छन्।
+          </p>
+          <a href="#" class="rd-ent-readmore">पूरा पढ्नुहोस् →</a>
+        </div>
+      </div>
+      <!-- Grid of Small Cards -->
+      <div class="rd-ent-grid">
+        <article class="rd-ent-card">
+          <img src="{% static 'techsectionimage/Legal-Industry-Confronts-Netflix-and-Disney-Navigating-the-Legal-Landscape-of-Movie-Streaming-Platforms-in-Malaysia-1024x853.jpg' %}" alt="">
+          <div class="rd-ent-card-body">
+            <div class="rd-ent-card-category">संगीत</div>
+            <h3 class="rd-ent-card-title">लोक गायक सुदीपको नयाँ एल्बम सार्वजनिक</h3>
+            <div class="rd-ent-card-meta">जुलाई १८, २०२५</div>
+            <p>संगीत क्षेत्रमा चर्चित सुदीप श्रेष्ठको नयाँ एल्बम 'पहाड' सार्वजनिक भएको छ।</p>
+            <a href="#" class="rd-ent-card-readmore">पूरा पढ्नुहोस्</a>
+          </div>
+        </article>
+        <article class="rd-ent-card">
+          <img src="{% static 'techsectionimage/shutterstock_editorial_10552553bz.jpg.webp' %}" alt="">
+          <div class="rd-ent-card-body">
+            <div class="rd-ent-card-category">नाटक</div>
+            <h3 class="rd-ent-card-title">शिल्पी थिएटरको नयाँ नाटक ‘सपना’</h3>
+            <div class="rd-ent-card-meta">जुलाई १७, २०२५</div>
+            <p>शिल्पी थिएटरमा नयाँ नाटक 'सपना'को मञ्चन सुरु, दर्शकहरूमा उत्साह।</p>
+            <a href="#" class="rd-ent-card-readmore">पूरा पढ्नुहोस्</a>
+          </div>
+        </article>
+        <article class="rd-ent-card">
+          <img src="{% static 'techsectionimage/best-actors-21st-century.jpg.avif' %}" alt="">
+          <div class="rd-ent-card-body">
+            <div class="rd-ent-card-category">कार्यक्रम</div>
+            <h3 class="rd-ent-card-title">नेपाल आइडलको नयाँ सिजन सुरु हुँदै</h3>
+            <div class="rd-ent-card-meta">जुलाई १६, २०२५</div>
+            <p>देशभर प्रतिभाशाली गायकहरू खोज्न नेपाल आइडल सिजन सुरु।</p>
+            <a href="#" class="rd-ent-card-readmore">पूरा पढ्नुहोस्</a>
+          </div>
+        </article>
+        <article class="rd-ent-card">
+          <img src="{% static 'techsectionimage/Legal-Industry-Confronts-Netflix-and-Disney-Navigating-the-Legal-Landscape-of-Movie-Streaming-Platforms-in-Malaysia-1024x853.jpg' %}" alt="">
+          <div class="rd-ent-card-body">
+            <div class="rd-ent-card-category">कलाकार</div>
+            <h3 class="rd-ent-card-title">अभिनेत्री प्रियंकाको नयाँ फोटोसुट भाइरल</h3>
+            <div class="rd-ent-card-meta">जुलाई १५, २०२५</div>
+            <p>प्रियंका कार्कीको नयाँ फोटोसुट सामाजिक सञ्जालमा भाइरल।</p>
+            <a href="#" class="rd-ent-card-readmore">पूरा पढ्नुहोस्</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="ad-banner">
+      <a href="https://www.prabhubank.com" target="_blank">
+        <img src="{% static 'techsectionimage/800x125-GIF.gif' %}" alt="विज्ञापन">
+      </a>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <span class="section-header-line"></span>
+        <h2 class="section-title">कथाहरू</h2>
+        <span class="section-header-line"></span>
+      </div>
+      <div class="stories-grid">
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/636b86b89c7e80680e06786fjpeg.jpg' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>जीवन परिवर्तनकारी क्षणहरू: व्यक्तिगत कथाहरू जसले प्रेरणा दिन्छ</h3>
+            <div class="story-meta">जेन मे • आज</div>
+          </div>
+        </div>
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/1520180173680.jpeg' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>संघर्ष पार गर्दै: प्रतिकूलताबाट प्रेरणादायी कथाहरू</h3>
+            <div class="story-meta">टेलर स्टोन • आज</div>
+          </div>
+        </div>
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/Nepali-Culture-Attire.jpg' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>सांस्कृतिक इतिहास: विश्वभरका परम्परा र कथाहरू</h3>
+            <div class="story-meta">लेली लाम • आज</div>
+          </div>
+        </div>
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/YT-unheard.png' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>नसुनिएका आवाजहरू: दूरदराजका समुदायका कथाहरू</h3>
+            <div class="story-meta">जेन मे • आज</div>
+          </div>
+        </div>
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/multiracial-group-of-happy-young-friends-bonding.jpg' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>अनपेक्षित नायकहरू: असाधारण काम गर्ने साधारण मानिसहरू</h3>
+            <div class="story-meta">माइकल स्टोन • आज</div>
+          </div>
+        </div>
+        <div class="story-item">
+          <div class="story-image">
+            <img src="{% static 'techsectionimage/new-york-city-evening-NYCTG0221-52492d6ccab44f328a1c89f41ac02aea.jpg' %}" alt="">
+          </div>
+          <div class="story-content">
+            <h3>सहरी पौराणिक कथाहरू: शहरहरूका रहस्य र किंवदन्तीहरू</h3>
+            <div class="story-meta">जेन मे • हिजो</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="ad-banner">
+      <a href="https://hamropay.com.np" target="_blank">
+        <img src="{% static 'techsectionimage/hamropatro-remit.gif' %}" alt="विज्ञापन">
+      </a>
+    </div>
+  </main>
+
+  
+
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <img src="{% static 'techsectionimage/web-logo-resized.jpg' %}" alt="Logo">
+        <div class="footer-tagline">
+          स्व. महेन्द्र शेरचन्द्रारा स्थापित<br>
+          राजधानी न्यूज पब्लिकेशन प्रा. लि.<br>
+          सुचना तथा प्रसारण विभाग<br>
+          दर्ता नं: ४९३२/०६५-७६
+        </div>
+        <div class="footer-address">
+          राजधानी भवन<br>
+          सरस्वती नगर, चावहिल,<br>
+          पो.ब.नं.: २०५०३, काठमाडौं – नेपाल
+        </div>
+        <div class="footer-contact">
+          फोन: ९०७-०१-४८४९०८०<br>
+          <a href="mailto:rajdhaninews@gmail.com" class="footer-email">rajdhaninews@gmail.com</a>
+        </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-section">
+          <h3>प्रदेश</h3>
+          <ul>
+            <li><a href="#">प्रदेश १</a></li>
+            <li><a href="#">प्रदेश २</a></li>
+            <li><a href="#">प्रदेश ३</a></li>
+            <li><a href="#">प्रदेश ४</a></li>
+            <li><a href="#">प्रदेश ५</a></li>
+            <li><a href="#">प्रदेश ६</a></li>
+            <li><a href="#">प्रदेश ७</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>विषय</h3>
+          <ul>
+            <li><a href="#">ई-पेपर</a></li>
+            <li><a href="#">बिचार</a></li>
+            <li><a href="#">राजनीति</a></li>
+            <li><a href="#">शेयर</a></li>
+            <li><a href="#">समाज</a></li>
+            <li><a href="#">सुरक्षा/अपराध</a></li>
+            <li><a href="#">सूचना प्रविधि</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>सेवा</h3>
+          <ul>
+            <li><a href="#">अन्तराष्ट्रिय</a></li>
+            <li><a href="#">अन्तर्वार्ता</a></li>
+            <li><a href="#">अर्थ</a></li>
+            <li><a href="#">कला</a></li>
+            <li><a href="#">मेरो नेपाल</a></li>
+            <li><a href="#">विदेश</a></li>
+            <li><a href="#">सौजन्य</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-roles">
+      <div class="role-item">
+        <h4>अध्यक्ष:</h4>
+        <p>सचिन शेरचन</p>
+      </div>
+      <div class="role-item">
+        <h4>प्रबन्ध निर्देशक:</h4>
+        <p>आशिष शेरचन</p>
+      </div>
+      <div class="role-item">
+        <h4>सम्पादक:</h4>
+        <p>सरोज मिश्र</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Advertisement</a>
+        <a href="#">Contact us</a>
+      </div>
+      <div class="footer-copyright">
+        © २०२२ राजधानी न्यूज पब्लिकेशन प्रा.लि सर्वाधिकार सुरक्षित<br>
+        Copyright © 2022 Rajdhani News Publication Pvt. Ltd. All rights reserved.
+      </div>
+    </div>
+
+
+
+  </footer>
+    <button id="chatbot-toggle" title="सहयोगी बोट"><span>💬</span></button>
+    <div id="chatbot-widget">
+      <div id="chatbot-header">राजधानी दैनिक ChatBot
+        <button id="chatbot-close" title="बन्द गर्नुहोस्">&times;</button>
+      </div>
+      <div id="chatbot-messages"></div>
+      <form id="chatbot-form" autocomplete="off">
+        <div id="chatbot-input-row">
+          <input id="chatbot-input" type="text" placeholder="यहाँ सोध्नुहोस्..." required />
+          <button id="chatbot-send" type="submit">▶</button>
+        </div>
+      </form>
+    </div>
+    <input type="file" id="adImageUpload" accept="image/*" style="display:none" />
+    <!-- Add this just before your <script> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('navMenu');
+
+  if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+      navMenu.classList.toggle('active');
+    });
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      if (window.innerWidth <= 768) {
+        navMenu.classList.remove('active');
+      }
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('.navigation');
+    if (window.scrollY > 50) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  });
+});
+
+
+let nepseChartInstance = null;
+
+function createNepseChart() {
+    const ctx = document.getElementById('nepseChart').getContext('2d');
+    const { data, labels } = generateNepseData();
+
+    // Destroy if exists
+    if (nepseChartInstance) {
+        nepseChartInstance.destroy();
+    }
+
+    nepseChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                borderColor: '#2d5aa0',
+                backgroundColor: 'rgba(45, 90, 160, 0.1)',
+                borderWidth: 3,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#1e4080',
+                pointHoverBorderColor: 'white',
+                pointHoverBorderWidth: 2,
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(30, 64, 128, 0.9)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    borderColor: '#2d5aa0',
+                    borderWidth: 2,
+                    cornerRadius: 8,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(context) {
+                            return context[0].label;
+                        },
+                        label: function(context) {
+                            return `${context.parsed.y.toFixed(2)}`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    display: true,
+                    grid: { 
+                        display: true,
+                        color: 'rgba(45, 90, 160, 0.1)'
+                    },
+                    ticks: { 
+                        color: '#64748b',
+                        font: { size: 10 }
+                    }
+                },
+                y: {
+                    display: true,
+                    grid: { 
+                        display: true,
+                        color: 'rgba(45, 90, 160, 0.1)'
+                    },
+                    ticks: { 
+                        color: '#64748b',
+                        font: { size: 10 }
+                    }
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index',
+            }
+        }
+    });
+}
+
+
+        // Initialize the chart and interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            createNepseChart();
+
+            // Time selector functionality
+            document.querySelectorAll('.time-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.time-btn').forEach(b => {
+                        b.style.background = 'white';
+                        b.style.color = '#64748b';
+                        b.style.borderColor = '#e2e8f0';
+                        b.style.transform = 'none';
+                        b.style.boxShadow = 'none';
+                    });
+                    this.style.background = 'linear-gradient(135deg, #2d5aa0, #1e4080)';
+                    this.style.color = 'white';
+                    this.style.borderColor = 'transparent';
+                    this.style.boxShadow = '0 4px 8px rgba(45, 90, 160, 0.3)';
+                });
+            });
+
+            // Refresh button functionality
+            document.querySelector('.refresh-btn').addEventListener('click', function() {
+                // Update timestamp
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { 
+                    hour12: true, 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit' 
+                });
+                document.querySelector('.timestamp').textContent = timeString;
+                // Recreate chart on refresh
+                const chartCanvas = document.getElementById('nepseChart');
+                chartCanvas.getContext('2d').clearRect(0, 0, chartCanvas.width, chartCanvas.height);
+                createNepseChart();
+            });
+
+            // Auto-refresh timestamp every minute
+            setInterval(() => {
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { 
+                    hour12: true, 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit' 
+                });
+                document.querySelector('.timestamp').textContent = timeString;
+            }, 60000);
+        });
+        // ========== CHATBOT CORE ==========
+        const chatbotToggle = document.getElementById('chatbot-toggle');
+        const chatbotWidget = document.getElementById('chatbot-widget');
+        const chatbotClose = document.getElementById('chatbot-close');
+        const chatbotMessages = document.getElementById('chatbot-messages');
+        const chatbotForm = document.getElementById('chatbot-form');
+        const chatbotInput = document.getElementById('chatbot-input');
+        const adImageUpload = document.getElementById('adImageUpload');
+      
+        const newsHeadlines = [
+          "नेपालमा प्रदर्शन सुरु",
+          "गहिरो विश्लेषण: स्वास्थ्य सुधारको भविष्य",
+          "संसदमा बजेटमाथि बहस",
+          "राजनीतिक स्क्यान्डल: भ्रष्टाचार विवाद",
+          "५जी क्रान्ति: नेपालमा कनेक्टिभिटीको नयाँ युग"
+        ];
+        const newsHeadlinesEn = [
+          "Protests begin in Nepal",
+          "In-depth Analysis: The Future of Health Reform",
+          "Parliament debates the budget",
+          "Political scandal: Corruption controversy",
+          "5G Revolution: A new era of connectivity in Nepal"
+        ];
+        const newsSummary = [
+          "आज राजधानी दैनिकमा मुख्य रूपमा विरोध, स्वास्थ्य सुधार, र प्रविधिमा चर्चा।",
+          "नेपालमा आज विरोध प्रदर्शन, स्वास्थ्य सुधार र बजेटको बहस तातो विषय बनेको छ।",
+          "मुख्य समाचार: प्रदर्शन, स्वास्थ्य सुधार, संसदमा बहस, र प्रविधिमा प्रगति।"
+        ];
+        const newsSummaryEn = [
+          "Today's main news in Rajdhani Dainik includes protests, health reforms, and technology.",
+          "Today's hot topics: protests, health reforms, and budget debates.",
+          "Main news: protests, health reforms, parliamentary debate, and tech progress."
+        ];
+      
+        // Helper: language detection
+        function detectLang(text) {
+          if (/[अ-ह]+|[क-न]+|समाचार|शब्द|दिन|विज्ञापन|सारांश/.test(text)) return 'np';
+          return 'en';
+        }
+        // Helper: Parse ad request (both lang)
+        function parseAd(text, lang) {
+          let regex_np = /(\d+)\s*शब्द.*?(\d+)\s*दिन/;
+          let regex_en = /(\d+)\s*words?.*?(\d+)\s*days?/i;
+          let match = lang === 'np' ? text.match(regex_np) : text.match(regex_en);
+          if (match) {
+            let words = parseInt(match[1]);
+            let days = parseInt(match[2]);
+            let rate = 10;
+            let total = words * days * rate;
+            return { words, days, rate, total };
+          }
+          return null;
+        }
+      
+        // Message display with HTML support
+        function addMessage(msg, sender='bot', html=false) {
+          const msgDiv = document.createElement('div');
+          msgDiv.className = 'chatbot-msg ' + sender;
+          if (html) msgDiv.innerHTML = msg;
+          else msgDiv.innerText = msg;
+          chatbotMessages.appendChild(msgDiv);
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        function showTyping() {
+          addMessage("टाइप गरिँदैछ...", 'bot');
+          return chatbotMessages.lastChild;
+        }
+      
+        // Ad upload global flag
+        let awaitingAdImage = false;
+        let awaitingAdImageLang = 'np';
+      
+        // --- Respond function, handles both languages and upload button
+        function respond(userMsg) {
+          const lang = detectLang(userMsg);
+          const lowerMsg = userMsg.toLowerCase();
+      
+          // Greetings
+          if (
+            /namaste|hello|hi|नमस्ते|नमस्कार/.test(lowerMsg)
+          ) {
+            return lang === 'np'
+              ? "नमस्ते! म राजधानी दैनिकको सहायक बोट हुँ। समाचार, सारांश, वा विज्ञापनबारे सोध्नुहोस्।"
+              : "Hello! I am Rajdhani Dainik's assistant bot. Ask me about news, summary, or ads!";
+          }
+          // Headlines
+          if (
+            (lang === 'np' && (lowerMsg.includes("समाचार") || lowerMsg.includes("हेडलाइन"))) ||
+            (lang === 'en' && (lowerMsg.includes("news") || lowerMsg.includes("headline")))
+          ) {
+            let arr = lang === 'np' ? newsHeadlines : newsHeadlinesEn;
+            let picks = arr.sort(() => 0.5 - Math.random()).slice(0, 3).map(h => "• " + h).join("\n");
+            return (lang === 'np' ? "आजका मुख्य समाचारहरू:\n" : "Today's main headlines:\n") + picks;
+          }
+          // Summary
+          if (
+            (lang === 'np' && lowerMsg.includes("सारांश")) ||
+            (lang === 'en' && lowerMsg.includes("summary"))
+          ) {
+            let arr = lang === 'np' ? newsSummary : newsSummaryEn;
+            let pick = arr[Math.floor(Math.random() * arr.length)];
+            return (lang === 'np' ? "समाचार संक्षिप्त:\n" : "News summary:\n") + pick;
+          }
+      
+          // Ad calculator: phrase detected
+          if (
+            (lang === 'np' && lowerMsg.includes("विज्ञापन")) ||
+            (lang === 'en' && lowerMsg.includes("ad"))
+          ) {
+            awaitingAdImage = true;
+            awaitingAdImageLang = lang;
+            // Upload button as HTML message
+            return lang === 'np'
+              ? `विज्ञापनका लागि कृपया यस्तो लेख्नुहोस्: '५० शब्द ३ दिन' वा <button onclick="document.getElementById('adImageUpload').click()" style="background:#1976d2;color:#fff;padding:4px 14px;border:none;border-radius:7px;cursor:pointer;">📷 फोटो अपलोड</button>`
+              : `For ad calculation, please type like this: '50 words 3 days' or <button onclick="document.getElementById('adImageUpload').click()" style="background:#1976d2;color:#fff;padding:4px 14px;border:none;border-radius:7px;cursor:pointer;">📷 Upload Ad Image</button>`;
+          }
+          // Ad calculator: numbers detected
+          if (
+            (lang === 'np' && /\d+.*शब्द.*\d+.*दिन/.test(lowerMsg)) ||
+            (lang === 'en' && /\d+.*words?.*\d+.*days?/.test(lowerMsg))
+          ) {
+            let ad = parseAd(lowerMsg, lang);
+            if (ad) {
+              // Also offer upload button after price
+              return lang === 'np'
+                ? `तपाईंको विज्ञापनको कुल मूल्य रु. ${ad.total} हुनेछ (${ad.words} शब्द × ${ad.days} दिन × रु. ${ad.rate}/शब्द/दिन)<br><button onclick="document.getElementById('adImageUpload').click()" style="background:#1976d2;color:#fff;padding:4px 14px;border:none;border-radius:7px;cursor:pointer;margin-top:7px;">📷 फोटो अपलोड</button>`
+                : `Your total ad price will be Rs. ${ad.total} (${ad.words} words × ${ad.days} days × Rs. ${ad.rate}/word/day)<br><button onclick="document.getElementById('adImageUpload').click()" style="background:#1976d2;color:#fff;padding:4px 14px;border:none;border-radius:7px;cursor:pointer;margin-top:7px;">📷 Upload Ad Image</button>`;
+            } else {
+              return lang === 'np'
+                ? "कृपया यसरी लेख्नुहोस्: '५० शब्द ३ दिन'"
+                : "Please type like this: '50 words 3 days'";
+            }
+          }
+      
+          // Small talk/fallback
+          if (
+            (lang === 'np' && /कसरी छ|तपाईंलाई कस्तो छ/.test(lowerMsg)) ||
+            (lang === 'en' && /(how are you|who are you|what can you do)/.test(lowerMsg))
+          ) {
+            return lang === 'np'
+              ? "म ठिक छु! तपाईंलाई कस्तो छ? समाचार, सारांश, वा विज्ञापनबारे सोध्नुहोस्।"
+              : "I'm good! How can I help? Ask for news, summary, or ad calculation.";
+          }
+          // Fallback
+          return lang === 'np'
+            ? "माफ गर्नुहोस्, मैले बुझिनँ। समाचार, सारांश, वा विज्ञापनबारे सोध्नुहोस्।"
+            : "Sorry, I didn't understand. Ask me about news, summary, or ad calculation.";
+        }
+      
+        // Chatbot open/close
+        chatbotToggle.onclick = () => {
+          chatbotWidget.style.display = 'flex';
+          chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        };
+        chatbotClose.onclick = () => chatbotWidget.style.display = 'none';
+      
+        // Welcome message
+        setTimeout(() => {
+          addMessage("नमस्ते! म राजधानी दैनिकको सहायक बोट हुँ। तपाईं मसँग समाचार, सारांश, वा विज्ञापन बारे सोध्न सक्नुहुन्छ।");
+        }, 800);
+      
+        // Main chat handler
+        chatbotForm.onsubmit = function(e) {
+          e.preventDefault();
+          const userMsg = chatbotInput.value.trim();
+          if (!userMsg) return;
+          addMessage(userMsg, 'user');
+          chatbotInput.value = '';
+      
+          // Show typing
+          const typingMsg = showTyping();
+          setTimeout(() => {
+            typingMsg.remove();
+            const botReply = respond(userMsg);
+            // If reply includes HTML (upload button), render as HTML
+            addMessage(botReply, 'bot', /<button/i.test(botReply) || /<br>/.test(botReply));
+          }, 700 + Math.random() * 500);
+        };
+      
+        // === Ad image upload handler ===
+        adImageUpload.onchange = function() {
+          const file = this.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            // Show preview as user message (image bubble)
+            addMessage(
+              `<img src="${e.target.result}" style="max-width:170px;max-height:120px;border-radius:7px;margin:7px 0 7px 0;border:1px solid #eee;">`,
+              'user', true
+            );
+            setTimeout(() => {
+              addMessage(
+                awaitingAdImageLang === 'np'
+                  ? `✅ तपाईंको फोटो प्राप्त भयो। विज्ञापन भुक्तानीका लागि <a href="https://paydemo.com/ad-demo" target="_blank" style="color:#1976d2;font-weight:bold;">यहाँ क्लिक गर्नुहोस्</a> (डेमो)`
+                  : `✅ Your ad image received! For payment, <a href="https://paydemo.com/ad-demo" target="_blank" style="color:#1976d2;font-weight:bold;">click here</a> (demo link)`,
+                'bot', true
+              );
+            }, 600);
+            awaitingAdImage = false;
+          }
+          reader.readAsDataURL(file);
+        };
+      // Desktop hover already handled by CSS. Mobile: tap-to-expand accordion.
+const itemsWithSub = Array.from(document.querySelectorAll('.nav-item'))
+  .filter(li => li.querySelector('.submenu'));
+
+itemsWithSub.forEach(li => {
+  li.classList.add('has-sub');
+  const link = li.querySelector(':scope > a');
+
+  link.addEventListener('click', (e) => {
+    if (window.innerWidth <= 768) {
+      // toggle accordion instead of navigating
+      e.preventDefault();
+      // close others to keep it tidy
+      document.querySelectorAll('.nav-item.open').forEach(openLi => {
+        if (openLi !== li) openLi.classList.remove('open');
+      });
+      li.classList.toggle('open');
+    }
+  });
+});
+
+      
+</script>
+
+<script>
+  (function(){
+    async function getAudioURL(text) {
+      const body = new URLSearchParams({ text });
+      const res = await fetch('/tts/nepali-tts/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body
+      });
+      if (!res.ok) {
+        try {
+          const data = await res.json();
+          throw new Error((data.error || 'TTS failed') + (data.details ? ' ' + JSON.stringify(data.details) : ''));
+        } catch {
+          throw new Error('TTS failed (' + res.status + ')');
+        }
+      }
+      const blob = await res.blob();
+      return URL.createObjectURL(blob);
+    }
+  
+    // Wire up every TTS button
+    document.querySelectorAll('.tts-btn').forEach(btn => {
+      // Expect the next sibling to be the <audio> tag we added
+      const player = btn.nextElementSibling && btn.nextElementSibling.classList.contains('tts-player')
+        ? btn.nextElementSibling
+        : null;
+  
+      btn.addEventListener('click', async () => {
+        try {
+          const text = (btn.getAttribute('data-text') || '').trim();
+          if (!text) { alert('यस समाचारको पाठ भेटिएन।'); return; }
+  
+          btn.disabled = true;
+          const original = btn.textContent;
+          btn.textContent = '⏳ तयार गर्दै...';
+  
+          const url = await getAudioURL(text);
+          if (player) {
+            player.src = url;
+            player.play();
+          } else {
+            window.open(url, '_blank');
+          }
+        } catch (e) {
+          alert(e.message || 'TTS असफल भयो');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = '🔊 सुन्नुहोस्';
+        }
+      });
+    });
+  })();
+  </script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = [...document.querySelectorAll('.nav-item')].filter(li => li.querySelector('.submenu'));
+    items.forEach(li => {
+      li.classList.add('has-sub');
+      const a = li.querySelector(':scope > a');
+      a.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          document.querySelectorAll('.nav-item.open').forEach(x => x !== li && x.classList.remove('open'));
+          li.classList.toggle('open');
+        }
+      });
+    });
+  });
+  </script>
+  
+  
+      
+</body>
+</html>

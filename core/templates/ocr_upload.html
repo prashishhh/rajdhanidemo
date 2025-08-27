@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<title>Ad OCR</title>
+<style>
+  :root { --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  body{ margin:16px; font-family:"Noto Sans Devanagari","Hind","Arial",sans-serif; }
+  h2{ margin:0 0 12px; }
+  .grid{
+    display:grid;
+    grid-template-columns: 220px 1fr 12.5cm;  /* form | raw text | preview */
+    gap:24px;
+    align-items:start;
+  }
+  form{ position:sticky; top:12px; }
+  .box{ border:1px solid #ddd; border-radius:6px; padding:10px; background:#fff; }
+  .label{ font-size:12px; color:#666; margin-bottom:6px; }
+
+  /* Raw OCR area */
+  .raw{ height:70vh; overflow:auto; white-space:pre-wrap; font-family:var(--mono); font-size:12px; line-height:1.4; }
+
+  /* Preview: keep exact physical size, don’t let it stretch */
+  .preview { width:12cm; }
+  .ad-table{
+    width:12cm; height:4cm;
+    border-collapse:collapse; table-layout:fixed; border:2px solid #000; font-size:6pt;
+  }
+  .ad-table th,.ad-table td{ border:1px solid #000; padding:1px 2px; text-align:center; vertical-align:middle; word-wrap:break-word; }
+  .ad-table .black{ background:#000; color:#fff; font-weight:700; font-size:7pt; }
+  .ad-table .left{ text-align:left; }
+  .ad-table .notice{ background:#000; color:#fff; font-weight:700; font-size:7pt; text-align:center; }
+</style>
+</head>
+<body>
+
+<h2>Ad OCR</h2>
+
+<div class="grid">
+
+  <!-- Left: uploader -->
+  <div class="box">
+    <div class="label">Upload image (JPG/PNG)</div>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="file" accept=".jpg,.jpeg,.png" required><br><br>
+      <button type="submit">Upload & Extract</button>
+    </form>
+  </div>
+
+  <!-- Middle: raw OCR -->
+  <div class="box raw">
+    <div class="label" style="margin-bottom:8px;">Raw OCR text</div>
+    {% if text %}{{ text }}{% else %}<em>Nothing yet. Upload an image on the left.</em>{% endif %}
+  </div>
+
+  <!-- Right: preview -->
+  <div class="box preview">
+    <div class="label" style="margin-bottom:8px;">Preview (12cm × 4cm table)</div>
+    {% if t %}
+    <hr>
+    <h3>Preview (12cm × 4cm table)</h3>
+    {% include "preview_table.html" with t=t %}
+  {% endif %}
+  </div>
+
+
+  {% if show_manual %}
+  <div class="box" style="grid-column: 1 / -1; margin-top: 14px;">
+    <h3>Complete missing details</h3>
+    <form method="post" style="display:grid;grid-template-columns:repeat(4, minmax(180px,1fr));gap:12px;">
+      {% csrf_token %}
+      <input type="hidden" name="manual_submit" value="1">
+
+        <!-- keep OCR values so they don't disappear on submit -->
+        <input type="hidden" name="base_company" value="{{ t.company }}">
+        <input type="hidden" name="base_pre_approval_date" value="{{ t.pre_approval_date }}">
+        <input type="hidden" name="base_chalani_no" value="{{ t.chalani_no }}">
+        <input type="hidden" name="base_lot_no" value="{{ t.lot_no }}">
+        <input type="hidden" name="base_city" value="{{ t.city }}">
+
+        <input type="hidden" name="base_position" value="{{ t.position }}">
+        <input type="hidden" name="base_male" value="{{ t.male }}">
+        <input type="hidden" name="base_female" value="{{ t.female }}">
+        <input type="hidden" name="base_salary_kd"  value="{{ t.salary_kd }}">
+        <input type="hidden" name="base_salary_npr" value="{{ t.salary_npr }}">
+
+
+        <!--kfoskfosfkos -->
+            
+
+      <label>कामदारको पद
+        <input type="text" name="position" value="{{ manual.position }}">
+      </label>
+
+      <label>पुरुष
+        <input type="text" name="male" value="{{ manual.male }}" placeholder="नेपाली अंक">
+      </label>
+
+      <label>महिला
+        <input type="text" name="female" value="{{ manual.female }}" placeholder="नेपाली अंक">
+      </label>
+
+      <label>मुद्रा (Currency)
+        <select name="currency">
+          <option value="KD"  {% if manual.currency == 'KD' %}selected{% endif %}>KD</option>
+          <option value="AED" {% if manual.currency == 'AED' %}selected{% endif %}>AED</option>
+          <option value="USD" {% if manual.currency == 'USD' %}selected{% endif %}>Dollar</option>
+          <option value="NPR" {% if manual.currency == 'NPR' %}selected{% endif %}>NPR</option>
+        </select>
+      </label>
+
+      <label>Amount (English)
+        <input type="number" step="0.01" name="amount" value="{{ manual.amount }}">
+      </label>
+
+      <label>Rate → NPR
+        <input type="number" step="0.01" name="rate" value="{{ manual.rate }}" placeholder="e.g. KD→430 / AED→36">
+      </label>
+
+      <label>ओभर टाइम सुविधा
+        <input type="text" name="overtime" value="{{ manual.overtime }}">
+      </label>
+
+      <label>प्रतिदिन घण्टा
+        <input type="text" name="hours" value="{{ manual.hours }}" placeholder="नेपाली अंक">
+      </label>
+
+      <label>हप्तामा दिन
+        <input type="text" name="days" value="{{ manual.days }}" placeholder="नेपाली अंक">
+      </label>
+
+      <label>वार्षिक विदा
+        <input type="text" name="leave" value="{{ manual.leave }}">
+      </label>
+
+      <label>न्यूनतम शैक्षिक योग्यता
+        <input type="text" name="minqual" value="{{ manual.minqual }}">
+      </label>
+
+      <label>खाने सुविधा
+        <select name="eating">
+          <option value="छ"   {% if manual.eating == 'छ' %}selected{% endif %}>छ</option>
+          <option value="छैन" {% if manual.eating == 'छैन' %}selected{% endif %}>छैन</option>
+        </select>
+      </label>
+
+      <label>बस्ने सुविधा
+        <select name="sleeping">
+          <option value="छ"   {% if manual.sleeping == 'छ' %}selected{% endif %}>छ</option>
+          <option value="छैन" {% if manual.sleeping == 'छैन' %}selected{% endif %}>छैन</option>
+        </select>
+      </label>
+
+      <label>करार अवधि (वर्ष)
+        <input type="text" name="tenure" value="{{ manual.tenure }}" placeholder="नेपाली अंक">
+      </label>
+
+      <div style="grid-column:1/-1;">
+        <button type="submit">Apply to table</button>
+      </div>
+    </form>
+    <p class="note" style="margin-top:6px">Tip: keep “Rate → NPR” empty if you don’t want automatic conversion.</p>
+  </div>
+{% endif %}
+
+
+</div>
+</body>
+</html>

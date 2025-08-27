@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="mb-4">Welcome, Admin!</h2>
+        <div class="list-group mb-4">
+            <a href="{% url 'meeting_room' %}" class="list-group-item list-group-item-action">Meeting Room</a>
+            <!-- You can add more links here as features grow -->
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h4>Quick Stats</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">Total Users: {{ total_users }}</li>
+                    <li class="list-group-item">Total News: {{ total_news }}</li>
+                    <li class="list-group-item">Submitted News: {{ submitted_news }}</li>
+                    <li class="list-group-item">Approved News: {{ approved_news }}</li>
+                    <li class="list-group-item">Rejected News: {{ rejected_news }}</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4>User Roles</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">Admins: {{ count_admins }}</li>
+                    <li class="list-group-item">Editors: {{ count_editors }}</li>
+                    <li class="list-group-item">Reporters: {{ count_reporters }}</li>
+                    <li class="list-group-item">Members: {{ count_members }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'dashboard_redirect' %}">← Back</a>
+        </div>
+    </div>
+</body>
+</html>

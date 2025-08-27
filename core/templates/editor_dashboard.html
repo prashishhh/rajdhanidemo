@@ -1,0 +1,435 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Editor Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<style>
+    /* ===== Layout ===== */
+.news-hub { padding: 16px; background: #f7f9fc; }
+.news-hub-grid {
+  display: grid;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  grid-template-columns: 2fr 2fr 1.3fr;
+  grid-template-areas:
+    "breaking breaking sidebar"
+    "feature  latest   sidebar"
+    "grid     grid     sidebar";
+}
+
+/* Areas */
+.breaking { grid-area: breaking; }
+.feature  { grid-area: feature; }
+.latest   { grid-area: latest; }
+.grid-cards{ grid-area: grid; }
+.sidebar  { grid-area: sidebar; }
+
+/* ===== Primitives ===== */
+.block {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 14px rgba(0,0,0,.06);
+  overflow: hidden;
+}
+.h2{font-size:1.25rem; font-weight:800; color:#101828; margin:6px 0 8px;}
+.h3{font-size:1rem; font-weight:800; color:#111827; margin:4px 0 6px;}
+.muted{color:#667085; font-size:.92rem;}
+.link{color:#1976d2; font-weight:700; text-decoration:none;}
+.btn-primary{
+  background:#e53935; color:#fff; border:0; padding:10px 14px;
+  border-radius:8px; font-weight:800; cursor:pointer;
+}
+.tag{background:#e1ecff; color:#1d4ed8; font-weight:700; font-size:.78rem; padding:3px 8px; border-radius:6px;}
+.tag-econ{background:#E6F4EA; color:#1E7F4F;}
+.tag-politics{background:#E7F0FB; color:#1555C5;}
+.by,.time{color:#667085; font-size:.85rem;}
+.live{background:#ffeded; color:#d12a2a; font-weight:800; padding:2px 6px; border-radius:6px; margin-left:6px;}
+
+.line-2{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;}
+.line-3{display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;}
+
+/* ===== Breaking ===== */
+.breaking{
+  padding:22px;
+  background: radial-gradient(1200px 300px at -20% -50%, #ffe3e3, transparent 60%), #ffffff;
+  border:1px solid #fee2e2;
+}
+.breaking-head{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+.breaking-head .dot{width:10px; height:10px; background:#e53935; border-radius:50%; box-shadow:0 0 0 6px rgba(229,57,53,.12); animation:pulse 1.6s infinite;}
+.breaking-head .label{color:#e53935; font-weight:900; letter-spacing:.5px;}
+.breaking-title{font-size:1.6rem; font-weight:900; line-height:1.25; margin:6px 0 12px; color:#0f172a;}
+.breaking-bullets{margin:0 0 12px 18px; color:#475569;}
+.breaking-bullets li{margin:4px 0;}
+.ticker{background:#fff6f6; border:1px dashed #f3b3b3; padding:8px 10px; border-radius:8px; margin:10px 0;}
+.ticker span{font-weight:700; margin-right:8px; color:#e53935;}
+.breaking-cta{display:flex; gap:12px; align-items:center;}
+
+/* ===== Feature ===== */
+.feature{display:grid; grid-template-columns: 1.3fr 1.7fr; gap:14px; padding:14px;}
+.feature-thumb img{width:100%; height:100%; object-fit:cover; border-radius:10px;}
+.feature-body .meta{display:flex; align-items:center; gap:10px;}
+
+/* ===== Latest (compact list) ===== */
+.latest{padding:14px;}
+.section-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
+.section-head h3{font-size:1.05rem; font-weight:900;}
+.latest-list{display:flex; flex-direction:column; gap:12px;}
+.latest-item{display:grid; grid-template-columns:76px 1fr; gap:12px; align-items:center;}
+.latest-item img{width:76px; height:56px; object-fit:cover; border-radius:8px;}
+.latest-item .title{font-weight:800; color:#111827; text-decoration:none;}
+.meta-row{display:flex; align-items:center; gap:8px; margin-top:4px;}
+
+/* ===== Cards Grid ===== */
+.grid-cards{
+  display:grid; gap:16px;
+  grid-template-columns: repeat(4, 1fr);
+}
+.card{background:#fff; border-radius:12px; overflow:hidden; display:flex; flex-direction:column;}
+.card .thumb img{width:100%; aspect-ratio: 16 / 9; object-fit:cover;}
+.card .body{padding:12px 12px 14px;}
+.card .meta{display:flex; align-items:center; gap:8px; color:#667085; font-size:.85rem;}
+.card:hover{transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,.08); transition:.25s ease;}
+
+/* ===== Sidebar ===== */
+.sidebar{display:flex; flex-direction:column; gap:16px;}
+.widget{background:#fff; border-radius:12px; padding:14px; box-shadow:0 2px 12px rgba(0,0,0,.06);}
+.weather{background:linear-gradient(135deg,#74b9ff,#0984e3); color:#fff;}
+.weather .w-row{display:flex; align-items:center; justify-content:space-between;}
+.weather .city{font-weight:800;}
+.weather .temp{font-size:2.2rem; font-weight:900; line-height:1;}
+.weather .sub{opacity:.9;}
+.weather .icon{width:56px; height:56px; object-fit:contain;}
+.weather .chip{background:rgba(255,255,255,.18); padding:8px 10px; border-radius:8px; margin-top:10px;}
+.top-list .w-head{display:flex; align-items:center; gap:8px; margin-bottom:8px;}
+.top-list .pill{background:#5fa9e6; color:#fff; padding:2px 8px; border-radius:999px; font-weight:800; font-size:.78rem;}
+.top-list ol{margin:0 0 0 18px; display:flex; flex-direction:column; gap:8px;}
+.top-list a{color:#0f172a; text-decoration:none; font-weight:700;}
+.top-list a:hover{text-decoration:underline;}
+.widget.ad img{width:100%; height:auto; border-radius:8px}
+
+/* ===== Responsive ===== */
+@media (max-width: 1100px){
+  .news-hub-grid{
+    grid-template-columns: 1.5fr 1.5fr 1fr;
+  }
+  .grid-cards{grid-template-columns: repeat(3,1fr);}
+}
+@media (max-width: 900px){
+  .news-hub-grid{
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "breaking"
+      "feature"
+      "latest"
+      "grid"
+      "sidebar";
+  }
+  .feature{grid-template-columns: 1fr;}
+  .grid-cards{grid-template-columns: repeat(2,1fr);}
+}
+@media (max-width: 560px){
+  .grid-cards{grid-template-columns: 1fr;}
+  .breaking-title{font-size:1.25rem;}
+}
+
+/* pulse */
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(229,57,53,.45)}
+  70%{box-shadow:0 0 0 12px rgba(229,57,53,0)}
+  100%{box-shadow:0 0 0 0 rgba(229,57,53,0)}
+}
+
+</style>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="mb-4">Editor Dashboard</h2>
+        <h4>News Submitted by Reporters</h4>
+        <table class="table table-bordered bg-white shadow-sm mt-3">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Reporter</th>
+                    <th>Submitted At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for news in news_list %}
+                    <tr>
+                        <td>{{ news.title }}</td>
+                        <td>{{ news.author.username }}</td>
+                        <td>{{ news.created_at|date:"Y-m-d H:i" }}</td>
+                        <td>
+                            <a href="{% url 'edit_news_by_editor' news.id %}" class="btn btn-sm btn-primary">View/Edit</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center">No submitted news to review.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    
+
+        <h4>Approved News</h4>
+<table class="table table-bordered bg-white shadow-sm mt-3">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Reporter</th>
+            <th>Approved At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for news in approved_news_list %}
+            <tr>
+                <td>{{ news.title }}</td>
+                <td>{{ news.author.username }}</td>
+                <td>{{ news.approved_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="{% url 'edit_news_by_editor' news.id %}" class="btn btn-sm btn-primary">View/Edit</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No approved news available.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h5 class="mt-4">AI News Overview</h5>
+<ul class="list-group mb-3">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Approved AI News
+        <span class="badge bg-success rounded-pill">{{ approved_ai_news_count }}</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Pending AI News
+        <span class="badge bg-warning text-dark rounded-pill">{{ pending_ai_news_count }}</span>
+    </li>
+</ul>
+
+
+        <h4>AI Collected News (Pending Approval)</h4>
+<table class="table table-bordered bg-white shadow-sm mt-3">
+    <thead>
+        <tr>
+            <th>Headline</th>
+            <th>Source</th>
+            <th>Collected At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for news in ai_news_list %}
+            <tr>
+                <td>{{ news.headline }}</td>
+                <td><span class="text-info">AI Agent</span></td>
+                <td>{{ news.created_at|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <a href="{% url 'edit_ai_news_by_editor' news.id %}" class="btn btn-sm btn-primary">View/Edit</a>
+                </td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">No AI collected news to review.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <strong>Upcoming Meetings</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for meeting in meetings %}
+                <li class="list-group-item">
+                    <strong>{{ meeting.title }}</strong><br>
+                    <small>{{ meeting.meeting_time|date:"Y-m-d H:i" }}</small>
+                    {% if meeting.meeting_link %}
+                        | <a href="{{ meeting.meeting_link }}" target="_blank">Join Link</a>
+                    {% endif %}
+                    <div>{{ meeting.description }}</div>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No upcoming meetings.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+
+    <!-- ===== News Hub ===== -->
+<section class="news-hub">
+    <div class="news-hub-grid">
+  
+      <!-- Breaking Banner -->
+      <article class="block breaking" aria-label="Breaking News">
+        <div class="breaking-head">
+          <span class="dot"></span>
+          <span class="label">ब्रेकिंग</span>
+          <span class="time">१०:०१ बिहान</span>
+        </div>
+        <h1 class="breaking-title">राजधानीमा आज उच्च-स्तरीय बैठक, नीति परिवर्तनको तयारी</h1>
+  
+        <ul class="breaking-bullets">
+          <li>राजधानीका मुख्य सडकमा विरोध प्रदर्शन</li>
+          <li>संसदमा बजेटमाथि बहस सुरु</li>
+          <li>नयाँ नीति मस्यौदा सार्वजनिक हुने सम्भावना</li>
+        </ul>
+  
+        <div class="ticker">
+          <span>लाईभ अपडेट:</span>
+          <marquee behavior="scroll" direction="left" scrollamount="5">
+            ट्राफिक डाइभर्सन सुरु • प्रधानमन्त्री दलका नेतासँग छलफल • सेन्सेक्स -26 (-1.0%)
+          </marquee>
+        </div>
+        <div class="breaking-cta">
+          <button class="btn-primary">लाईभ ट्र्याक गर्नुहोस्</button>
+          <a href="#" class="link">सबै ब्रेकिंग →</a>
+        </div>
+      </article>
+  
+      <!-- Feature Story -->
+      <article class="block feature">
+        <a class="feature-thumb" href="#">
+          <img src="{% static 'images/official_group_photo_lowres.jpg' %}" alt="जलवायु सम्मेलन">
+        </a>
+        <div class="feature-body">
+          <div class="meta">
+            <span class="tag tag-econ">अर्थ</span>
+            <span class="by">सीता राई • आज</span>
+          </div>
+          <h2 class="h2 line-2">
+            ग्लोबल समिट: जलवायु संकटमा नेताहरूको सम्बोधन
+          </h2>
+          <p class="muted line-3">
+            नेताहरूले विश्वव्यापी जलवायु संकटका उपायबारे छलफल गर्दै दीर्घकालीन कोष, कार्बन कर र हरित रोजगारीका कार्यक्रममा जोड दिए...
+          </p>
+          <a href="#" class="link">पूरा पढ्नुहोस् →</a>
+        </div>
+      </article>
+  
+      <!-- Latest list (compact) -->
+      <section class="block latest">
+        <header class="section-head">
+          <h3>भर्खरै</h3>
+          <a class="link" href="#">सबै हेर्नुहोस् →</a>
+        </header>
+  
+        <ul class="latest-list">
+          <li class="latest-item">
+            <img src="{% static 'images/corruption.jpg_guqU1GpDCs.png' %}" alt="">
+            <div>
+              <a href="#" class="title line-2">राजनीतिक स्क्यान्डल: भ्रष्टाचार विवादमा नयाँ खुलासा</a>
+              <div class="meta-row"><span class="tag tag-politics">राजनीति</span> <span class="time">हिजो</span></div>
+            </div>
+          </li>
+          <li class="latest-item">
+            <img src="{% static 'images/budget brief case.jpg' %}" alt="">
+            <div>
+              <a href="#" class="title line-2">संसदीय विवादास्पद बजेट प्रस्तावमाथि बहस तीव्र</a>
+              <div class="meta-row"><span class="tag tag-econ">अर्थ</span> <span class="time">हिजो</span></div>
+            </div>
+          </li>
+          <li class="latest-item">
+            <img src="{% static 'images/politics-thumb.jpg' %}" alt="">
+            <div>
+              <a href="#" class="title line-2">दलहरूबीच सहमति खोज्ने प्रयास, गोप्य वार्ता अघि बढ्यो</a>
+              <div class="meta-row"><span class="tag">समाज</span> <span class="time">१ घण्टा अघि</span></div>
+            </div>
+          </li>
+        </ul>
+      </section>
+  
+      <!-- Card Grid (more content) -->
+      <div class="grid-cards">
+        <!-- Card -->
+        <article class="card">
+          <a class="thumb" href="#"><img src="{% static 'images/official_group_photo_lowres.jpg' %}" alt=""></a>
+          <div class="body">
+            <div class="meta"><span class="tag tag-econ">अर्थ</span><span class="by"> • आज</span></div>
+            <h3 class="h3 line-2">नेपाल–भारत व्यापार सम्झौता अद्यावधिकको तयारी</h3>
+            <p class="muted line-3">दुवै देशबीच माल ढुवानी सहज बनाउन सीमा नाकामा डिजिटल ट्र्याकिङ…</p>
+          </div>
+        </article>
+  
+        <article class="card">
+          <a class="thumb" href="#"><img src="{% static 'images/sports-thumb.jpg' %}" alt=""></a>
+          <div class="body">
+            <div class="meta"><span class="tag">खेलकुद</span><span class="live">LIVE</span></div>
+            <h3 class="h3 line-2">नेपाल vs भारत: टी-२० सिरिजको पहिलो खेल सुरु</h3>
+            <p class="muted line-3">टस जितेर नेपालले बलिङ रोज्यो, स्टेडियममा उत्साहजनक भीड…</p>
+          </div>
+        </article>
+  
+        <article class="card">
+          <a class="thumb" href="#"><img src="{% static 'images/city.jpg' %}" alt=""></a>
+          <div class="body">
+            <div class="meta"><span class="tag">समाज</span></div>
+            <h3 class="h3 line-2">सहरभरी विद्युत् मर्मत, केही क्षेत्रमा लोडसेडिङ</h3>
+            <p class="muted line-3">विद्युत् प्राधिकरणले आज राति १० बजेपछि मर्मतका कारण…</p>
+          </div>
+        </article>
+  
+        <article class="card">
+          <a class="thumb" href="#"><img src="{% static 'images/tech.jpg' %}" alt=""></a>
+          <div class="body">
+            <div class="meta"><span class="tag">प्रविधि</span></div>
+            <h3 class="h3 line-2">सरकारले डिजिटल सेवा कर २% ले घटायो</h3>
+            <p class="muted line-3">अनलाइन कम्पनीहरूलाई राहत, स्टार्टअपमैत्री नीतिमा जोड…</p>
+          </div>
+        </article>
+      </div>
+  
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Weather -->
+        <div class="widget weather">
+          <div class="w-row">
+            <div>
+              <div class="city">काठमाडौं</div>
+              <div class="temp">२४°</div>
+              <div class="sub">११:०० बिहान</div>
+            </div>
+            <img class="icon" src="{% static 'images/weather-sun.png' %}" alt="">
+          </div>
+          <div class="chip">सेन्सेक्स: -26 (-1.0%)</div>
+          <div class="chip">नेपाल vs भारत • ३:३०PM</div>
+        </div>
+  
+        <!-- Top Stories -->
+        <div class="widget top-list">
+          <div class="w-head">
+            <span class="pill">शीर्ष</span>
+            <h4>समाचार</h4>
+          </div>
+          <ol>
+            <li><a href="#" class="line-2">प्रदर्शनका बीच राजधानीमा सुरक्षाकर्मी तैनाथ</a></li>
+            <li><a href="#" class="line-2">बजेट विवादले संसदमा बहस</a></li>
+            <li><a href="#" class="line-2">नयाँ नीति घोषणा, मन्त्रालय पुनर्संरचना</a></li>
+            <li><a href="#" class="line-2">सडक विस्तारका कारण ट्राफिक प्रभाव</a></li>
+          </ol>
+        </div>
+  
+        <!-- Ad -->
+        <div class="widget ad">
+          <a href="https://www.prabhubank.com" target="_blank">
+            <img src="{% static 'techsectionimage/Prabhu-Khutruke-Saving-c.gif' %}" alt="Ad">
+          </a>
+        </div>
+      </aside>
+  
+    </div>
+  </section>
+  
+</body>
+</html>

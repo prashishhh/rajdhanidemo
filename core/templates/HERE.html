@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    /* General Resets & Body */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #f4f4f4; /* Light grey background for the page */
+}
+
+/* 1. Top Banner */
+.rd-top-banner {
+    width: 100%;
+    height: auto; /* Auto height to maintain aspect ratio */
+    min-height: 50px; /* Minimum height */
+    background-color: #fff;
+}
+
+.rd-top-banner img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* 2. Main Header with Logos */
+.rd-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 15px 30px;
+    gap: 20px;
+    border-bottom: 1px solid #e2e8f0; /* Soft separator line */
+}
+
+.rd-header-col {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align left by default */
+}
+
+.rd-header-center {
+    flex: 2; /* Give more space to the center logo */
+    justify-content: center;
+}
+
+.rd-header-right {
+    justify-content: flex-end; /* Align right */
+}
+
+.rd-header-img {
+    max-height: 80px; /* Adjust height as needed */
+    width: auto;
+    object-fit: contain;
+}
+
+/* 3. Date Bar */
+.date-bar {
+    background-color: #585858; /* Solid dark grey */
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    width: 100%;
+    white-space: nowrap; /* Prevent line break on larger screens */
+    overflow-x: auto; /* Allow scrolling on small screens if text overflows */
+}
+
+/* Hide scrollbar for the date bar */
+.date-bar::-webkit-scrollbar {
+    display: none;
+}
+.date-bar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+
+/* 4. Navigation Menu */
+.navigation {
+    background-color: #ffffff;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow-x: auto; /* Enable horizontal scrolling on mobile */
+    overflow-y: hidden;
+}
+
+/* Hide scrollbar for the navigation bar */
+.navigation::-webkit-scrollbar {
+    height: 2px;
+}
+.navigation::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+
+
+.nav-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0 20px;
+}
+
+.nav-list li a, .nav-list li.search-icon {
+    display: block;
+    padding: 15px 18px;
+    color: #333;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap; /* Prevent menu items from wrapping */
+    transition: color 0.2s, background-color 0.2s;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-list li a:hover, .nav-list li.search-icon:hover {
+    background-color: #f7f7f7;
+    color: #0056b3;
+    border-bottom-color: #0056b3;
+}
+
+.search-icon {
+    cursor: pointer;
+}
+
+.search-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .rd-header-img {
+        max-height: 60px;
+    }
+    .nav-list {
+        justify-content: flex-start; /* Align menu to the left on tablets/mobiles */
+    }
+}
+
+@media (max-width: 768px) {
+    .rd-header-row {
+        padding: 10px 15px;
+        flex-direction: column; /* Stack logos vertically on small screens */
+        gap: 10px;
+    }
+    .date-bar p {
+        font-size: 0.75rem;
+    }
+    .nav-list li a {
+        font-size: 14px;
+        padding: 12px 15px;
+    }
+}
+</style>
+<body>
+    <div class="header-container">
+
+        <div class="rd-top-banner">
+          <img src="{% static 'images/Screenshot 2025-08-12 at 10.52.04 AM.png' %}" alt="Top Banner Ad">
+        </div>
+    
+        <div class="rd-header-row">
+          <div class="rd-header-col">
+            <img src="{% static 'images/Screenshot_2025-07-20_at_9.18.18_AM-removebg-preview.png' %}" class="rd-header-img" alt="र Image">
+        </div>
+          <div class="rd-header-col rd-header-center">
+            <img src="{% static 'images/Screenshot_2025-07-20_at_7.48.43_AM-removebg-preview.png' %}" class="rd-header-img" alt="Main Logo">
+
+          </div>
+          <div class="rd-header-col rd-header-right">
+            <img src="{% static 'images/Screenshot_2025-07-20_at_9.17.22_AM-removebg-preview.png' %}" class="rd-header-img" alt="S TV">
+
+          </div>
+        </div>
+    
+        <div class="date-bar">
+          <p>वर्ष २९, अंक ५३ आइतबार ११ साउन २०८० नेपाल संवत् ११४४ | RAJDHANI Nepali National Daily | Sunday 27 July 2025</p>
+        </div>
+    
+    </div>
+    
+    <nav class="navigation">
+        <ul class="nav-list" id="navMenu">
+          <li><a href="#home">गृह पृष्ठ</a></li>
+          <li><a href="#special">राजधानी विशेष</a></li>
+          <li><a href="#nepal">नेपाल</a></li>
+          <li><a href="#world">संसार</a></li>
+          <li><a href="#economy">अर्थ बजार</a></li>
+          <li><a href="#analysis">विवेचना</a></li>
+          <li><a href="#culture">कला/संस्कृति</a></li>
+          <li><a href="#sports">खेलकुद</a></li>
+          <li><a href="#gallery">ग्यालरी</a></li>
+          <li><a href="#other">अन्य</a></li>
+          <li><a href="{% url 'login' %}">लगइन</a></li>
+          <li><a href="{% url 'register' %}">साइन अप</a></li>
+          <li class="search-icon">
+            <svg fill="currentColor" viewBox="0 0 20 20"><path d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"></path></svg>
+          </li>
+        </ul>
+        <div class="hamburger" id="hamburger" style="display: none;">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+    </nav>
+</body>
+</html>

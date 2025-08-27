@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="utf-8">
+    <title>Employment Advertisement - {{ ad.company_name }}</title>
+    <style>
+        body {
+            margin: 10px;
+            font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif;
+            background: #f0f0f0;
+        }
+        .employment-ad {
+            width: 12cm;
+            background: #fff;
+            border: 2px solid #000;
+            box-sizing: border-box;
+            overflow: hidden;
+            font-size: 6pt;
+            line-height: 1;
+            margin: 0 auto;
+        }
+        
+        /* Top Banner - Title */
+        .top-banner {
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-align: center;
+            font-weight: 900;
+            font-size: 8pt;
+            letter-spacing: 0.5px;
+        }
+        
+        /* Company Name Section */
+        .company-section {
+            background: #fff;
+            border-bottom: 1px solid #000;
+            padding: 6px 8px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 7pt;
+        }
+        
+        /* Meta Information Bar */
+        .meta-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            background: #fff;
+            border-bottom: 1px solid #000;
+            font-size: 4.5pt;
+        }
+        .meta-item {
+            border-right: 1px solid #000;
+            padding: 3px 4px;
+            text-align: center;
+        }
+        .meta-item:last-child { border-right: none; }
+        .meta-item b { font-weight: 700; }
+        
+        /* Main Table */
+        .main-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 4pt;
+            line-height: 1;
+        }
+        .main-table th, .main-table td {
+            border: 1px solid #000;
+            padding: 2px 3px;
+            text-align: center;
+            vertical-align: middle;
+            word-break: break-word;
+            overflow: hidden;
+        }
+        .main-table th {
+            background: #f8f8f8;
+            font-weight: 700;
+            font-size: 4pt;
+        }
+        .main-table .text-left { text-align: left; }
+        
+        /* Column widths optimized for 12cm */
+        .col-sn { width: 4%; }
+        .col-position { width: 16%; }
+        .col-gender { width: 6%; }
+        .col-salary { width: 7%; }
+        .col-overtime { width: 8%; }
+        .col-hours { width: 6%; }
+        .col-days { width: 6%; }
+        .col-leave { width: 8%; }
+        .col-education { width: 12%; }
+        .col-food { width: 5%; }
+        .col-housing { width: 5%; }
+        .col-contract { width: 6%; }
+        
+        /* Data Row */
+        .data-row { height: 0.5cm; }
+        .data-row td { vertical-align: middle; font-size: 4.5pt; }
+        
+        /* Interview Information */
+        .interview-info {
+            background: #fff;
+            border-top: 1px solid #000;
+            padding: 4px 8px;
+            font-size: 5pt;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        /* Cost and Benefits Table */
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 4pt;
+            margin-top: 4px;
+        }
+        .cost-table th, .cost-table td {
+            border: 1px solid #000;
+            padding: 2px 3px;
+            text-align: center;
+            vertical-align: middle;
+        }
+        .cost-table th {
+            background: #f8f8f8;
+            font-weight: 700;
+        }
+        .cost-table .text-left { text-align: left; }
+        
+        /* Important Information */
+        .important-info {
+            background: #fff;
+            border-top: 1px solid #000;
+            padding: 4px 8px;
+            font-size: 4pt;
+            line-height: 1.2;
+        }
+        .important-info h6 {
+            margin: 0 0 2px 0;
+            font-weight: 700;
+            font-size: 4.5pt;
+        }
+        .important-info ol {
+            margin: 0;
+            padding-left: 15px;
+        }
+        .important-info li {
+            margin-bottom: 1px;
+        }
+        
+        /* Agency Details */
+        .agency-details {
+            background: #fff;
+            border-top: 1px solid #000;
+            padding: 4px 8px;
+            font-size: 4pt;
+            line-height: 1.2;
+        }
+        .agency-details h6 {
+            margin: 0 0 2px 0;
+            font-weight: 700;
+            font-size: 4.5pt;
+        }
+        .agency-details p {
+            margin: 1px 0;
+        }
+        
+        /* Print styles */
+        @media print {
+            body { margin: 0; background: #fff; }
+            .employment-ad { border: none; box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="employment-ad">
+        <!-- Top Banner - Title -->
+        <div class="top-banner">
+            {% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारीको अबसर
+        </div>
+        
+        <!-- Company Name -->
+        <div class="company-section">
+            {{ ad.company_name|default:"AL MUBADALA BUILDING MAINTENANCE" }}
+        </div>
+        
+        <!-- Meta Information Bar -->
+        <div class="meta-bar">
+            <div class="meta-item">
+                <b>Pre Approval Date:</b><br>
+                {{ ad.pre_approval_date|default:"2025/08/20" }}
+            </div>
+            <div class="meta-item">
+                <b>Chalani No.:</b><br>
+                {{ ad.chalani_no|default:"60243643" }}
+            </div>
+            <div class="meta-item">
+                <b>LOT No.:</b><br>
+                {{ ad.lot_no|default:"329707" }}
+            </div>
+            <div class="meta-item">
+                <b>City:</b><br>
+                {{ ad.city|default:"AJMAN" }}
+            </div>
+        </div>
+        
+        <!-- Main Job Details Table -->
+        <table class="main-table">
+            <thead>
+                <tr>
+                    <th class="col-sn">S.N.</th>
+                    <th class="col-position">Position</th>
+                    <th class="col-gender">Demand Quantity</th>
+                    <th class="col-education">Minimum Qualification</th>
+                    <th class="col-salary">Monthly Salary</th>
+                    <th class="col-overtime">Overtime Facility</th>
+                    <th class="col-hours">Daily Working Hours</th>
+                    <th class="col-days">Weekly Working Days</th>
+                    <th class="col-leave">Annual Leave</th>
+                    <th class="col-food">Food Facility</th>
+                    <th class="col-housing">Accommodation Facility</th>
+                    <th class="col-contract">Contract Duration</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Male</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Female</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position in positions %}
+                <tr class="data-row">
+                    <td>{{ forloop.counter }}</td>
+                    <td class="text-left">{{ position.position|default:"GENERAL MASON" }}</td>
+                    <td>{{ position.male_count|default:"24" }}</td>
+                    <td class="text-left">{{ position.min_qualification|default:"सम्बन्धित काममा दक्ष" }}</td>
+                    <td>
+                        {{ position.salary_currency|default:"AED" }} {{ position.salary_amount|default:"1500" }}<br>
+                        NPR {{ position.salary_npr|default:"57,158/-" }}
+                    </td>
+                    <td class="text-left">{{ position.overtime|default:"कम्पनीको नियमानुसार" }}</td>
+                    <td>{{ position.hours_per_day|default:"8" }} घण्टा</td>
+                    <td>{{ position.days_per_week|default:"6" }} दिन</td>
+                    <td class="text-left">{{ position.yearly_leave|default:"कम्पनीको नियमानुसार" }}</td>
+                    <td>{{ position.food_provided|default:"छ" }}</td>
+                    <td>{{ position.housing_provided|default:"छ" }}</td>
+                    <td>{{ position.contract_duration|default:"2" }} वर्ष</td>
+                </tr>
+                <tr class="data-row">
+                    <td></td>
+                    <td></td>
+                    <td>{{ position.female_count|default:"0" }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% empty %}
+                <!-- Default row if no positions -->
+                <tr class="data-row">
+                    <td>1</td>
+                    <td class="text-left">GENERAL MASON</td>
+                    <td>24</td>
+                    <td class="text-left">सम्बन्धित काममा दक्ष</td>
+                    <td>
+                        AED 1500<br>
+                        NPR 57,158/-
+                    </td>
+                    <td class="text-left">कम्पनीको नियमानुसार</td>
+                    <td>8 घण्टा</td>
+                    <td>6 दिन</td>
+                    <td class="text-left">कम्पनीको नियमानुसार</td>
+                    <td>छ</td>
+                    <td>छ</td>
+                    <td>2 वर्ष</td>
+                </tr>
+                <tr class="data-row">
+                    <td></td>
+                    <td></td>
+                    <td>0</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- Interview Information -->
+        <div class="interview-info">
+            {% for interview in ad.interviews.all %}
+            {{ interview.interview_type }} मिति {{ interview.nepali_date|default:"२०८२/०५/१४ गते" }} ({{ interview.gregorian_date|default:"30 August, 2025" }}) {{ interview.location|default:"म्यानपावरको कार्यालयमा हुनेछ" }}
+            {% empty %}
+            अन्तर्वार्ता मिति २०८२/०५/१४ गते (30 August, 2025) म्यानपावरको कार्यालयमा हुनेछ
+            {% endfor %}
+        </div>
+        
+        <!-- Cost and Benefits Table -->
+        <table class="cost-table">
+            <thead>
+                <tr>
+                    <th colspan="3">Who Bears What (कसले के तिर्छ)</th>
+                </tr>
+                <tr>
+                    <th>Item</th>
+                    <th>Who Bears the Cost</th>
+                    <th>Cost (if specified)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-left">Medical expenses in Nepal</td>
+                    <td class="text-left">{{ ad.medical_cost_local|default:"कामदार आफैले" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Medical expenses abroad</td>
+                    <td class="text-left">{{ ad.medical_cost_foreign|default:"रोजगारदाताले व्यहोर्ने" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Life insurance in Nepal</td>
+                    <td class="text-left">{{ ad.insurance_local|default:"कामदार आफैले" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Employment insurance & premium</td>
+                    <td class="text-left">{{ ad.insurance_employment|default:"रोजगारदाताले तिर्ने" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Air ticket</td>
+                    <td class="text-left">{{ ad.air_ticket|default:"रोजगारदाता कम्पनीले व्यहोर्ने" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Social Security Fund</td>
+                    <td class="text-left">कामदार आफैले</td>
+                    <td>रु. 2596/-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Visa fee</td>
+                    <td class="text-left">{{ ad.visa_fee|default:"रोजगारदाताले व्यहोर्ने" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Visa stamping fee</td>
+                    <td class="text-left">{{ ad.visa_stamp_fee|default:"रोजगारदाताले व्यहोर्ने" }}</td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Orientation fee</td>
+                    <td class="text-left">कामदार आफैले</td>
+                    <td>रु. 700/-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Welfare Fund</td>
+                    <td class="text-left">कामदार आफैले</td>
+                    <td>रु. 1500/-</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Service Charge (शेवा शुल्क)</td>
+                    <td class="text-left">{{ ad.service_fee|default:"निःशुल्क" }}</td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Important Information -->
+        <div class="important-info">
+            <h6>Important Information from Department of Foreign Employment (बैदेशिक रोजगार बिभागबाट गराइएको जानकारी)</h6>
+            <ol>
+                <li>Ensure you have received a visa in your name.</li>
+                <li>Keep contact details (address and phone numbers) of the Nepali diplomatic mission in the destination country for emergencies.</li>
+                <li>Be clear about the services, facilities, and salary mentioned in this advertisement/notice.</li>
+                <li>Before going abroad, thoroughly read and understand the agreement regarding the destination country, employer company, services, facilities, and other conditions, and keep one copy with you.</li>
+                <li>When traveling abroad for work, use Nepali airports; otherwise, there is a possibility of being cheated.</li>
+                <li>If you need to understand anything further regarding this advertisement, contact the Department of Foreign Employment, Tahachal.</li>
+            </ol>
+        </div>
+        
+        <!-- Agency Details -->
+        <div class="agency-details">
+            <h6>Recruitment Agency Details</h6>
+            <p><strong>Name:</strong> {{ ad.company_banner_title|default:"CREATIVE PLACEMENT SERVICES PVT. LTD." }}</p>
+            <p><strong>Govt. Licence No.:</strong> {{ ad.license_number|default:"289/058/59" }}</p>
+            <p><strong>P.O. Box:</strong> 21498</p>
+            <p><strong>Address:</strong> {{ ad.company_address|default:"Basundhara-3, Kathmandu, Nepal" }}</p>
+            <p><strong>Telephone:</strong> {{ ad.company_phone|default:"01-5903365, 5903396, 9823529647, 9824352155" }}</p>
+            <p><strong>Fax No:</strong> 5903430</p>
+            <p><strong>E-mail:</strong> {{ ad.company_email|default:"creativeplacement2002@gmail.com, info@creativenepal.org" }}</p>
+            <p><strong>Website:</strong> {{ ad.company_website|default:"www.creativenepal.org" }}</p>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="text-align: center; margin: 20px 0;">
+        <button onclick="printAd()" style="
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-right: 10px;
+        ">
+            🖨️ Print Advertisement
+        </button>
+        <a href="{% url 'download_design_pdf' %}" style="
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        ">
+            📄 Download PDF
+        </a>
+    </div>
+    
+    <script>
+        // Print functionality
+        function printAd() {
+            window.print();
+        }
+        
+        // Auto-print on load (optional)
+        // window.onload = function() { printAd(); }
+    </script>
+</body>
+</html>

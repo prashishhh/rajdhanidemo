@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit AI Collected News</h2>
+    <h4>{{ news.headline }}</h4>
+    <p>{{ news.summary }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button name="approve" class="btn btn-success">Approve</button>
+        <button name="reject" class="btn btn-danger">Reject</button>
+        <a href="{% url 'editor_dashboard' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

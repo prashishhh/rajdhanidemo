@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Islington Marketplace</title>
+  <meta name="description" content="Buy, sell, and discover student-made goods and services at Islington College, Kathmandu." />
+  <style>
+    /* ---------- Global Reset ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    ul, ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    
+    html, body {
+      height: 100%;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      color: #111827;
+      line-height: 1.55;
+      background: #f8f9fa;
+      min-height: 100vh;
+    }
+    
+    img {
+      max-width: 100%;
+      display: block;
+    }
+    
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    
+    a, button {
+      outline-offset: 3px;
+    }
+    
+    a:focus-visible, button:focus-visible {
+      outline: 3px solid #1d4ed8;
+    }
+
+    /* ---------- Header ---------- */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: rgba(248, 250, 252, 0.8);
+      border-bottom: 1px solid #eef2f7;
+      backdrop-filter: saturate(180%) blur(8px);
+    }
+    
+    .brand .logo {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;  /* aligns with text */
+}
+
+
+    
+    .mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-size: 16px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    }
+
+    /* Navigation */
+    .nav {
+      display: flex;
+      gap: 22px;
+      align-items: center;
+    }
+    
+    .nav a {
+      color: #6b7280;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.2s ease;
+    }
+    
+    .nav a:hover {
+      color: #111827;
+    }
+    
+    .btn-primary {
+      background: #111827;
+      color: #fff;
+      border: 0;
+      cursor: pointer;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+    
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(17, 24, 39, 0.15);
+    }
+    
+    .hamburger {
+      display: none;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 9px 12px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    /* ---------- Dropdown ---------- */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  background: none;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.dropbtn:hover {
+  color: #111827;
+}
+
+/* Dropdown menu (desktop) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #fff;
+  min-width: 200px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 1000;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 8px 12px;
+  color: #111827;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.dropdown-content a:hover {
+  background-color: #f3f4f6;
+}
+
+/* Search inside dropdown */
+.search-box {
+  padding: 8px 12px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+}
+
+/* Show dropdown on hover (desktop only) */
+@media (min-width: 769px) {
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+}
+
+/* ---------- Mobile Responsive ---------- */
+@media (max-width: 768px) {
+  .dropdown-content {
+    position: static;     /* no absolute positioning */
+    box-shadow: none;
+    background: transparent;
+    padding: 4px 0;
+    min-width: auto;
+  }
+
+  .dropdown-content a {
+    padding: 10px 0;
+    color: #6b7280;
+  }
+
+  .search-box {
+    padding: 6px 0;
+  }
+
+  .dropbtn::after {
+    content: "▾";
+    margin-left: 6px;
+  }
+
+  /* Expand on click in mobile */
+  .dropdown.open .dropdown-content {
+    display: block;
+  }
+}
+
+
+    /* ---------- Hero Section ---------- */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 96px 24px 72px;
+      text-align: center;
+    }
+    
+    .title {
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin: 0 0 18px 0;
+    }
+    
+    .title .tone {
+      opacity: 0.9;
+    }
+    
+    .sub {
+      max-width: 720px;
+      margin: 0 auto 56px auto;
+      color: #4b5563;
+      font-size: 18px;
+    }
+
+    /* ---------- Section Heading ---------- */
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      margin: 0 0 16px 0;
+      text-align: center;
+      color: #111827;
+    }
+
+    /* ---------- Popular Products (store layout) ---------- */
+    .pp-wrap { text-align: left; }
+    .pp-head {
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 22px;
+    }
+    .pp-title {
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: #111827;
+      margin: 0 0 10px 0;
+    }
+    .pp-sub { color: #4b5563; font-size: 22px; max-width: 680px; }
+    .pp-right { display: grid; gap: 12px; justify-items: start; }
+    .pp-pills { display: flex; gap: 10px; flex-wrap: wrap; }
+    .pp-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      color: #111827;
+      font-weight: 600; font-size: 14px;
+    }
+    .pp-pill.is-active { background: #111827; color: #ffffff; border-color: #111827; }
+    .pp-desc { color: #6b7280; font-size: 14px; line-height: 1.5; }
+    .pp-view { color: #111827; font-weight: 700; border-bottom: 2px solid #111827; }
+
+    #popular { margin-top: 40px; }
+
+    .pp-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+    .pp-card {
+      position: relative;
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.07);
+      padding: 16px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .pp-wish {
+      position: absolute; top: 12px; right: 12px;
+      width: 36px; height: 36px; border-radius: 999px;
+      display: grid; place-items: center; background: #fff;
+      border: 1px solid #e5e7eb; color: #6b7280;
+    }
+    .pp-media {
+      height: 180px; background: #ffffff; border-radius: 12px;
+      display: grid; place-items: center;
+    }
+    .pp-media img { max-height: 140px; width: auto; object-fit: contain; }
+    .pp-name { font-weight: 700; font-size: 16px; color: #111827; }
+    .pp-meta { color: #6b7280; font-size: 13px; }
+    .pp-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
+    .pp-price { font-weight: 800; color: #111827; }
+    .pp-add { background:#111827; color:#fff; border:0; padding:10px 16px; border-radius:999px; font-weight:700; font-size:14px; }
+
+    /* ---------- Great Offer Spotlight ---------- */
+    .offer { margin: 56px 0 16px; }
+    .offer-inner { background:#ffffff; border-radius: 24px; box-shadow: 0 10px 24px rgba(0,0,0,0.07); padding: 20px; position:relative; overflow:hidden; }
+    .offer-tape {
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #111827;
+      opacity: 0.08;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .offer-tape span { margin-right: 24px; }
+    .offer-grid { display:grid; grid-template-columns: 360px 1fr 320px; gap: 24px; align-items: center; margin-top: 16px; }
+    .offer-title { font-size: 28px; font-weight: 800; letter-spacing:-0.01em; color:#111827; margin-bottom: 8px; }
+    .offer-sub { color:#6b7280; font-size:14px; line-height:1.5; margin-bottom: 16px; }
+    .offer-prices { display:grid; gap:4px; margin: 8px 0 14px; }
+    .offer-old { color:#6b7280; text-decoration: line-through; font-weight:700; }
+    .offer-price { color:#111827; font-size:24px; font-weight:900; }
+    .offer-actions { display:flex; align-items:center; gap:10px; }
+    .offer-add { background:#111827; color:#fff; border:0; padding:12px 18px; border-radius:999px; font-weight:800; }
+    .offer-wish { width:42px; height:42px; border-radius:999px; border:1px solid #e5e7eb; background:#fff; display:grid; place-items:center; color:#6b7280; }
+    .offer-hero { position:relative; z-index:0; height: 360px; display:grid; place-items:center; pointer-events:none; overflow:hidden; border-radius: 22px; }
+    .offer-arch { position:absolute; inset: 0 6% 0 6%; background: #e9edf3; border-bottom-left-radius: 32px; border-bottom-right-radius: 32px; }
+    .offer-hero img { position:absolute; max-height: 64%; width:auto; object-fit:contain; filter: drop-shadow(0 16px 20px rgba(0,0,0,0.14)); }
+    .offer-img-left { display:none; }
+    .offer-img-right { left: 50%; transform: translateX(-50%); }
+    .offer-left, .offer-right { position:relative; z-index:1; }
+    .offer-note { color:#6b7280; font-size:14px; line-height:1.6; }
+    .offer-view { margin-top: 10px; display:inline-block; color:#111827; font-weight:800; border-bottom:2px solid #111827; }
+
+    @media (max-width: 1024px){
+      .offer-grid { grid-template-columns: 1fr; }
+      .offer-hero { order: -1; height:300px; }
+      .offer-arch { inset: 0 10% 0 10%; }
+    }
+
+    /* ---------- Footer ---------- */
+    .footer { background:#111827; color:#e5e7eb; margin-top: 60px; }
+    .footer-inner { max-width:1200px; margin:0 auto; padding: 36px 24px; display:grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 24px; }
+    .foot-brand { display:flex; gap:12px; align-items:center; }
+    .foot-brand .logo { width: 36px; height: 36px; border-radius:8px; background:#1f2937; display:inline-block; }
+    .foot-title { font-weight:800; color:#fff; }
+    .foot-col h4 { color:#fff; font-size:14px; margin-bottom:10px; letter-spacing:.02em; }
+    .foot-col a { color:#e5e7eb; font-size:14px; display:block; padding:6px 0; }
+    .foot-col a:hover { color:#fff; }
+    .foot-meta { border-top:1px solid #1f2937; padding: 16px 24px; text-align:center; font-size:13px; color:#9ca3af; }
+    @media (max-width: 800px){ .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 520px){ .footer-inner { grid-template-columns: 1fr; } }
+    @media (max-width: 1024px) {
+      .pp-head { grid-template-columns: 1fr; }
+      .pp-right { justify-items: start; }
+      .pp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .pp-grid { grid-template-columns: 1fr; }
+      .pp-media { height: 160px; }
+    }
+
+    /* ---------- Cards Section ---------- */
+    .stage {
+      position: relative;
+      margin: 0 0 44px 0;
+    }
+    
+    .card-row {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      perspective: 1200px;
+      flex-wrap: wrap;
+      margin: 0;
+      padding: 0;
+    }
+
+    .card {
+      width: min(300px, 26vw);
+      aspect-ratio: 4/3;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #ddd center/cover no-repeat;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.12);
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s;
+      position: relative;
+      will-change: transform;
+    }
+    
+    .card:nth-child(1) {
+      transform: rotate(-8deg);
+    }
+    
+    .card:nth-child(2) {
+      transform: rotate(-3deg) translateY(-6px);
+    }
+    
+    .card:nth-child(3) {
+      transform: rotate(6deg) translateY(-10px);
+    }
+    
+    .card:nth-child(4) {
+      transform: rotate(12deg);
+    }
+    
+    .card:hover {
+      transform: translateY(-10px) scale(1.04);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+    }
+    
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, rgba(0, 0, 0, 0.0) 20%, rgba(0, 0, 0, 0.55) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 14px;
+    }
+    
+    .kicker {
+      color: #fff;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    
+    .label {
+      color: #fff;
+      font-weight: 700;
+      margin-top: 2px;
+      font-size: 14px;
+    }
+
+    /* ---------- Call to Action ---------- */
+    .cta {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-top: 24px;   /* pulled up */
+        text-align: center;
+        }
+
+    
+    .btn-link {
+      background: transparent;
+      border: 0;
+      color: #4b5563;
+      cursor: pointer;
+      padding: 12px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      text-decoration: underline;
+      transition: color 0.2s ease;
+    }
+    
+    .btn-link:hover {
+      color: #111827;
+    }
+    
+    .price {
+      font-weight: 700;
+    }
+
+    /* ---------- Responsive Design ---------- */
+    @media (max-width: 1024px) {
+      .card {
+        width: min(260px, 38vw);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .hamburger {
+        display: block;
+      }
+      
+      .nav {
+        display: none;
+      }
+      
+      .header.open .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 54px;
+        padding: 12px 16px;
+        background: #ffffff;
+        border-bottom: 1px solid #eef2f7;
+      }
+      
+      .main {
+        padding: 72px 18px 60px;
+      }
+      
+      .card {
+        width: min(240px, 44vw);
+        aspect-ratio: 4/3;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .card {
+        width: 200px;
+      }
+      
+      .sub {
+        font-size: 16px;
+      }
+    }
+    
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header" id="hdr">
+    <a class="brand" href="#">
+        <span class="logo" style="background-image:url('logo.png');"></span>
+        <span>Islington Marketplace</span>
+      </a>
+      
+
+    <button class="hamburger" id="menuBtn" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">☰</button>
+
+    <nav class="nav" id="site-nav">
+        <a href="#browse">Browse</a>
+        
+        <!-- Categories Dropdown -->
+        <div class="dropdown">
+          <button class="dropbtn">Categories ▾</button>
+          <div class="dropdown-content">
+            <a href="#all">All Products</a>
+            <a href="#clothes">Clothes</a>
+            <a href="#sneakers">Sneakers</a>
+            <a href="#books">Books</a>
+            <div class="search-box">
+              <input type="text" placeholder="Search...">
+            </div>
+          </div>
+        </div>
+      
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+        <button class="btn-primary">Get Started</button>
+      </nav>
+      
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <h1 class="title">
+      A place to discover<br><span class="tone">your campus marketplace.</span>
+    </h1>
+
+    <p class="sub">
+      Buy, sell, or book services across Islington College, Kamalpokhari — student merch, second-hand textbooks, project services, snacks, and more.
+    </p>
+
+    <section class="stage">
+      <ul class="card-row" aria-label="Featured campus categories">
+        <!-- Club Merchandise -->
+        <li class="card" style="background-image:url('tickets.png');">
+          <div class="overlay">
+            <div>
+              <div class="kicker">Student Clubs & Societies</div>
+              <div class="label">Official Merch & Event Tickets</div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Textbooks -->
+        <li class="card" style="background-image:url('book.png');">
+
+          <div class="overlay">
+            <div>
+              <div class="kicker">Academic Essentials</div>
+              <div class="label">Second-hand Textbooks & Notes</div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Cafeteria & Snacks -->
+        <li class="card" style="background-image:url('snacks.png');">
+
+
+          <div class="overlay">
+            <div>
+              <div class="kicker">Cafeteria & Pop-ups</div>
+              <div class="label">Snacks, Coffee & Meal Deals</div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Student Services -->
+        <li class="card" style="background-image:url('peers.png');">
+
+
+          <div class="overlay">
+            <div>
+              <div class="kicker">Peer Projects & Skills</div>
+              <div class="label">Design, Tutoring & Tech Help</div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <div class="cta" role="group" aria-label="Primary actions">
+      <button class="btn-primary">Whats Your Mood Today? <span class="price"></span></button>
+    </div>
+
+    <!-- Popular Products -->
+    <section class="stage" id="popular">
+      <div class="pp-wrap">
+        <div class="pp-head">
+          <div class="offer-left">
+            <h2 class="pp-title">Popular Products</h2>
+            <p class="pp-sub">Shop now and find student-loved gear and essentials for campus life.</p>
+          </div>
+          <div class="pp-right">
+            <div class="pp-pills" role="tablist" aria-label="Filter categories">
+              <button class="pp-pill is-active" role="tab" aria-selected="true">All</button>
+              <button class="pp-pill" role="tab" aria-selected="false">Tech</button>
+              <button class="pp-pill" role="tab" aria-selected="false">Sports</button>
+              <button class="pp-pill" role="tab" aria-selected="false">Books</button>
+            </div>
+            <p class="pp-desc">Whether you want to level up your study setup, boost your routine, or just grab everyday carry, we have you covered.</p>
+            <a href="#browse" class="pp-view">View all products</a>
+          </div>
+        </div>
+
+        <div class="pp-grid" aria-label="Popular products">
+          <article class="pp-card">
+            <button class="pp-wish" aria-label="Save product" title="Save">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="pp-media"><img src="https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=1200&auto=format&fit=max" alt="VR Headset"></div>
+            <div class="pp-name">VR Headset</div>
+            <div class="pp-meta">Tech & Gadgets</div>
+            <div class="pp-bottom">
+              <div class="pp-price">Rs 7,999</div>
+              <button class="pp-add">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="pp-card">
+            <button class="pp-wish" aria-label="Save product" title="Save">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="pp-media"><img src="https://images.unsplash.com/photo-1502877338535-766e1452684a?q=80&w=1200&auto=format&fit=max" alt="Match Football"></div>
+            <div class="pp-name">Match Football</div>
+            <div class="pp-meta">Sports</div>
+            <div class="pp-bottom">
+              <div class="pp-price">Rs 1,499</div>
+              <button class="pp-add">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="pp-card">
+            <button class="pp-wish" aria-label="Save product" title="Save">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="pp-media"><img src="https://images.unsplash.com/photo-1558050070-06a96e4baa2b?q=80&w=1200&auto=format&fit=max" alt="Laptop Stand"></div>
+            <div class="pp-name">Laptop Stand</div>
+            <div class="pp-meta">Accessories</div>
+            <div class="pp-bottom">
+              <div class="pp-price">Rs 1,299</div>
+              <button class="pp-add">Add to cart</button>
+            </div>
+          </article>
+
+          <article class="pp-card">
+            <button class="pp-wish" aria-label="Save product" title="Save">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="pp-media"><img src="https://images.unsplash.com/photo-1514477917009-389c76a86b68?q=80&w=1200&auto=format&fit=max" alt="Campus Backpack"></div>
+            <div class="pp-name">Campus Backpack</div>
+            <div class="pp-meta">Backpacks</div>
+            <div class="pp-bottom">
+              <div class="pp-price">Rs 2,199</div>
+              <button class="pp-add">Add to cart</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Great Offer Spotlight -->
+    <section class="offer" aria-label="Great offer">
+      <div class="offer-inner">
+        <div class="offer-tape"><span>GREAT OFFER</span><span>GREAT OFFER</span><span>GREAT OFFER</span></div>
+        <div class="offer-grid">
+          <!-- Left: details -->
+          <div class="offer-right">
+            <div class="offer-title">A set of Dietary supplements</div>
+            <div class="offer-sub">Vitamin D3+K2 + Organic Collagen Peptides</div>
+            <div class="offer-prices">
+              <div class="offer-old">$45.99</div>
+              <div class="offer-price">$38.99</div>
+            </div>
+            <div class="offer-actions">
+              <button class="offer-add">Add to cart</button>
+              <button class="offer-wish" aria-label="Save offer">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none"><path d="M12 21s-7-4.35-7-10a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5.65-7 10-7 10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Middle: hero -->
+          <div class="offer-hero" aria-hidden="true">
+            <div class="offer-arch"></div>
+            <img src="https://images.unsplash.com/photo-1611078489935-0cb964de46d6?q=80&w=1000&auto=format&fit=max" alt="Vitamin Bottle" class="offer-img-left">
+            <img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=max" alt="Supplement Bottle" class="offer-img-right">
+          </div>
+
+          <!-- Right: note -->
+          <div>
+            <p class="offer-note">Whether you’re an athlete, busy professional, or just looking to boost your overall health, this set is curated for you. Buying a set of supplements is both profitable and convenient!</p>
+            <a href="#browse" class="offer-view">View all sets</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="foot-col">
+        <div class="foot-brand"><span class="logo"></span> <span class="foot-title">Islington Marketplace</span></div>
+        <p style="margin-top:10px;color:#9ca3af;max-width:520px">A student-first marketplace to buy, sell, and discover goods and services on campus.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Browse</h4>
+        <a href="#popular">Popular</a>
+        <a href="#browse">Categories</a>
+        <a href="#">Sell an item</a>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#">Privacy</a>
+      </div>
+      <div class="foot-col">
+        <h4>Get in touch</h4>
+        <a href="mailto:hello@islington.market">hello@islington.market</a>
+        <a href="#">+977 980-0000000</a>
+      </div>
+    </div>
+    <div class="foot-meta">© 2025 Islington Marketplace. All rights reserved.</div>
+  </footer>
+
+  <script>
+    // Accessible mobile toggle
+    (function(){
+      const hdr = document.getElementById('hdr');
+      const btn = document.getElementById('menuBtn');
+      btn?.addEventListener('click', () => {
+        const open = hdr.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+        btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      });
+    })();
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,2140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Simple Test Form for Debugging -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h5 class="mb-0">🧪 Debug Form Submission</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Use this simple form to test if basic form submission works:</p>
+                    <form method="post" action="{% url 'test_form_submission' %}" class="row g-3">
+                        {% csrf_token %}
+                        <input type="hidden" name="simple_submit" value="1">
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Title</label>
+                            <input type="text" name="title" class="form-control" value="Test Title">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Company Name</label>
+                            <input type="text" name="company_name" class="form-control" value="Test Company">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Country</label>
+                            <input type="text" name="country" class="form-control" value="Test Country">
+                        </div>
+                        
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-warning">🧪 Test Simple Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Simple Position Form for Debugging -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">🧪 Debug Position Submission</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Use this simple form to test if position submission works:</p>
+                    <form method="post" action="{% url 'simple_position_submission' %}" class="row g-3">
+                        {% csrf_token %}
+                        
+                        <div class="col-md-3">
+                            <label class="form-label">Position</label>
+                            <input type="text" name="position" class="form-control" value="Test Position" required>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label class="form-label">Male Count</label>
+                            <input type="text" name="male_count" class="form-control" value="5" required>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label class="form-label">Female Count</label>
+                            <input type="text" name="female_count" class="form-control" value="3" required>
+                        </div>
+                        
+                        <div class="col-md-2">
+                            <label class="form-label">Salary Amount</label>
+                            <input type="text" name="salary_amount" class="form-control" value="150" required>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label">Salary Currency</label>
+                            <select name="salary_currency" class="form-control" required>
+                                <option value="KD">KD</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-info">🧪 Test Position Form</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">📋 रोजगार विज्ञापन सम्पादक</h4>
+                </div>
+                <div class="card-body">
+                    
+                    <!-- Step Progress Indicator -->
+                    <div class="progress mb-4" style="height: 8px;">
+                        <div class="progress-bar" role="progressbar" style="width: 25%;" id="progressBar"></div>
+                    </div>
+                    
+                    <!-- Step Navigation -->
+                    <ul class="nav nav-pills mb-4" id="stepTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="step1-tab" data-bs-toggle="pill" data-bs-target="#step1" type="button" role="tab">
+                                <span class="badge bg-primary me-2">1</span> OCR अपलोड
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
+                                <span class="badge bg-secondary me-2">2</span> मुख्य जानकारी
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
+                                <span class="badge bg-secondary me-2">3</span> कामदार पदहरू
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+                                <span class="badge bg-secondary me-2">4</span> पूर्वावलोकन
+                            </button>
+                        </li>
+                    </ul>
+
+                    <!-- Step Content -->
+                    <div class="tab-content" id="stepContent">
+                        
+                        <!-- Step 1: OCR Upload -->
+                        <div class="tab-pane fade show active" id="step1" role="tabpanel">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h5 class="mb-1">📄 OCR अपलोड र पार्सिङ</h5>
+                                    <p class="text-muted mb-2">विज्ञापन पत्र अपलोड गर्नुहोस् र OCR द्वारा स्वचालित रुपमा फिल्डहरू भर्नुहोस्</p>
+                                    
+                                    <form method="post" enctype="multipart/form-data" id="ocrForm">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="form_type" value="ocr">
+                                        
+                                        <div class="mb-2">
+                                            <label for="id_document" class="form-label mb-1">विज्ञापन पत्र अपलोड गर्नुहोस्</label>
+                                            <input type="file" class="form-control" id="id_document" name="document" accept="image/*,.pdf" required>
+                                            <div class="form-text">PNG, JPG, JPEG, PDF फाइलहरू स्वीकार्य छन्</div>
+                                        </div>
+                                        
+                                        <button type="submit" class="btn btn-primary btn-lg">
+                                            🔍 OCR चलाउनुहोस्
+                                        </button>
+                                    </form>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6>💡 सुझावहरू:</h6>
+                                            <ul class="small">
+                                                <li>सफा र स्पष्ट छवि प्रयोग गर्नुहोस्</li>
+                                                <li>उज्यालो राम्रोसँग हुनुपर्छ</li>
+                                                <li>पाठ स्पष्ट र पढ्न सकिने हुनुपर्छ</li>
+                                            </ul>
+                                            
+                                            <hr>
+                                            <h6>💰 मुद्रा विनिमय दर:</h6>
+                                            <button type="button" class="btn btn-warning btn-sm w-100" onclick="updateCurrencyRates()">
+                                                🔄 दर अपडेट गर्नुहोस्
+                                            </button>
+                                            <small class="text-muted d-block mt-1">दैनिक अपडेट गर्नुहोस्</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- OCR Results -->
+                            {% if ocr_text %}
+                            <div class="mt-2">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6 class="mb-1">OCR परिणाम:</h6>
+                                        <div class="alert alert-info py-2">
+                                            <pre style="white-space: pre-wrap; font-size: 12px; max-height: 200px; overflow-y: auto;">{{ ocr_text }}</pre>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <h6 class="mb-1">पार्स गरिएका फिल्डहरू:</h6>
+                                        <div class="table-responsive">
+                                            <table class="table table-sm table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>फिल्ड</th>
+                                                        <th>मान</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr><td>कम्पनीको नाम</td><td>{{ parsed_data.company_name|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>पूर्व स्वीकृति मिति</td><td>{{ parsed_data.pre_approval_date|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>चलानी नं.</td><td>{{ parsed_data.chalani_no|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>LOT नं.</td><td>{{ parsed_data.lot_no|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>शहर</td><td>{{ parsed_data.city|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>देश</td><td>{{ parsed_data.country|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>पद</td><td>{{ parsed_data.position|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>पुरुष संख्या</td><td>{{ parsed_data.male_count|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>महिला संख्या</td><td>{{ parsed_data.female_count|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>तलब रकम</td><td>{{ parsed_data.salary_amount|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>मुद्रा</td><td>{{ parsed_data.salary_currency|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>ओभर टाइम</td><td>{{ parsed_data.overtime|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>घण्टा/दिन</td><td>{{ parsed_data.hours_per_day|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>दिन/हप्ता</td><td>{{ parsed_data.days_per_week|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>वार्षिक विदा</td><td>{{ parsed_data.yearly_leave|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>शैक्षिक योग्यता</td><td>{{ parsed_data.min_qualification|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>खाना</td><td>{{ parsed_data.food_provided|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>बसोबास</td><td>{{ parsed_data.housing_provided|default:"पाइएन" }}</td></tr>
+                                                    <tr><td>करार अवधि</td><td>{{ parsed_data.contract_duration|default:"पाइएन" }}</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-success" onclick="applyOCRData()">
+                                            ✅ OCR डाटा लागू गर्नुहोस्
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Step 2: Main Information -->
+                        <div class="tab-pane fade" id="step2" role="tabpanel">
+                            <h5 class="mb-1">🏢 मुख्य जानकारी</h5>
+                            <p class="text-muted mb-2">कम्पनी र विज्ञापनको मुख्य विवरण भर्नुहोस्</p>
+                            
+                            <form method="post" enctype="multipart/form-data" id="mainForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="edit">
+                                
+                                <!-- Company Information -->
+                                <div class="card mb-2">
+                                    <div class="card-header py-1">
+                                        <h6 class="mb-0">🏢 कम्पनीको जानकारी</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-1">
+                                                    <label for="{{ form.title.id_for_label }}" class="form-label mb-1">शीर्षक</label>
+                                                    {{ form.title }}
+                                                </div>
+                                                
+                                                <div class="mb-1">
+                                                    <label for="{{ form.company_name.id_for_label }}" class="form-label mb-1">कम्पनीको नाम</label>
+                                                    {{ form.company_name }}
+                                                </div>
+                                                
+                                                <div class="mb-1">
+                                                    <label for="{{ form.country.id_for_label }}" class="form-label mb-1">देश</label>
+                                                    {{ form.country }}
+                                                </div>
+                                                
+                                                <div class="mb-1">
+                                                    <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label mb-1">पूर्व स्वीकृति मिति</label>
+                                                    {{ form.pre_approval_date }}
+                                                </div>
+                                                
+                                                <div class="mb-1">
+                                                    <label for="{{ form.chalani_no.id_for_label }}" class="form-label mb-1">चलानी नं.</label>
+                                                    {{ form.chalani_no }}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="{{ form.lot_no.id_for_label }}" class="form-label">LOT नं.</label>
+                                                    {{ form.lot_no }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.city.id_for_label }}" class="form-label">शहर</label>
+                                                    {{ form.city }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.interview_custom_text.id_for_label }}" class="form-label">अन्तर्वार्ता सूचना (वैकल्पिक)</label>
+                                                    {{ form.interview_custom_text }}
+                                                    <small class="form-text text-muted">यहाँ आफ्नो विशेष अन्तरवार्ता सूचना लेख्नुहोस्। खाली छोड्नुहोस् यदि स्वचालित ८ दिन गणना चाहनुहुन्छ भने।</small>
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">अन्तर्वार्ता मिति र स्थान</label>
+                                                    <div class="row">
+                                                        <div class="col-4">
+                                                            <label class="form-label">नेपाली मिति</label>
+                                                            <input type="text" name="interview_nepali_date" id="id_interview_nepali_date" class="form-control" placeholder="२०८२/०५/११" value="{{ ad.interview_nepali_date|default:'' }}">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="form-label">अंग्रेजी मिति</label>
+                                                            <input type="text" name="interview_gregorian_date" id="id_interview_gregorian_date" class="form-control" placeholder="30 August, 2025" value="{{ ad.interview_gregorian_date|default:'' }}">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <label class="form-label">स्थान</label>
+                                                            <input type="text" name="interview_location" id="id_interview_location" class="form-control" placeholder="म्यानपावरको कार्यालयमा" value="{{ ad.interview_location|default:'' }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-2 p-2 bg-light rounded">
+                                                        <strong>पूर्वावलोकन:</strong>
+                                                        <div id="interview_preview" class="mt-1">
+                                                            अन्तरवार्ता मिति <span id="preview_nepali_date">{{ ad.interview_nepali_date|default:'२०८२/०५/११' }}</span> गते (<span id="preview_gregorian_date">{{ ad.interview_gregorian_date|default:'30 August, 2025' }}</span>) <span id="preview_location">{{ ad.interview_location|default:'म्यानपावरको कार्यालयमा' }}</span> हुनेछ ।
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-2">
+                                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="calculateInterviewDate()">🔄 स्वचालित मिति गणना (८ दिन पछि)</button>
+                                                        <small class="form-text text-muted d-block mt-1">यो बटन थिच्नुहोस् यदि तपाईं पूर्व स्वीकृति मिति + ८ दिन गणना गर्न चाहनुहुन्छ</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Extra Information -->
+                                <div class="card mb-2">
+                                    <div class="card-header py-1">
+                                        <h6 class="mb-0">💰 अतिरिक्त जानकारी (कसले तिर्ने/दिने)</h6>
+                                        <small class="text-muted">प्रत्येक फिल्डमा "कामदारले तिर्ने" वा "रोजगारदाताले व्यहोर्ने" छान्नुहोस्</small>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.medical_cost_local.id_for_label }}" class="form-label">स्वदेशमा मेडिकल खर्च</label>
+                                                    {{ form.medical_cost_local }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.medical_cost_foreign.id_for_label }}" class="form-label">विदेशमा मेडिकल खर्च</label>
+                                                    {{ form.medical_cost_foreign }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.insurance_local.id_for_label }}" class="form-label">स्वदेशमा बीमा</label>
+                                                    {{ form.insurance_local }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.insurance_employment.id_for_label }}" class="form-label">रोजगारमा बीमा</label>
+                                                    {{ form.insurance_employment }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.air_ticket.id_for_label }}" class="form-label">हवाई टिकट</label>
+                                                    {{ form.air_ticket }}
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.visa_fee.id_for_label }}" class="form-label">भिसा शुल्क</label>
+                                                    {{ form.visa_fee }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.visa_stamp_fee.id_for_label }}" class="form-label">भिसा स्ट्याम्प शुल्क</label>
+                                                    {{ form.visa_stamp_fee }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.recruitment_fee.id_for_label }}" class="form-label">अभिकृतिकरण शुल्क</label>
+                                                    {{ form.recruitment_fee }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.welfare_fund.id_for_label }}" class="form-label">कल्याणकारी कोष</label>
+                                                    {{ form.welfare_fund }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.labor_fee.id_for_label }}" class="form-label">श्रमशुल्क</label>
+                                                    {{ form.labor_fee }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label for="{{ form.service_fee.id_for_label }}" class="form-label">सेवा शुल्क</label>
+                                                    {{ form.service_fee }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Extra Notes Section -->
+                                        <div class="card mb-2">
+                                            <div class="card-header py-1">
+                                                <h6 class="mb-0">📝 विशेष सूचना (वैकल्पिक)</h6>
+                                                <small class="text-muted">यदि कुनै विशेष सूचना छ भने यहाँ लेख्नुहोस्, अन्यथा देश अनुसार स्वचालित सूचना देखिनेछ</small>
+                                            </div>
+                                            <div class="card-body py-2">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.extra_notes.id_for_label }}" class="form-label">विशेष सूचना</label>
+                                                    {{ form.extra_notes }}
+                                                    <small class="form-text text-muted">यो फिल्ड खाली छोड्नुहोस् यदि तपाईं देश अनुसार स्वचालित सूचना प्रयोग गर्न चाहनुहुन्छ</small>
+                                                </div>
+                                                
+                                                <!-- Country Notice Preview -->
+                                                <div class="mt-2 p-2 bg-light border rounded" id="countryNoticePreview" style="display: none;">
+                                                    <small class="text-muted">देश अनुसार स्वचालित सूचना:</small>
+                                                    <div class="mt-1" id="noticePreviewText" style="font-size: 0.9em; line-height: 1.3;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Company Banner Information -->
+                                <div class="card mb-2">
+                                    <div class="card-header py-1">
+                                        <h6 class="mb-0">🏢 कम्पनी ब्यानर जानकारी</h6>
+                                        <small class="text-muted">तलको ब्यानरमा देखिने कम्पनीको जानकारी र लोगो</small>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_logo_text.id_for_label }}" class="form-label">लोगो टेक्स्ट</label>
+                                                    {{ form.company_logo_text }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_logo_image.id_for_label }}" class="form-label">लोगो इमेज</label>
+                                                    {{ form.company_logo_image }}
+                                                    <small class="text-muted d-block">सिफारिस: 70x28px</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_banner_title.id_for_label }}" class="form-label">कम्पनीको नाम</label>
+                                                    {{ form.company_banner_title }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Logo Preview -->
+                                        <div class="row mb-2">
+                                            <div class="col-md-3">
+                                                <div class="logo-preview-container">
+                                                    <label class="form-label">लोगो पूर्वावलोकन</label>
+                                                    <div class="logo-preview" id="logo-preview">
+                                                        {% if form.company_logo_image.value %}
+                                                            <img src="{{ form.company_logo_image.value.url }}" alt="Company Logo" class="preview-logo">
+                                                        {% else %}
+                                                            <div class="logo-placeholder">{{ form.company_logo_text.value|default:"LOGO" }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_address.id_for_label }}" class="form-label">ठेगाना</label>
+                                                    {{ form.company_address }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_phone.id_for_label }}" class="form-label">फोन नम्बर</label>
+                                                    {{ form.company_phone }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_email.id_for_label }}" class="form-label">इमेल</label>
+                                                    {{ form.company_email }}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label for="{{ form.company_website.id_for_label }}" class="form-label">वेबसाइट</label>
+                                                    {{ form.company_website }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="mb-2">
+                                            <label for="{{ form.license_number.id_for_label }}" class="form-label">लाइसेन्स नम्बर</label>
+                                            {{ form.license_number }}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary btn-lg">💾 सेभ गर्नुहोस् र अर्को चरणमा जानुहोस्</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Step 3: Job Positions -->
+                        <div class="tab-pane fade" id="step3" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="mb-0">👥 कामदारको पदहरू</h5>
+                                <div>
+                                    <button type="button" class="btn btn-info btn-sm me-2" onclick="debugFormState()">
+                                        🐛 Debug Form
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-sm me-2" onclick="testFormSubmission()">
+                                        🧪 Test Submit
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-sm" onclick="addPosition()">
+                                        ➕ नयाँ पद थप्नुहोस्
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Debug Info -->
+                            <div class="alert alert-info mb-3">
+                                <strong>Debug Info:</strong>
+                                <div>Formset Forms: {{ formset.forms|length }}</div>
+                                <div>Management Form: TOTAL_FORMS={{ formset.management_form.initial.TOTAL_FORMS }}, INITIAL_FORMS={{ formset.management_form.initial.INITIAL_FORMS }}</div>
+                                <div>Existing Positions: {{ positions|length }}</div>
+                                {% if positions %}
+                                <div>Position Details:</div>
+                                {% for pos in positions %}
+                                <div class="ms-3">- {{ pos.position }} (Male: {{ pos.male_count }}, Female: {{ pos.female_count }}, Salary: {{ pos.salary_amount }})</div>
+                                {% endfor %}
+                                {% endif %}
+                                
+                                <hr>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="showFormValues()">
+                                    📋 Show Form Values
+                                </button>
+                                <button type="button" class="btn btn-warning btn-sm" onclick="testFormSubmission()">
+                                    🧪 Test Submit
+                                </button>
+                                <button type="button" class="btn btn-info btn-sm" onclick="alert('JavaScript is working!')">
+                                    🧪 Test JavaScript
+                                </button>
+                                <button type="button" class="btn btn-success btn-sm" onclick="submitFormManually()">
+                                    🚀 Submit Form Manually
+                                </button>
+                            </div>
+                            
+                            <form method="post" id="positionForm">
+                                {% csrf_token %}
+                                <input type="hidden" name="form_type" value="position">
+                                
+                                <div id="positionsContainer">
+                                    {{ formset.management_form }}
+                                    {% for form in formset %}
+                                    <div class="position-form border rounded p-3 mb-3" data-form-index="{{ forloop.counter0 }}">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <h6 class="mb-0">पद #{{ forloop.counter }}</h6>
+                                            {% if forloop.counter > 1 %}
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="removePosition(this)">
+                                                🗑️ हटाउनुहोस्
+                                            </button>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-2">
+                                                    <label class="form-label">पद</label>
+                                                    {{ form.position }}
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">पुरुष</label>
+                                                            {{ form.male_count }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">महिला</label>
+                                                            {{ form.female_count }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">तलब रकम</label>
+                                                            {{ form.salary_amount }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">मुद्रा</label>
+                                                            {{ form.salary_currency }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">तलब (ने.रु.)</label>
+                                                    {{ form.salary_npr }}
+                                                    <small class="form-text text-muted">स्वचालित रूपमा गणना गरिने</small>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">ओभर टाइम</label>
+                                                            {{ form.overtime }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">घण्टा/दिन</label>
+                                                            {{ form.hours_per_day }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">दिन/हप्ता</label>
+                                                            {{ form.days_per_week }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">वार्षिक विदा</label>
+                                                            {{ form.yearly_leave }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">शैक्षिक योग्यता</label>
+                                                    {{ form.min_qualification }}
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">खाना</label>
+                                                            {{ form.food_provided }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-2">
+                                                            <label class="form-label">बसोबास</label>
+                                                            {{ form.housing_provided }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">करार अवधि</label>
+                                                    {{ form.contract_duration }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Hidden fields -->
+                                        {{ form.id }}
+                                        {{ form.employment_ad }}
+                                        {{ form.order }}
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary btn-lg">💾 पदहरू सेभ गर्नुहोस् र अर्को चरणमा जानुहोस्</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Step 4: Preview -->
+                        <div class="tab-pane fade" id="step4" role="tabpanel">
+                            <h5 class="mb-1">👁️ पूर्वावलोकन</h5>
+                            <p class="text-muted">आफ्नो विज्ञापनको अन्तिम रूप हेर्नुहोस् र PDF डाउनलोड गर्नुहोस्</p>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <a href="{% url 'employment_ad_preview' %}" target="_blank" class="btn btn-primary btn-lg w-100">
+                                        🔍 नयाँ ट्याबमा हेर्नुहोस्
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="{% url 'employment_ad_design' %}" target="_blank" class="btn btn-info btn-lg w-100">
+                                        🎨 नयाँ डिजाइन हेर्नुहोस्
+                                    </a>
+                                </div>
+                                <div class="col-md-4">
+                                    <a href="{% url 'download_pdf' %}" class="btn btn-success btn-lg w-100">
+                                        📄 PDF डाउनलोड गर्नुहोस्
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6>📋 विज्ञापन सारांश:</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>कम्पनी:</strong> {{ employment_ad.company_name|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>देश:</strong> {{ employment_ad.country|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>पदहरू:</strong> {{ employment_ad.positions.count|default:"0" }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>अन्तिम मिति:</strong> {{ employment_ad.application_deadline|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>शहर:</strong> {{ employment_ad.city|default:"भर्नुहोस्" }}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <hr>
+                                    <h6>💰 भुक्तानी व्यवस्था:</h6>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>मेडिकल खर्च:</strong> {{ employment_ad.medical_cost_local|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>बीमा:</strong> {{ employment_ad.insurance_local|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>हवाई टिकट:</strong> {{ employment_ad.air_ticket|default:"भर्नुहोस्" }}</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>भिसा शुल्क:</strong> {{ employment_ad.visa_fee|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>कल्याणकारी कोष:</strong> {{ employment_ad.welfare_fund|default:"भर्नुहोस्" }}</p>
+                                            <p><strong>श्रमशुल्क:</strong> {{ employment_ad.labor_fee|default:"भर्नुहोस्" }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.nav-pills .nav-link {
+    border-radius: 20px;
+    margin-right: 10px;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.position-form {
+    background-color: #f8f9fa;
+    border-left: 4px solid #0d6efd !important;
+}
+
+.progress {
+    border-radius: 10px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m1 6 7 7 7-7'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.card-header h6 {
+    margin-bottom: 0;
+    color: #495057;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.badge {
+    font-size: 0.8em;
+}
+
+/* Logo Preview Styling */
+.logo-preview-container {
+    margin-top: 10px;
+}
+
+.logo-preview {
+    width: 70px;
+    height: 28px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+.preview-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.logo-placeholder {
+    font-size: 8px;
+    font-weight: bold;
+    color: #666;
+    text-align: center;
+    width: 100%;
+}
+</style>
+
+<script>
+let currentStep = 1;
+const totalSteps = 4; // Updated total steps
+
+// Currency exchange rates (you can update these or fetch from an API)
+const exchangeRates = {
+    'KD': 378.51,    // Kuwaiti Dinar to NPR
+    'USD': 133.45,   // US Dollar to NPR
+    'EUR': 145.67,   // Euro to NPR
+    'GBP': 170.23,   // British Pound to NPR
+    'SAR': 35.58,    // Saudi Riyal to NPR
+    'AED': 36.34,    // UAE Dirham to NPR
+    'QAR': 36.67,    // Qatar Riyal to NPR
+    'OMR': 346.78,   // Omani Rial to NPR
+    'BHD': 353.45,   // Bahraini Dinar to NPR
+    'KWD': 378.51,   // Kuwaiti Dinar to NPR
+    'NPR': 1.00      // Nepali Rupee to NPR
+};
+
+// Function to convert currency to NPR
+function convertToNPR(amount, currency) {
+    if (!amount || !currency || !exchangeRates[currency]) {
+        return '';
+    }
+    
+    const rate = exchangeRates[currency];
+    const converted = parseFloat(amount) * rate;
+    
+    // Format as Nepali currency
+    return formatNepaliCurrency(converted);
+}
+
+// Function to format Nepali currency
+function formatNepaliCurrency(amount) {
+    if (isNaN(amount)) return '';
+    
+    const nepaliNumbers = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+    const numStr = Math.round(amount).toString();
+    
+    let nepaliStr = '';
+    for (let i = 0; i < numStr.length; i++) {
+        const digit = parseInt(numStr[i]);
+        if (digit >= 0 && digit <= 9) {
+            nepaliStr += nepaliNumbers[digit];
+        } else {
+            nepaliStr += numStr[i];
+        }
+    }
+    
+    return `रु. ${nepaliStr}/-`;
+}
+
+// Function to handle salary conversion
+function handleSalaryConversion(formElement) {
+    const salaryAmount = formElement.querySelector('[name*="salary_amount"]');
+    const salaryCurrency = formElement.querySelector('[name*="salary_currency"]');
+    const salaryNPR = formElement.querySelector('[name*="salary_npr"]');
+    
+    if (salaryAmount && salaryCurrency && salaryNPR) {
+        const amount = salaryAmount.value;
+        const currency = salaryCurrency.value;
+        
+        if (amount && currency) {
+            const nprAmount = convertToNPR(amount, currency);
+            salaryNPR.value = nprAmount;
+        }
+    }
+}
+
+// Function to update interview preview
+function updateInterviewPreview() {
+    const nepaliDate = document.getElementById('id_nepali_date').value;
+    const gregorianDate = document.getElementById('id_gregorian_date').value;
+    const location = document.getElementById('id_interview_location').value;
+    
+    let previewText = 'अन्तरवार्ता ';
+    if (nepaliDate) previewText += `मिति ${nepaliDate} `;
+    if (gregorianDate) previewText += `(${gregorianDate}) `;
+    if (location) previewText += `${location} हुनेछ।`;
+    
+    document.getElementById('interview_preview').textContent = previewText;
+}
+
+// Auto-convert between Nepali and Gregorian dates
+function convertNepaliToGregorian(nepaliDate) {
+    // Simple conversion - you can enhance this with proper Nepali calendar logic
+    const nepaliYear = parseInt(nepaliDate.split('/')[0]);
+    const gregorianYear = nepaliYear - 57; // Approximate conversion
+    return `${gregorianYear}-${nepaliDate.split('/')[1]}-${nepaliDate.split('/')[2]}`;
+}
+
+function convertGregorianToNepali(gregorianDate) {
+    // Simple conversion - you can enhance this with proper Nepali calendar logic
+    const gregorianYear = parseInt(gregorianDate.split('-')[0]);
+    const nepaliYear = gregorianYear + 57; // Approximate conversion
+    return `${nepaliYear}/${gregorianDate.split('-')[1]}/${gregorianDate.split('-')[2]}`;
+}
+
+// Add date conversion listeners
+function setupDateConversion() {
+    const nepaliDateField = document.getElementById('id_nepali_date');
+    const gregorianDateField = document.getElementById('id_gregorian_date');
+    
+    if (nepaliDateField && gregorianDateField) {
+        nepaliDateField.addEventListener('input', function() {
+            if (this.value && this.value.includes('/')) {
+                const gregorianDate = convertNepaliToGregorian(this.value);
+                gregorianDateField.value = gregorianDate;
+                updateInterviewPreview();
+            }
+        });
+        
+        gregorianDateField.addEventListener('input', function() {
+            if (this.value && this.value.includes('-')) {
+                const nepaliDate = convertGregorianToNepali(this.value);
+                nepaliDateField.value = nepaliDate;
+                updateInterviewPreview();
+            }
+        });
+    }
+}
+
+// Auto-convert English numbers to Nepali numbers (first number only)
+function convertToNepaliNumbers(input) {
+    const englishToNepali = {
+        '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
+        '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
+    };
+    
+    if (!input) return input;
+    
+    // Convert only the first number to Nepali, keep rest in English
+    const firstChar = input.charAt(0);
+    if (englishToNepali[firstChar]) {
+        return englishToNepali[firstChar] + input.slice(1);
+    }
+    
+    return input;
+}
+
+// Apply auto-conversion to number fields
+function setupNumberConversion() {
+    const numberFields = document.querySelectorAll('input[name*="male_count"], input[name*="female_count"], input[name*="hours_per_day"], input[name*="days_per_week"]');
+    
+    numberFields.forEach(field => {
+        field.addEventListener('input', function() {
+            const value = this.value;
+            if (/^\d+$/.test(value)) { // Only convert if it's pure numbers
+                this.value = convertToNepaliNumbers(value);
+            }
+        });
+    });
+}
+
+// Function to apply OCR data to forms
+function applyOCRData() {
+    // Get parsed data from the table
+    const parsedData = {};
+    
+    // Extract data from the OCR results table
+    const tableRows = document.querySelectorAll('#step1 .table tbody tr');
+    tableRows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        if (cells.length >= 2) {
+            const field = cells[0].textContent.trim();
+            const value = cells[1].textContent.trim();
+            
+            // Map Nepali field names to form field names
+            const fieldMapping = {
+                'कम्पनीको नाम': 'company_name',
+                'पूर्व स्वीकृति मिति': 'pre_approval_date',
+                'चलानी नं.': 'chalani_no',
+                'LOT नं.': 'lot_no',
+                'शहर': 'city',
+                'देश': 'country',
+                'पद': 'position',
+                'पुरुष संख्या': 'male_count',
+                'महिला संख्या': 'female_count',
+                'तलब रकम': 'salary_amount',
+                'मुद्रा': 'salary_currency',
+                'ओभर टाइम': 'overtime',
+                'घण्टा/दिन': 'hours_per_day',
+                'दिन/हप्ता': 'days_per_week',
+                'वार्षिक विदा': 'yearly_leave',
+                'शैक्षिक योग्यता': 'min_qualification',
+                'खाना': 'food_provided',
+                'बसोबास': 'housing_provided',
+                'करार अवधि': 'contract_duration'
+            };
+            
+            const formField = fieldMapping[field];
+            if (formField && value !== 'पाइएन') {
+                parsedData[formField] = value;
+            }
+        }
+    });
+    
+    // Apply data to main form fields
+    if (parsedData.company_name) {
+        const companyField = document.getElementById('id_company_name');
+        if (companyField) companyField.value = parsedData.company_name;
+    }
+    
+    if (parsedData.pre_approval_date) {
+        const dateField = document.getElementById('id_pre_approval_date');
+        if (dateField) dateField.value = parsedData.pre_approval_date;
+    }
+    
+    if (parsedData.chalani_no) {
+        const chalaniField = document.getElementById('id_chalani_no');
+        if (chalaniField) chalaniField.value = parsedData.chalani_no;
+    }
+    
+    if (parsedData.lot_no) {
+        const lotField = document.getElementById('id_lot_no');
+        if (lotField) lotField.value = parsedData.lot_no;
+    }
+    
+    if (parsedData.city) {
+        const cityField = document.getElementById('id_city');
+        if (cityField) cityField.value = parsedData.city;
+    }
+    
+    if (parsedData.country) {
+        const countryField = document.getElementById('id_country');
+        if (countryField) countryField.value = parsedData.country;
+    }
+    
+    // Apply data to job position fields
+    if (parsedData.position) {
+        const positionField = document.querySelector('[name*="position"]');
+        if (positionField) positionField.value = parsedData.position;
+    }
+    
+    if (parsedData.male_count) {
+        const maleField = document.querySelector('[name*="male_count"]');
+        if (maleField) maleField.value = parsedData.male_count;
+    }
+    
+    if (parsedData.female_count) {
+        const femaleField = document.querySelector('[name*="female_count"]');
+        if (femaleField) femaleField.value = parsedData.female_count;
+    }
+    
+    if (parsedData.salary_amount) {
+        const salaryField = document.querySelector('[name*="salary_amount"]');
+        if (salaryField) salaryField.value = parsedData.salary_amount;
+    }
+    
+    if (parsedData.salary_currency) {
+        const currencyField = document.querySelector('[name*="salary_currency"]');
+        if (currencyField) currencyField.value = parsedData.salary_currency;
+    }
+    
+    // Apply other job position fields
+    const jobFields = ['overtime', 'hours_per_day', 'days_per_week', 'yearly_leave', 
+                      'min_qualification', 'food_provided', 'housing_provided', 'contract_duration'];
+    
+    jobFields.forEach(field => {
+        if (parsedData[field]) {
+            const fieldElement = document.querySelector(`[name*="${field}"]`);
+            if (fieldElement) fieldElement.value = parsedData[field];
+        }
+    });
+    
+    // Trigger currency conversion if salary data was applied
+    if (parsedData.salary_amount || parsedData.salary_currency) {
+        const positionForm = document.querySelector('.position-form');
+        if (positionForm) {
+            handleSalaryConversion(positionForm);
+        }
+    }
+    
+    alert('OCR डाटा सफलतापूर्वक लागू गरियो! अब तपाईंले मुख्य जानकारी चरणमा जान सक्नुहुन्छ।');
+    goToStep(2);
+}
+
+// Function to go to specific step
+function goToStep(step) {
+    // Validate current step before proceeding
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    currentStep = step;
+    updateProgress();
+    
+    // Hide all tabs
+    document.querySelectorAll('.tab-pane').forEach(tab => {
+        tab.classList.remove('show', 'active');
+    });
+    
+    // Show target tab
+    const targetTab = document.getElementById(`step${step}`);
+    targetTab.classList.add('show', 'active');
+    
+    // Update navigation
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.classList.remove('active');
+    });
+    document.getElementById(`step${step}-tab`).classList.add('active');
+    
+    // Update progress bar
+    const progress = (step / totalSteps) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+
+// Function to validate current step before proceeding
+function validateCurrentStep() {
+    const currentStepElement = document.querySelector('.tab-pane.active');
+    if (!currentStepElement) return true;
+    
+    const stepId = currentStepElement.id;
+    
+    if (stepId === 'step2') {
+        // Validate main information fields
+        const requiredFields = [
+            'id_company_name',
+            'id_country',
+            'id_pre_approval_date',
+            'id_chalani_no',
+            'id_lot_no',
+            'id_city'
+        ];
+        
+        const missingFields = [];
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field && !field.value.trim()) {
+                missingFields.push(field.previousElementSibling?.textContent || fieldId);
+            }
+        });
+        
+        if (missingFields.length > 0) {
+            alert('कृपया यी आवश्यक फिल्डहरू भर्नुहोस्:\n' + missingFields.join('\n'));
+            return false;
+        }
+        
+    } else if (stepId === 'step3') {
+        // Validate job positions
+        const positionForms = document.querySelectorAll('.position-form');
+        console.log(`Validating Step 3: Found ${positionForms.length} position forms`);
+        
+        if (positionForms.length === 0) {
+            alert('कृपया कम्तिमा एउटा कामदारको पद थप्नुहोस्।');
+            return false;
+        }
+        
+        // Check if at least one form has the minimum required data
+        let hasValidForm = false;
+        const emptyForms = [];
+        
+        positionForms.forEach((form, index) => {
+            console.log(`\n--- Validating Position Form ${index + 1} ---`);
+            
+            // Get all input fields in this form
+            const positionField = form.querySelector('input[name*="position"]');
+            const maleField = form.querySelector('input[name*="male_count"]');
+            const femaleField = form.querySelector('input[name*="female_count"]');
+            const salaryField = form.querySelector('input[name*="salary_amount"]');
+            
+            console.log('Fields found:', {
+                position: positionField ? `"${positionField.value}"` : 'NOT FOUND',
+                male: maleField ? `"${maleField.value}"` : 'NOT FOUND',
+                female: femaleField ? `"${femaleField.value}"` : 'NOT FOUND',
+                salary: salaryField ? `"${salaryField.value}"` : 'NOT FOUND'
+            });
+            
+            // Check if this form has the minimum required data
+            if (positionField && maleField && femaleField && salaryField) {
+                const position = positionField.value.trim();
+                const male = maleField.value.trim();
+                const female = femaleField.value.trim();
+                const salary = salaryField.value.trim();
+                
+                console.log('Field values:', { position, male, female, salary });
+                
+                // If this form has the essential fields filled, consider it valid
+                if (position && (male || female) && salary) {
+                    hasValidForm = true;
+                    console.log(`Form ${index + 1} has essential data - marking as valid`);
+                } else {
+                    // This form is empty or incomplete
+                    emptyForms.push(index + 1);
+                    console.log(`Form ${index + 1} is empty or incomplete`);
+                }
+            } else {
+                console.log(`Form ${index + 1} missing required field elements`);
+                emptyForms.push(index + 1);
+            }
+        });
+        
+        console.log(`Validation result: hasValidForm=${hasValidForm}, emptyForms=${emptyForms.length}`);
+        
+        if (!hasValidForm) {
+            alert('कृपया कम्तिमा एउटा पदको जानकारी भर्नुहोस्।');
+            return false;
+        }
+        
+        // If we have at least one valid form, that's enough
+        // Empty forms are allowed (they will be ignored by Django)
+        console.log('Step 3 validation passed - at least one form has data');
+        return true;
+    }
+    
+    return true;
+}
+
+// Function to add new position
+function addPosition() {
+    console.log('DEBUG: addPosition() called');
+    
+    const container = document.getElementById('positionsContainer');
+    if (!container) {
+        console.error('Positions container not found');
+        return;
+    }
+    
+    // Get the first form to clone
+    const firstForm = container.querySelector('.position-form');
+    if (!firstForm) {
+        console.error('No position form found to clone');
+        return;
+    }
+    
+    // Count current forms
+    const currentForms = container.querySelectorAll('.position-form').length;
+    console.log(`DEBUG: Current forms count: ${currentForms}`);
+    
+    // Get formset management fields
+    const totalFormsField = document.querySelector('[name*="TOTAL_FORMS"]');
+    const initialFormsField = document.querySelector('[name*="INITIAL_FORMS"]');
+    
+    if (!totalFormsField) {
+        console.error('TOTAL_FORMS field not found');
+        return;
+    }
+    
+    console.log(`DEBUG: Before adding - TOTAL_FORMS: ${totalFormsField.value}, INITIAL_FORMS: ${initialFormsField ? initialFormsField.value : 'Not found'}`);
+    
+    const newForm = firstForm.cloneNode(true);
+    
+    // Update form index
+    newForm.dataset.formIndex = currentForms;
+    newForm.querySelector('h6').textContent = `पद #${currentForms + 1}`;
+    
+    // Update form field names - handle formset naming
+    newForm.querySelectorAll('input, select, textarea').forEach(field => {
+        if (field.name) {
+            // Replace the form index in the name - handle Django formset naming
+            const nameMatch = field.name.match(/positions-(\d+)-/);
+            if (nameMatch) {
+                const oldIndex = nameMatch[1];
+                const newName = field.name.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+                console.log(`Updating field name: ${field.name} -> ${newName}`);
+                field.name = newName;
+                if (field.id) {
+                    const newId = field.id.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+                    console.log(`Updating field ID: ${field.id} -> ${newId}`);
+                    field.id = newId;
+                }
+            }
+        }
+    });
+    
+    // Also update labels and other elements that might reference the form index
+    newForm.querySelectorAll('label[for]').forEach(label => {
+        const forAttr = label.getAttribute('for');
+        if (forAttr) {
+            const nameMatch = forAttr.match(/positions-(\d+)-/);
+            if (nameMatch) {
+                const oldIndex = nameMatch[1];
+                const newFor = forAttr.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+                console.log(`Updating label for: ${forAttr} -> ${newFor}`);
+                label.setAttribute('for', newFor);
+            }
+        }
+    });
+    
+    // Clear ONLY the new form's values (not the original)
+    newForm.querySelectorAll('input, select, textarea').forEach(field => {
+        if (field.type !== 'hidden') {
+            field.value = '';
+        }
+    });
+    
+    // Add remove button
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'btn btn-danger btn-sm';
+    removeBtn.onclick = function() { removePosition(this); };
+    removeBtn.innerHTML = '🗑️ हटाउनुहोस्';
+    
+    const header = newForm.querySelector('.d-flex.justify-content-between');
+    if (header) {
+        // Remove existing remove button if any
+        header.querySelector('.btn-danger')?.remove();
+        header.appendChild(removeBtn);
+    }
+    
+    // Add to container
+    container.appendChild(newForm);
+    
+    // Update total forms count - ensure it's a number
+    totalFormsField.value = currentForms + 1;
+    console.log(`Updated TOTAL_FORMS to: ${totalFormsField.value}`);
+    
+    // Set INITIAL_FORMS to 0 since we're adding new positions
+    if (initialFormsField) {
+        initialFormsField.value = '0';
+        console.log(`Set INITIAL_FORMS to: 0`);
+    }
+    
+    // Add event listeners for currency conversion
+    addCurrencyConversionListeners(newForm);
+    
+    // Debug: Log all field names in the new form
+    console.log(`New form field names:`);
+    newForm.querySelectorAll('input, select, textarea').forEach(field => {
+        console.log(`  ${field.name}: "${field.value}"`);
+    });
+    
+    // Debug: Verify first form still has data
+    console.log(`First form data after adding new position:`);
+    const firstFormAfter = container.querySelector('.position-form');
+    if (firstFormAfter) {
+        firstFormAfter.querySelectorAll('input, select, textarea').forEach(field => {
+            if (field.name && field.name.includes('positions-0-')) {
+                console.log(`  ${field.name}: "${field.value}"`);
+            }
+        });
+    }
+    
+    console.log(`Added new position form. Total forms: ${totalFormsField.value}`);
+}
+
+// Function to remove position
+function removePosition(button) {
+    const form = button.closest('.position-form');
+    if (!form) {
+        console.error('Position form not found');
+        return;
+    }
+    
+    form.remove();
+    
+    // Get all remaining forms and reindex them
+    const forms = document.querySelectorAll('.position-form');
+    const container = document.getElementById('positionsContainer');
+    
+    if (container) {
+        const totalFormsField = container.querySelector('[name*="TOTAL_FORMS"]');
+        const initialFormsField = container.querySelector('[name*="INITIAL_FORMS"]');
+        
+        // Reindex all remaining forms
+        forms.forEach((form, index) => {
+            // Update form index
+            form.dataset.formIndex = index;
+            form.querySelector('h6').textContent = `पद #${index + 1}`;
+            
+            // Update all field names to match new index
+            form.querySelectorAll('input, select, textarea').forEach(field => {
+                if (field.name) {
+                    const nameMatch = field.name.match(/positions-(\d+)-/);
+                    if (nameMatch) {
+                        const oldIndex = nameMatch[1];
+                        const newName = field.name.replace(`positions-${oldIndex}-`, `positions-${index}-`);
+                        console.log(`Reindexing field name: ${field.name} -> ${newName}`);
+                        field.name = newName;
+                        if (field.id) {
+                            const newId = field.id.replace(`positions-${oldIndex}-`, `positions-${index}-`);
+                            console.log(`Reindexing field ID: ${field.id} -> ${newId}`);
+                            field.id = newId;
+                        }
+                    }
+                }
+            });
+        });
+        
+        // Update total forms count
+        if (totalFormsField) {
+            totalFormsField.value = forms.length;
+            console.log(`Removed position form. Total forms: ${totalFormsField.value}`);
+        }
+        
+        // Set INITIAL_FORMS to 0 since we're working with new positions
+        if (initialFormsField) {
+            initialFormsField.value = '0';
+            console.log(`Set INITIAL_FORMS to: 0`);
+        }
+    }
+}
+
+// Function to add currency conversion listeners
+function addCurrencyConversionListeners(formElement) {
+    const salaryAmount = formElement.querySelector('[name*="salary_amount"]');
+    const salaryCurrency = formElement.querySelector('[name*="salary_currency"]');
+    
+    if (salaryAmount) {
+        salaryAmount.addEventListener('input', () => handleSalaryConversion(formElement));
+    }
+    
+    if (salaryCurrency) {
+        salaryCurrency.addEventListener('change', () => handleSalaryConversion(formElement));
+    }
+}
+
+// Function to fetch latest currency rates
+async function updateCurrencyRates() {
+    try {
+        const response = await fetch('/update-currency-rates/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            if (data.success) {
+                console.log('Currency rates updated successfully');
+                // Refresh the page or update rates in memory
+                location.reload();
+            }
+        }
+    } catch (error) {
+        console.error('Error updating currency rates:', error);
+    }
+}
+
+// Update progress on page load
+document.addEventListener('DOMContentLoaded', function() {
+    updateProgress();
+    
+    // Add currency conversion listeners to existing forms
+    document.querySelectorAll('.position-form').forEach(form => {
+        addCurrencyConversionListeners(form);
+    });
+    
+    // Add interview preview listeners
+    document.getElementById('id_nepali_date').addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_gregorian_date').addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_hour').addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_time').addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_location').addEventListener('input', updateInterviewPreview);
+    
+    // Setup number conversion
+    setupNumberConversion();
+    
+    // Setup date conversion
+    setupDateConversion();
+    
+    // Setup logo preview functionality
+    setupLogoPreview();
+
+    // Setup country notice preview
+    setupCountryNoticePreview();
+    
+    // Add event delegation for dynamically added forms
+    document.getElementById('positionsContainer').addEventListener('change', function(e) {
+        if (e.target.name && (e.target.name.includes('salary_amount') || e.target.name.includes('salary_currency'))) {
+            const formElement = e.target.closest('.position-form');
+            if (formElement) {
+                handleSalaryConversion(formElement);
+            }
+        }
+    });
+});
+
+function updateProgress() {
+    const progress = (currentStep / totalSteps) * 100;
+    document.getElementById('progressBar').style.width = progress + '%';
+}
+
+// Form submission handlers
+document.getElementById('mainForm').addEventListener('submit', function(e) {
+    console.log('DEBUG: Main form submit event triggered!');
+    
+    // Debug: Check current step
+    const currentStepElement = document.querySelector('.tab-pane.active');
+    const stepId = currentStepElement ? currentStepElement.id : 'Unknown Step';
+    console.log('DEBUG: Current step:', stepId);
+    
+    e.preventDefault();
+    
+    // Validate required fields before submission
+    if (!validateCurrentStep()) {
+        console.log('DEBUG: Form validation failed');
+        return;
+    }
+    
+    console.log('DEBUG: Form validation passed, submitting...');
+    
+    // Debug: Log form data being sent
+    const formData = new FormData(this);
+    console.log('DEBUG: Submitting main form with data:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+    
+    // Submit form via AJAX
+    fetch(window.location.href, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('DEBUG: Form submission response:', data);
+        if (data.success) {
+            alert('मुख्य जानकारी सफलतापूर्वक सेभ गरियो!');
+            goToStep(3);
+        } else {
+            alert('त्रुटि: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('DEBUG: Form submission error:', error);
+        alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
+    });
+});
+
+document.getElementById('positionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate required fields before submission
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    // Debug: Log form data being sent
+    const formData = new FormData(this);
+    console.log('Submitting position form with data:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
+    }
+    
+    // Debug: Check if any position fields have values
+    const positionFields = document.querySelectorAll('[name*="position"]');
+    const maleCountFields = document.querySelectorAll('[name*="male_count"]');
+    const femaleCountFields = document.querySelectorAll('[name*="female_count"]');
+    
+    console.log('Position fields found:', positionFields.length);
+    console.log('Male count fields found:', maleCountFields.length);
+    console.log('Female count fields found:', femaleCountFields.length);
+    
+    // Check values of all positions
+    positionFields.forEach((field, index) => {
+        console.log(`Position ${index}: "${field.value}"`);
+    });
+    
+    maleCountFields.forEach((field, index) => {
+        console.log(`Male Count ${index}: "${field.value}"`);
+    });
+    
+    femaleCountFields.forEach((field, index) => {
+        console.log(`Female Count ${index}: "${field.value}"`);
+    });
+    
+    // Debug: Check all forms in the container
+    console.log('\n--- All Forms in Container ---');
+    const container = document.getElementById('positionsContainer');
+    if (container) {
+        const allForms = container.querySelectorAll('.position-form');
+        allForms.forEach((form, formIndex) => {
+            console.log(`\nForm ${formIndex}:`);
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                if (input.name && input.name.includes('position')) {
+                    console.log(`  ${input.name}: "${input.value}"`);
+                }
+            });
+        });
+    }
+    
+    // Debug: Check formset management form fields
+    const totalFormsField = document.querySelector('[name*="TOTAL_FORMS"]');
+    const initialFormsField = document.querySelector('[name*="INITIAL_FORMS"]');
+    const maxFormsField = document.querySelector('[name*="MAX_NUM_FORMS"]');
+    console.log('Formset management fields:');
+    console.log('TOTAL_FORMS:', totalFormsField ? totalFormsField.value : 'Not found');
+    console.log('INITIAL_FORMS:', initialFormsField ? initialFormsField.value : 'Not found');
+    console.log('MAX_NUM_FORMS:', maxFormsField ? maxFormsField.value : 'Not found');
+    
+    // Submit form via AJAX
+    fetch(window.location.href, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('पदहरू सफलतापूर्वक सेभ गरियो!');
+            goToStep(4);
+        } else {
+            alert('त्रुटि: ' + data.error);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
+    });
+});
+
+// Logo Preview Functionality
+function setupLogoPreview() {
+    const logoUpload = document.getElementById('logo-upload');
+    const logoPreview = document.getElementById('logo-preview');
+    const logoText = document.getElementById('id_company_logo_text');
+    
+    if (logoUpload) {
+        logoUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // Validate file type
+                if (!file.type.startsWith('image/')) {
+                    alert('कृपया एउटा इमेज फाइल छान्नुहोस्।');
+                    return;
+                }
+                
+                // Validate file size (max 2MB)
+                if (file.size > 2 * 1024 * 1024) {
+                    alert('फाइल साइज 2MB भन्दा ठूलो हुनुहुँदैन।');
+                    return;
+                }
+                
+                // Create preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoPreview.innerHTML = `<img src="${e.target.result}" alt="Company Logo" class="preview-logo">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+    
+    // Update text preview when logo text changes
+    if (logoText) {
+        logoText.addEventListener('input', function() {
+            if (!logoUpload.files.length) {
+                logoPreview.innerHTML = `<div class="logo-placeholder">${this.value || 'LOGO'}</div>`;
+            }
+        });
+    }
+}
+
+// Debug Validation Function
+function debugValidation() {
+    const currentStepElement = document.querySelector('.tab-pane.active');
+    const stepId = currentStepElement ? currentStepElement.id : 'Unknown Step';
+    const currentStepNumber = currentStepElement ? currentStepElement.id.replace('step', '').replace('-tab', '') : 'N/A';
+    
+    let message = `Current Step: ${currentStepNumber}\n\n`;
+    
+    if (stepId === 'step2') {
+        message += 'Main Information Validation:\n';
+        const requiredFields = [
+            'id_company_name',
+            'id_country',
+            'id_pre_approval_date',
+            'id_chalani_no',
+            'id_lot_no',
+            'id_city'
+        ];
+        requiredFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            message += `- ${field ? (field.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}: ${field ? field.previousElementSibling?.textContent || fieldId : 'N/A'}\n`;
+        });
+    } else if (stepId === 'step3') {
+        message += 'Job Positions Validation:\n';
+        const positionForms = document.querySelectorAll('.position-form');
+        if (positionForms.length === 0) {
+            message += 'No position forms found.\n';
+        } else {
+            positionForms.forEach((form, index) => {
+                message += `Position Form ${index + 1}:\n`;
+                const positionField = form.querySelector('input[name*="position"]');
+                const maleField = form.querySelector('input[name*="male_count"]');
+                const femaleField = form.querySelector('input[name*="female_count"]');
+                const salaryField = form.querySelector('input[name*="salary_amount"]');
+                
+                message += `  - Position: ${positionField ? (positionField.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}\n`;
+                message += `  - Male Count: ${maleField ? (maleField.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}\n`;
+                message += `  - Female Count: ${femaleField ? (femaleField.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}\n`;
+                message += `  - Salary Amount: ${salaryField ? (salaryField.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}\n`;
+            });
+        }
+    }
+    
+    alert(message);
+}
+
+// Test Add Position Function
+function testAddPosition() {
+    addPosition();
+    alert('Test Add Position button clicked. New position form added.');
+}
+
+// Debug function to check form state
+function debugFormState() {
+    console.log('=== DEBUG FORM STATE ===');
+    
+    const container = document.getElementById('positionsContainer');
+    if (!container) {
+        console.log('Container not found');
+        return;
+    }
+    
+    const forms = container.querySelectorAll('.position-form');
+    console.log(`Total forms found: ${forms.length}`);
+    
+    // Check formset management fields
+    const totalFormsField = document.querySelector('[name*="TOTAL_FORMS"]');
+    const initialFormsField = document.querySelector('[name*="INITIAL_FORMS"]');
+    const minFormsField = document.querySelector('[name*="MIN_NUM_FORMS"]');
+    const maxFormsField = document.querySelector('[name*="MAX_NUM_FORMS"]');
+    
+    console.log('Formset management fields:');
+    console.log(`  TOTAL_FORMS: ${totalFormsField ? totalFormsField.value : 'Not found'}`);
+    console.log(`  INITIAL_FORMS: ${initialFormsField ? initialFormsField.value : 'Not found'}`);
+    console.log(`  MIN_NUM_FORMS: ${minFormsField ? minFormsField.value : 'Not found'}`);
+    console.log(`  MAX_NUM_FORMS: ${maxFormsField ? maxFormsField.value : 'Not found'}`);
+    
+    // Check each form
+    forms.forEach((form, index) => {
+        console.log(`\n--- Form ${index + 1} ---`);
+        console.log(`  Form index: ${form.dataset.formIndex}`);
+        console.log(`  Title: ${form.querySelector('h6').textContent}`);
+        
+        const inputs = form.querySelectorAll('input, select, textarea');
+        console.log(`  Total fields: ${inputs.length}`);
+        
+        // Check key fields
+        const positionField = form.querySelector('[name*="position"]');
+        const maleField = form.querySelector('[name*="male_count"]');
+        const femaleField = form.querySelector('[name*="female_count"]');
+        const salaryField = form.querySelector('[name*="salary_amount"]');
+        
+        console.log('  Key fields:');
+        console.log(`    Position: ${positionField ? `"${positionField.value}" (${positionField.name})` : 'NOT FOUND'}`);
+        console.log(`    Male Count: ${maleField ? `"${maleField.value}" (${maleField.name})` : 'NOT FOUND'}`);
+        console.log(`    Female Count: ${femaleField ? `"${femaleField.value}" (${femaleField.name})` : 'NOT FOUND'}`);
+        console.log(`    Salary: ${salaryField ? `"${salaryField.value}" (${salaryField.name})` : 'NOT FOUND'}`);
+    });
+    
+    console.log('=== END DEBUG ===');
+}
+
+// Function to calculate interview date (8 days after pre-approval)
+function calculateInterviewDate() {
+    const preApprovalDate = document.getElementById('id_pre_approval_date').value;
+    if (!preApprovalDate) {
+        alert('कृपया पहिले पूर्व स्वीकृति मिति भर्नुहोस्।');
+        return;
+    }
+    
+    try {
+        const date = new Date(preApprovalDate);
+        date.setDate(date.getDate() + 8);
+        
+        // Format Nepali date (you can customize this format)
+        const nepaliDate = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`;
+        
+        // Format English date
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const englishDate = date.toLocaleDateString('en-US', options);
+        
+        // Update the form fields
+        document.getElementById('id_interview_nepali_date').value = nepaliDate;
+        document.getElementById('id_interview_gregorian_date').value = englishDate;
+        
+        // Update the preview
+        document.getElementById('preview_nepali_date').textContent = nepaliDate;
+        document.getElementById('preview_gregorian_date').textContent = englishDate;
+        
+        alert(`स्वचालित मिति गणना सफल: ${nepaliDate} (${englishDate})`);
+    } catch (error) {
+        alert('मिति गणनामा त्रुटि भयो। कृपया सही मिति फरम्याट प्रयोग गर्नुहोस् (YYYY-MM-DD)।');
+    }
+}
+
+// Function to reset corrupted formset management fields
+function resetFormsetFields() {
+    console.log('=== RESETTING FORMSET FIELDS ===');
+    
+    const container = document.getElementById('positionsContainer');
+    if (!container) {
+        console.log('Container not found');
+        return;
+    }
+    
+    // Reset management form fields
+    const totalFormsField = container.querySelector('[name*="TOTAL_FORMS"]');
+    const initialFormsField = container.querySelector('[name*="INITIAL_FORMS"]');
+    
+    if (totalFormsField) totalFormsField.value = '1';
+    if (initialFormsField) initialFormsField.value = '0';
+    
+    console.log('Management fields reset');
+    
+    // Remove all forms except the first one
+    const forms = container.querySelectorAll('.position-form');
+    forms.forEach((form, index) => {
+        if (index > 0) {
+            form.remove();
+        }
+    });
+    
+    console.log('Extra forms removed');
+    console.log('=== END RESET ===');
+}
+
+// Country Notice Preview Function
+function setupCountryNoticePreview() {
+    const countryField = document.getElementById('id_country');
+    const extraNotesField = document.getElementById('id_extra_notes');
+    const previewDiv = document.getElementById('countryNoticePreview');
+    const previewText = document.getElementById('noticePreviewText');
+    
+    if (countryField && extraNotesField && previewDiv && previewText) {
+        // Show preview when country changes
+        countryField.addEventListener('input', function() {
+            updateCountryNoticePreview();
+        });
+        
+        // Hide preview when user types in extra notes
+        extraNotesField.addEventListener('input', function() {
+            if (this.value.trim()) {
+                previewDiv.style.display = 'none';
+            } else {
+                updateCountryNoticePreview();
+            }
+        });
+        
+        // Initial preview
+        updateCountryNoticePreview();
+    }
+}
+
+function updateCountryNoticePreview() {
+    const countryField = document.getElementById('id_country');
+    const extraNotesField = document.getElementById('id_extra_notes');
+    const previewDiv = document.getElementById('countryNoticePreview');
+    const previewText = document.getElementById('noticePreviewText');
+    
+    if (!countryField || !extraNotesField || !previewDiv || !previewText) return;
+    
+    const country = countryField.value.trim().toLowerCase();
+    const hasCustomNotes = extraNotesField.value.trim();
+    
+    if (!country) {
+        previewDiv.style.display = 'none';
+        return;
+    }
+    
+    if (hasCustomNotes) {
+        previewDiv.style.display = 'none';
+        return;
+    }
+    
+    let notice = '';
+    
+    // Middle East countries
+    if (['kuwait', 'uae', 'saudi', 'qatar', 'oman', 'bahrain', 'jordan', 'lebanon', 'iraq', 'iran', 'syria', 'yemen'].some(c => country.includes(c))) {
+        notice = 'बैदेशिक रोजगार बिभागबाट गराइएको जानकारी (मध्य पूर्वी देशहरूको लागि)';
+    }
+    // Japan
+    else if (country.includes('japan')) {
+        notice = 'प्रशिक्षार्थीको आवश्यक न्यूनतम योग्यता र काम गरेको अनुभव (जापानको लागि)';
+    }
+    // Other countries
+    else {
+        notice = 'सामान्य सूचना (अन्य देशहरूको लागि)';
+    }
+    
+    previewText.textContent = notice;
+    previewDiv.style.display = 'block';
+    
+    // Auto-set currency based on country
+    updateCurrencyBasedOnCountry(country);
+}
+
+function updateCurrencyBasedOnCountry(country) {
+    // Find all salary currency fields in the formset
+    const currencyFields = document.querySelectorAll('[name*="salary_currency"]');
+    
+    if (currencyFields.length === 0) return;
+    
+    let defaultCurrency = 'KD'; // Default to Kuwaiti Dinar
+    
+    // Set currency based on country
+    if (country.includes('kuwait')) {
+        defaultCurrency = 'KWD';
+    } else if (country.includes('uae')) {
+        defaultCurrency = 'AED';
+    } else if (country.includes('saudi')) {
+        defaultCurrency = 'SAR';
+    } else if (country.includes('qatar')) {
+        defaultCurrency = 'QAR';
+    } else if (country.includes('oman')) {
+        defaultCurrency = 'OMR';
+    } else if (country.includes('bahrain')) {
+        defaultCurrency = 'BHD';
+    } else if (country.includes('japan')) {
+        defaultCurrency = 'JPY';
+    } else if (country.includes('usa') || country.includes('united states')) {
+        defaultCurrency = 'USD';
+    } else if (country.includes('europe') || country.includes('eu')) {
+        defaultCurrency = 'EUR';
+    } else if (country.includes('uk') || country.includes('united kingdom')) {
+        defaultCurrency = 'GBP';
+    }
+    
+    // Update all currency fields
+    currencyFields.forEach(field => {
+        if (field.value === '' || field.value === 'KD') { // Only update if empty or default
+            field.value = defaultCurrency;
+        }
+    });
+}
+
+// Initialize country notice preview when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    setupCountryNoticePreview();
+});
+
+// Test form submission function
+function testFormSubmission() {
+    try {
+        console.log('=== TESTING FORM SUBMISSION ===');
+        alert('Starting testFormSubmission function...');
+        
+        // Get the form
+        const form = document.getElementById('positionForm');
+        if (!form) {
+            console.log('Form not found');
+            alert('Form not found!');
+            return;
+        }
+        
+        alert('Form found! Getting form data...');
+        
+        // Get form data
+        const formData = new FormData(form);
+        
+        console.log('Form data:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
+        
+        // Check for specific field patterns
+        const positionFields = [];
+        const maleFields = [];
+        const femaleFields = [];
+        const salaryFields = [];
+        
+        for (let [key, value] of formData.entries()) {
+            if (key.includes('position')) positionFields.push({key, value});
+            if (key.includes('male_count')) maleFields.push({key, value});
+            if (key.includes('female_count')) femaleFields.push({key, value});
+            if (key.includes('salary_amount')) salaryFields.push({key, value});
+        }
+        
+        console.log('Field analysis:');
+        console.log('  Position fields:', positionFields);
+        console.log('  Male count fields:', maleFields);
+        console.log('  Female count fields:', femaleFields);
+        console.log('  Salary fields:', salaryFields);
+        
+        alert('Form data logged to console! Check console for field analysis.');
+        
+        // Check if we can submit
+        if (validateCurrentStep('step3')) {
+            console.log('✅ Validation passed - form can be submitted');
+            alert('✅ Validation passed - form can be submitted');
+        } else {
+            console.log('❌ Validation failed - form cannot be submitted');
+            alert('❌ Validation failed - form cannot be submitted');
+        }
+        
+        console.log('=== END TEST ===');
+        
+    } catch (error) {
+        console.error('Error in testFormSubmission:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+// Function to show current form values
+function showFormValues() {
+    try {
+        console.log('=== SHOWING FORM VALUES ===');
+        alert('Starting showFormValues function...');
+        
+        const container = document.getElementById('positionsContainer');
+        if (!container) {
+            console.log('Container not found');
+            alert('Container not found!');
+            return;
+        }
+        
+        alert(`Container found! Looking for forms...`);
+        
+        const forms = container.querySelectorAll('.position-form');
+        console.log(`Total forms found: ${forms.length}`);
+        alert(`Found ${forms.length} forms`);
+        
+        if (forms.length === 0) {
+            alert('No forms found!');
+            return;
+        }
+        
+        forms.forEach((form, index) => {
+            console.log(`\n--- Form ${index + 1} Values ---`);
+            
+            // Get all form fields
+            const positionField = form.querySelector('[name*="position"]');
+            const maleField = form.querySelector('[name*="male_count"]');
+            const femaleField = form.querySelector('[name*="female_count"]');
+            const salaryField = form.querySelector('[name*="salary_amount"]');
+            
+            console.log('Field values:');
+            console.log(`  Position: ${positionField ? `"${positionField.value}"` : 'NOT FOUND'}`);
+            console.log(`  Male Count: ${maleField ? `"${maleField.value}"` : 'NOT FOUND'}`);
+            console.log(`  Female Count: ${femaleField ? `"${femaleField.value}"` : 'NOT FOUND'}`);
+            console.log(`  Salary: ${salaryField ? `"${salaryField.value}"` : 'NOT FOUND'}`);
+            
+            // Show all field names and values
+            const allFields = form.querySelectorAll('input, select, textarea');
+            console.log('All fields in this form:');
+            allFields.forEach(field => {
+                console.log(`  ${field.name}: "${field.value}"`);
+            });
+        });
+        
+        console.log('=== END FORM VALUES ===');
+        alert('Form values logged to console!');
+        
+    } catch (error) {
+        console.error('Error in showFormValues:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+// Test if JavaScript is working
+console.log('=== JAVASCRIPT LOADED ===');
+console.log('Debug functions should be available');
+
+// Function to show current form values
+
+// Function to submit form manually for testing
+function submitFormManually() {
+    try {
+        console.log('=== MANUAL FORM SUBMISSION ===');
+        alert('Starting manual form submission...');
+        
+        // Get the form
+        const form = document.getElementById('positionForm');
+        if (!form) {
+            console.log('Form not found');
+            alert('Form not found!');
+            return;
+        }
+        
+        // Get form data
+        const formData = new FormData(form);
+        
+        console.log('Form data being submitted:');
+        for (let [key, value] of formData.entries()) {
+            console.log(`  ${key}: ${value}`);
+        }
+        
+        // Check if we have existing position data
+        const existingPositionId = formData.get('positions-0-id');
+        console.log('Existing position ID:', existingPositionId);
+        
+        if (existingPositionId) {
+            console.log('✅ Found existing position ID, should preserve data');
+        } else {
+            console.log('❌ No existing position ID found, data will be lost');
+        }
+        
+        // Submit the form
+        console.log('Submitting form...');
+        form.submit();
+        
+    } catch (error) {
+        console.error('Error in manual submission:', error);
+        alert('Error: ' + error.message);
+    }
+}
+
+// Test form submission function
+</script>
+{% endblock %}
+

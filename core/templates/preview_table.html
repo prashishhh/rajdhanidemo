@@ -1,0 +1,58 @@
+<table class="ad-table">
+    <tr><th class="black" colspan="14">{% if t.country and t.country.strip %}{{ t.country }} {% else %}देश {% endif %}मा रोजगारी</th></tr>
+    <tr><th class="left" colspan="14">१. {{ t.company|default:"" }}</th></tr>
+    <tr>
+      <th colspan="4">प्रि अप्रूवल मिति: {{ t.pre_approval_date|default:"" }}</th>
+      <th colspan="3">चलानी नं.: {{ t.chalani_no|default:"" }}</th>
+      <th colspan="2">लट नं.: {{ t.lot_no|default:"" }}</th>
+      <th colspan="5">सहर: {{ t.city|default:"" }}</th>
+    </tr>
+    <tr>
+      <th rowspan="2">सि.नं.</th>
+      <th rowspan="2">कामदारको पद</th>
+      <th colspan="2">माग संख्या</th>
+      <th colspan="2">मासिक तलव</th>
+      <th rowspan="2">ओभर टाइम सुविधा</th>
+      <th rowspan="2">प्रतिदिन काम गर्ने घण्टा</th>
+      <th rowspan="2">हप्तामा काम गर्ने दिन</th>
+      <th rowspan="2">वार्षिक विदा</th>
+      <th rowspan="2">न्यूनतम शैक्षिक योग्यता</th>
+      <th rowspan="2">खाने सुविधा</th>
+      <th rowspan="2">बस्ने सुविधा</th>
+      <th rowspan="2">करार अवधि</th>
+    </tr>
+    <tr>
+      <th>पुरुष</th><th>महिला</th><th>KD</th><th>ने.रु.</th>
+    </tr>
+    <tr>
+      <td>१</td>
+      <td class="left">{{ t.position|default:"" }}</td>
+      <td>{{ t.male|default:"" }}</td>
+      <td>{{ t.female|default:"" }}</td>
+      <td>{{ t.salary_kd|default:"" }}</td>
+      <td>{{ t.salary_npr|default:"" }}</td>
+      <td>{{ t.overtime|default:"" }}</td>
+      <td>{{ t.hours_per_day|default:"" }}</td>
+      <td>{{ t.days_per_week|default:"" }}</td>
+      <td>{{ t.yearly_leave|default:"" }}</td>
+      <td>{{ t.min_qualification|default:"" }}</td>
+      <td>{{ t.eating|default:"" }}</td>
+      <td>{{ t.sleeping|default:"" }}</td>
+      <td>{{ t.tenure|default:"" }}</td>
+    </tr>
+    <tr>
+      <td class="notice" colspan="14">{{ t.notice_text|default:"" }}</td>
+    </tr>
+  </table>
+  
+  <!-- Country-Specific Notice -->
+  {% if country_notice %}
+  <div class="notice-section">
+    <div class="notice-content">
+      <h4>{{ country_notice.title }}</h4>
+      <div class="notice-paragraphs">
+        {{ country_notice.content|linebreaks }}
+      </div>
+    </div>
+  </div>
+  {% endif %}

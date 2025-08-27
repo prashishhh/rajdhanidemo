@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="utf-8">
+<title>Employment Advertisement - Dynamic Design</title>
+<style>
+  body { 
+    margin: 20px; 
+    font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif; 
+    background: #f0f0f0;
+  }
+  
+  .employment-ad {
+    width: 12cm;
+    background: #fff;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    overflow: hidden;
+    font-size: 6pt;
+    line-height: 1;
+  }
+  
+  /* Top Header - Single row with title and company */
+  .top-header {
+    background: white;
+    color: black;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 2px 6px;
+    font-weight: 900;
+    font-size: 5pt;
+  }
+  
+  .header-left {
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  
+  .header-right {
+    text-align: right;
+    font-size: 4pt;
+  }
+  
+  /* Meta Information Bar */
+  .meta-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    background: #fff;
+    border-top: 1px solid #000;
+    border-bottom: 0.5px solid #000;
+    font-size: 4.5pt;
+  }
+  
+  .meta-item {
+    border-right: 0.5px solid #000;
+    padding: 2px 3px;
+    text-align: center;
+  }
+  
+  .meta-item:last-child {
+    border-right: none;
+  }
+  
+  .meta-item b {
+    font-weight: 700;
+  }
+  
+  /* Main Table */
+  .main-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 4pt;
+    line-height: 1;
+    border: 0.25px solid #000;
+    margin-bottom: 1px;
+  }
+  
+  .main-table th,
+  .main-table td {
+    border: 0.25px solid #000;
+    padding: 0.5px 1px;
+    text-align: center;
+    vertical-align: middle;
+    word-break: break-word;
+    overflow: hidden;
+  }
+  
+  .main-table th {
+    background: #f8f8f8;
+    font-weight: 700;
+    font-size: 4pt;
+  }
+  
+  .main-table th.col-position {
+    font-weight: 900;
+    font-size: 6pt;
+  }
+  
+  .main-table .text-left {
+    text-align: left;
+  }
+  
+  .main-table td.text-left {
+    font-weight: 700;
+    font-size: 5.5pt;
+  }
+  
+  .main-table td:nth-child(3),
+  .main-table td:nth-child(4),
+  .main-table td:nth-child(5),
+  .main-table td:nth-child(6),
+  .main-table td:nth-child(12),
+  .main-table td:nth-child(13) {
+    font-weight: 700;
+    font-size: 6pt;
+  }
+  
+  /* Column widths optimized for 12cm */
+  .col-sn { width: 3%; }
+  .col-position { width: 20%; }
+  .col-gender { width: 5%; }
+  .col-salary { width: 9%; }
+  .col-overtime { width: 6%; }
+  .col-hours { width: 4%; }
+  .col-days { width: 4%; }
+  .col-leave { width: 6%; }
+  .col-education { width: 10%; }
+  .col-food { width: 4%; }
+  .col-housing { width: 4%; }
+  .col-contract { width: 4%; }
+  
+  /* Data Row */
+  .data-row {
+    height: 0.4cm;
+  }
+  
+  .data-row td {
+    vertical-align: middle;
+    font-size: 4.5pt;
+    padding: 0.5px 2px;
+  }
+  
+  /* Interview Section */
+  .interview-section {
+    background: #000;
+    color: #fff;
+    padding: 1px 4px;
+    font-size: 4pt;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 1px;
+  }
+  
+  /* Extra Information Section */
+  .extra-section {
+    border-top: 0.5px solid #000;
+    font-size: 3.5pt;
+    margin-top: 0;
+    padding-top: 0;
+  }
+  
+  .extra-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .extra-table th,
+  .extra-table td {
+    border: 0.15px solid #000;
+    padding: 0.25px 0.5px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 3pt;
+    line-height: 1;
+    word-break: break-word;
+  }
+  
+  .extra-table th {
+    background: #f8f8f8;
+    font-weight: 600;
+    height: 0.25cm;
+  }
+  
+  .extra-table td {
+    height: 0.2cm;
+  }
+  
+  .extra-table td:last-child {
+    font-weight: 700;
+    font-size: 2.5pt;
+  }
+  
+  .extra-note {
+    padding: 0px 1px;
+    font-size: 3pt;
+    line-height: 1;
+    text-align: justify;
+    border-top: 1px solid #000;
+    background: #fff;
+    min-height: 0.1cm;
+    max-height: 1cm;
+    overflow: auto;
+    word-wrap: break-word;
+  }
+  
+  .extra-note h4 {
+    margin: 0;
+    font-size: 3.5pt;
+    font-weight: bold;
+    color: black;
+  }
+  
+        .notice-content {
+        font-size: 3pt;
+        line-height: 1;
+        color:#000;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .notice-paragraph {
+        margin: 0;
+        padding: 0;
+        text-align: left;
+        page-break-inside: avoid;
+      }
+      
+      .notice-paragraph:last-child {
+        margin-bottom: 0;
+  }
+  
+  /* Company Banner - ATTACHED to the main ad */
+  .company-banner {
+    background: white;
+    color: black;
+    display: grid;
+    grid-template-columns: 60px 1fr 60px;
+    gap: 4px;
+    align-items: center;
+    padding: 3px;
+    border-top: 1px solid #000;
+  }
+  
+  .company-logo {
+    background: #fff;
+    color: #000;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 4pt;
+    border: 1px solid #fff;
+  }
+  
+  .company-info {
+    text-align: center;
+  }
+  
+  .company-info h1 {
+    margin: 0 0 1px 0;
+    font-size: 6pt;
+    font-weight: 900;
+    letter-spacing: 0.1px;
+  }
+  
+  .company-info p {
+    margin: 0;
+    font-size: 3.5pt;
+    line-height: 1;
+  }
+  
+  .license-box {
+    background: white;
+    border: black;
+    text-align: center;
+    padding: 2px;
+    font-size: 3pt;
+    font-weight: 700;
+    line-height: 1;
+  }
+  
+  @media print {
+    body { margin: 0; padding: 0; background: #fff; }
+    .employment-ad { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="employment-ad">
+  <!-- Top Header - Title and Company in same row -->
+  <div class="top-header">
+    <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
+    <div class="header-right">कम्पनी: {% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</div>
+  </div>
+  
+  <!-- Meta Information -->
+  <div class="meta-bar">
+    <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
+    <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+    <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+    <div class="meta-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+  </div>
+  
+  <!-- Main Table -->
+  <table class="main-table">
+    <!-- Header Row 1 -->
+    <thead>
+      <tr>
+        <th rowspan="2" class="col-sn">सि.नं.</th>
+        <th rowspan="2" class="col-position">कामदारको पद</th>
+        <th colspan="2">माग संख्या</th>
+        <th colspan="2">मासिक तलब</th>
+        <th rowspan="2" class="col-overtime">ओभर टाइम सुविधा</th>
+        <th rowspan="2" class="col-hours">प्रतिदिन घण्टा</th>
+        <th rowspan="2" class="col-days">हप्तामा दिन</th>
+        <th rowspan="2" class="col-leave">वार्षिक विदा</th>
+        <th rowspan="2" class="col-education">न्यूनतम शैक्षिक योग्यता</th>
+        <th rowspan="2" class="col-food">खाना</th>
+        <th rowspan="2" class="col-housing">बसोबास</th>
+        <th rowspan="2" class="col-contract">करार अवधि</th>
+      </tr>
+      <!-- Header Row 2 -->
+      <tr>
+        <th class="col-gender">पुरुष</th>
+        <th class="col-gender">महिला</th>
+        <th class="col-salary">
+          <!-- Simple test -->
+          {{ positions.0.salary_currency|default:"KD" }}
+        </th>
+        <th class="col-salary">ने.रु.</th>
+      </tr>
+    </thead>
+    <!-- Data Rows - Dynamic from database -->
+    <tbody>
+      {% for position in positions %}
+      <tr class="data-row">
+        <td>{{ forloop.counter }}</td>
+        <td class="text-left">{{ position.position }}</td>
+        <td>{{ position.male_count }}</td>
+        <td>{{ position.female_count }}</td>
+        <td>{{ position.salary_amount }}</td>
+        <td>{{ position.salary_npr|safe }}</td>
+        <td>{{ position.overtime }}</td>
+        <td>{{ position.hours_per_day }}</td>
+        <td>{{ position.days_per_week }}</td>
+        <td>{{ position.yearly_leave }}</td>
+        <td class="text-left">{{ position.min_qualification }}</td>
+        <td>{{ position.food_provided }}</td>
+        <td>{{ position.housing_provided }}</td>
+        <td>{{ position.contract_duration }}</td>
+      </tr>
+      {% empty %}
+      <!-- No positions exist - show empty table -->
+      <tr class="data-row">
+        <td colspan="13" style="text-align: center; color: #999;">कुनै पदहरू फेला परेनन्</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <!-- Interview Section -->
+  <div class="interview-section">
+    {% if ad.interview_custom_text %}
+      <!-- Manual interview text from user -->
+      {{ ad.interview_custom_text }}
+    {% elif interview_data.interview_nepali_date and interview_data.interview_gregorian_date and interview_data.interview_location %}
+      <!-- Manual interview details -->
+      अन्तरवार्ता मिति {{ interview_data.interview_nepali_date }} गते ({{ interview_data.interview_gregorian_date }}) {{ interview_data.interview_location }} हुनेछ ।
+
+    {% elif ad.pre_approval_date %}
+      <!-- Automatic interview date calculation -->
+        <span id="interview-date-text">
+          अन्तरवार्ता मिति <span id="calculated-interview-date">गणना गर्दै...</span> गते (<span id="calculated-interview-date-english">गणना गर्दै...</span>) म्यानपावरको कार्यालयमा हुनेछ ।
+        </span>
+        <script>
+          // Nepali calendar conversion function
+          function gregorianToNepali(gregorianDate) {
+            // Base date: 1943-04-14 (Gregorian) = 2000-01-01 (Nepali)
+            const baseDate = new Date(1943, 3, 14); // Month is 0-indexed
+            const baseNepaliYear = 2000;
+            const baseNepaliMonth = 1;
+            const baseNepaliDay = 1;
+            
+            // Calculate days difference
+            const timeDiff = gregorianDate.getTime() - baseDate.getTime();
+            const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
+            
+            // Nepali calendar data (days in each month for years 2000-2090)
+            const nepaliCalendar = {
+              2000: [30, 29, 30, 29, 30, 29, 30, 29, 30, 29, 30, 30],
+              2001: [31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 29, 31],
+              2002: [31, 31, 32, 31, 31, 29, 30, 30, 29, 30, 29, 31],
+              2003: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2004: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2005: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2006: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2007: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2008: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2009: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2010: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2011: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2012: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2013: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2014: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2015: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2016: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2017: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2018: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2019: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2020: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2021: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2022: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2023: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2024: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2025: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2026: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2027: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2028: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2029: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2030: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2031: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2032: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2033: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2034: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2035: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2036: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2037: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2038: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2039: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2040: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2041: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2042: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2043: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2044: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2045: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2046: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2047: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2048: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2049: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2050: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2051: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2052: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2053: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2054: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2055: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2056: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2057: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2058: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2059: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2060: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2061: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2062: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2063: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2064: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2065: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2066: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2067: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2068: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2069: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2070: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2071: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2072: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2073: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2074: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2075: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2076: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2077: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2078: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2079: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2080: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2081: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2082: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2083: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2084: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2085: [31, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2086: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2087: [31, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 31],
+              2088: [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 29, 30],
+              2089: [31, 31, 32, 32, 31, 31, 30, 30, 29, 30, 29, 31],
+              2090: [30, 31, 32, 32, 31, 30, 30, 30, 29, 30, 29, 30]
+            };
+            
+            // Convert days to Nepali date
+            let remainingDays = daysDiff;
+            let nepaliYear = baseNepaliYear;
+            let nepaliMonth = baseNepaliMonth;
+            let nepaliDay = baseNepaliDay;
+            
+            // Find the year
+            while (remainingDays > 0 && nepaliYear <= 2090) {
+              const yearDays = nepaliCalendar[nepaliYear].reduce((sum, days) => sum + days, 0);
+              if (remainingDays >= yearDays) {
+                remainingDays -= yearDays;
+                nepaliYear++;
+              } else {
+                break;
+              }
+            }
+            
+            // Find the month
+            while (remainingDays > 0 && nepaliMonth <= 12) {
+              const monthDays = nepaliCalendar[nepaliYear][nepaliMonth - 1];
+              if (remainingDays >= monthDays) {
+                remainingDays -= monthDays;
+                nepaliMonth++;
+              } else {
+                break;
+              }
+            }
+            
+            // Calculate the day
+            nepaliDay = remainingDays + 1;
+            
+            // Convert to Nepali numerals
+            const nepaliNumerals = ['०', '१', '२', '३', '४', '५', '६', '७', '८', '९'];
+            const nepaliMonths = ['', 'बैशाख', 'जेठ', 'असार', 'श्रावण', 'भदौ', 'असोज', 'कार्तिक', 'मंसिर', 'पुष', 'माघ', 'फाल्गुन', 'चैत'];
+            
+            function toNepaliNumeral(num) {
+              return num.toString().split('').map(digit => nepaliNumerals[parseInt(digit)]).join('');
+            }
+            
+            return {
+              year: toNepaliNumeral(nepaliYear),
+              month: toNepaliNumeral(nepaliMonth.toString().padStart(2, '0')),
+              day: toNepaliNumeral(nepaliDay.toString().padStart(2, '0')),
+              monthName: nepaliMonths[nepaliMonth]
+            };
+          }
+          
+          // Calculate interview date (8 days after pre-approval)
+          const preApprovalDate = '{{ ad.pre_approval_date }}';
+          if (preApprovalDate && preApprovalDate !== 'None') {
+            const date = new Date(preApprovalDate);
+            date.setDate(date.getDate() + 8);
+            
+            // Format English date as "30 August, 2025"
+            const englishOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+            const englishDate = date.toLocaleDateString('en-US', englishOptions);
+            
+            // Convert to Nepali date
+            const nepaliDate = gregorianToNepali(date);
+            const nepaliDateString = `${nepaliDate.year}/${nepaliDate.month}/${nepaliDate.day}`;
+            
+            document.getElementById('calculated-interview-date').textContent = nepaliDateString;
+            document.getElementById('calculated-interview-date-english').textContent = englishDate;
+          } else {
+            document.getElementById('calculated-interview-date').textContent = 'निर्धारण गर्नुहोस्';
+            document.getElementById('calculated-interview-date-english').textContent = 'निर्धारण गर्नुहोस्';
+          }
+        </script>
+      {% else %}
+        अन्तरवार्ता मिति निर्धारण गर्नुहोस्।
+      {% endif %}
+  </div>
+  
+  <!-- Extra Information Section -->
+  <div class="extra-section">
+    <table class="extra-table">
+      <thead>
+        <tr>
+          <th>स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने र कति लाग्ने</th>
+          <th>विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने र कति लाग्ने</th>
+          <th>स्वदेशमा गरिने व्यावसायिक बीमा कसले व्यहोर्ने र कति लाग्ने</th>
+          <th>रोजगारमा बीमा शुल्क हुने/नहुने र प्रिमियम कसले व्यहोर्ने</th>
+          <th>कामदारलाई हवाई टिकट कसले दिने र कति लाग्ने</th>
+          <th>भिसा शुल्क कसले व्यहोर्ने</th>
+          <th>भिसा स्ट्याम्प शुल्क कसले व्यहोर्ने</th>
+          <th>अभिकृतिकरण शुल्क कति लाग्ने र कसले व्यहोर्ने</th>
+          <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
+          <th>श्रमशुल्क कति लाग्ने र कसले व्यहोर्ने</th>
+          <th>सेवा शुल्क</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{% if ad.medical_cost_local %}{{ ad.medical_cost_local }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.medical_cost_foreign %}{{ ad.medical_cost_foreign }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.insurance_local %}{{ ad.insurance_local }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.insurance_employment %}{{ ad.insurance_employment }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.air_ticket %}{{ ad.air_ticket }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.visa_fee %}{{ ad.visa_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.visa_stamp_fee %}{{ ad.visa_stamp_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.recruitment_fee %}{{ ad.recruitment_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.welfare_fund %}{{ ad.welfare_fund }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.labor_fee %}{{ ad.labor_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>{% if ad.service_fee %}{{ ad.service_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+        </tr>
+      </tbody>
+    </table>
+    
+    <!-- Condensed Notice Text -->
+    <div class="extra-note">
+      {% if ad.extra_notes %}
+        <!-- Manual notice from user -->
+        {{ ad.extra_notes }}
+      {% else %}
+        <!-- Country-specific automatic notice -->
+        {% if country_notice %}
+          <h4>{{ country_notice.title }}</h4>
+          <div class="notice-content" id="notice-content">
+            {{ country_notice.content|safe }}
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+  
+  <!-- Company Banner - ATTACHED -->
+  <div class="company-banner">
+    <div class="company-logo">
+      <div>LOGO</div>
+    </div>
+    
+    <div class="company-info">
+      <h1>{% if ad.company_banner_title %}{{ ad.company_banner_title }}{% else %}कुनै कम्पनी{% endif %}</h1>
+      <p>
+        {% if ad.company_address %}{{ ad.company_address }}{% else %}कुनै ठेगाना{% endif %} • {% if ad.company_phone %}{{ ad.company_phone }}{% else %}कुनै फोन{% endif %}<br>
+        {% if ad.company_email %}{{ ad.company_email }}{% else %}कुनै इमेल{% endif %} • {% if ad.company_website %}{{ ad.company_website }}{% else %}कुनै वेब{% endif %}
+      </p>
+    </div>
+    
+    <div class="license-box">
+      {% if ad.license_number %}{{ ad.license_number }}{% else %}कुनै लाइसेन्स{% endif %}
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

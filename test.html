@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Rajdhani Daily</title>
+
+<style>
+/* ================= BASE & VARS ================= */
+*{margin:0;padding:0;box-sizing:border-box}
+img{display:block;max-width:100%;height:auto}
+body{font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;background:#f8f9fa;color:#222;line-height:1.25}
+
+:root{
+  --maxw:1280px;     /* working width; change to 1320 if you like */
+  --banner-h:86px;   /* sticky banner height */
+  /* Header grid (must add up to --maxw) */
+  --col-logo:560px;
+  --col-paper:320px;
+  --col-right:400px;
+
+  /* Visual crop controls (tweak if your PNGs differ) */
+  --logo-h:138px;         /* visible height of logo after crop */
+  --logo-offset:-16px;     /* negative moves image UP, hiding top air */
+  --paper-h:110px;        /* visible height area for paper + label */
+  --paper-img-w:280px;    /* paper image width */
+  --paper-offset:-6px;    /* nudge paper upward */
+}
+
+/* ================= TOP BANNER ================= */
+.rd-top-banner{
+  position:sticky; top:0; z-index:1300;
+  height:var(--banner-h); min-height:var(--banner-h);
+  background:#fff; border-bottom:1px solid #e9ecef;
+  display:flex; align-items:center; justify-content:center; overflow:hidden;
+}
+.rd-top-banner img{width:100%;height:100%;object-fit:cover}
+
+/* ================= HEADER ================= */
+.rd-header{
+  background:#fff; border-bottom:1px solid #eee;
+}
+.rd-header-row{
+  max-width:var(--maxw); margin:0 auto;
+  display:grid; align-items:center;
+  grid-template-columns: var(--col-logo) var(--col-paper) var(--col-right);
+  column-gap:0;
+  padding:2px 6px;       /* ultra-tight */
+}
+
+/* === Left: LOGO (crop box) === */
+.logo-crop{
+  height:var(--logo-h); overflow:hidden; display:flex; align-items:flex-start;
+}
+.logo-crop img{
+  transform:translateY(var(--logo-offset)); /* hides top transparent band */
+  height:auto; width:auto;
+}
+
+/* === Middle: TODAY + ROLLED PAPER (crop box) === */
+.paper-crop{
+  height:var(--paper-h); overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+}
+.paper-title{
+  font-size:18px; font-weight:800; line-height:1;
+  margin:0 0 4px 0; transform:translateY(-2px);
+}
+.paper-img{
+  width:var(--paper-img-w); height:auto; object-fit:contain;
+  transform:translateY(var(--paper-offset));
+}
+
+/* === Right: login + socials (tight) === */
+.right-stack{
+  display:flex; gap:10px; justify-content:flex-end; align-items:flex-start;
+}
+.login-block{display:flex; flex-direction:column; gap:8px}
+
+.login-row{display:flex; align-items:center; gap:10px}
+.icn-circle{
+  width:44px; height:44px; border-radius:999px;
+  background:#e3f2fd; display:flex; align-items:center; justify-content:center; color:#1565c0;
+}
+.icn-circle svg{width:22px;height:22px}
+
+.btn{
+  padding:7px 12px; line-height:1; border-radius:6px; font-size:13px; font-weight:600;
+  border:1px solid #1565c0; text-decoration:none; display:inline-block;
+}
+.btn-login{background:#fff;color:#1565c0}
+.btn-login:hover{background:#1565c0;color:#fff}
+.btn-sign{background:#1565c0;color:#fff}
+.btn-sign:hover{background:#0d47a1;border-color:#0d47a1}
+
+.socials{display:flex; flex-direction:column; gap:6px}
+.social{display:flex; align-items:center; gap:8px; font-size:13px; color:#2e2e2e; text-decoration:none}
+.social:hover{color:#1565c0}
+.badge{
+  width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700
+}
+.bg-fb{background:#1877f2} .bg-ig{background:linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)} .bg-yt{background:#ff0000} .bg-tt{background:#000}
+
+/* ================= DATE BAR ================= */
+.datebar{
+  background:#fff; border-bottom:1px solid #e9ecef;
+}
+.datebar-inner{
+  max-width:var(--maxw); margin:0 auto; background:#6b6b6b; color:#fff;
+  padding:6px 10px; font-size:12.5px; font-weight:700;
+}
+.date-row{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+.sep{color:#ddd; font-weight:400}
+
+/* ================= NAV ================= */
+.nav{
+  position:sticky; top:var(--banner-h); z-index:1200;
+  background:#fff; border-bottom:1px solid #ddd;
+}
+.nav-inner{max-width:var(--maxw); margin:0 auto; padding:0 6px}
+.navlist{list-style:none; display:flex; align-items:center; gap:0; overflow-x:auto}
+.navlist a{
+  display:block; padding:12px 16px; font-size:15px; font-weight:700; color:#3f3f3f; text-decoration:none; white-space:nowrap;
+}
+.navlist a:hover{background:#f5f5f5; color:#1565c0}
+.logo-mini{max-width:34px; max-height:34px}
+.search{margin-left:auto; padding:12px 16px}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px){
+  :root{
+    --maxw: 100%;
+    --col-logo: 1fr; --col-paper: 320px; --col-right: 420px;
+  }
+  .rd-header-row{grid-template-columns: var(--col-logo) var(--col-paper) var(--col-right)}
+}
+@media (max-width: 900px){
+  :root{
+    --banner-h:72px;
+    --logo-h:110px; --logo-offset:-10px;
+    --paper-h:96px;  --paper-img-w:200px; --paper-offset:-4px;
+  }
+  .rd-header-row{grid-template-columns:1fr; row-gap:8px}
+  .right-stack{justify-content:space-between}
+  .nav{top:var(--banner-h)}
+}
+@media (max-width: 600px){
+  :root{ --banner-h:64px }
+  .navlist a{padding:10px 12px; font-size:14px}
+  .datebar-inner{font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- Top banner -->
+<div class="rd-top-banner">
+  <img src="imagess/banner.png" alt="Top Banner">
+</div>
+
+<!-- Header -->
+<header class="rd-header">
+  <div class="rd-header-row">
+    <!-- LEFT: Logo (crop) -->
+    <div class="logo-crop">
+      <img src="imagess/final.png" alt="रा राजधानी Logo">
+    </div>
+
+    <!-- MIDDLE: आजको पत्रिका + rolled paper (crop) -->
+    <div class="paper-crop">
+      <img src="imagess/roll.png" alt="आजको पत्रिका" class="paper-img">
+    </div>
+
+    <!-- RIGHT: login + socials -->
+    <div class="right-stack">
+      <div class="login-block">
+        <div class="login-row">
+          <div class="icn-circle">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </div>
+          <a href="{% url 'login' %}" class="btn btn-login">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-sign">Sign up</a>
+        </div>
+
+        <div class="socials">
+          <a href="#" class="social"><span class="badge bg-fb">f</span> <span>RajdhaniRastriyaDainik</span></a>
+          <a href="#" class="social"><span class="badge bg-ig">◎</span> <span>RajdhaniDailyNepal</span></a>
+          <a href="#" class="social"><span class="badge bg-yt">▶</span> <span>@Rajdhani.Dainik</span></a>
+          <a href="#" class="social"><span class="badge bg-tt">♬</span> <span>@Rajdhani.Daily</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Date bar -->
+<section class="datebar">
+  <div class="datebar-inner">
+    <div class="date-row">
+      <span>वर्ष २५ अंक ४०</span><span class="sep">|</span>
+      <span>नेपाल संवत् ११४५</span><span class="sep">|</span>
+      <span>३० असार २०८२</span><span class="sep">|</span>
+      <span>सोमवार</span><span class="sep">|</span>
+      <span>१४ जुलाई २०२५</span><span class="sep">|</span>
+      <span>समय ०५:३०</span>
+    </div>
+  </div>
+</section>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <ul class="navlist">
+      <li><img src="images/logo.png" alt="Nav" class="logo-mini"></li>
+      <li><a href="#">गृहपृष्ठ</a></li>
+      <li><a href="#">राजधानी विशेष</a></li>
+      <li><a href="#">नेपाल</a></li>
+      <li><a href="#">संसार</a></li>
+      <li><a href="#">अर्थ बजार</a></li>
+      <li><a href="#">विवेचना</a></li>
+      <li><a href="#">कला</a></li>
+      <li><a href="#">खेलकुद</a></li>
+      <li><a href="#">ग्यालरी</a></li>
+      <li><a href="#">अन्य</a></li>
+      <li class="search"><svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20" aria-hidden="true"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/></svg></li>
+    </ul>
+  </div>
+</nav>
+
+</body>
+</html>

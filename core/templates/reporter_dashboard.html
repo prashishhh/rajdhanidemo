@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reporter Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Welcome, Reporter!</h2>
+            <a href="{% url 'submit_news' %}" class="btn btn-primary">+ Submit News</a>
+        </div>
+
+        <h4>Your News Submissions</h4>
+        <table class="table table-bordered bg-white shadow-sm mt-3">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Status</th>
+                    <th>Submitted At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for news in news_list %}
+                    <tr>
+                        <td>{{ news.title }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if news.status == 'approved' %} bg-success 
+                                {% elif news.status == 'rejected' %} bg-danger 
+                                {% elif news.status == 'submitted' %} bg-warning text-dark 
+                                {% else %} bg-secondary {% endif %}">
+                                {{ news.get_status_display }}
+                            </span>
+                        </td>
+                        <td>{{ news.created_at|date:"Y-m-d H:i" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center">No news submitted yet.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <strong>Upcoming Meetings</strong>
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for meeting in meetings %}
+                <li class="list-group-item">
+                    <strong>{{ meeting.title }}</strong><br>
+                    <small>{{ meeting.meeting_time|date:"Y-m-d H:i" }}</small>
+                    {% if meeting.meeting_link %}
+                        | <a href="{{ meeting.meeting_link }}" target="_blank">Join Link</a>
+                    {% endif %}
+                    <div>{{ meeting.description }}</div>
+                </li>
+                {% empty %}
+                <li class="list-group-item text-muted">No upcoming meetings.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        
+    </div>
+</body>
+</html>

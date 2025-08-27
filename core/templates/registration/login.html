@@ -1,0 +1,625 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>राजधानी दैनिक - Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: url("{% static 'images/bg.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.15),
+                0 8px 25px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            padding: 50px;
+            width: 100%;
+            max-width: 500px;
+            margin-top: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .login-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.2),
+                0 12px 35px rgba(0, 0, 0, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        .logo-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(44, 90, 160, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+        }
+
+        .logo-img {
+            width: 100px;
+            height: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-subtitle {
+            color: #666;
+            font-size: 13px;
+            margin-bottom: 12px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .rajdhani-text {
+            font-size: 32px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .website-url {
+            color: #888;
+            font-size: 12px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .form-tabs {
+            display: flex;
+            margin-bottom: 30px;
+            background: rgba(240, 240, 240, 0.5);
+            border-radius: 16px;
+            padding: 6px;
+            position: relative;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            width: calc(50% - 6px);
+            height: calc(100% - 12px);
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e4080 100%);
+            border-radius: 12px;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+        }
+
+        .tab-indicator.register {
+            transform: translateX(100%);
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 14px 0;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+        }
+
+        .tab-button.active {
+            color: white;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-container {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(200, 200, 200, 0.5);
+            border-radius: 14px;
+            font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(248, 250, 252, 0.8);
+            backdrop-filter: blur(10px);
+            font-weight: 400;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2c5aa0;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 0 0 4px rgba(44, 90, 160, 0.1),
+                0 8px 25px rgba(44, 90, 160, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+
+        .input-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .form-input:focus + .input-icon {
+            color: #2c5aa0;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .checkbox {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            margin-right: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(248, 250, 252, 0.8);
+        }
+
+        .checkbox:checked {
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e4080 100%);
+            border-color: #2c5aa0;
+            box-shadow: 0 4px 12px rgba(44, 90, 160, 0.3);
+        }
+
+        .checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .checkbox-label {
+            color: #555;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 30px;
+        }
+
+        .forgot-password a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .forgot-password a:hover {
+            color: #1e4080;
+        }
+
+        .forgot-password a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #2c5aa0, #1e4080);
+            transition: width 0.3s ease;
+        }
+
+        .forgot-password a:hover::after {
+            width: 100%;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2c5aa0 0%, #1e4080 50%, #2c5aa0 100%);
+            background-size: 200% 100%;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 8px 25px rgba(44, 90, 160, 0.3);
+        }
+
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .submit-button:hover {
+            background-position: 100% 0;
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(44, 90, 160, 0.4);
+        }
+
+        .submit-button:hover::before {
+            left: 100%;
+        }
+
+        .submit-button:active {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(44, 90, 160, 0.3);
+        }
+
+        .terms-link {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .terms-link:hover {
+            color: #1e4080;
+        }
+
+        .footer-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(200, 200, 200, 0.3);
+        }
+
+        .footer-link a {
+            color: #2c5aa0;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .footer-link a:hover {
+            background: rgba(44, 90, 160, 0.1);
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 35px 25px;
+                margin: 20px 15px;
+                border-radius: 20px;
+            }
+
+            .logo-img {
+                width: 80px;
+            }
+
+            .rajdhani-text {
+                font-size: 26px;
+            }
+
+            .form-input {
+                padding: 14px 16px;
+            }
+
+            .submit-button {
+                padding: 16px;
+            }
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, #d4edda 0%, #c8e6c9 100%);
+            color: #155724;
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(21, 87, 36, 0.2);
+            display: none;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(21, 87, 36, 0.1);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .password-strength {
+            margin-top: 8px;
+            height: 4px;
+            background: #f0f0f0;
+            border-radius: 2px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .password-strength.visible {
+            opacity: 1;
+        }
+
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak { background: #ff4757; width: 25%; }
+        .strength-fair { background: #ffa502; width: 50%; }
+        .strength-good { background: #2ed573; width: 75%; }
+        .strength-strong { background: #1e90ff; width: 100%; }
+
+        .input-error {
+            border-color: #ff4757 !important;
+            box-shadow: 0 0 0 4px rgba(255, 71, 87, 0.1) !important;
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 12px;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading .submit-button {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading .submit-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        /* Keep all your CSS from before here! */
+        /* ... (paste your CSS styles here unchanged) ... */
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="login-container">
+        <div class="logo-section">
+            <div class="logo-glow"></div>
+            <img src="{% static 'images/logo.png' %}" alt="Rajdhani Daily Logo" class="logo-img">
+            <div class="logo-subtitle">लोकप्रिय राष्ट्रिय दैनिक</div>
+            <div class="rajdhani-text">राजधानी</div>
+            <div class="website-url">www.rajdhanidaily.com</div>
+        </div>
+
+        <!-- Login Tab Only (for Django login page) -->
+        
+
+        <!-- Show Django form errors -->
+        {% if form.errors %}
+        <div class="error-message" style="display:block;">
+            ⚠️ {{ form.non_field_errors.as_text|default:"Invalid username or password." }}
+        </div>
+        {% endif %}
+
+        <div class="form-container">
+            <div class="form-section active" id="loginForm">
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label class="form-label">Username वा Email</label>
+                        <div class="input-wrapper">
+                            {% render_field form.username class="form-input" placeholder="आफ्नो username वा email प्रविष्ट गर्नुहोस्" %}
+                            <span class="input-icon">👤</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            {% render_field form.password class="form-input" placeholder="आफ्नो password प्रविष्ट गर्नुहोस्" %}
+                            <span class="input-icon">🔒</span>
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" class="checkbox" id="rememberMe" name="remember">
+                        <label class="checkbox-label" for="rememberMe">मलाई सम्झनुहोस् (Remember Me)</label>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="{% url 'password_reset' %}">Password बिर्सनुभयो?</a>
+                    </div>
+                    <button type="submit" class="submit-button">Login गर्नुहोस्</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-link">
+            <a href="{% url 'home' %}">← मुख्य पृष्ठमा फर्कनुहोस्</a>
+        </div>
+    </div>
+</body>
+</html>
