@@ -950,7 +950,6 @@ function extractFromSummary(text) {
   
   return null;
 }
-
 // Function to extract job positions from entire OCR text when table structure is missing
 function extractFromEntireText(text) {
   console.log('🔍 Extracting job positions from entire OCR text...');
@@ -1041,18 +1040,105 @@ function parseFromOCR(raw){
   m = text.match(/\b(?:Date|मिति)\s*[:\-]?\s*(\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}|\d{1,2}\s+[A-Za-z]+\s*,?\s*\d{4})/i);
   if (m) out.pre_approval_date = m[1];
 
-  // Extract company name - look for text after "श्री" and before country/address
-  m = text.match(/श्री\s+([^।\n]+?)(?=\s+[A-Z]{2,}\s+मुलुकको|\s+UAE\.P\.|\s+स्थित|\s+।|\s+$)/i);
+  // Extract company name - prefer between 'स्थित' and 'कम्पनीबाट' (handles 'शहरस्थित' and 'शहर स्थित')
+  m = text.match(/(?:शहर\s*स्थित|शहरस्थित|स्थित)\s+([^।\n]+?)(?=\s+कम्पनी(?:बाट)?\b|\s+Company\b|\s+CO\.?\b|\s+L\.?L\.?C\.?\b)/i);
   if (m) {
     out.company_name = m[1].trim();
-    out.company_name = out.company_name.replace(/\s+[A-Z]{2,}\s+मुलुकको.*$/, '');
+  } else {
+    // Fallback: look for text after "श्री" and before country/address
+    m = text.match(/श्री\s+([^।\n]+?)(?=\s+[A-Z]{2,}\s+मुलुकको|\s+UAE\.P\.|\s+स्थित|\s+।|\s+$)/i);
+    if (m) {
+      out.company_name = m[1].trim();
+      out.company_name = out.company_name.replace(/\s+[A-Z]{2,}\s+मुलुकको.*$/, '');
+    }
   }
 
-  // Extract city - look for text after "स्थित" and before "कम्पनीबाट"
-  m = text.match(/स्थित\s+([^।\n]+?)(?=\s+कम्पनीबाट|\s+।|\s+$)/i);
+  // ROBUST CITY EXTRACTION - handles multiple document formats
+  let cityFound = false;
+  
+  // Strategy 1: Between 'मुलुकको' and 'शहर स्थित/शहरस्थित'
+  m = text.match(/मुलुकको\s+(.+?)\s+(?:शहर\s*स्थित|शहरस्थित)/i);
   if (m) {
     out.city = m[1].trim();
-    out.city = out.city.replace(/\s+कम्पनीबाट.*$/, '');
+    console.log('✅ City extracted between मुलुकको and शहरस्थित:', out.city);
+    cityFound = true;
+  }
+  
+  // Strategy 2: Before 'शहर स्थित' (reverse pattern)
+  if (!cityFound) {
+    m = text.match(/([^\n।]+?)\s+शहर\s*स्थित/i);
+    if (m) {
+      let beforeCity = m[1].trim();
+      // Clean up common noise
+      beforeCity = beforeCity.replace(/\s+(PO|P\.O\.|Box|UAE|JAPAN|QATAR|KUWAIT|OMAN|BAHRAIN|KSA)\s*$/i, '');
+      beforeCity = beforeCity.replace(/\s+(FIRST|SECOND|THIRD|1ST|2ND|3RD|FLOOR|FL)\s*$/i, '');
+      
+      if (beforeCity && beforeCity.length > 2) {
+        out.city = beforeCity;
+        console.log('✅ City extracted before शहर स्थित:', out.city);
+        cityFound = true;
+      }
+    }
+  }
+  
+  // Strategy 3: After 'स्थित' before company name
+  if (!cityFound) {
+    m = text.match(/स्थित\s+([^।\n]+?)(?=\s+[A-Z\u0900-\u097F][A-Z\u0900-\u097F\s]+(कम्पनी|Company|Corporation|Corp|Ltd|LTD|LLC|L\.L\.C|PVT|Pvt))/i);
+    if (m) {
+      let cityPart = m[1].trim();
+      // Clean up company name if captured
+      cityPart = cityPart.replace(/\s+(कम्पनी|Company).*$/i, '');
+      cityPart = cityPart.replace(/\s*,\s*$/, '');
+      
+      if (cityPart && cityPart.length > 2 && !/^(P\.?O\.?|Box|\d+)$/i.test(cityPart)) {
+        out.city = cityPart;
+        console.log('✅ City extracted after स्थित:', out.city);
+        cityFound = true;
+      }
+    }
+  }
+  
+  // Strategy 4: Look for city patterns in the entire text
+  if (!cityFound) {
+    const cityPatterns = [
+      /शहर\s+([A-Za-z\u0900-\u097F][A-Za-z\u0900-\u097F\s]+?)(?=\s+कम्पनी|\s+।|\s+$)/i,
+      /City\s+([A-Za-z\u0900-\u097F][A-Za-z\u0900-\u097F\s]+?)(?=\s+कम्पनी|\s+।|\s+$)/i,
+      /([A-Za-z\u0900-\u097F][A-Za-z\u0900-\u097F\s]+?)\s+शहर(?=\s+स्थित|\s+कम्पनी|\s+।|\s+$)/i
+    ];
+    
+    for (const pattern of cityPatterns) {
+      m = text.match(pattern);
+      if (m && m[1]) {
+        let city = m[1].trim();
+        if (city.length > 2 && city.length < 50) {
+          out.city = city;
+          console.log('✅ City extracted from pattern:', pattern.source, '=', city);
+          cityFound = true;
+          break;
+        }
+      }
+    }
+  }
+  
+  if (!cityFound) {
+    console.log('⚠️ No city found with any extraction strategy');
+  }
+  
+  // DEBUG: Log document structure analysis
+  console.log('🔍 === DOCUMENT STRUCTURE ANALYSIS ===');
+  console.log('Text length:', text.length);
+  console.log('Contains मुलुकको:', text.includes('मुलुकको'));
+  console.log('Contains शहर:', text.includes('शहर'));
+  console.log('Contains स्थित:', text.includes('स्थित'));
+  console.log('Contains कम्पनीबाट:', text.includes('कम्पनीबाट'));
+  
+  // Show relevant text segments for debugging
+  const relevantSegments = text.match(/[^।\n]*?(?:मुलुकको|शहर|स्थित|कम्पनीबाट)[^।\n]*/g);
+  if (relevantSegments) {
+    console.log('Relevant text segments:');
+    relevantSegments.forEach((seg, i) => {
+      console.log(`${i + 1}. ${seg.trim()}`);
+    });
   }
 
   m = text.match(/(?:LOT\s*नं\.?|LOT\s*No\.?)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)/i);
@@ -1207,7 +1293,26 @@ function applyParsedData(d){
   set('pre_approval_date', d.pre_approval_date);
   set('chalani_no', d.chalani_no);
   set('lot_no', d.lot_no);
-  if (d.city) set('city', d.city);
+  if (d.city) {
+    console.log('DEBUG: Attempting to set city to:', d.city);
+    const cityResult = set('city', d.city);
+    console.log('DEBUG: City set result:', cityResult);
+    
+    // Additional verification - try direct update
+    const cityField = document.getElementById('id_city');
+    if (cityField) {
+      console.log('DEBUG: Direct city field found, current value:', cityField.value);
+      if (!cityResult) {
+        console.log('DEBUG: set() failed, trying direct update...');
+        cityField.value = d.city;
+        cityField.dispatchEvent(new Event('input', { bubbles: true }));
+        cityField.dispatchEvent(new Event('change', { bubbles: true }));
+        console.log('DEBUG: Direct update completed, new value:', cityField.value);
+      }
+    } else {
+      console.error('DEBUG: id_city field not found in DOM!');
+    }
+  }
 
   // Handle multiple job positions
   if (d.positions?.length) {
@@ -1356,7 +1461,6 @@ function normalizeDigits(str='') {
 function normalizeText(raw='') {
   return normalizeDigits(raw).replace(/\r/g,'').replace(/[|¦]/g,'I'); // common OCR artifacts
 }
-
 // run OCR fully in the browser
 async function runBrowserOCR(file) {
   const box = document.getElementById('ocrClientBox');
@@ -1844,7 +1948,6 @@ function testMultiRowParsing() {
   
   alert(message);
 }
-
 // Test your exact document format
 function testYourExactFormat() {
   const exactText = `1 Scaffolding 2 0 YEN 177657.00`;
@@ -2257,7 +2360,7 @@ function intelligentOCRExtraction(text) {
   
   // Strategy 4: Look for city after City (English format)
   if (!city) {
-    const cityMatch = text.match(/City\s+([^。\n]+?)(?=\s+कम्पनीबाट|\s+।|\s+$|\s+[A-Z]{2,}|\s+माग|\s+सन्दर्भमा)/i);
+    const cityMatch = text.match(/City\s+([^।\n]+?)(?=\s+कम्पनीबाट|\s+।|\s+$|\s+[A-Z]{2,}|\s+माग|\s+सन्दर्भमा)/i);
     if (cityMatch) {
       city = cityMatch[1].trim();
       console.log(`✅ City found after "City": "${city}"`);
@@ -2683,7 +2786,6 @@ function testCityExtractionReal() {
   
   alert('Check console for real city extraction test results!');
 }
-
 // Test function for position and salary extraction
 function testPositionSalaryExtraction() {
   console.log('💼 === TESTING POSITION AND SALARY EXTRACTION ===');
@@ -3117,7 +3219,6 @@ function detectCurrency(str='') {
   if (/\bKD\b/.test(L)) return 'KWD';
   return '';
 }
-
 /* === fill Step-2 main fields === */
 function fillMainFieldsFromText(text) {
   // Map OCR labels to actual form field IDs
@@ -4023,7 +4124,6 @@ function goToStep(step) {
     const progress = (step / totalSteps) * 100;
     document.getElementById('progressBar').style.width = progress + '%';
 }
-
 // Function to validate current step before proceeding
 function validateCurrentStep() {
     const currentStepElement = document.querySelector('.tab-pane.active');
@@ -4525,7 +4625,6 @@ document.getElementById('positionForm').addEventListener('submit', function(e) {
         alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
     });
 });
-
 // Logo Preview Functionality
 function setupLogoPreview() {
     const logoUpload = document.getElementById('logo-upload');
@@ -5017,4 +5116,3 @@ function submitFormManually() {
 // Test form submission function
 </script>
 {% endblock %}
-
