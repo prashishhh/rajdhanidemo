@@ -720,6 +720,10 @@ def employment_ad_editor(request):
             # Handle position formset submission
             formset = JobPositionFormSet(request.POST, instance=employment_ad)
             if formset.is_valid():
+                # Clear existing positions before saving new ones to prevent duplicates
+                employment_ad.positions.all().delete()
+                
+                # Save the new positions
                 formset.save()
                 
                 # Check if this is an AJAX request
@@ -770,6 +774,9 @@ def employment_ad_editor(request):
         
         # Also populate the job position formset with OCR data
         if parsed_data.get('position') or parsed_data.get('salary_amount'):
+            # Clear existing positions to prevent duplicates when OCR data is present
+            employment_ad.positions.all().delete()
+            
             # Create a fresh formset with instance
             formset = JobPositionFormSet(instance=employment_ad)
             
@@ -826,6 +833,33 @@ def filter_positions(positions):
     """Filter positions to remove empty ones for PDF generation"""
     return [pos for pos in positions if pos.position and (pos.male_count or pos.female_count)]
 
+def cleanup_duplicate_positions(employment_ad):
+    """Clean up duplicate positions for an employment ad"""
+    try:
+        # Get all positions ordered by creation time
+        positions = employment_ad.positions.all().order_by('id')
+        
+        # Keep only the first occurrence of each unique position
+        seen_positions = set()
+        positions_to_delete = []
+        
+        for pos in positions:
+            # Create a unique key for each position
+            position_key = f"{pos.position}_{pos.male_count}_{pos.female_count}_{pos.salary_amount}_{pos.salary_currency}"
+            
+            if position_key in seen_positions:
+                positions_to_delete.append(pos.id)
+            else:
+                seen_positions.add(position_key)
+        
+        # Delete duplicate positions
+        if positions_to_delete:
+            JobPosition.objects.filter(id__in=positions_to_delete).delete()
+            print(f"Cleaned up {len(positions_to_delete)} duplicate positions")
+            
+    except Exception as e:
+        print(f"Error cleaning up duplicate positions: {e}")
+
 def get_country_specific_notice(country):
     """Get country-specific notice content"""
     if country in ["Kuwait", "Saudi Arabia", "UAE", "Qatar", "Oman", "Bahrain"]:
@@ -862,6 +896,10 @@ def employment_ad_preview(request):
     """Preview the employment advertisement with proper country-based notices"""
     
     employment_ad = get_object_or_404(EmploymentAd, id=1)
+    
+    # Clean up any duplicate positions before displaying
+    cleanup_duplicate_positions(employment_ad)
+    
     positions = employment_ad.positions.all().order_by('order')
     
     # Debug: Print the data being passed to template
@@ -897,6 +935,10 @@ def download_pdf(request):
     """Download employment advertisement as PDF"""
     
     employment_ad = get_object_or_404(EmploymentAd, id=1)
+    
+    # Clean up any duplicate positions before generating PDF
+    cleanup_duplicate_positions(employment_ad)
+    
     positions = employment_ad.positions.all().order_by('order')
     
     # Get interview data if it exists

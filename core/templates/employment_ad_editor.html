@@ -100,8 +100,9 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-1">
-                                                    <label for="{{ form.title.id_for_label }}" class="form-label mb-1">शीर्षक</label>
+                                                    <label for="{{ form.title.id_for_label }}" class="form-label mb-1">शीर्षक (स्वचालित) <span class="text-muted">(वैकल्पिक)</span></label>
                                                     {{ form.title }}
+                                                    <small class="form-text text-muted">देश छान्नासाथ स्वचालित रूपमा भर्नेछ। म्यानुअल रूपमा बदल्न चाहनुहुन्छ भने यहाँ लेख्नुहोस्।</small>
                                                 </div>
                                                 
                                                 <div class="mb-1">
@@ -111,13 +112,41 @@
                                                 
                                                 <div class="mb-1">
                                                     <label for="{{ form.country.id_for_label }}" class="form-label mb-1">देश</label>
-                                                    {{ form.country }}
+                                                    <select id="id_country" name="country" class="form-select" required>
+                                                        <option value="">Select Country</option>
+                                                        <option value="UAE">UAE</option>
+                                                        <option value="Japan">Japan</option>
+                                                        <option value="Kuwait">Kuwait</option>
+                                                        <option value="Qatar">Qatar</option>
+                                                        <option value="Saudi Arabia">Saudi Arabia</option>
+                                                        <option value="Oman">Oman</option>
+                                                        <option value="Bahrain">Bahrain</option>
+                                                        <option value="Malaysia">Malaysia</option>
+                                                        <option value="Singapore">Singapore</option>
+                                                        <option value="South Korea">South Korea</option>
+                                                        <option value="Other">Other</option>
+                                                    </select>
+                                                </div>
+                                                
+                                                <!-- Manual country input field (hidden by default) -->
+                                                <div id="otherCountryField" class="mb-1" style="display: none;">
+                                                    <label for="id_other_country" class="form-label mb-1">Enter Country Name</label>
+                                                    <input type="text" id="id_other_country" name="other_country" class="form-control" placeholder="Type country name here...">
                                                 </div>
                                                 
                                                 <div class="mb-1">
                                                     <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label mb-1">पूर्व स्वीकृति मिति</label>
-                                                    {{ form.pre_approval_date }}
+                                                    <div class="input-group">
+                                                        {{ form.pre_approval_date }}
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="openDatePicker()">
+                                                            📅 क्यालेन्डर
+                                                        </button>
+                                                    </div>
+                                                    <small class="form-text text-muted">OCR बाट स्वचालित रूपमा भर्नेछ। म्यानुअल रूपमा मिति छान्न चाहनुहुन्छ भने क्यालेन्डर बटन थिच्नुहोस्।</small>
                                                 </div>
+                                                
+                                                <!-- Hidden date picker input for calendar -->
+                                                <input type="date" id="hidden_date_picker" style="display: none;" onchange="updateApprovalDate(this.value)">
                                                 
                                                 <div class="mb-1">
                                                     <label for="{{ form.chalani_no.id_for_label }}" class="form-label mb-1">चलानी नं.</label>
@@ -144,6 +173,7 @@
                                                 
                                                 <div class="mb-2">
                                                     <label class="form-label">अन्तर्वार्ता मिति र स्थान</label>
+                                                    <small class="form-text text-muted d-block mb-2">✅ मितिहरू स्वचालित रूपमा भर्नेछन् (पूर्व स्वीकृति मिति + ८ दिन)</small>
                                                     <div class="row">
                                                         <div class="col-4">
                                                             <label class="form-label">नेपाली मिति</label>
@@ -165,8 +195,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="mt-2">
-                                                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="calculateInterviewDate()">🔄 स्वचालित मिति गणना (८ दिन पछि)</button>
-                                                        <small class="form-text text-muted d-block mt-1">यो बटन थिच्नुहोस् यदि तपाईं पूर्व स्वीकृति मिति + ८ दिन गणना गर्न चाहनुहुन्छ</small>
+                                                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="calculateInterviewDate()">🔄 म्यानुअल मिति गणना (८ दिन पछि)</button>
+                                                        <small class="form-text text-muted d-block mt-1">यो बटन थिच्नुहोस् यदि तपाईं म्यानुअल रूपमा मिति गणना गर्न चाहनुहुन्छ (स्वचालित रूपमा भर्नेछ)</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1311,6 +1341,42 @@ function applyParsedData(d){
       }
     } else {
       console.error('DEBUG: id_city field not found in DOM!');
+    }
+  }
+  
+  // Set country dropdown with OCR value if available
+  if (d.country) {
+    console.log('DEBUG: Setting country dropdown to:', d.country);
+    const countryField = document.getElementById('id_country');
+    const otherCountryField = document.getElementById('otherCountryField');
+    const otherCountryInput = document.getElementById('id_other_country');
+    
+    if (countryField) {
+      // Find matching option
+      const options = countryField.querySelectorAll('option');
+      let found = false;
+      options.forEach(option => {
+        if (option.value.toLowerCase() === d.country.toLowerCase() || 
+            option.textContent.toLowerCase().includes(d.country.toLowerCase())) {
+          countryField.value = option.value;
+          found = true;
+          console.log('DEBUG: Country dropdown set to:', option.value);
+        }
+      });
+      
+      if (!found) {
+        // If no exact match, set to "Other" and fill the manual input
+        countryField.value = 'Other';
+        if (otherCountryField && otherCountryInput) {
+          otherCountryField.style.display = 'block';
+          otherCountryInput.value = d.country;
+          otherCountryInput.required = true;
+        }
+        console.log('DEBUG: Country not found in dropdown, set to Other with value:', d.country);
+      }
+      
+      // Trigger change event
+      countryField.dispatchEvent(new Event('change', { bubbles: true }));
     }
   }
 
@@ -3773,8 +3839,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   setupNumberConversion();
   setupDateConversion();
-  setupLogoPreview?.();
-  setupCountryNoticePreview();
   const container = document.getElementById('positionsContainer');
   if (container) container.addEventListener('change', function(e) {
     if (e.target.name && (e.target.name.includes('salary_amount') || e.target.name.includes('salary_currency'))) {
@@ -3789,8 +3853,13 @@ function setupLogoPreview() {
   const logoUpload = document.getElementById('logo-upload');
   const logoPreview = document.getElementById('logo-preview');
   const logoText = document.getElementById('id_company_logo_text');
+  
   if (logoUpload) {
-    logoUpload.addEventListener('change', function(e) {
+    // Remove existing event listeners to prevent duplicates
+    const newLogoUpload = logoUpload.cloneNode(true);
+    logoUpload.parentNode.replaceChild(newLogoUpload, logoUpload);
+    
+    newLogoUpload.addEventListener('change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
       if (!file.type.startsWith('image/')) return alert('कृपया एउटा इमेज फाइल छान्नुहोस्।');
@@ -3800,8 +3869,13 @@ function setupLogoPreview() {
       reader.readAsDataURL(file);
     });
   }
+  
   if (logoText) {
-    logoText.addEventListener('input', function() {
+    // Remove existing event listeners to prevent duplicates
+    const newLogoText = logoText.cloneNode(true);
+    logoText.parentNode.replaceChild(newLogoText, logoText);
+    
+    newLogoText.addEventListener('input', function() {
       if (!logoUpload?.files.length) logoPreview.innerHTML = `<div class="logo-placeholder">${this.value || 'LOGO'}</div>`;
     });
   }
@@ -3937,6 +4011,223 @@ function setupDateConversion() {
                 updateInterviewPreview();
             }
         });
+    }
+}
+
+
+
+// Country dropdown functionality - show/hide manual input for "Other" and auto-generate title
+function setupCountryDropdown() {
+    const countryField = document.getElementById('id_country');
+    const otherCountryField = document.getElementById('otherCountryField');
+    const otherCountryInput = document.getElementById('id_other_country');
+    const titleField = document.getElementById('id_title');
+    
+    if (countryField && otherCountryField && otherCountryInput) {
+        // Remove existing event listeners to prevent duplicates
+        const newCountryField = countryField.cloneNode(true);
+        countryField.parentNode.replaceChild(newCountryField, countryField);
+        
+        newCountryField.addEventListener('change', function() {
+            if (this.value === 'Other') {
+                otherCountryField.style.display = 'block';
+                otherCountryInput.required = true;
+                otherCountryInput.focus();
+                
+                // For "Other" country, set a generic title
+                if (titleField) {
+                    titleField.value = 'विदेशमा रोजगारी';
+                    titleField.dispatchEvent(new Event('input', { bubbles: true }));
+                    titleField.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            } else {
+                otherCountryField.style.display = 'none';
+                otherCountryInput.required = false;
+                otherCountryInput.value = '';
+                
+                // Auto-generate title based on country selection
+                generateTitleFromCountry(this.value, titleField);
+            }
+        });
+        
+        // Also handle on page load if "Other" is pre-selected
+        if (newCountryField.value === 'Other') {
+            otherCountryField.style.display = 'block';
+            otherCountryInput.required = true;
+        }
+        
+        // Generate title on page load if country is already selected
+        if (newCountryField.value && newCountryField.value !== 'Other') {
+            generateTitleFromCountry(newCountryField.value, titleField);
+        }
+        
+        // Add listener for custom country input to update title
+        if (otherCountryInput) {
+            otherCountryInput.addEventListener('input', function() {
+                if (this.value.trim()) {
+                    const customTitle = `${this.value.trim()}मा रोजगारी`;
+                    if (titleField) {
+                        titleField.value = customTitle;
+                        titleField.dispatchEvent(new Event('input', { bubbles: true }));
+                        titleField.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }
+            });
+        }
+    }
+}
+
+// Function to generate title based on country
+function generateTitleFromCountry(country, titleField) {
+    if (!titleField) return;
+    
+    let title = '';
+    switch (country) {
+        case 'Japan':
+            title = 'जापानमा रोजगारी';
+            break;
+        case 'UAE':
+            title = 'यूएईमा रोजगारी';
+            break;
+        case 'Kuwait':
+            title = 'कुवेतमा रोजगारी';
+            break;
+        case 'Qatar':
+            title = 'कतारमा रोजगारी';
+            break;
+        case 'Saudi Arabia':
+            title = 'साउदी अरेबियामा रोजगारी';
+            break;
+        case 'Oman':
+            title = 'ओमानमा रोजगारी';
+            break;
+        case 'Bahrain':
+            title = 'बहरेनमा रोजगारी';
+            break;
+        case 'Malaysia':
+            title = 'मलेसियामा रोजगारी';
+            break;
+        case 'Singapore':
+            title = 'सिङ्गापुरमा रोजगारी';
+            break;
+        case 'South Korea':
+            title = 'दक्षिण कोरियामा रोजगारी';
+            break;
+        default:
+            title = 'विदेशमा रोजगारी';
+            break;
+    }
+    
+    // Only set the title if it's empty or if user hasn't manually typed something
+    if (!titleField.value.trim() || titleField.value.trim() === 'जापानमा रोजगारी') {
+        titleField.value = title;
+        titleField.dispatchEvent(new Event('input', { bubbles: true }));
+        titleField.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+}
+
+// Automatic interview date calculation (8 days after approval date)
+function setupAutomaticInterviewDate() {
+    const approvalDateField = document.getElementById('id_pre_approval_date');
+    const nepaliDateField = document.getElementById('id_interview_nepali_date');
+    const gregorianDateField = document.getElementById('id_interview_gregorian_date');
+    const previewNepali = document.getElementById('preview_nepali_date');
+    const previewGregorian = document.getElementById('preview_gregorian_date');
+    
+    if (approvalDateField && nepaliDateField && gregorianDateField) {
+        // Remove existing event listeners to prevent duplicates
+        const newApprovalDateField = approvalDateField.cloneNode(true);
+        approvalDateField.parentNode.replaceChild(newApprovalDateField, approvalDateField);
+        
+        newApprovalDateField.addEventListener('input', function() {
+            if (this.value) {
+                calculateAndFillInterviewDate(this.value);
+            }
+        });
+        
+        newApprovalDateField.addEventListener('change', function() {
+            if (this.value) {
+                calculateAndFillInterviewDate(this.value);
+            }
+        });
+    }
+    
+    function calculateAndFillInterviewDate(approvalDateStr) {
+        try {
+            // Parse the approval date (handle both YYYY-MM-DD and YYYY/MM/DD formats)
+            let approvalDate;
+            if (approvalDateStr.includes('/')) {
+                // Handle Nepali date format (YYYY/MM/DD)
+                const parts = approvalDateStr.split('/');
+                if (parts.length === 3) {
+                    const year = parseInt(parts[0]);
+                    const month = parseInt(parts[1]) - 1; // Month is 0-indexed
+                    const day = parseInt(parts[2]);
+                    approvalDate = new Date(year, month, day);
+                }
+            } else if (approvalDateStr.includes('-')) {
+                // Handle Gregorian date format (YYYY-MM-DD)
+                approvalDate = new Date(approvalDateStr);
+            }
+            
+            if (approvalDate && !isNaN(approvalDate.getTime())) {
+                // Calculate interview date (8 days after approval)
+                const interviewDate = new Date(approvalDate);
+                interviewDate.setDate(approvalDate.getDate() + 8);
+                
+                // Format Nepali date (YYYY/MM/DD)
+                const nepaliDate = `${interviewDate.getFullYear()}/${String(interviewDate.getMonth() + 1).padStart(2, '0')}/${String(interviewDate.getDate()).padStart(2, '0')}`;
+                
+                // Format Gregorian date (DD Month, YYYY)
+                const gregorianDate = interviewDate.toLocaleDateString('en-US', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+                // Fill the fields
+                if (nepaliDateField) nepaliDateField.value = nepaliDate;
+                if (gregorianDateField) gregorianDateField.value = gregorianDate;
+                if (previewNepali) previewNepali.textContent = nepaliDate;
+                if (previewGregorian) previewGregorian.textContent = gregorianDate;
+                
+                console.log('✅ Interview date automatically calculated:', nepaliDate, '(', gregorianDate, ')');
+            }
+        } catch (error) {
+            console.error('Error calculating interview date:', error);
+        }
+    }
+}
+
+// Calendar picker functionality for approval date
+function openDatePicker() {
+    const hiddenPicker = document.getElementById('hidden_date_picker');
+    if (hiddenPicker) {
+        // Set current date as default
+        const today = new Date().toISOString().split('T')[0];
+        hiddenPicker.value = today;
+        
+        // Trigger the date picker
+        hiddenPicker.click();
+    }
+}
+
+function updateApprovalDate(selectedDate) {
+    if (selectedDate) {
+        const approvalDateField = document.getElementById('id_pre_approval_date');
+        if (approvalDateField) {
+            // Convert YYYY-MM-DD to Nepali format (YYYY/MM/DD)
+            const date = new Date(selectedDate);
+            const nepaliDate = `${date.getFullYear()}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getDate()).padStart(2, '0')}`;
+            
+            // Update the approval date field
+            approvalDateField.value = nepaliDate;
+            
+            // Trigger change event to update interview dates
+            approvalDateField.dispatchEvent(new Event('change', { bubbles: true }));
+            
+            console.log('✅ Approval date updated via calendar:', nepaliDate);
+        }
     }
 }
 
@@ -4469,9 +4760,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Setup date conversion
     setupDateConversion();
     
-    // Setup logo preview functionality
-    setupLogoPreview();
-
     // Setup country notice preview
     setupCountryNoticePreview();
     
@@ -4625,47 +4913,7 @@ document.getElementById('positionForm').addEventListener('submit', function(e) {
         alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
     });
 });
-// Logo Preview Functionality
-function setupLogoPreview() {
-    const logoUpload = document.getElementById('logo-upload');
-    const logoPreview = document.getElementById('logo-preview');
-    const logoText = document.getElementById('id_company_logo_text');
-    
-    if (logoUpload) {
-        logoUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                // Validate file type
-                if (!file.type.startsWith('image/')) {
-                    alert('कृपया एउटा इमेज फाइल छान्नुहोस्।');
-                    return;
-                }
-                
-                // Validate file size (max 2MB)
-                if (file.size > 2 * 1024 * 1024) {
-                    alert('फाइल साइज 2MB भन्दा ठूलो हुनुहुँदैन।');
-                    return;
-                }
-                
-                // Create preview
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    logoPreview.innerHTML = `<img src="${e.target.result}" alt="Company Logo" class="preview-logo">`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-    }
-    
-    // Update text preview when logo text changes
-    if (logoText) {
-        logoText.addEventListener('input', function() {
-            if (!logoUpload.files.length) {
-                logoPreview.innerHTML = `<div class="logo-placeholder">${this.value || 'LOGO'}</div>`;
-            }
-        });
-    }
-}
+
 
 // Debug Validation Function
 function debugValidation() {

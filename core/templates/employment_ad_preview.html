@@ -367,16 +367,71 @@
     {% if ad.interview_custom_text %}
       <!-- Manual interview text from user -->
       {{ ad.interview_custom_text }}
-    {% elif interview_data.interview_nepali_date and interview_data.interview_gregorian_date and interview_data.interview_location %}
-      <!-- Manual interview details -->
-      अन्तरवार्ता मिति {{ interview_data.interview_nepali_date }} गते ({{ interview_data.interview_gregorian_date }}) {{ interview_data.interview_location }} हुनेछ ।
-
+    {% elif ad.interview_nepali_date and ad.interview_gregorian_date and ad.interview_location %}
+      <!-- Manual interview details from EmploymentAd model -->
+      अन्तरवार्ता मिति {{ ad.interview_nepali_date }} गते ({{ ad.interview_gregorian_date }}) {{ ad.interview_location }} हुनेछ ।
     {% elif ad.pre_approval_date %}
       <!-- Automatic interview date calculation -->
         <span id="interview-date-text">
           अन्तरवार्ता मिति <span id="calculated-interview-date">गणना गर्दै...</span> गते (<span id="calculated-interview-date-english">गणना गर्दै...</span>) म्यानपावरको कार्यालयमा हुनेछ ।
         </span>
         <script>
+          // Calculate interview date automatically (8 days after approval date)
+          function calculateInterviewDate() {
+            const preApprovalDate = '{{ ad.pre_approval_date }}';
+            if (preApprovalDate && preApprovalDate !== 'None' && preApprovalDate !== '') {
+              try {
+                // Parse the approval date (handle both YYYY-MM-DD and YYYY/MM/DD formats)
+                let approvalDate;
+                if (preApprovalDate.includes('/')) {
+                  // Handle Nepali date format (YYYY/MM/DD)
+                  const parts = preApprovalDate.split('/');
+                  if (parts.length === 3) {
+                    const year = parseInt(parts[0]);
+                    const month = parseInt(parts[1]) - 1; // Month is 0-indexed
+                    const day = parseInt(parts[2]);
+                    approvalDate = new Date(year, month, day);
+                  }
+                } else if (preApprovalDate.includes('-')) {
+                  // Handle Gregorian date format (YYYY-MM-DD)
+                  approvalDate = new Date(preApprovalDate);
+                }
+                
+                if (approvalDate && !isNaN(approvalDate.getTime())) {
+                  // Calculate interview date (8 days after approval)
+                  const interviewDate = new Date(approvalDate);
+                  interviewDate.setDate(approvalDate.getDate() + 8);
+                  
+                  // Format Nepali date (YYYY/MM/DD)
+                  const nepaliDate = `${interviewDate.getFullYear()}/${String(interviewDate.getMonth() + 1).padStart(2, '0')}/${String(interviewDate.getDate()).padStart(2, '0')}`;
+                  
+                  // Format Gregorian date (DD Month, YYYY)
+                  const gregorianDate = interviewDate.toLocaleDateString('en-US', { 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                  });
+                  
+                  // Update the display
+                  document.getElementById('calculated-interview-date').textContent = nepaliDate;
+                  document.getElementById('calculated-interview-date-english').textContent = gregorianDate;
+                  
+                  console.log('✅ Interview date automatically calculated:', nepaliDate, '(', gregorianDate, ')');
+                }
+              } catch (error) {
+                console.error('Error calculating interview date:', error);
+                document.getElementById('calculated-interview-date').textContent = 'गणना गर्न सकिएन';
+                document.getElementById('calculated-interview-date-english').textContent = 'Calculation failed';
+              }
+            } else {
+              document.getElementById('calculated-interview-date').textContent = 'पूर्व स्वीकृति मिति आवश्यक';
+              document.getElementById('calculated-interview-date-english').textContent = 'Pre-approval date required';
+            }
+          }
+          
+          // Call the function when page loads
+          document.addEventListener('DOMContentLoaded', calculateInterviewDate);
+          
           // Nepali calendar conversion function
           function gregorianToNepali(gregorianDate) {
             // Base date: 1943-04-14 (Gregorian) = 2000-01-01 (Nepali)

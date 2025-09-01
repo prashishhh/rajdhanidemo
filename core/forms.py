@@ -93,6 +93,16 @@ class InterviewForm(forms.ModelForm):
 class EmploymentAdForm(forms.ModelForm):
     """Form for employment advertisement main information"""
     
+    # Override title field to make it optional
+    title = forms.CharField(
+        max_length=200,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'जापानमा रोजगारी'
+        })
+    )
+    
     # Add interview fields as form fields (not model fields)
     interview_nepali_date = forms.CharField(
         max_length=20, 
@@ -152,10 +162,6 @@ class EmploymentAdForm(forms.ModelForm):
             'company_email', 'company_website', 'license_number'
         ]
         widgets = {
-            'title': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'जापानमा रोजगारी'
-            }),
             'company_name': forms.TextInput(attrs={
                 'class': 'form-control', 
                 'placeholder': 'FINE FARE FOOD MARKET L.L.C'
