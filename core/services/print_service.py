@@ -28,6 +28,13 @@ except ImportError:
     WEASYPRINT_AVAILABLE = False
     logger.warning("WeasyPrint not available. Install with: pip install weasyprint")
 
+try:
+    import reportlab
+    REPORTLAB_AVAILABLE = True
+except ImportError:
+    REPORTLAB_AVAILABLE = False
+    logger.warning("ReportLab not available. Install with: pip install reportlab")
+
 
 class PrintService:
     """Service for generating high-quality PDFs from employment ad previews"""
@@ -35,9 +42,10 @@ class PrintService:
     def __init__(self):
         self.playwright_available = PLAYWRIGHT_AVAILABLE
         self.weasyprint_available = WEASYPRINT_AVAILABLE
+        self.reportlab_available = REPORTLAB_AVAILABLE
         
-        if not self.playwright_available and not self.weasyprint_available:
-            logger.error("No PDF generation library available. Install either Playwright or WeasyPrint.")
+        if not self.playwright_available and not self.weasyprint_available and not self.reportlab_available:
+            logger.error("No PDF generation library available. Install either Playwright, WeasyPrint, or ReportLab.")
     
     def generate_pdf_playwright(self, html_content: str, filename: str = "employment_ad.pdf") -> Optional[bytes]:
         """
@@ -109,6 +117,107 @@ class PrintService:
             logger.error(f"WeasyPrint PDF generation failed: {e}")
             return None
     
+    def generate_pdf_reportlab(self, employment_ad, template_name: str = "employment_ad_preview.html") -> Optional[bytes]:
+        """
+        Generate PDF using ReportLab (cPanel-compatible method)
+        Returns PDF content as bytes or None if failed
+        """
+        if not self.reportlab_available:
+            logger.error("ReportLab not available")
+            return None
+        
+        try:
+            from reportlab.pdfgen import canvas
+            from reportlab.lib.pagesizes import A4
+            from reportlab.lib.units import cm
+            from reportlab.lib import colors
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+            from io import BytesIO
+            
+            # Create PDF in memory
+            buffer = BytesIO()
+            doc = SimpleDocTemplate(buffer, pagesize=A4)
+            story = []
+            styles = getSampleStyleSheet()
+            
+            # Title
+            title_style = ParagraphStyle(
+                'CustomTitle',
+                parent=styles['Heading1'],
+                fontSize=16,
+                spaceAfter=20,
+                alignment=1  # Center alignment
+            )
+            story.append(Paragraph(f"Employment Advertisement - {employment_ad.company_name}", title_style))
+            story.append(Spacer(1, 20))
+            
+            # Company Information
+            company_data = [
+                ['Company Name:', employment_ad.company_name or 'N/A'],
+                ['Country:', employment_ad.country or 'N/A'],
+                ['Pre-approval Date:', employment_ad.pre_approval_date or 'N/A'],
+                ['Chalani No:', employment_ad.chalani_no or 'N/A'],
+                ['LOT No:', employment_ad.lot_no or 'N/A'],
+            ]
+            
+            company_table = Table(company_data, colWidths=[4*cm, 8*cm])
+            company_table.setStyle(TableStyle([
+                ('BACKGROUND', (0, 0), (0, -1), colors.grey),
+                ('TEXTCOLOR', (0, 0), (0, -1), colors.whitesmoke),
+                ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+                ('FONTNAME', (0, 0), (-1, -1), 'Helvetica-Bold'),
+                ('FONTSIZE', (0, 0), (-1, -1), 10),
+                ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+                ('BACKGROUND', (1, 0), (1, -1), colors.beige),
+                ('GRID', (0, 0), (-1, -1), 1, colors.black)
+            ]))
+            story.append(company_table)
+            story.append(Spacer(1, 20))
+            
+            # Job Positions
+            positions = employment_ad.positions.all().order_by('order')
+            if positions:
+                story.append(Paragraph("Job Positions", styles['Heading2']))
+                story.append(Spacer(1, 10))
+                
+                # Position table headers
+                position_headers = ['Position', 'Male', 'Female', 'Salary', 'Currency']
+                position_data = [position_headers]
+                
+                for pos in positions:
+                    if pos.position:  # Only add non-empty positions
+                        position_data.append([
+                            pos.position or 'N/A',
+                            str(pos.male_count or 0),
+                            str(pos.female_count or 0),
+                            str(pos.salary_amount or 'N/A'),
+                            pos.salary_currency or 'N/A'
+                        ])
+                
+                if len(position_data) > 1:  # If we have data beyond headers
+                    position_table = Table(position_data, colWidths=[4*cm, 2*cm, 2*cm, 2*cm, 2*cm])
+                    position_table.setStyle(TableStyle([
+                        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+                        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+                        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                        ('FONTSIZE', (0, 0), (-1, -1), 9),
+                        ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+                        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+                    ]))
+                    story.append(position_table)
+            
+            # Build PDF
+            doc.build(story)
+            pdf_content = buffer.getvalue()
+            buffer.close()
+            return pdf_content
+            
+        except Exception as e:
+            logger.error(f"ReportLab PDF generation failed: {e}")
+            return None
+    
     def generate_employment_ad_pdf(self, employment_ad, template_name: str = "employment_ad_preview.html") -> Optional[bytes]:
         """
         Generate PDF for employment advertisement
@@ -159,6 +268,12 @@ class PrintService:
             # Fallback to WeasyPrint
             if self.weasyprint_available:
                 pdf_content = self.generate_pdf_weasyprint(html_content)
+                if pdf_content:
+                    return pdf_content
+            
+            # Fallback to ReportLab
+            if self.reportlab_available:
+                pdf_content = self.generate_pdf_reportlab(employment_ad)
                 if pdf_content:
                     return pdf_content
             

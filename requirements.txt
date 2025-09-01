@@ -12,7 +12,13 @@ sqlparse==0.5.3
 
 # Static Files & Media
 whitenoise==6.9.0
-Pillow==11.3.0
+Pillow==10.1.0
+
+# PDF Generation Dependencies
+playwright==1.40.0
+weasyprint==60.2
+reportlab==4.0.7
+Pillow==10.1.0
 
 # PDF Generation
 playwright==1.48.0
