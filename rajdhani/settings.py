@@ -36,18 +36,15 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
-    "ec68ef463fa0.ngrok-free.app"
-    "www.demo.rajdhani.com.np"
-    "demo.rajdhani.com.np"
+    "ec68ef463fa0.ngrok-free.app",
+    "www.demo.rajdhani.com.np",
+    "demo.rajdhani.com.np",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://ec68ef463fa0.ngrok-free.app",
-    "https://demo.rajdhani.com.np"
-    "https://demo.rajdhani.com.np"
-    
-
-     
+    "https://demo.rajdhani.com.np",
+    "https://www.demo.rajdhani.com.np",
 ]
 
 
@@ -114,6 +111,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
