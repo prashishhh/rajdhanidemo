@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>टिक-ट्याक-टो (Tic-Tac-Toe) - राजधानी दैनिक</title>
+</head>
+<body style="margin: 0; padding: 0;">
+<div style="background-color: #f8f9fa; min-height: 100vh; padding: 60px 20px; font-family: 'Mukta', sans-serif;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 50px; text-align: center;">
+        <h1 style="font-weight: 800; color: #1e4080; font-size: 3rem; margin-bottom: 10px;">टिक-ट्याक-टो खेल</h1>
+        <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 30px;">आफ्नो दिमाग लगाउनुहोस् र जित्नुहोस्!</p>
+
+        <div id="game-status" style="font-size: 1.8rem; font-weight: bold; color: #dc3545; padding: 15px 20px; background: #fff5f5; border-radius: 10px; border: 2px solid #dc3545; margin-bottom: 30px; transition: all 0.3s ease;">
+            खेलाडी १ (X) को पालो
+        </div>
+        
+        <div id="tic-tac-toe-board" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; max-width: 400px; margin: 0 auto 40px;">
+            <!-- 9 buttons -->
+            <button class="tic-btn" data-index="0" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="1" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="2" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="3" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="4" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="5" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="6" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="7" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+            <button class="tic-btn" data-index="8" style="height: 120px; font-size: 4rem; font-weight: bold; background: #f8f9fa; border: 3px solid #e9ecef; border-radius: 12px; cursor: pointer; color: #1e4080; transition: all 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05);"></button>
+        </div>
+
+        <div style="margin-top: 20px;">
+            <a href="{% url 'home' %}#game-section" style="display: inline-block; padding: 12px 30px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; margin-right: 15px; transition: background 0.3s;">पछाडि जानुहोस्</a>
+            <button id="reset-game-btn" style="background: #1e4080; color: white; border: none; padding: 12px 30px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s; font-weight: bold; box-shadow: 0 4px 10px rgba(30, 64, 128, 0.3);">फेरि खेल्नुहोस्</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cells = document.querySelectorAll('.tic-btn');
+    const status = document.getElementById('game-status');
+    const resetBtn = document.getElementById('reset-game-btn');
+    
+    let currentPlayer = 'X';
+    let gameActive = true;
+    let gameState = ['', '', '', '', '', '', '', '', ''];
+    
+    const winningConditions = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+        [0, 3, 6], [1, 4, 7], [2, 5, 8], // Cols
+        [0, 4, 8], [2, 4, 6]             // Diagonals
+    ];
+    
+    // Add hover effects for buttons safely without overriding filled cells
+    cells.forEach(cell => {
+        cell.addEventListener('mouseover', () => {
+            if (cell.textContent === '' && gameActive) {
+                cell.style.backgroundColor = '#e2e8f0';
+            }
+        });
+        cell.addEventListener('mouseout', () => {
+            const index = parseInt(cell.getAttribute('data-index'));
+            if (gameState[index] === '') {
+                cell.style.backgroundColor = '#f8f9fa';
+            }
+        });
+    });
+
+    function handleCellClick(e) {
+        const clickedCell = e.target;
+        const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+        
+        if (gameState[clickedCellIndex] !== '' || !gameActive) return;
+        
+        gameState[clickedCellIndex] = currentPlayer;
+        clickedCell.textContent = currentPlayer;
+        clickedCell.style.color = currentPlayer === 'X' ? '#dc3545' : '#198754';
+        
+        // Simple pop animation
+        clickedCell.style.transform = 'scale(1.1)';
+        setTimeout(() => clickedCell.style.transform = 'scale(1)', 150);
+        
+        checkResult();
+    }
+    
+    function checkResult() {
+        let roundWon = false;
+        let winningCells = [];
+
+        for (let i = 0; i < winningConditions.length; i++) {
+            const [a, b, c] = winningConditions[i];
+            if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+                roundWon = true;
+                winningCells = [a, b, c];
+                break;
+            }
+        }
+        
+        if (roundWon) {
+            status.textContent = `🎉 बधाई छ! खेलाडी ${currentPlayer === 'X' ? '१ (X)' : '२ (O)'} ले जित्यो! 🎉`;
+            status.style.color = '#198754'; 
+            status.style.borderColor = '#198754';
+            status.style.backgroundColor = '#f0fdf4';
+            
+            // Highlight winning cells
+            winningCells.forEach(index => {
+                cells[index].style.backgroundColor = '#d1e7dd';
+                cells[index].style.borderColor = '#198754';
+            });
+
+            gameActive = false; 
+            return;
+        }
+        
+        if (!gameState.includes('')) {
+            status.textContent = 'खेल बराबरी भयो! (Draw)';
+            status.style.color = '#6c757d'; 
+            status.style.borderColor = '#6c757d';
+            status.style.backgroundColor = '#e9ecef';
+            gameActive = false; 
+            return;
+        }
+        
+        currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+        status.textContent = `खेलाडी ${currentPlayer === 'X' ? '१ (X)' : '२ (O)'} को पालो`;
+        
+        if (currentPlayer === 'X') {
+            status.style.color = '#dc3545';
+            status.style.borderColor = '#dc3545';
+            status.style.backgroundColor = '#fff5f5';
+        } else {
+            status.style.color = '#198754';
+            status.style.borderColor = '#198754';
+            status.style.backgroundColor = '#f0fdf4';
+        }
+    }
+    
+    function resetGame() {
+        currentPlayer = 'X'; 
+        gameActive = true;
+        gameState = ['', '', '', '', '', '', '', '', ''];
+        
+        status.textContent = 'खेलाडी १ (X) को पालो';
+        status.style.color = '#dc3545';
+        status.style.borderColor = '#dc3545';
+        status.style.backgroundColor = '#fff5f5';
+
+        cells.forEach(cell => { 
+            cell.textContent = ''; 
+            cell.style.backgroundColor = '#f8f9fa';
+            cell.style.borderColor = '#e9ecef';
+        });
+    }
+    
+    cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+    resetBtn.addEventListener('click', resetGame);
+});
+</script>
+</body>
+</html>
+<!-- Tic-Tac-Toe Hover Fix -->
