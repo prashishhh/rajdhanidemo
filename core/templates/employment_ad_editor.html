@@ -15,7 +15,7 @@
                     
                     <!-- Step Progress Indicator -->
                     <div class="progress mb-4" style="height: 8px;">
-                        <div class="progress-bar" role="progressbar" style="width: 25%;" id="progressBar"></div>
+                        <div class="progress-bar" role="progressbar" style="width: 33.33%;" id="progressBar"></div>
                     </div>
                     
                     <!-- Step Navigation -->
@@ -27,17 +27,12 @@
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="step2-tab" data-bs-toggle="pill" data-bs-target="#step2" type="button" role="tab">
-                                <span class="badge bg-secondary me-2">2</span> मुख्य जानकारी
+                                <span class="badge bg-secondary me-2">2</span> मुख्य जानकारी र पदहरू
                             </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step3" type="button" role="tab">
-                                <span class="badge bg-secondary me-2">3</span> कामदार पदहरू
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="step4-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
-                                <span class="badge bg-secondary me-2">4</span> पूर्वावलोकन
+                            <button class="nav-link" id="step3-tab" data-bs-toggle="pill" data-bs-target="#step4" type="button" role="tab">
+                                <span class="badge bg-secondary me-2">3</span> पूर्वावलोकन
                             </button>
                         </li>
                     </ul>
@@ -97,21 +92,13 @@
                                         <h6 class="mb-0">🏢 कम्पनीको जानकारी</h6>
                                     </div>
                                     <div class="card-body py-2">
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-1">
-                                                    <label for="{{ form.title.id_for_label }}" class="form-label mb-1">शीर्षक (स्वचालित) <span class="text-muted">(वैकल्पिक)</span></label>
+                                                                                <div class="mb-2">
+                                            <label for="{{ form.title.id_for_label }}" class="form-label">1. शीर्षक</label>
                                                     {{ form.title }}
-                                                    <small class="form-text text-muted">देश छान्नासाथ स्वचालित रूपमा भर्नेछ। म्यानुअल रूपमा बदल्न चाहनुहुन्छ भने यहाँ लेख्नुहोस्।</small>
                                                 </div>
                                                 
-                                                <div class="mb-1">
-                                                    <label for="{{ form.company_name.id_for_label }}" class="form-label mb-1">कम्पनीको नाम</label>
-                                                    {{ form.company_name }}
-                                                </div>
-                                                
-                                                <div class="mb-1">
-                                                    <label for="{{ form.country.id_for_label }}" class="form-label mb-1">देश</label>
+                                        <div class="mb-2">
+                                            <label for="{{ form.country.id_for_label }}" class="form-label">2. देश</label>
                                                     <select id="id_country" name="country" class="form-select" required>
                                                         <option value="">Select Country</option>
                                                         <option value="UAE">UAE</option>
@@ -129,51 +116,170 @@
                                                 </div>
                                                 
                                                 <!-- Manual country input field (hidden by default) -->
-                                                <div id="otherCountryField" class="mb-1" style="display: none;">
-                                                    <label for="id_other_country" class="form-label mb-1">Enter Country Name</label>
+                                        <div id="otherCountryField" class="mb-2" style="display: none;">
+                                            <label for="id_other_country" class="form-label">Enter Country Name</label>
                                                     <input type="text" id="id_other_country" name="other_country" class="form-control" placeholder="Type country name here...">
                                                 </div>
                                                 
-                                                <div class="mb-1">
-                                                    <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label mb-1">पूर्व स्वीकृति मिति</label>
+                                        <div class="mb-2">
+                                            <label for="{{ form.company_name.id_for_label }}" class="form-label">3. कम्पनीको नाम</label>
+                                            {{ form.company_name }}
+                                        </div>
+                                                
+                                                                                <div class="mb-2">
+                                            <label for="id_right_section_text" class="form-label">4. पुन : विज्ञापन </label>
+                                            <select id="id_right_section_text" name="right_section_text" class="form-select">
+                                                <option value="">हैन?</option>
+                                                <option value="पुन : विज्ञापन" {% if ad.right_section_text == "पुन : विज्ञापन" %}selected{% endif %}>हो?</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mb-2">
+                                            <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label">5. पूर्व स्वीकृति मिति</label>
                                                     <div class="input-group">
-                                                        {{ form.pre_approval_date }}
+                                                    {{ form.pre_approval_date }}
                                                         <button type="button" class="btn btn-outline-secondary" onclick="openDatePicker()">
                                                             📅 क्यालेन्डर
                                                         </button>
                                                     </div>
-                                                    <small class="form-text text-muted">OCR बाट स्वचालित रूपमा भर्नेछ। म्यानुअल रूपमा मिति छान्न चाहनुहुन्छ भने क्यालेन्डर बटन थिच्नुहोस्।</small>
-                                                </div>
-                                                
                                                 <!-- Hidden date picker input for calendar -->
                                                 <input type="date" id="hidden_date_picker" style="display: none;" onchange="updateApprovalDate(this.value)">
+                                        </div>
                                                 
-                                                <div class="mb-1">
-                                                    <label for="{{ form.chalani_no.id_for_label }}" class="form-label mb-1">चलानी नं.</label>
+                                        <div class="mb-2">
+                                            <label for="{{ form.chalani_no.id_for_label }}" class="form-label">6. चलानी नं.</label>
                                                     {{ form.chalani_no }}
-                                                </div>
                                             </div>
                                             
-                                            <div class="col-md-6">
-                                                <div class="mb-3">
-                                                    <label for="{{ form.lot_no.id_for_label }}" class="form-label">LOT नं.</label>
+                                        <div class="mb-2">
+                                            <label for="{{ form.lot_no.id_for_label }}" class="form-label">7. LOT नं.</label>
                                                     {{ form.lot_no }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.city.id_for_label }}" class="form-label">शहर</label>
+                                            <label for="{{ form.city.id_for_label }}" class="form-label">8. शहर</label>
                                                     {{ form.city }}
+                                        </div>
+                                    </div>
+                                                </div>
+                                                
+                                <!-- Job Positions Section -->
+                                <div class="card mb-2">
+                                    <div class="card-header py-1">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0">👥 कामदारको पदहरू</h6>
+                                            <button type="button" class="btn btn-success btn-sm" onclick="addPosition()">
+                                                ➕ नयाँ पद थप्नुहोस्
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div id="positionsContainer">
+                                            {{ formset.management_form }}
+                                            {% for form in formset %}
+                                            <div class="position-form border rounded p-3 mb-3" data-form-index="{{ forloop.counter0 }}">
+                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                    <h6 class="mb-0">पद #{{ forloop.counter }}</h6>
+                                                    {% if forloop.counter > 1 %}
+                                                    <button type="button" class="btn btn-danger btn-sm" onclick="removePosition(this)">
+                                                        🗑️ हटाउनुहोस्
+                                                    </button>
+                                                    {% endif %}
                                                 </div>
                                                 
                                                 <div class="mb-2">
+                                                    <label class="form-label">1. कामदारको पद </label>
+                                                    {{ form.position }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">2. पुरुष</label>
+                                                    {{ form.male_count }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">3. महिला</label>
+                                                    {{ form.female_count }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">4. मासिक तलब</label>
+                                                    {{ form.salary_amount }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">5. मुद्रा</label>
+                                                    {{ form.salary_currency }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">6. ने.रु.</label>
+                                                    {{ form.salary_npr }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">7. कामदारका न्युनतम योग्यता </label>
+                                                    {{ form.min_qualification }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">8. ओभर टाईम सुबिधा </label>
+-                                                    {{ form.overtime }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">9. प्रतिदिन काम गर्ने घण्टा </label>
+                                                    {{ form.hours_per_day }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">10. हप्तामा काम गर्ने दिन </label>
+                                                    {{ form.days_per_week }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">11. वार्षिक बिदा </label>
+                                                    {{ form.yearly_leave }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">12. खाने सुविधा</label>
+                                                    {{ form.food_provided }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">13. बस्ने सुविधा </label>
+                                                    {{ form.housing_provided }}
+                                                </div>
+                                                
+                                                <div class="mb-2">
+                                                    <label class="form-label">14. करार अवधि</label>
+                                                    {{ form.contract_duration }}
+                                                </div>
+                                                
+                                                <!-- Hidden fields -->
+                                                {{ form.id }}
+                                                {{ form.employment_ad }}
+                                                {{ form.order }}
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Interview Information -->
+                                <div class="card mb-2">
+                                    <div class="card-header py-1">
+                                        <h6 class="mb-0">📅 अन्तर्वार्ता सूचना</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                                <div class="mb-2">
                                                     <label for="{{ form.interview_custom_text.id_for_label }}" class="form-label">अन्तर्वार्ता सूचना (वैकल्पिक)</label>
                                                     {{ form.interview_custom_text }}
-                                                    <small class="form-text text-muted">यहाँ आफ्नो विशेष अन्तरवार्ता सूचना लेख्नुहोस्। खाली छोड्नुहोस् यदि स्वचालित ८ दिन गणना चाहनुहुन्छ भने।</small>
                                                 </div>
                                                 
                                                 <div class="mb-2">
                                                     <label class="form-label">अन्तर्वार्ता मिति र स्थान</label>
-                                                    <small class="form-text text-muted d-block mb-2">✅ मितिहरू स्वचालित रूपमा भर्नेछन् (पूर्व स्वीकृति मिति + ८ दिन)</small>
                                                     <div class="row">
                                                         <div class="col-4">
                                                             <label class="form-label">नेपाली मिति</label>
@@ -196,9 +302,6 @@
                                                     </div>
                                                     <div class="mt-2">
                                                         <button type="button" class="btn btn-sm btn-outline-secondary" onclick="calculateInterviewDate()">🔄 म्यानुअल मिति गणना (८ दिन पछि)</button>
-                                                        <small class="form-text text-muted d-block mt-1">यो बटन थिच्नुहोस् यदि तपाईं म्यानुअल रूपमा मिति गणना गर्न चाहनुहुन्छ (स्वचालित रूपमा भर्नेछ)</small>
-                                                    </div>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -378,158 +481,12 @@
                                 </div>
                                 
                                 <div class="text-end">
-                                    <button type="submit" class="btn btn-primary btn-lg">💾 सेभ गर्नुहोस् र अर्को चरणमा जानुहोस्</button>
+                                    <button type="submit" class="btn btn-primary btn-lg">💾 सेभ गर्नुहोस् र पूर्वावलोकनमा जानुहोस्</button>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- Step 3: Job Positions -->
-                        <div class="tab-pane fade" id="step3" role="tabpanel">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="mb-0">👥 कामदारको पदहरू</h5>
-                                <div>
-                                    <button type="button" class="btn btn-success btn-sm" onclick="addPosition()">
-                                        ➕ नयाँ पद थप्नुहोस्
-                                    </button>
-                                </div>
-                            </div>
-                            
-
-                            
-                            <form method="post" id="positionForm">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="position">
-                                
-                                <div id="positionsContainer">
-                                    {{ formset.management_form }}
-                                    {% for form in formset %}
-                                    <div class="position-form border rounded p-3 mb-3" data-form-index="{{ forloop.counter0 }}">
-                                        <div class="d-flex justify-content-between align-items-center mb-2">
-                                            <h6 class="mb-0">पद #{{ forloop.counter }}</h6>
-                                            {% if forloop.counter > 1 %}
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="removePosition(this)">
-                                                🗑️ हटाउनुहोस्
-                                            </button>
-                                            {% endif %}
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label class="form-label">पद</label>
-                                                    {{ form.position }}
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">पुरुष</label>
-                                                            {{ form.male_count }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">महिला</label>
-                                                            {{ form.female_count }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">तलब रकम</label>
-                                                            {{ form.salary_amount }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">मुद्रा</label>
-                                                            {{ form.salary_currency }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">तलब (ने.रु.)</label>
-                                                    {{ form.salary_npr }}
-                                                    <small class="form-text text-muted">स्वचालित रूपमा गणना गरिने</small>
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-md-6">
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">ओभर टाइम</label>
-                                                            {{ form.overtime }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">घण्टा/दिन</label>
-                                                            {{ form.hours_per_day }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">दिन/हप्ता</label>
-                                                            {{ form.days_per_week }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">वार्षिक विदा</label>
-                                                            {{ form.yearly_leave }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">शैक्षिक योग्यता</label>
-                                                    {{ form.min_qualification }}
-                                                </div>
-                                                
-                                                <div class="row">
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">खाना</label>
-                                                            {{ form.food_provided }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-6">
-                                                        <div class="mb-2">
-                                                            <label class="form-label">बसोबास</label>
-                                                            {{ form.housing_provided }}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">करार अवधि</label>
-                                                    {{ form.contract_duration }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Hidden fields -->
-                                        {{ form.id }}
-                                        {{ form.employment_ad }}
-                                        {{ form.order }}
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                                
-                                <div class="text-end">
-                                    <button type="submit" class="btn btn-primary btn-lg">💾 पदहरू सेभ गर्नुहोस् र अर्को चरणमा जानुहोस्</button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <!-- Step 4: Preview -->
+                        <!-- Step 3: Preview -->
                         <div class="tab-pane fade" id="step4" role="tabpanel">
                             <h5 class="mb-1">👁️ पूर्वावलोकन</h5>
                             <p class="text-muted">आफ्नो विज्ञापनको अन्तिम रूप हेर्नुहोस् र PDF डाउनलोड गर्नुहोस्</p>
@@ -693,7 +650,7 @@
 
 <script>
 let currentStep = 1;
-const totalSteps = 4;
+const totalSteps = 3;
 
 /* ==== BROWSER OCR (tesseract.js) ==== */
 const OCR_LANGS = 'nep+eng';
@@ -3460,7 +3417,7 @@ function fillPositionFromText(text) {
 }
 
 /* === intercept Step-1 form to run OCR in browser === */
-document.addEventListener('DOMContentLoaded', function() {
+function setupOCRForm() {
   const ocrForm = document.getElementById('ocrForm');
   const fileInput = document.getElementById('id_document');
   if (ocrForm && fileInput) {
@@ -3490,7 +3447,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
   }
-});
+}
 
 // Debug function to show what fields are available and what values are extracted
 function debugOCRResults(text) {
@@ -3554,7 +3511,7 @@ function formatNepaliCurrency(amount) {
   const numStr = Math.round(amount).toString();
   let out = '';
   for (const ch of numStr) out += /\d/.test(ch) ? nep[+ch] : ch;
-  return `रु. ${out}/-`;
+  return `${out}/-`;
 }
 function handleSalaryConversion(formElement) {
     const salaryAmount = formElement.querySelector('[name*="salary_amount"]');
@@ -3828,25 +3785,90 @@ async function updateCurrencyRates() {
 }
 
 /* ===== on load ===== */
-document.addEventListener('DOMContentLoaded', function() {
-  updateProgress();
+// Global setup tracking to prevent duplicates
+const setupTracker = {
+  isComplete: false,
+  functions: new Set(),
+  elements: new Set(),
+  eventListeners: new Map() // Track event listeners by element + event type
+};
 
-  document.querySelectorAll('.position-form').forEach(f => addCurrencyConversionListeners(f));
+// Function to safely add event listener only once
+function addEventListenerOnce(element, event, handler, options) {
+  if (!element) return;
+  
+  // Create a unique key for this element + event combination
+  const key = `${element.id || element.name || 'unknown'}_${event}`;
+  
+  // Check if we already added this exact event listener
+  if (setupTracker.eventListeners.has(key)) {
+    console.log(`⚠️ Event listener already exists: ${event} on ${element.id || element.name || 'unknown'}`);
+    return;
+  }
+  
+  // Add the event listener
+  element.addEventListener(event, handler, options);
+  setupTracker.eventListeners.set(key, true);
+  setupTracker.elements.add(element);
+  console.log(`✅ Event listener added: ${event} on ${element.id || element.name || 'unknown'}`);
+}
 
-  // correct IDs for interview fields
-  ['id_interview_nepali_date','id_interview_gregorian_date','id_interview_location']
-    .forEach(id => { const el = document.getElementById(id); if (el) el.addEventListener('input', updateInterviewPreview); });
+// Function to safely setup a function only once
+function setupFunctionOnce(funcName, setupFunc) {
+  if (setupTracker.functions.has(funcName)) {
+    console.log(`⚠️ Function ${funcName} already set up, skipping...`);
+    return;
+  }
+  
+  setupFunc();
+  setupTracker.functions.add(funcName);
+  console.log(`✅ Function ${funcName} set up successfully`);
+}
 
-  setupNumberConversion();
-  setupDateConversion();
-  const container = document.getElementById('positionsContainer');
-  if (container) container.addEventListener('change', function(e) {
-    if (e.target.name && (e.target.name.includes('salary_amount') || e.target.name.includes('salary_currency'))) {
-      const formElement = e.target.closest('.position-form');
-      if (formElement) handleSalaryConversion(formElement);
+// Prevent multiple DOMContentLoaded listeners
+if (window.rajdhaniSetupComplete) {
+  console.log('⚠️ Rajdhani setup already completed, skipping...');
+} else {
+  document.addEventListener('DOMContentLoaded', function() {
+    // Prevent duplicate setup
+    if (setupTracker.isComplete) {
+      console.log('⚠️ Setup already completed, skipping...');
+      return;
     }
+    
+    console.log('🔄 DOMContentLoaded event triggered - SINGLE LISTENER');
+    
+    // Setup all functions in the correct order with duplicate prevention
+    console.log('🔄 Setting up all functions with duplicate prevention...');
+    
+    // 1. Setup OCR form
+    setupFunctionOnce('OCRForm', setupOCRForm);
+    
+    // 2. Setup progress and currency conversion
+    setupFunctionOnce('ProgressAndCurrency', setupProgressAndCurrency);
+    
+    // 3. Setup automatic interview date
+    setupFunctionOnce('AutomaticInterviewDate', setupAutomaticInterviewDate);
+    
+    // 4. Setup country dropdown
+    setupFunctionOnce('CountryDropdown', setupCountryDropdown);
+    
+    // 5. Setup logo preview
+    setupFunctionOnce('LogoPreview', setupLogoPreview);
+    
+    // 6. Setup interview preview listeners (only once)
+    ['id_interview_nepali_date','id_interview_gregorian_date','id_interview_location']
+      .forEach(id => { 
+        const el = document.getElementById(id); 
+        if (el) addEventListenerOnce(el, 'input', updateInterviewPreview); 
+      });
+    
+    // Mark setup as complete
+    setupTracker.isComplete = true;
+    window.rajdhaniSetupComplete = true;
+    console.log('✅ All setup functions called from single DOMContentLoaded listener with duplicate prevention');
   });
-});
+}
 
 /* ===== your remaining helpers (unchanged) ===== */
 function setupLogoPreview() {
@@ -3855,11 +3877,8 @@ function setupLogoPreview() {
   const logoText = document.getElementById('id_company_logo_text');
   
   if (logoUpload) {
-    // Remove existing event listeners to prevent duplicates
-    const newLogoUpload = logoUpload.cloneNode(true);
-    logoUpload.parentNode.replaceChild(newLogoUpload, logoUpload);
-    
-    newLogoUpload.addEventListener('change', function(e) {
+    // Use our safe event listener function to prevent duplicates
+    addEventListenerOnce(logoUpload, 'change', function(e) {
       const file = e.target.files[0];
       if (!file) return;
       if (!file.type.startsWith('image/')) return alert('कृपया एउटा इमेज फाइल छान्नुहोस्।');
@@ -3871,11 +3890,8 @@ function setupLogoPreview() {
   }
   
   if (logoText) {
-    // Remove existing event listeners to prevent duplicates
-    const newLogoText = logoText.cloneNode(true);
-    logoText.parentNode.replaceChild(newLogoText, logoText);
-    
-    newLogoText.addEventListener('input', function() {
+    // Use our safe event listener function to prevent duplicates
+    addEventListenerOnce(logoText, 'input', function() {
       if (!logoUpload?.files.length) logoPreview.innerHTML = `<div class="logo-placeholder">${this.value || 'LOGO'}</div>`;
     });
   }
@@ -3990,29 +4006,7 @@ function convertGregorianToNepali(gregorianDate) {
     return `${nepaliYear}/${gregorianDate.split('-')[1]}/${gregorianDate.split('-')[2]}`;
 }
 
-// Add date conversion listeners
-function setupDateConversion() {
-    const nepaliDateField = document.getElementById('id_nepali_date');
-    const gregorianDateField = document.getElementById('id_gregorian_date');
-    
-    if (nepaliDateField && gregorianDateField) {
-        nepaliDateField.addEventListener('input', function() {
-            if (this.value && this.value.includes('/')) {
-                const gregorianDate = convertNepaliToGregorian(this.value);
-                gregorianDateField.value = gregorianDate;
-                updateInterviewPreview();
-            }
-        });
-        
-        gregorianDateField.addEventListener('input', function() {
-            if (this.value && this.value.includes('-')) {
-                const nepaliDate = convertGregorianToNepali(this.value);
-                nepaliDateField.value = nepaliDate;
-                updateInterviewPreview();
-            }
-        });
-    }
-}
+
 
 
 
@@ -4024,11 +4018,8 @@ function setupCountryDropdown() {
     const titleField = document.getElementById('id_title');
     
     if (countryField && otherCountryField && otherCountryInput) {
-        // Remove existing event listeners to prevent duplicates
-        const newCountryField = countryField.cloneNode(true);
-        countryField.parentNode.replaceChild(newCountryField, countryField);
-        
-        newCountryField.addEventListener('change', function() {
+        // Use our safe event listener function to prevent duplicates
+        addEventListenerOnce(countryField, 'change', function() {
             if (this.value === 'Other') {
                 otherCountryField.style.display = 'block';
                 otherCountryInput.required = true;
@@ -4051,19 +4042,19 @@ function setupCountryDropdown() {
         });
         
         // Also handle on page load if "Other" is pre-selected
-        if (newCountryField.value === 'Other') {
+        if (countryField.value === 'Other') {
             otherCountryField.style.display = 'block';
             otherCountryInput.required = true;
         }
         
         // Generate title on page load if country is already selected
-        if (newCountryField.value && newCountryField.value !== 'Other') {
-            generateTitleFromCountry(newCountryField.value, titleField);
+        if (countryField.value && countryField.value !== 'Other') {
+            generateTitleFromCountry(countryField.value, titleField);
         }
         
         // Add listener for custom country input to update title
         if (otherCountryInput) {
-            otherCountryInput.addEventListener('input', function() {
+            addEventListenerOnce(otherCountryInput, 'input', function() {
                 if (this.value.trim()) {
                     const customTitle = `${this.value.trim()}मा रोजगारी`;
                     if (titleField) {
@@ -4128,52 +4119,77 @@ function generateTitleFromCountry(country, titleField) {
 
 // Automatic interview date calculation (8 days after approval date)
 function setupAutomaticInterviewDate() {
+    console.log('🔄 setupAutomaticInterviewDate called');
+    
     const approvalDateField = document.getElementById('id_pre_approval_date');
     const nepaliDateField = document.getElementById('id_interview_nepali_date');
     const gregorianDateField = document.getElementById('id_interview_gregorian_date');
     const previewNepali = document.getElementById('preview_nepali_date');
     const previewGregorian = document.getElementById('preview_gregorian_date');
     
+    console.log('📅 Field references:', {
+        approvalDateField: approvalDateField,
+        nepaliDateField: nepaliDateField,
+        gregorianDateField: gregorianDateField,
+        previewNepali: previewNepali,
+        previewGregorian: previewGregorian
+    });
+    
     if (approvalDateField && nepaliDateField && gregorianDateField) {
-        // Remove existing event listeners to prevent duplicates
-        const newApprovalDateField = approvalDateField.cloneNode(true);
-        approvalDateField.parentNode.replaceChild(newApprovalDateField, approvalDateField);
+        console.log('✅ All fields found, setting up event listeners');
         
-        newApprovalDateField.addEventListener('input', function() {
+        // Use our safe event listener function to prevent duplicates
+        addEventListenerOnce(approvalDateField, 'input', function() {
+            console.log('📅 Approval date input event triggered with value:', this.value);
             if (this.value) {
                 calculateAndFillInterviewDate(this.value);
             }
         });
         
-        newApprovalDateField.addEventListener('change', function() {
+        addEventListenerOnce(approvalDateField, 'change', function() {
+            console.log('📅 Approval date change event triggered with value:', this.value);
             if (this.value) {
                 calculateAndFillInterviewDate(this.value);
             }
+        });
+        
+        console.log('✅ Event listeners attached to approval date field');
+    } else {
+        console.log('❌ Some fields not found:', {
+            approvalDateField: !!approvalDateField,
+            nepaliDateField: !!nepaliDateField,
+            gregorianDateField: !!gregorianDateField
         });
     }
     
     function calculateAndFillInterviewDate(approvalDateStr) {
+        console.log('🔄 calculateAndFillInterviewDate called with:', approvalDateStr);
+        
         try {
             // Parse the approval date (handle both YYYY-MM-DD and YYYY/MM/DD formats)
             let approvalDate;
             if (approvalDateStr.includes('/')) {
                 // Handle Nepali date format (YYYY/MM/DD)
                 const parts = approvalDateStr.split('/');
+                console.log('📅 Parsing Nepali date format, parts:', parts);
                 if (parts.length === 3) {
                     const year = parseInt(parts[0]);
                     const month = parseInt(parts[1]) - 1; // Month is 0-indexed
                     const day = parseInt(parts[2]);
                     approvalDate = new Date(year, month, day);
+                    console.log('📅 Created Date object from Nepali format:', approvalDate);
                 }
             } else if (approvalDateStr.includes('-')) {
                 // Handle Gregorian date format (YYYY-MM-DD)
                 approvalDate = new Date(approvalDateStr);
+                console.log('📅 Created Date object from Gregorian format:', approvalDate);
             }
             
             if (approvalDate && !isNaN(approvalDate.getTime())) {
                 // Calculate interview date (8 days after approval)
                 const interviewDate = new Date(approvalDate);
                 interviewDate.setDate(approvalDate.getDate() + 8);
+                console.log('📅 Interview date calculated (8 days after):', interviewDate);
                 
                 // Format Nepali date (YYYY/MM/DD)
                 const nepaliDate = `${interviewDate.getFullYear()}/${String(interviewDate.getMonth() + 1).padStart(2, '0')}/${String(interviewDate.getDate()).padStart(2, '0')}`;
@@ -4185,16 +4201,40 @@ function setupAutomaticInterviewDate() {
                     year: 'numeric' 
                 });
                 
+                console.log('📅 Formatted dates - Nepali:', nepaliDate, 'Gregorian:', gregorianDate);
+                console.log('📅 Field references - nepaliDateField:', nepaliDateField, 'gregorianDateField:', gregorianDateField);
+                
                 // Fill the fields
-                if (nepaliDateField) nepaliDateField.value = nepaliDate;
-                if (gregorianDateField) gregorianDateField.value = gregorianDate;
-                if (previewNepali) previewNepali.textContent = nepaliDate;
-                if (previewGregorian) previewGregorian.textContent = gregorianDate;
+                if (nepaliDateField) {
+                    nepaliDateField.value = nepaliDate;
+                    console.log('✅ Nepali date field updated');
+                } else {
+                    console.log('❌ Nepali date field not found');
+                }
+                
+                if (gregorianDateField) {
+                    gregorianDateField.value = gregorianDate;
+                    console.log('✅ Gregorian date field updated');
+                } else {
+                    console.log('❌ Gregorian date field not found');
+                }
+                
+                if (previewNepali) {
+                    previewNepali.textContent = nepaliDate;
+                    console.log('✅ Nepali preview updated');
+                }
+                
+                if (previewGregorian) {
+                    previewGregorian.textContent = gregorianDate;
+                    console.log('✅ Gregorian preview updated');
+                }
                 
                 console.log('✅ Interview date automatically calculated:', nepaliDate, '(', gregorianDate, ')');
+            } else {
+                console.log('❌ Invalid approval date or could not parse:', approvalDateStr);
             }
         } catch (error) {
-            console.error('Error calculating interview date:', error);
+            console.error('❌ Error calculating interview date:', error);
         }
     }
 }
@@ -4249,19 +4289,7 @@ function convertToNepaliNumbers(input) {
     return input;
 }
 
-// Apply auto-conversion to number fields
-function setupNumberConversion() {
-    const numberFields = document.querySelectorAll('input[name*="male_count"], input[name*="female_count"], input[name*="hours_per_day"], input[name*="days_per_week"]');
-    
-    numberFields.forEach(field => {
-        field.addEventListener('input', function() {
-            const value = this.value;
-            if (/^\d+$/.test(value)) { // Only convert if it's pure numbers
-                this.value = convertToNepaliNumbers(value);
-            }
-        });
-    });
-}
+
 
 // Function to apply OCR data to forms
 function applyOCRData() {
@@ -4739,7 +4767,7 @@ async function updateCurrencyRates() {
 }
 
 // Update progress on page load
-document.addEventListener('DOMContentLoaded', function() {
+function setupProgressAndCurrency() {
     updateProgress();
     
     // Add currency conversion listeners to existing forms
@@ -4748,23 +4776,23 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Add interview preview listeners
-    document.getElementById('id_nepali_date').addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_gregorian_date').addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_hour').addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_time').addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_location').addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_nepali_date')?.addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_gregorian_date')?.addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_hour')?.addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_time')?.addEventListener('input', updateInterviewPreview);
+    document.getElementById('id_interview_location')?.addEventListener('input', updateInterviewPreview);
     
     // Setup number conversion
     setupNumberConversion();
     
     // Setup date conversion
     setupDateConversion();
-    
+
     // Setup country notice preview
     setupCountryNoticePreview();
     
     // Add event delegation for dynamically added forms
-    document.getElementById('positionsContainer').addEventListener('change', function(e) {
+    document.getElementById('positionsContainer')?.addEventListener('change', function(e) {
         if (e.target.name && (e.target.name.includes('salary_amount') || e.target.name.includes('salary_currency'))) {
             const formElement = e.target.closest('.position-form');
             if (formElement) {
@@ -4772,7 +4800,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-});
+}
 
 function updateProgress() {
     const progress = (currentStep / totalSteps) * 100;
@@ -5108,92 +5136,11 @@ function setupCountryNoticePreview() {
     }
 }
 
-function updateCountryNoticePreview() {
-    const countryField = document.getElementById('id_country');
-    const extraNotesField = document.getElementById('id_extra_notes');
-    const previewDiv = document.getElementById('countryNoticePreview');
-    const previewText = document.getElementById('noticePreviewText');
-    
-    if (!countryField || !extraNotesField || !previewDiv || !previewText) return;
-    
-    const country = countryField.value.trim().toLowerCase();
-    const hasCustomNotes = extraNotesField.value.trim();
-    
-    if (!country) {
-        previewDiv.style.display = 'none';
-        return;
-    }
-    
-    if (hasCustomNotes) {
-        previewDiv.style.display = 'none';
-        return;
-    }
-    
-    let notice = '';
-    
-    // Middle East countries
-    if (['kuwait', 'uae', 'saudi', 'qatar', 'oman', 'bahrain', 'jordan', 'lebanon', 'iraq', 'iran', 'syria', 'yemen'].some(c => country.includes(c))) {
-        notice = 'बैदेशिक रोजगार बिभागबाट गराइएको जानकारी (मध्य पूर्वी देशहरूको लागि)';
-    }
-    // Japan
-    else if (country.includes('japan')) {
-        notice = 'प्रशिक्षार्थीको आवश्यक न्यूनतम योग्यता र काम गरेको अनुभव (जापानको लागि)';
-    }
-    // Other countries
-    else {
-        notice = 'सामान्य सूचना (अन्य देशहरूको लागि)';
-    }
-    
-    previewText.textContent = notice;
-    previewDiv.style.display = 'block';
-    
-    // Auto-set currency based on country
-    updateCurrencyBasedOnCountry(country);
-}
 
-function updateCurrencyBasedOnCountry(country) {
-    // Find all salary currency fields in the formset
-    const currencyFields = document.querySelectorAll('[name*="salary_currency"]');
-    
-    if (currencyFields.length === 0) return;
-    
-    let defaultCurrency = 'KD'; // Default to Kuwaiti Dinar
-    
-    // Set currency based on country
-    if (country.includes('kuwait')) {
-        defaultCurrency = 'KWD';
-    } else if (country.includes('uae')) {
-        defaultCurrency = 'AED';
-    } else if (country.includes('saudi')) {
-        defaultCurrency = 'SAR';
-    } else if (country.includes('qatar')) {
-        defaultCurrency = 'QAR';
-    } else if (country.includes('oman')) {
-        defaultCurrency = 'OMR';
-    } else if (country.includes('bahrain')) {
-        defaultCurrency = 'BHD';
-    } else if (country.includes('japan')) {
-        defaultCurrency = 'JPY';
-    } else if (country.includes('usa') || country.includes('united states')) {
-        defaultCurrency = 'USD';
-    } else if (country.includes('europe') || country.includes('eu')) {
-        defaultCurrency = 'EUR';
-    } else if (country.includes('uk') || country.includes('united kingdom')) {
-        defaultCurrency = 'GBP';
-    }
-    
-    // Update all currency fields
-    currencyFields.forEach(field => {
-        if (field.value === '' || field.value === 'KD') { // Only update if empty or default
-            field.value = defaultCurrency;
-        }
-    });
-}
 
-// Initialize country notice preview when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    setupCountryNoticePreview();
-});
+
+
+
 
 // Test form submission function
 function testFormSubmission() {

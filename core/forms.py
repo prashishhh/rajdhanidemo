@@ -153,7 +153,7 @@ class EmploymentAdForm(forms.ModelForm):
         model = EmploymentAd
         fields = [
             'title', 'company_name', 'country', 'pre_approval_date', 'chalani_no', 
-            'lot_no', 'city',
+            'lot_no', 'city', 'right_section_text',
             'medical_cost_local', 'medical_cost_foreign', 'insurance_local', 'insurance_employment',
             'air_ticket', 'visa_fee', 'visa_stamp_fee', 'recruitment_fee', 'welfare_fund',
             'labor_fee', 'service_fee', 'extra_notes', 'interview_custom_text',
@@ -298,6 +298,23 @@ class EmploymentAdForm(forms.ModelForm):
 class JobPositionForm(forms.ModelForm):
     """Form for individual job positions"""
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set default values for new form instances
+        if not self.instance.pk:
+            if not self.initial.get('min_qualification'):
+                self.initial['min_qualification'] = 'कम्पनीको<br>नियमानुसर'
+            if not self.initial.get('overtime'):
+                self.initial['overtime'] = 'कम्पनीको नियमानुसार'
+            if not self.initial.get('hours_per_day'):
+                self.initial['hours_per_day'] = '८ घण्टा'
+            if not self.initial.get('days_per_week'):
+                self.initial['days_per_week'] = '६ दिन'
+            if not self.initial.get('yearly_leave'):
+                self.initial['yearly_leave'] = 'कम्पनीको नियमानुसार'
+            if not self.initial.get('contract_duration'):
+                self.initial['contract_duration'] = '२ वर्ष'
+    
     class Meta:
         model = JobPosition
         fields = [
@@ -351,14 +368,34 @@ class JobPositionForm(forms.ModelForm):
                 ('छैन', 'छैन'),
                 ('कम्पनीको नियमानुसार', 'कम्पनीको नियमानुसार')
             ]),
-            'hours_per_day': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'घण्टा भर्नुहोस्'
-            }),
-            'days_per_week': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'दिन भर्नुहोस्'
-            }),
+            'hours_per_day': forms.Select(attrs={
+                'class': 'form-control'
+            }, choices=[
+                ('', 'छान्नुहोस्'),
+                ('१ घण्टा', '१ घण्टा'),
+                ('२ घण्टा', '२ घण्टा'),
+                ('३ घण्टा', '३ घण्टा'),
+                ('४<br>घण्टा', '४<br>घण्टा'),
+                ('५ घण्टा', '५ घण्टा'),
+                ('६ घण्टा', '६ घण्टा'),
+                ('७ घण्टा', '७ घण्टा'),
+                ('८ घण्टा', '८ घण्टा'),
+                ('९ घण्टा', '९ घण्टा'),
+                ('१० घण्टा', '१० घण्टा'),
+                ('११ घण्टा', '११ घण्टा'),
+                ('१२ घण्टा', '१२ घण्टा'),
+            ]),
+            'days_per_week': forms.Select(attrs={
+                'class': 'form-control'
+            }, choices=[
+                ('', 'छान्नुहोस्'),
+                ('१ दिन', '१ दिन'),
+                ('२ दिन', '२ दिन'),
+                ('३ दिन', '३ दिन'),
+                ('४ दिन', '४ दिन'),
+                ('५<br>दिन', '५<br>दिन'),
+                ('६ दिन', '६ दिन'),
+            ]),
             'yearly_leave': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
@@ -371,11 +408,11 @@ class JobPositionForm(forms.ModelForm):
                 'class': 'form-control'
             }, choices=[
                 ('', 'छान्नुहोस्'),
-                ('कम्तिमा पनि निम्नलिखित मुख्य', 'कम्तिमा पनि निम्नलिखित मुख्य'),
+                ('कम्पनीको<br>नियमानुसर', 'कम्पनीको<br>नियमानुसर'),
                 ('+2', '+2'),
                 ('SEE', 'SEE'),
                 ('Bachelors', 'Bachelors'),
-                ('सम्बन्धित काममा दक्ष', 'सम्बन्धित काममा दक्ष')
+                ('सम्बन्धित काममा<br>दक्ष', 'सम्बन्धित काममा<br>दक्ष')
             ]),
             'food_provided': forms.Select(attrs={
                 'class': 'form-control'
@@ -391,10 +428,13 @@ class JobPositionForm(forms.ModelForm):
                 ('छ', 'छ'), 
                 ('छैन', 'छैन')
             ]),
-            'contract_duration': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'अवधि भर्नुहोस्'
-            }),
+            'contract_duration': forms.Select(attrs={
+                'class': 'form-control'
+            }, choices=[
+                ('', 'छान्नुहोस्'),
+                ('२ वर्ष', '२ वर्ष'),
+                ('३ वर्ष', '३ वर्ष'),
+            ]),
             'order': forms.HiddenInput(),
         }
     

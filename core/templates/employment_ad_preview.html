@@ -5,160 +5,420 @@
 <title>Employment Advertisement - Dynamic Design</title>
 <style>
   body { 
-    margin: 20px; 
+    margin: 20px auto; 
     font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif; 
     background: #f0f0f0;
+    text-align: center; /* Center all content */
+    max-width: 100%;
+    padding: 0 20px;
+    padding-top: 400px; /* Increased top padding to move content further down */
   }
   
-  .employment-ad {
-    width: 12cm;
-    background: #fff;
-    border: 1px solid #000;
-    box-sizing: border-box;
-    overflow: hidden;
-    font-size: 6pt;
-    line-height: 1;
+  /* PDF mode - adjust positioning for PDF */
+  {% if pdf_mode %}
+  body {
+    padding-top: 200px !important; /* Reduced padding for PDF but still some space from top */
   }
+  {% endif %}
   
-  /* Top Header - Single row with title and company */
+
+  
+  /* Top Header - Single row with centered title */
   .top-header {
     background: white;
     color: black;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
     align-items: center;
-    padding: 2px 6px;
+    justify-content: center;
+    padding: 0px 6px;
     font-weight: 900;
     font-size: 5pt;
+    height: 0.4cm;
+    max-height: 0.4cm;
+    min-height: 0.4cm;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    overflow: hidden;
   }
   
   .header-left {
-    text-align: left;
+    text-align: center;
     letter-spacing: 0.3px;
   }
   
-  .header-right {
-    text-align: right;
-    font-size: 4pt;
-  }
+
   
   /* Meta Information Bar */
   .meta-bar {
+    background: #fff;
+    border-top: 0.5px solid #000;
+    border-bottom: none;
+    font-size: 5pt;
+    box-sizing: border-box;
+    height: 0.6cm;
+    max-height: 0.6cm;
+    min-height: 0.6cm;
+    overflow: hidden;
+  }
+  
+  .company-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 3px;
+    font-size: 5pt;
+    font-weight: 900;
+    text-align: center;
+    height: 0.3cm;
+    min-height: 0.3cm;
+    max-height: 0.3cm;
+    border-bottom: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1; /* Take up available space */
+  }
+  
+  .company-row.long-name {
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  .company-right-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0px 3px;
+    font-size: 4pt;
+    font-weight: 600;
+    text-align: right;
+    height: 0.3cm;
+    min-height: 0.3cm;
+    max-height: 0.3cm;
+    border-bottom: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 2cm; /* Fixed width for right section */
+  }
+  
+  .meta-items-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
-    background: #fff;
-    border-top: 1px solid #000;
-    border-bottom: 0.5px solid #000;
-    font-size: 4.5pt;
+    height: 0.3cm;
+    min-height: 0.3cm;
+    max-height: 0.3cm;
+    width: 100%;
+    overflow: hidden;
   }
   
   .meta-item {
-    border-right: 0.5px solid #000;
-    padding: 2px 3px;
-    text-align: center;
+    padding: 0px 3px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
   }
   
-  .meta-item:last-child {
-    border-right: none;
-  }
+
   
   .meta-item b {
     font-weight: 700;
   }
   
+  /* City field with smaller font */
+  .meta-item:last-child {
+    font-size: 4pt;
+  }
+  
   /* Main Table */
   .main-table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    border-collapse: collapse !important;
+    border-spacing: 0px !important;
     font-size: 4pt;
     line-height: 1;
-    border: 0.25px solid #000;
-    margin-bottom: 1px;
+    margin: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 0.9cm;
+    height: auto !important; /* Allow table to grow vertically */
+    table-layout: fixed;
+    overflow: visible !important; /* Allow table to grow */
+    border-right: none; /* Remove right border from main table */
+    box-sizing: border-box; /* Ensure border is included in width calculation */
+  }
+  
+  /* Center the entire employment ad container */
+  .employment-ad {
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    min-height: 4.9cm; /* Minimum height, can grow */
+    height: auto !important; /* Allow container to grow */
+    background: #fff;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    overflow: visible !important; /* Allow container to grow */
+    font-size: 6pt;
+    line-height: 1;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    position: relative;
   }
   
   .main-table th,
   .main-table td {
     border: 0.25px solid #000;
-    padding: 0.5px 1px;
+    padding: 0px;
     text-align: center;
     vertical-align: middle;
     word-break: break-word;
-    overflow: hidden;
+    overflow: visible; /* Changed from hidden to visible */
+    box-sizing: border-box;
+  }
+  
+  .main-table thead tr:first-child th {
+    border-top: 0.5px solid #000;
+  }
+  
+  .main-table thead {
+    height: 0.5cm;
+    max-height: 0.5cm;
+  }
+  
+  .main-table thead tr {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table thead tr:first-child {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table thead tr:last-child {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table th:first-child,
+  .main-table td:first-child {
+    border-left: none;
+  }
+  
+  .main-table th:last-child,
+  .main-table td:last-child {
+    border-right: none;
+  }
+  
+  .main-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .main-table tbody {
+    max-height: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  .main-table td {
+    height: 0.4cm !important;
+    min-height: 0.4cm !important;
+    max-height: 0.4cm !important;
+    overflow: hidden !important;
+    line-height: 1.0 !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    border-spacing: 0px !important;
+    font-size: 4pt !important;
   }
   
   .main-table th {
     background: #f8f8f8;
     font-weight: 700;
-    font-size: 4pt;
+    font-size: 3pt;
+    height: 0.25cm;
+    min-height: 0.25cm;
+    max-height: none; /* Allow height to grow if needed */
+    box-sizing: border-box;
+    padding: 0px;
+    overflow: visible; /* Changed from hidden to visible */
+    line-height: 1.0;
+    vertical-align: middle;
   }
+  
+
   
   .main-table th.col-position {
     font-weight: 900;
     font-size: 6pt;
   }
   
+  .main-table th.col-salary {
+    font-weight: 900;
+    font-size: 4pt;
+  }
+  
+  .main-table th[colspan="2"] {
+    font-weight: 900;
+    font-size: 4pt;
+  }
+  
+  .main-table th.col-gender {
+    font-weight: 900;
+    font-size: 4pt;
+  }
+  
   .main-table .text-left {
     text-align: left;
   }
   
+  .main-table .text-center {
+    text-align: center !important;
+    font-size: 3pt !important;
+  }
+  
   .main-table td.text-left {
-    font-weight: 700;
-    font-size: 5.5pt;
+    font-weight: 400 !important;
+    font-size: 7pt !important;
+    padding-left: 2px !important;
   }
   
   .main-table td:nth-child(3),
   .main-table td:nth-child(4),
-  .main-table td:nth-child(5),
-  .main-table td:nth-child(6),
   .main-table td:nth-child(12),
   .main-table td:nth-child(13) {
     font-weight: 700;
     font-size: 6pt;
   }
   
+  .main-table td:nth-child(5),
+  .main-table td:nth-child(6) {
+    font-weight: 700;
+    font-size: 4pt; /* Reduced from 5pt to 4pt */
+  }
+  
   /* Column widths optimized for 12cm */
   .col-sn { width: 3%; }
-  .col-position { width: 20%; }
-  .col-gender { width: 5%; }
-  .col-salary { width: 9%; }
-  .col-overtime { width: 6%; }
-  .col-hours { width: 4%; }
-  .col-days { width: 4%; }
-  .col-leave { width: 6%; }
-  .col-education { width: 10%; }
-  .col-food { width: 4%; }
+  .col-position { width: 30%; } /* Reduced by 1% to compensate for col-contract */
+  .col-gender { width: 1%; } /* Reduced further from 2% to 1% */
+  .col-salary { width: 10%; } /* Increased to compensate for total width */
+  .col-overtime { width: 5%; }
+  .col-hours { width: 5%; }
+  .col-days { width: 5%; }
+  .col-leave { width: 5%; }
+  .col-education { width: 7%; } /* Increased by 2% */
+  .col-food { width: 5%; }
   .col-housing { width: 4%; }
-  .col-contract { width: 4%; }
+  .col-contract { width: 7%; } /* Increased to 7% */
   
+  /* Center text in yearly leave column */
+  .main-table td.col-leave {
+    text-align: center !important;
+    font-size: 3pt !important;
+  }
+  
+  /* Style overtime column */
+  .main-table td.col-overtime {
+    text-align: center !important;
+    font-size: 3pt !important;
+  }
+  
+  /* More specific rule to override any conflicting styles */
+  .main-table tbody tr.data-row td.col-leave {
+    text-align: center !important;
+  }
+  
+  /* Remove bold from specific column headers */
+  .main-table th.col-education,
+  .main-table th.col-overtime,
+  .main-table th.col-hours,
+  .main-table th.col-days,
+  .main-table th.col-leave,
+  .main-table th.col-food,
+  .main-table th.col-housing,
+  .main-table th.col-contract {
+    font-weight: normal;
+    
+    font-size: 3pt; /* Reduced by 1pt from default 3pt */
+  }
+  
+  /* Ensure contract column text fits properly */
+  .main-table th.col-contract,
+.main-table td.col-contract {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  font-size: 2.5pt; /* Increased from 1.5pt to be readable */
+  padding: 0px 1px; /* Add a tiny bit of padding to prevent text from touching the borders */
+  max-width: 100%;
+  white-space: normal; /* Change from nowrap to normal to allow wrapping */
+  border-right: none; /* Remove right border */
+}
   /* Data Row */
   .data-row {
-    height: 0.4cm;
+    height: 0.4cm !important;
+    min-height: 0.4cm !important;
+    max-height: 0.4cm !important;
+    margin: 0px !important;
+    padding: 0px !important;
   }
   
   .data-row td {
-    vertical-align: middle;
-    font-size: 4.5pt;
-    padding: 0.5px 2px;
+    vertical-align: middle !important;
+    font-size: 4pt !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    height: 0.4cm !important;
+    min-height: 0.4cm !important;
+    max-height: 0.4cm !important;
+    overflow: hidden !important;
+    line-height: 1.0 !important;
+    border-spacing: 0px !important;
   }
   
   /* Interview Section */
   .interview-section {
     background: #000;
     color: #fff;
-    padding: 1px 4px;
-    font-size: 4pt;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom: 0px; /* Ensure no bottom margin */
+    border: none;
+    font-size: 7pt;
     text-align: center;
     font-weight: 600;
-    line-height: 1.1;
-    margin-bottom: 1px;
+    line-height: 1.2;
+    min-height: 0.4cm;
+    overflow: visible;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
   
   /* Extra Information Section */
   .extra-section {
-    border-top: 0.5px solid #000;
-    font-size: 3.5pt;
-    margin-top: 0;
-    padding-top: 0;
+    border-top: none;
+    font-size: 2.5pt;
+    margin-top: 0px; /* No top margin */
+    margin-bottom: 0px; /* No bottom margin */
+    padding-top: 0px;
+    padding-bottom: 0px; /* No bottom padding */
+    min-height: 0.65cm;
+    max-height: 1.2cm;
+    overflow: visible;
+    box-sizing: border-box;
+    width: 100%;
   }
   
   .extra-table {
@@ -175,55 +435,231 @@
     font-size: 3pt;
     line-height: 1;
     word-break: break-word;
+    font-weight: 100 !important;
   }
   
   .extra-table th {
     background: #f8f8f8;
-    font-weight: 600;
-    height: 0.25cm;
+    font-weight: 100 !important;
+    height: 0.35cm; /* Increased height */
   }
   
   .extra-table td {
-    height: 0.2cm;
+    height: 0.3cm; /* Increased height */
   }
   
   .extra-table td:last-child {
-    font-weight: 700;
+    font-weight: 100 !important;
     font-size: 2.5pt;
   }
   
+  .extra-table th:first-child,
+  .extra-table td:first-child {
+    border-left: none;
+  }
+  
+  .extra-table th:last-child,
+  .extra-table td:last-child {
+    border-right: none;
+  }
+  
   .extra-note {
-    padding: 0px 1px;
-    font-size: 3pt;
-    line-height: 1;
-    text-align: justify;
-    border-top: 1px solid #000;
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size: 3.76pt !important;
+    line-height: 1.4 !important;
+    text-align: justify !important;
+    text-justify: inter-word !important;
+    border: none;
     background: #fff;
-    min-height: 0.1cm;
-    max-height: 1cm;
-    overflow: auto;
+    min-height: 0.4cm; /* Reduced minimum height */
+    max-height: none; /* Allow unlimited height */
+    overflow: visible; /* Changed from auto to visible */
     word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-weight: 200;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
   }
   
   .extra-note h4 {
     margin: 0;
     font-size: 3.5pt;
-    font-weight: bold;
-    color: black;
+    font-weight: 200 !important;
+    color:black;
+  }
+  
+  /* Print-specific styles to ensure light font weights */
+  @media print {
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-weight: 100 !important;
+      font-family: Arial, sans-serif !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .extra-table th {
+      font-weight: 100 !important;
+    }
+    
+    .extra-table td:last-child {
+      font-weight: 100 !important;
+    }
+    
+    .extra-note {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .extra-note h4 {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .notice-content {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .main-table td.text-left {
+      font-weight: 400 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .main-table .text-center {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .main-table td.col-leave,
+    .main-table td.col-overtime {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    /* Force all text to be lighter */
+    body, div, span, td, th, p, h1, h2, h3, h4, h5, h6 {
+      font-weight: 200 !important;
+    }
+    
+    /* Specific overrides for elements that need different weights */
+    .main-table td.text-left {
+      font-weight: 400 !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-weight: 100 !important;
+    }
+    
+    /* Only increase header elements */
+    .header-left {
+      font-size: 8pt !important;
+      font-weight: 700 !important;
+    }
+    
+    .header-right {
+      font-size: 7pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Company row */
+    .company-row {
+      font-size: 6pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Meta items row */
+    .meta-items-row {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+    }
+    
+    .meta-item {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+    }
+    
+    .meta-item:last-child {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+    }
+    
+    /* Meta item labels (names) */
+    .meta-item b {
+      font-size: 6pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Meta bar */
+    .meta-bar {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+    }
+    
+    /* Only position header - "कामदारको पद" */
+    .main-table th.col-position {
+      font-size: 7pt !important;
+      font-weight: 700 !important;
+    }
+    
+    /* Colspan 2 headers - increased font size */
+    .main-table th[colspan="2"] {
+      font-size: 4.6pt !important;
+      font-weight: 520 !important;
+    }
+    
+    /* Second row headers - increased font size */
+    .main-table th.col-gender,
+    .main-table th.col-salary {
+      font-size: 5.3pt !important;
+      font-weight: 550 !important;
+    }
+    
+    /* Specific data cells - increased font size */
+    .main-table td:nth-child(3), /* male_count */
+    .main-table td:nth-child(4), /* female_count */
+    .main-table td:nth-child(5), /* salary_amount */
+    .main-table td:nth-child(6) { /* salary_npr */
+      font-size: 6pt !important;
+      font-weight: 550 !important;
+    }
   }
   
         .notice-content {
-        font-size: 3pt;
-        line-height: 1;
+        font-size: 3.76pt !important;
+        line-height: 1.4 !important;
         color:#000;
-        margin: 0;
-        padding: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        font-weight: 200;
+        text-align: justify !important;
+        text-justify: inter-word !important;
+        display: block !important;
       }
       
       .notice-paragraph {
-        margin: 0;
-        padding: 0;
-        text-align: left;
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: justify !important;
+        text-justify: inter-word !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        font-size: 3.76pt !important;
+        line-height: 1.4 !important;
         page-break-inside: avoid;
       }
       
@@ -231,44 +667,75 @@
         margin-bottom: 0;
   }
   
-  /* Company Banner - ATTACHED to the main ad */
+  /* Main content wrapper */
+  .main-content {
+    flex: 1;
+    overflow: visible;
+    padding-bottom: 1.2cm; /* Reserve space for the absolutely positioned banner */
+  }
+  
+  /* Company Banner - Pinned to bottom */
   .company-banner {
     background: white;
     color: black;
-    display: grid;
-    grid-template-columns: 60px 1fr 60px;
-    gap: 4px;
+    display: flex;
     align-items: center;
-    padding: 3px;
-    border-top: 1px solid #000;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0px;
+    border-top: 0.5px solid #000;
+    height: 1.2cm;
+    min-height: 1.2cm;
+    max-height: 1.2cm;
+    overflow: hidden;
+    box-sizing: border-box;
+    line-height: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
   }
   
   .company-logo {
     background: #fff;
     color: #000;
-    height: 20px;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    width: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 900;
-    font-size: 4pt;
+    font-size: 2pt;
     border: 1px solid #fff;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
   }
   
   .company-info {
     text-align: center;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
   }
   
   .company-info h1 {
-    margin: 0 0 1px 0;
-    font-size: 6pt;
+    margin: 0 0 0px 0;
+    font-size: 4pt;
     font-weight: 900;
     letter-spacing: 0.1px;
   }
   
   .company-info p {
     margin: 0;
-    font-size: 3.5pt;
+    font-size: 2pt;
     line-height: 1;
   }
   
@@ -276,10 +743,18 @@
     background: white;
     border: black;
     text-align: center;
-    padding: 2px;
-    font-size: 3pt;
+    padding: 0px;
+    font-size: 2pt;
     font-weight: 700;
     line-height: 1;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0px;
   }
   
   @media print {
@@ -291,18 +766,26 @@
 <body>
 
 <div class="employment-ad">
-  <!-- Top Header - Title and Company in same row -->
-  <div class="top-header">
-    <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
-    <div class="header-right">कम्पनी: {% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</div>
-  </div>
+  <div class="main-content">
+    <!-- Top Header - Centered title only -->
+    <div class="top-header">
+      <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
+    </div>
   
   <!-- Meta Information -->
   <div class="meta-bar">
-    <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
-    <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-    <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-    <div class="meta-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+    <div style="display: flex; align-items: center; height: 0.3cm;">
+      <div class="company-row" id="company-row">कम्पनी: {% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</div>
+      {% if ad.right_section_text %}
+      <div class="company-right-section">{{ ad.right_section_text }}</div>
+      {% endif %}
+    </div>
+    <div class="meta-items-row">
+      <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
+      <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+      <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+      <div class="meta-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+    </div>
   </div>
   
   <!-- Main Table -->
@@ -312,18 +795,23 @@
       <tr>
         <th rowspan="2" class="col-sn">सि.नं.</th>
         <th rowspan="2" class="col-position">कामदारको पद</th>
+      <div class="nope">
         <th colspan="2">माग संख्या</th>
         <th colspan="2">मासिक तलब</th>
-        <th rowspan="2" class="col-overtime">ओभर टाइम सुविधा</th>
-        <th rowspan="2" class="col-hours">प्रतिदिन घण्टा</th>
-        <th rowspan="2" class="col-days">हप्तामा दिन</th>
-        <th rowspan="2" class="col-leave">वार्षिक विदा</th>
-        <th rowspan="2" class="col-education">न्यूनतम शैक्षिक योग्यता</th>
-        <th rowspan="2" class="col-food">खाना</th>
-        <th rowspan="2" class="col-housing">बसोबास</th>
-        <th rowspan="2" class="col-contract">करार अवधि</th>
+      </div>
+        <th rowspan="2" class="col-education">कामदारका न्युनतम योग्यता </th>
+
+        <th rowspan="2" class="col-overtime">ओभर <br>टाइम<br> सुविधा</th>
+        <th rowspan="2" class="col-hours">प्रतिदिन काम<br> गर्ने घण्टा</th>
+        <th rowspan="2" class="col-days">हप्तामा काम<br> गर्ने दिन</th>
+        <th rowspan="2" class="col-leave">वार्षिक <br> विदा</th>
+        <th rowspan="2" class="col-food">खाने सुविधा</th>
+        <th rowspan="2" class="col-housing">बस्ने<br>सुविधा</th>
+        <th rowspan="2" class="col-contract">करार <br> अवधि</th>
       </tr>
       <!-- Header Row 2 -->
+
+    <div>
       <tr>
         <th class="col-gender">पुरुष</th>
         <th class="col-gender">महिला</th>
@@ -333,6 +821,7 @@
         </th>
         <th class="col-salary">ने.रु.</th>
       </tr>
+    </div>
     </thead>
     <!-- Data Rows - Dynamic from database -->
     <tbody>
@@ -340,18 +829,20 @@
       <tr class="data-row">
         <td>{{ forloop.counter }}</td>
         <td class="text-left">{{ position.position }}</td>
+      <div>
         <td>{{ position.male_count }}</td>
         <td>{{ position.female_count }}</td>
         <td>{{ position.salary_amount }}</td>
         <td>{{ position.salary_npr|safe }}</td>
-        <td>{{ position.overtime }}</td>
-        <td>{{ position.hours_per_day }}</td>
-        <td>{{ position.days_per_week }}</td>
-        <td>{{ position.yearly_leave }}</td>
-        <td class="text-left">{{ position.min_qualification }}</td>
+      </div>
+        <td class="text-center">{{ position.min_qualification|safe|linebreaksbr }}</td>
+        <td class="col-overtime">{{ position.overtime }}</td>
+        <td>{{ position.hours_per_day|safe|linebreaksbr }}</td>
+        <td>{{ position.days_per_week|safe|linebreaksbr }}</td>
+        <td class="col-leave" style="text-align: center !important;">{{ position.yearly_leave }}</td>
         <td>{{ position.food_provided }}</td>
         <td>{{ position.housing_provided }}</td>
-        <td>{{ position.contract_duration }}</td>
+        <td>{% if position.contract_duration %}{{ position.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
       </tr>
       {% empty %}
       <!-- No positions exist - show empty table -->
@@ -431,6 +922,250 @@
           
           // Call the function when page loads
           document.addEventListener('DOMContentLoaded', calculateInterviewDate);
+          
+          // Handle company name alignment
+          function adjustCompanyNameAlignment() {
+            const companyRow = document.getElementById('company-row');
+            if (companyRow) {
+              // Check if the text content is too long (more than 30 characters)
+              const companyText = companyRow.textContent;
+              if (companyText.length > 30) {
+                companyRow.classList.add('long-name');
+              } else {
+                companyRow.classList.remove('long-name');
+              }
+            }
+          }
+          
+          // Call the function when page loads
+          document.addEventListener('DOMContentLoaded', adjustCompanyNameAlignment);
+          
+          // Ensure each data row is strictly 0.4cm
+          function adjustTbodyHeight() {
+            const tbody = document.querySelector('.main-table tbody');
+            if (tbody) {
+              const dataRows = tbody.querySelectorAll('.data-row');
+              
+              // Allow tbody to grow naturally
+              tbody.style.setProperty('height', 'auto', 'important');
+              tbody.style.setProperty('min-height', 'auto', 'important');
+              tbody.style.setProperty('max-height', 'none', 'important');
+              
+              // Set each row to strictly 0.4cm with no padding/margin
+              dataRows.forEach(row => {
+                row.style.setProperty('height', '0.4cm', 'important');
+                row.style.setProperty('min-height', '0.4cm', 'important');
+                row.style.setProperty('max-height', '0.4cm', 'important');
+                row.style.setProperty('margin', '0px', 'important');
+                row.style.setProperty('padding', '0px', 'important');
+                
+                // Set each cell in the row to 0.4cm with no padding/margin
+                const cells = row.querySelectorAll('td');
+                cells.forEach(cell => {
+                  cell.style.setProperty('height', '0.4cm', 'important');
+                  cell.style.setProperty('min-height', '0.4cm', 'important');
+                  cell.style.setProperty('max-height', '0.4cm', 'important');
+                  cell.style.setProperty('overflow', 'hidden', 'important');
+                  cell.style.setProperty('line-height', '1.0', 'important');
+                  cell.style.setProperty('padding', '0px', 'important');
+                  cell.style.setProperty('margin', '0px', 'important');
+                  cell.style.setProperty('border-spacing', '0px', 'important');
+                  
+                  // Don't override font-size for position field (text-left class) or min_qualification field (text-center class)
+                  if (!cell.classList.contains('text-left') && !cell.classList.contains('text-center')) {
+                    cell.style.setProperty('font-size', '4pt', 'important');
+                  }
+                  
+                  // Ensure position field has correct font size and styling
+                  if (cell.classList.contains('text-left')) {
+                    cell.style.setProperty('font-size', '7pt', 'important');
+                    cell.style.setProperty('font-weight', '400', 'important');
+                    cell.style.setProperty('padding-left', '2px', 'important');
+                  }
+                  
+                  // Ensure yearly leave column is centered
+                  if (cell.classList.contains('col-leave')) {
+                    cell.style.textAlign = 'center';
+                    cell.setAttribute('style', cell.getAttribute('style') + '; text-align: center !important;');
+                    cell.style.setProperty('font-size', '3pt', 'important');
+                  }
+                  
+                  // Ensure overtime column is centered and has correct font size
+                  if (cell.classList.contains('col-overtime')) {
+                    cell.style.setProperty('text-align', 'center', 'important');
+                    cell.style.setProperty('font-size', '3pt', 'important');
+                  }
+                  
+                  // Ensure min_qualification field has correct font size and alignment
+                  if (cell.classList.contains('text-center')) {
+                    cell.style.setProperty('font-size', '3pt', 'important');
+                    cell.style.setProperty('text-align', 'center', 'important');
+                  }
+                });
+              });
+            }
+          }
+          
+          // Call the function when page loads with a small delay
+          document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(adjustTbodyHeight, 100);
+            setTimeout(adjustTbodyHeight, 500); // Run again after a delay
+            
+            // Ensure extra-note h4 has correct font-weight
+            setTimeout(function() {
+              const extraNoteH4 = document.querySelector('.extra-note h4');
+              if (extraNoteH4) {
+                extraNoteH4.style.setProperty('font-weight', '200', 'important');
+              }
+            }, 200);
+            
+            // Ensure extra-table has correct font-weight
+            setTimeout(function() {
+              const extraTableCells = document.querySelectorAll('.extra-table th, .extra-table td');
+              extraTableCells.forEach(function(cell) {
+                cell.style.setProperty('font-weight', '100', 'important');
+              });
+            }, 300);
+          });
+          
+          // Handle print events to ensure correct font weights
+          function forceLightFontWeights() {
+            // Force apply light font weights
+            const extraTableCells = document.querySelectorAll('.extra-table th, .extra-table td');
+            extraTableCells.forEach(function(cell) {
+              cell.style.setProperty('font-weight', '100', 'important');
+              cell.style.fontWeight = '100';
+              cell.setAttribute('style', cell.getAttribute('style') + '; font-weight: 100 !important;');
+            });
+            
+            const extraNoteElements = document.querySelectorAll('.extra-note, .extra-note h4, .notice-content');
+            extraNoteElements.forEach(function(element) {
+              element.style.setProperty('font-weight', '200', 'important');
+              element.style.fontWeight = '200';
+              element.style.setProperty('font-size', '3.76pt', 'important');
+              element.style.setProperty('line-height', '1.4', 'important');
+              element.style.setProperty('width', '100%', 'important');
+              element.style.setProperty('max-width', '100%', 'important');
+              element.style.setProperty('text-align', 'justify', 'important');
+              element.style.setProperty('text-justify', 'inter-word', 'important');
+              element.style.setProperty('padding', '0px', 'important');
+              element.style.setProperty('margin', '0px', 'important');
+              element.style.setProperty('box-sizing', 'border-box', 'important');
+              element.setAttribute('style', element.getAttribute('style') + '; font-weight: 200 !important; font-size: 3.76pt !important; line-height: 1.4 !important; width: 100% !important; max-width: 100% !important; text-align: justify !important; padding: 0px !important; margin: 0px !important;');
+            });
+            
+            // Also target all paragraphs within notice content
+            const noticeParagraphs = document.querySelectorAll('.notice-content p, .notice-content div, .extra-note p, .extra-note div');
+            noticeParagraphs.forEach(function(element) {
+              element.style.setProperty('text-align', 'justify', 'important');
+              element.style.setProperty('text-justify', 'inter-word', 'important');
+              element.style.setProperty('font-size', '3.76pt', 'important');
+              element.style.setProperty('line-height', '1.4', 'important');
+              element.style.setProperty('width', '100%', 'important');
+              element.style.setProperty('max-width', '100%', 'important');
+              element.style.setProperty('margin', '0px', 'important');
+              element.style.setProperty('padding', '0px', 'important');
+            });
+            
+            const mainTableCells = document.querySelectorAll('.main-table td.text-left');
+            mainTableCells.forEach(function(cell) {
+              cell.style.setProperty('font-weight', '400', 'important');
+              cell.style.fontWeight = '400';
+              cell.setAttribute('style', cell.getAttribute('style') + '; font-weight: 400 !important;');
+            });
+            
+            const centerCells = document.querySelectorAll('.main-table .text-center, .main-table td.col-leave, .main-table td.col-overtime');
+            centerCells.forEach(function(cell) {
+              cell.style.setProperty('font-weight', '200', 'important');
+              cell.style.fontWeight = '200';
+              cell.setAttribute('style', cell.getAttribute('style') + '; font-weight: 200 !important;');
+            });
+            
+            // Only increase header elements
+            const headerLeft = document.querySelectorAll('.header-left');
+            headerLeft.forEach(function(element) {
+              element.style.setProperty('font-size', '8pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+            });
+            
+            const headerRight = document.querySelectorAll('.header-right');
+            headerRight.forEach(function(element) {
+              element.style.setProperty('font-size', '7pt', 'important');
+              element.style.setProperty('font-weight', '600', 'important');
+            });
+            
+            // Company row
+            const companyRow = document.querySelectorAll('.company-row');
+            companyRow.forEach(function(element) {
+              element.style.setProperty('font-size', '6pt', 'important');
+              element.style.setProperty('font-weight', '600', 'important');
+            });
+            
+            // Meta items row - labels (names) at 5pt
+            const metaItemsRow = document.querySelectorAll('.meta-items-row, .meta-item, .meta-bar');
+            metaItemsRow.forEach(function(element) {
+              element.style.setProperty('font-size', '5pt', 'important');
+              element.style.setProperty('font-weight', '500', 'important');
+            });
+            
+            // Meta item data (values) at 6pt
+            const metaItemData = document.querySelectorAll('.meta-item b');
+            metaItemData.forEach(function(element) {
+              element.style.setProperty('font-size', '6pt', 'important');
+              element.style.setProperty('font-weight', '600', 'important');
+            });
+            
+            // Only position header - "कामदारको पद"
+            const positionHeaders = document.querySelectorAll('.main-table th.col-position');
+            positionHeaders.forEach(function(element) {
+              element.style.setProperty('font-size', '7pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+            });
+            
+            // Colspan 2 headers - increased font size
+            const colspan2Headers = document.querySelectorAll('.main-table th[colspan="2"]');
+            colspan2Headers.forEach(function(element) {
+              element.style.setProperty('font-size', '4.6pt', 'important');
+              element.style.setProperty('font-weight', '520', 'important');
+            });
+            
+            // Second row headers - increased font size
+            const secondRowHeaders = document.querySelectorAll('.main-table th.col-gender, .main-table th.col-salary');
+            secondRowHeaders.forEach(function(element) {
+              element.style.setProperty('font-size', '5.3pt', 'important');
+              element.style.setProperty('font-weight', '550', 'important');
+            });
+            
+            // Specific data cells - increased font size
+            const specificDataCells = document.querySelectorAll('.main-table td:nth-child(3), .main-table td:nth-child(4), .main-table td:nth-child(5), .main-table td:nth-child(6)');
+            specificDataCells.forEach(function(element) {
+              element.style.setProperty('font-size', '6pt', 'important');
+              element.style.setProperty('font-weight', '550', 'important');
+            });
+          }
+          
+          // Multiple event listeners for print
+          window.addEventListener('beforeprint', forceLightFontWeights);
+          window.addEventListener('print', forceLightFontWeights);
+          
+          // Force text justification on load
+          setTimeout(function() {
+            const noticeElements = document.querySelectorAll('.extra-note, .notice-content, .notice-paragraph');
+            noticeElements.forEach(function(element) {
+              element.style.setProperty('text-align', 'justify', 'important');
+              element.style.setProperty('text-justify', 'inter-word', 'important');
+              element.style.setProperty('font-size', '3.76pt', 'important');
+              element.style.setProperty('line-height', '1.4', 'important');
+              element.style.setProperty('width', '100%', 'important');
+              element.style.setProperty('max-width', '100%', 'important');
+              element.style.setProperty('padding', '0px', 'important');
+              element.style.setProperty('margin', '0px', 'important');
+            });
+          }, 500);
+          
+          // Also run on page load and periodically
+          setTimeout(forceLightFontWeights, 1000);
+          setTimeout(forceLightFontWeights, 3000);
           
           // Nepali calendar conversion function
           function gregorianToNepali(gregorianDate) {
@@ -617,16 +1352,16 @@
     <table class="extra-table">
       <thead>
         <tr>
-          <th>स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने र कति लाग्ने</th>
-          <th>विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने र कति लाग्ने</th>
-          <th>स्वदेशमा गरिने व्यावसायिक बीमा कसले व्यहोर्ने र कति लाग्ने</th>
-          <th>रोजगारमा बीमा शुल्क हुने/नहुने र प्रिमियम कसले व्यहोर्ने</th>
+          <th>स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने </th>
+          <th>विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने</th>
+          <th>स्वदेशमा गरिने म्यादी जीवन बिमा खर्च कसले व्यहोर्ने</th>
+          <th>रोजगारमा बिमा शुल्क हुने/नहुने र प्रिमियम कसले व्यहोर्ने</th>
           <th>कामदारलाई हवाई टिकट कसले दिने र कति लाग्ने</th>
+          <th>सामाजिक सुरक्षा कोष </th>
           <th>भिसा शुल्क कसले व्यहोर्ने</th>
           <th>भिसा स्ट्याम्प शुल्क कसले व्यहोर्ने</th>
           <th>अभिकृतिकरण शुल्क कति लाग्ने र कसले व्यहोर्ने</th>
           <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
-          <th>श्रमशुल्क कति लाग्ने र कसले व्यहोर्ने</th>
           <th>सेवा शुल्क</th>
         </tr>
       </thead>
@@ -662,6 +1397,7 @@
         {% endif %}
       {% endif %}
     </div>
+  </div>
   </div>
   
   <!-- Company Banner - ATTACHED -->

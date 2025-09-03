@@ -665,20 +665,31 @@ def employment_ad_editor(request):
                     messages.error(request, error_msg)
         
         elif form_type == "edit":
-            # Handle main form submission
-            form = EmploymentAdForm(request.POST, request.FILES, instance=employment_ad)
-            if form.is_valid():
-                # Get interview data from form
-                nepali_date = form.cleaned_data.get('nepali_date', '')
-                gregorian_date = form.cleaned_data.get('gregorian_date', '')
-                interview_time = form.cleaned_data.get('interview_time', '')
-                interview_location = form.cleaned_data.get('interview_location', '')
+            # Handle main form submission (now includes both main info and positions)
+            try:
+                form = EmploymentAdForm(request.POST, request.FILES, instance=employment_ad)
+                formset = JobPositionFormSet(request.POST, instance=employment_ad)
                 
-                # Save the main form
-                form.save()
+                # Debug: Print form data
+                print(f"DEBUG: Form data: {request.POST}")
+                print(f"DEBUG: Form is_valid: {form.is_valid()}")
+                print(f"DEBUG: Formset is_valid: {formset.is_valid()}")
                 
-                # Update or create interview information
-                if nepali_date or gregorian_date or interview_time or interview_location:
+                if form.is_valid() and formset.is_valid():
+                    # Get interview data from form
+                    nepali_date = request.POST.get('interview_nepali_date', '')
+                    gregorian_date = request.POST.get('interview_gregorian_date', '')
+                    interview_time = request.POST.get('interview_time', '')
+                    interview_location = request.POST.get('interview_location', '')
+                    
+                    # Save the main form
+                    form.save()
+                    
+                    # Save the position formset
+                    formset.save()
+                    
+                    # Update or create interview information
+                    if nepali_date or gregorian_date or interview_time or interview_location:
                         interview, created = Interview.objects.get_or_create(
                             employment_ad=employment_ad,
                             order=0,
@@ -700,16 +711,43 @@ def employment_ad_editor(request):
                             interview.location = interview_location
                             interview.template = 'अन्तरवार्ता मिति {nepali_date} ({gregorian_date}) {location} हुनेछ।'
                             interview.save()
-                
-                # Check if this is an AJAX request
-                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    from django.http import JsonResponse
-                    return JsonResponse({'success': True, 'message': 'मुख्य जानकारी सफलतापूर्वक सेभ गरियो!'})
+                    
+                    # Check if this is an AJAX request
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        from django.http import JsonResponse
+                        return JsonResponse({'success': True, 'message': 'मुख्य जानकारी र पदहरू सफलतापूर्वक सेभ गरियो!'})
+                    else:
+                        messages.success(request, 'Employment advertisement and positions updated successfully!')
+                        return redirect('employment_ad_editor')
                 else:
-                    messages.success(request, 'Employment advertisement updated successfully!')
-                    return redirect('employment_ad_editor')
-            else:
-                error_msg = 'त्रुटि: कृपया सबै आवश्यक फिल्डहरू भर्नुहोस्।'
+                    # Debug form errors
+                    print(f"DEBUG: Form errors: {form.errors}")
+                    print(f"DEBUG: Formset errors: {formset.errors}")
+                    print(f"DEBUG: Formset non-form errors: {formset.non_form_errors()}")
+                    
+                    # Create detailed error message
+                    error_details = []
+                    if form.errors:
+                        error_details.append(f"Form errors: {form.errors}")
+                    if formset.errors:
+                        error_details.append(f"Formset errors: {formset.errors}")
+                    if formset.non_form_errors():
+                        error_details.append(f"Formset non-form errors: {formset.non_form_errors()}")
+                    
+                    error_msg = 'त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।'
+                    if error_details:
+                        error_msg += f" Details: {'; '.join(error_details)}"
+                    
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        from django.http import JsonResponse
+                        return JsonResponse({'success': False, 'error': error_msg})
+                    else:
+                        messages.error(request, error_msg)
+                    
+            except Exception as e:
+                # Catch any unexpected errors
+                print(f"DEBUG: Unexpected error in form submission: {str(e)}")
+                error_msg = f'त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्। Error: {str(e)}'
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     from django.http import JsonResponse
                     return JsonResponse({'success': False, 'error': error_msg})
