@@ -42,39 +42,97 @@
                         
                         <!-- Step 1: OCR Upload -->
                         <div class="tab-pane fade show active" id="step1" role="tabpanel">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5 class="mb-1">📄 OCR अपलोड र पार्सिङ</h5>
-                                    <p class="text-muted mb-2">विज्ञापन पत्र अपलोड गर्नुहोस् र OCR द्वारा स्वचालित रुपमा फिल्डहरू भर्नुहोस्</p>
+                            <div class="row justify-content-center">
+                                <div class="col-md-10">
+                                    <!-- Upload Modal Style Container -->
+                                    <div class="upload-modal-container">
+                                        <!-- Header -->
+                                        <div class="upload-header">
+                                            <div class="d-flex align-items-center">
+                                                <div class="upload-icon me-3">
+                                                    <i class="fas fa-file-upload fa-2x text-primary"></i>
+                                                </div>
+                                                <div>
+                                                    <h4 class="mb-0">Import Employment Ad</h4>
+                                                    <p class="text-muted mb-0">Upload a JPG to import employment advertisement data to your system.</p>
+                                                </div>
+                                            </div>
+                                            <button type="button" class="btn-close" aria-label="Close"></button>
+                                        </div>
+                                        
+                                        <!-- Drag and Drop Area -->
+                                        <div class="upload-dropzone" id="dropzone">
+                                            <div class="dropzone-content">
+                                                <div class="dropzone-icon">
+                                                    <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
+                                                </div>
+                                                <h5 class="mb-2">Drag JPG or Image here to import employment ad</h5>
+                                                <p class="text-muted mb-3">or, click to browse (10 MB max).</p>
                                     
                                     <form method="post" enctype="multipart/form-data" id="ocrForm">
                                         {% csrf_token %}
                                         <input type="hidden" name="form_type" value="ocr">
-                                        
-                                        <div class="mb-2">
-                                            <label for="id_document" class="form-label mb-1">विज्ञापन पत्र अपलोड गर्नुहोस्</label>
-                                            <input type="file" class="form-control" id="id_document" name="document" accept="image/*,.pdf" required>
-                                            <div class="form-text">PNG, JPG, JPEG, PDF फाइलहरू स्वीकार्य छन्</div>
+                                                    <input type="file" class="form-control" id="id_document" name="document" accept="image/*,.pdf" required style="display: none;">
+                                                </form>
+                                                
+                                                <button type="button" class="btn btn-primary btn-lg" onclick="document.getElementById('id_document').click()">
+                                                    Select files
+                                                </button>
                                         </div>
                                         
-                                        <button type="submit" class="btn btn-primary btn-lg">
-                                            🔍 OCR चलाउनुहोस्
+                                            <!-- Dragged Files Preview -->
+                                            <div class="dragged-files" id="draggedFiles" style="display: none;">
+                                                <div class="file-preview">
+                                                    <span class="file-name">Employment_Ad_2024.pdf</span>
+                                                    <i class="fas fa-plus-circle text-success ms-2"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Uploaded Files Section -->
+                                        <div class="uploaded-files" id="uploadedFiles" style="display: none;">
+                                            <div class="file-item">
+                                                <div class="file-info">
+                                                    <i class="fas fa-file-pdf text-danger me-2" id="fileIcon"></i>
+                                                    <span class="file-name">Employment_Ad_2024.pdf</span>
+                                                    <span class="file-size">2.5 MB</span>
+                                                </div>
+                                                <div class="file-progress">
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar" style="width: 100%"></div>
+                                                    </div>
+                                                    <span class="progress-text">100%</span>
+                                                </div>
+                                                <button type="button" class="btn btn-sm btn-outline-danger">
+                                                    <i class="fas fa-trash"></i>
                                         </button>
+                                            </div>
+                                        </div>
+                                        
+
+                                        
+                                        <!-- Action Buttons -->
+                                        <div class="upload-actions">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="goToStep(2)">
+                                                Cancel
+                                            </button>
+                                            <button type="submit" class="btn btn-primary" id="importBtn" form="ocrForm" style="display: none;">
+                                                Import employment ad
+                                            </button>
+                                        </div>
+                                    </div>
                                         
                                         <!-- Client-side OCR (browser) preview + progress -->
-                                        <div id="ocrClientBox" class="mt-2" style="display:none;">
+                                    <div id="ocrClientBox" class="mt-4" style="display:none;">
+                                        <div class="alert alert-info">
                                           <label class="form-label mb-1">🔎 Client-side OCR Preview</label>
                                           <progress id="ocrProgress" max="1" value="0" style="width:100%;height:10px;"></progress>
                                           <pre id="ocrPreview" style="white-space:pre-wrap;font-size:12px;max-height:220px;overflow:auto;margin-top:6px;"></pre>
                                           <small class="text-muted">यो टेक्स्ट ब्राउजरमै OCR गरी निकालिएको हो (सर्भरमा पठाइएको छैन)।</small>
                                         </div>
-                                    </form>
                                 </div>
-                                
-
                             </div>
-                            
-
+                            </div>
                         </div>
 
                         <!-- Step 2: Main Information -->
@@ -644,6 +702,182 @@
     text-align: center;
     width: 100%;
 }
+    
+    /* Upload Modal Styles */
+    .upload-modal-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+    }
+    
+    .upload-header {
+        background: #f8fafc;
+        padding: 1.5rem 2rem;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .upload-icon {
+        width: 48px;
+        height: 48px;
+        background: #ebf8ff;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .upload-dropzone {
+        padding: 3rem 2rem;
+        border: 2px dashed #cbd5e0;
+        border-radius: 8px;
+        margin: 2rem;
+        text-align: center;
+        background: #f7fafc;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    
+    .upload-dropzone:hover {
+        border-color: #3182ce;
+        background: #ebf8ff;
+    }
+    
+    .upload-dropzone.dragover {
+        border-color: #3182ce;
+        background: #ebf8ff;
+        transform: scale(1.02);
+    }
+    
+    .dropzone-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .dropzone-icon {
+        margin-bottom: 1rem;
+    }
+    
+    .dragged-files {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        z-index: 3;
+    }
+    
+    .file-preview {
+        background: #3182ce;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .uploaded-files {
+        margin: 0 2rem 2rem 2rem;
+    }
+    
+    .file-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+    }
+    
+    .file-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+    
+    .file-name {
+        font-weight: 500;
+        color: #2d3748;
+    }
+    
+    .file-size {
+        color: #718096;
+        font-size: 0.875rem;
+    }
+    
+    .file-progress {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex: 1;
+    }
+    
+    .progress {
+        flex: 1;
+        height: 6px;
+        background: #e2e8f0;
+        border-radius: 3px;
+        overflow: hidden;
+    }
+    
+    .progress-bar {
+        background: #3182ce;
+        height: 100%;
+        transition: width 0.3s ease;
+    }
+    
+    .progress-text {
+        font-size: 0.875rem;
+        color: #4a5568;
+        font-weight: 500;
+        min-width: 40px;
+    }
+    
+
+    
+    .upload-actions {
+        padding: 1.5rem 2rem;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    
+    .upload-actions .btn {
+        min-width: 120px;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .upload-header {
+            padding: 1rem;
+        }
+        
+        .upload-dropzone {
+            margin: 1rem;
+            padding: 2rem 1rem;
+        }
+        
+        .uploaded-files {
+            margin: 0 1rem 1rem 1rem;
+        }
+        
+        .upload-actions {
+            padding: 1rem;
+            flex-direction: column;
+        }
+        
+        .upload-actions .btn {
+            width: 100%;
+        }
+}
 </style>
 
 <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
@@ -651,6 +885,125 @@
 <script>
 let currentStep = 1;
 const totalSteps = 3;
+
+// Upload functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const dropzone = document.getElementById('dropzone');
+    const fileInput = document.getElementById('id_document');
+    const importBtn = document.getElementById('importBtn');
+    const uploadedFiles = document.getElementById('uploadedFiles');
+    const draggedFiles = document.getElementById('draggedFiles');
+    
+    // Drag and drop functionality
+    dropzone.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        dropzone.classList.add('dragover');
+    });
+    
+    dropzone.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+    });
+    
+    dropzone.addEventListener('drop', function(e) {
+        e.preventDefault();
+        dropzone.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            handleFileSelection(files[0]);
+        }
+    });
+    
+    // File input change
+    fileInput.addEventListener('change', function(e) {
+        if (e.target.files.length > 0) {
+            handleFileSelection(e.target.files[0]);
+        }
+    });
+    
+    // Handle file selection
+    function handleFileSelection(file) {
+        // Set the file to the hidden input
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(file);
+        fileInput.files = dataTransfer.files;
+        
+        // Show dragged files preview
+        const fileName = file.name;
+        const fileSize = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+        
+        // Update dragged files preview
+        const filePreview = draggedFiles.querySelector('.file-name');
+        filePreview.textContent = fileName;
+        draggedFiles.style.display = 'block';
+        
+        // Show uploaded files section
+        const fileItem = uploadedFiles.querySelector('.file-item');
+        const fileNameElement = fileItem.querySelector('.file-name');
+        const fileSizeElement = fileItem.querySelector('.file-size');
+        const fileIcon = fileItem.querySelector('#fileIcon');
+        
+        fileNameElement.textContent = fileName;
+        fileSizeElement.textContent = fileSize;
+        
+        // Set appropriate icon based on file type
+        if (file.type === 'application/pdf') {
+            fileIcon.className = 'fas fa-file-pdf text-danger me-2';
+        } else if (file.type.startsWith('image/')) {
+            fileIcon.className = 'fas fa-file-image text-primary me-2';
+        } else {
+            fileIcon.className = 'fas fa-file text-secondary me-2';
+        }
+        
+        // Show progress animation
+        const progressBar = fileItem.querySelector('.progress-bar');
+        const progressText = fileItem.querySelector('.progress-text');
+        
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 15;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                progressText.textContent = '100%';
+                importBtn.style.display = 'inline-block';
+                
+                // Run client-side OCR for images only (not PDFs)
+                const isImage = file.type.startsWith('image/');
+                if (isImage) {
+                    runBrowserOCR(file);
+                } else {
+                    // For PDFs, show a message that backend OCR will be used
+                    const ocrBox = document.getElementById('ocrClientBox');
+                    if (ocrBox) {
+                        ocrBox.style.display = 'block';
+                        const ocrPreview = document.getElementById('ocrPreview');
+                        if (ocrPreview) {
+                            ocrPreview.textContent = 'PDF file selected. OCR will be processed on the server after upload.';
+                        }
+                    }
+                }
+            } else {
+                progressText.textContent = Math.round(progress) + '%';
+            }
+            progressBar.style.width = progress + '%';
+        }, 100);
+        
+        uploadedFiles.style.display = 'block';
+    }
+    
+    // Remove file functionality
+    const removeBtn = uploadedFiles.querySelector('.btn-outline-danger');
+    removeBtn.addEventListener('click', function() {
+        uploadedFiles.style.display = 'none';
+        draggedFiles.style.display = 'none';
+        importBtn.style.display = 'none';
+        fileInput.value = '';
+    });
+});
+
+
 
 /* ==== BROWSER OCR (tesseract.js) ==== */
 const OCR_LANGS = 'nep+eng';
@@ -3735,7 +4088,121 @@ function addPosition() {
   if (totalFormsField) totalFormsField.value = count + 1;
   if (initialFormsField) initialFormsField.value = '0';
   addCurrencyConversionListeners(newForm);
+  
+  // Add inheritance notice
+  addInheritanceNotice(newForm);
+  
+  // Inherit common fields from first position
+  inheritCommonFields(newForm);
 }
+
+// Function to inherit common fields from first position
+function inheritCommonFields(newForm) {
+  const firstForm = document.querySelector('.position-form');
+  if (!firstForm || !newForm) return;
+  
+  // Common fields that should be inherited and hidden
+  const commonFields = [
+    'overtime', 'hours_per_day', 'days_per_week', 'yearly_leave',
+    'min_qualification', 'food_provided', 'housing_provided', 'contract_duration'
+  ];
+  
+  commonFields.forEach(fieldName => {
+    const firstField = firstForm.querySelector(`[name*="${fieldName}"]`);
+    const newField = newForm.querySelector(`[name*="${fieldName}"]`);
+    
+    if (firstField && newField) {
+      // Copy value from first position
+      newField.value = firstField.value;
+      
+      // Hide the entire field container (label + field)
+      const fieldContainer = newField.closest('.mb-2');
+      if (fieldContainer) {
+        fieldContainer.style.display = 'none';
+      }
+      
+      // Also hide the field itself as backup
+      newField.style.display = 'none';
+    }
+  });
+}
+
+// Function to add inheritance notice to additional position forms
+function addInheritanceNotice(newForm) {
+  // Create notice element
+  const notice = document.createElement('div');
+  notice.className = 'alert alert-info mb-3';
+  notice.innerHTML = `
+    <div class="d-flex align-items-center">
+      <i class="fas fa-info-circle me-2"></i>
+      <div>
+        <strong>सामान्य फिल्डहरू स्वचालित रुपमा लिइएको:</strong><br>
+        <small>ओभर टाइम, घण्टा, दिन, विदा, योग्यता, खाने/बस्ने सुविधा, करार अवधि - यी सबै पहिलो पदबाट लिइएको छ।</small>
+      </div>
+    </div>
+  `;
+  
+  // Insert notice after the header but before the first field
+  const firstField = newForm.querySelector('.mb-2');
+  if (firstField) {
+    firstField.parentNode.insertBefore(notice, firstField);
+  }
+}
+
+// Function to update all common fields when first position changes
+function updateAllCommonFields() {
+  const firstForm = document.querySelector('.position-form');
+  if (!firstForm) return;
+  
+  const allForms = document.querySelectorAll('.position-form');
+  if (allForms.length <= 1) return; // Only first form exists
+  
+  // Common fields that should be updated
+  const commonFields = [
+    'overtime', 'hours_per_day', 'days_per_week', 'yearly_leave',
+    'min_qualification', 'food_provided', 'housing_provided', 'contract_duration'
+  ];
+  
+  // Update all other forms (skip first one)
+  for (let i = 1; i < allForms.length; i++) {
+    const form = allForms[i];
+    commonFields.forEach(fieldName => {
+      const firstField = firstForm.querySelector(`[name*="${fieldName}"]`);
+      const formField = form.querySelector(`[name*="${fieldName}"]`);
+      
+      if (firstField && formField) {
+        // Update the hidden field value
+        formField.value = firstField.value;
+        
+        // Ensure the field remains hidden
+        const fieldContainer = formField.closest('.mb-2');
+        if (fieldContainer) {
+          fieldContainer.style.display = 'none';
+        }
+        formField.style.display = 'none';
+      }
+    });
+  }
+}
+
+// Add event listeners to first form common fields
+function addCommonFieldListeners() {
+  const firstForm = document.querySelector('.position-form');
+  if (!firstForm) return;
+  
+  const commonFields = [
+    'overtime', 'hours_per_day', 'days_per_week', 'yearly_leave',
+    'min_qualification', 'food_provided', 'housing_provided', 'contract_duration'
+  ];
+  
+  commonFields.forEach(fieldName => {
+    const field = firstForm.querySelector(`[name*="${fieldName}"]`);
+    if (field) {
+      field.addEventListener('change', updateAllCommonFields);
+    }
+  });
+}
+
 function removePosition(button) {
   const form = button.closest('.position-form');
   if (!form) return;
@@ -3862,6 +4329,9 @@ if (window.rajdhaniSetupComplete) {
         const el = document.getElementById(id); 
         if (el) addEventListenerOnce(el, 'input', updateInterviewPreview); 
       });
+    
+    // Setup common field inheritance
+    addCommonFieldListeners();
     
     // Mark setup as complete
     setupTracker.isComplete = true;
@@ -4651,6 +5121,12 @@ function addPosition() {
     
     // Add event listeners for currency conversion
     addCurrencyConversionListeners(newForm);
+    
+    // Add inheritance notice
+    addInheritanceNotice(newForm);
+    
+    // Inherit common fields from first position
+    inheritCommonFields(newForm);
     
     // Debug: Log all field names in the new form
     console.log(`New form field names:`);

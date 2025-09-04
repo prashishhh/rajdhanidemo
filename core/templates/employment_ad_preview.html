@@ -8,9 +8,8 @@
     margin: 20px auto; 
     font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif; 
     background: #f0f0f0;
-    text-align: center; /* Center all content */
     max-width: 100%;
-    padding: 0 20px;
+    padding: 0 0px;
     padding-top: 400px; /* Increased top padding to move content further down */
   }
   
@@ -109,11 +108,18 @@
   .meta-items-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.1cm;
     height: 0.3cm;
     min-height: 0.3cm;
     max-height: 0.3cm;
     width: 100%;
     overflow: hidden;
+  }
+  
+  /* Adjust grid when city is long - keep uniform gaps */
+  .meta-items-row.long-city {
+    grid-template-columns: 1fr 1fr 1fr 1.3fr;
+    gap: 0.1cm;
   }
   
   .meta-item {
@@ -133,6 +139,27 @@
   /* City field with smaller font */
   .meta-item:last-child {
     font-size: 4pt;
+  }
+  
+  /* City field responsive behavior - even smaller when long */
+  .meta-item:last-child.long-city {
+    font-size: 3pt;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Force city field to not be cropped */
+  #city-item {
+    min-width: 0;
+    flex: 1;
+    overflow: visible;
+  }
+  
+  #city-item.long-city {
+    justify-content: center !important;
+    text-align: center !important;
+    overflow: visible !important;
+    white-space: normal !important;
   }
   
   /* Main Table */
@@ -167,6 +194,11 @@
     box-sizing: border-box;
     overflow: visible !important; /* Allow container to grow */
     font-size: 6pt;
+    /* Production optimizations for smooth rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    will-change: auto;
     line-height: 1;
     margin: 0 auto; /* Center horizontally */
     display: flex;
@@ -309,9 +341,9 @@
   
   /* Column widths optimized for 12cm */
   .col-sn { width: 3%; }
-  .col-position { width: 30%; } /* Reduced by 1% to compensate for col-contract */
+  .col-position { width: 28%; } /* Reduced by 2% from 30% to 28% */
   .col-gender { width: 1%; } /* Reduced further from 2% to 1% */
-  .col-salary { width: 10%; } /* Increased to compensate for total width */
+  .col-salary { width: 12%; } /* Increased by 2% from 10% to 12% */
   .col-overtime { width: 5%; }
   .col-hours { width: 5%; }
   .col-days { width: 5%; }
@@ -415,7 +447,7 @@
     padding-top: 0px;
     padding-bottom: 0px; /* No bottom padding */
     min-height: 0.65cm;
-    max-height: 1.2cm;
+    max-height: none; /* Allow unlimited height for longer content */
     overflow: visible;
     box-sizing: border-box;
     width: 100%;
@@ -466,14 +498,14 @@
   .extra-note {
     padding: 0px !important;
     margin: 0px !important;
-    font-size: 3.76pt !important;
-    line-height: 1.4 !important;
+    font-size: 3.74pt !important;
+    line-height: 1.0 !important;
     text-align: justify !important;
     text-justify: inter-word !important;
     border: none;
     background: #fff;
-    min-height: 0.4cm; /* Reduced minimum height */
-    max-height: none; /* Allow unlimited height */
+    min-height: 0.4cm; /* Minimum height for short content (Middle East notices) */
+    max-height: none; /* Allow unlimited height for longer content (Japan notice) */
     overflow: visible; /* Changed from auto to visible */
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -481,7 +513,314 @@
     width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
+    display: inline !important;
+    /* Dynamic height based on content */
+    height: auto;
+  }
+  
+  /* Force left alignment for all extra-note content */
+  .extra-note {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  .extra-note * {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content should not be justified - left aligned */
+  .extra-note.japan-content {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content bold headers should be on their own line */
+  .extra-note.japan-content b {
     display: block !important;
+    margin-bottom: 4px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content paragraphs should have proper spacing */
+  .extra-note.japan-content p {
+    margin-bottom: 8px !important;
+    display: block !important;
+    text-align: left !important;
+    text-justify: initial !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Override body center alignment for Japan content */
+  body .extra-note.japan-content {
+    text-align: left !important;
+  }
+  
+  body .extra-note.japan-content * {
+    text-align: left !important;
+  }
+  
+  /* Japan content paragraphs should be left aligned and maintain proper formatting */
+  .extra-note.japan-content p,
+  .extra-note.japan-content div,
+  .extra-note.japan-content b,
+  .extra-note.japan-content span {
+    text-align: left !important;
+    text-justify: initial !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Japan content bold headers should be on their own line */
+  .extra-note.japan-content b {
+    display: block !important;
+    margin-bottom: 2px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content paragraphs should have proper spacing */
+  .extra-note.japan-content p {
+    margin-bottom: 4px !important;
+    display: block !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Override any inline styles that might be applied */
+  .extra-note.japan-content[style*="text-align: justify"] {
+    text-align: left !important;
+  }
+  
+  .extra-note.japan-content p[style*="text-align: justify"],
+  .extra-note.japan-content b[style*="text-align: justify"] {
+    text-align: left !important;
+  }
+  
+  /* Override body center alignment with maximum specificity */
+  body .extra-note.japan-content,
+  body .extra-note.japan-content *,
+  body .extra-note.japan-content p,
+  body .extra-note.japan-content b,
+  body .extra-note.japan-content div,
+  body .extra-note.japan-content span {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Maximum specificity override for body center alignment */
+  body div.extra-note,
+  body div.extra-note *,
+  body div.extra-note p,
+  body div.extra-note b,
+  body div.extra-note div,
+  body div.extra-note span {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Nuclear option - override everything in extra-note */
+  .extra-note,
+  .extra-note *,
+  .extra-note p,
+  .extra-note div,
+  .extra-note span,
+  .extra-note br,
+  .extra-note strong,
+  .extra-note em,
+  .extra-note i,
+  .extra-note u {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Preserve bold formatting */
+  .extra-note b,
+  .extra-note strong {
+    font-weight: bold !important;
+    display: block !important;
+    margin-bottom: 4px !important;
+    text-align: left !important;
+  }
+  
+  /* Force left alignment on bold elements with maximum specificity */
+  body .extra-note b,
+  body .extra-note strong,
+  body div.extra-note b,
+  body div.extra-note strong {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Override any center alignment on bold elements */
+  .extra-note b[style*="center"],
+  .extra-note strong[style*="center"],
+  .extra-note b[style*="justify"],
+  .extra-note strong[style*="justify"] {
+    text-align: left !important;
+  }
+  
+  /* Force left alignment on all extra-note content */
+  .extra-note * {
+    text-align: left !important;
+  }
+  
+  /* Preserve paragraph formatting */
+  .extra-note p {
+    display: block !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    font-weight: normal !important;
+  }
+  
+  /* Ensure bold elements in paragraphs are properly formatted */
+  .extra-note p b {
+    font-weight: bold !important;
+    display: inline !important;
+    margin-bottom: 0 !important;
+  }
+  
+  /* Force numbered items to be on separate lines */
+  .extra-note:not(:empty) {
+    text-align: left !important;
+  }
+  
+  .extra-note:not(:empty) * {
+    text-align: left !important;
+    display: block !important;
+  }
+  
+  /* Force left alignment for Japan content regardless of class */
+  .extra-note:has(:contains('यस संस्थाको कार्यालयमा')),
+  .extra-note:has(:contains('वैदेशिक रोजगार विभागद्वारा')),
+  .extra-note:has(:contains('जापानी भाषा N4 स्तरको')),
+  .extra-note:has(:contains('आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा')),
+  .extra-note:has(:contains('आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात')),
+  .extra-note:has(:contains('यस विज्ञापन सम्बन्धमा उल्झन भएमा')),
+  .extra-note:has(:contains('विदेश जानु अघि अभिमुखीकरण तालिम')),
+  .extra-note:has(:contains('विदेश जानु अघि श्रम सम्झौता')),
+  .extra-note:has(:contains('विदेश जानु अघि बीमा कम्पनीमा')),
+  .extra-note:has(:contains('विदेश जानु अघि कुनै दलाल वा एजेन्टलाई')),
+  .extra-note:has(:contains('पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट')),
+  .extra-note:has(:contains('सीधै विमानस्थलमा जानुहोस्')),
+  .extra-note:has(:contains('पासपोर्टमा समस्या भएमा विभागमा')) {
+    text-align: left !important;
+  }
+  
+  .extra-note:has(:contains('यस संस्थाको कार्यालयमा')) *,
+  .extra-note:has(:contains('वैदेशिक रोजगार विभागद्वारा')) *,
+  .extra-note:has(:contains('जापानी भाषा N4 स्तरको')) *,
+  .extra-note:has(:contains('आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा')) *,
+  .extra-note:has(:contains('आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात')) *,
+  .extra-note:has(:contains('यस विज्ञापन सम्बन्धमा उल्झन भएमा')) *,
+  .extra-note:has(:contains('विदेश जानु अघि अभिमुखीकरण तालिम')) *,
+  .extra-note:has(:contains('विदेश जानु अघि श्रम सम्झौता')) *,
+  .extra-note:has(:contains('विदेश जानु अघि बीमा कम्पनीमा')) *,
+  .extra-note:has(:contains('विदेश जानु अघि कुनै दलाल वा एजेन्टलाई')) *,
+  .extra-note:has(:contains('पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट')) *,
+  .extra-note:has(:contains('सीधै विमानस्थलमा जानुहोस्')) *,
+  .extra-note:has(:contains('पासपोर्टमा समस्या भएमा विभागमा')) * {
+    text-align: left !important;
+  }
+  
+  /* Force left alignment for numbered lists (1. 2. 3. etc.) */
+  .extra-note:has(:contains('१.')) *,
+  .extra-note:has(:contains('२.')) *,
+  .extra-note:has(:contains('३.')) *,
+  .extra-note:has(:contains('४.')) *,
+  .extra-note:has(:contains('५.')) *,
+  .extra-note:has(:contains('६.')) *,
+  .extra-note:has(:contains('७.')) *,
+  .extra-note:has(:contains('८.')) *,
+  .extra-note:has(:contains('९.')) *,
+  .extra-note:has(:contains('१०.')) * {
+    text-align: left !important;
+  }
+  
+  /* Universal left alignment for all extra-note content */
+  .extra-note {
+    text-align: left !important;
+  }
+  
+  .extra-note * {
+    text-align: left !important;
+  }
+  
+  /* Override any justify alignment */
+  .extra-note[style*="justify"],
+  .extra-note *[style*="justify"] {
+    text-align: left !important;
+  }
+  
+  /* Force proper formatting for numbered lists */
+  .extra-note:contains('१.'),
+  .extra-note:contains('२.'),
+  .extra-note:contains('३.'),
+  .extra-note:contains('४.'),
+  .extra-note:contains('५.'),
+  .extra-note:contains('६.'),
+  .extra-note:contains('७.'),
+  .extra-note:contains('८.'),
+  .extra-note:contains('९.'),
+  .extra-note:contains('१०.') {
+    text-align: left !important;
+  }
+  
+  /* Force block display for numbered items */
+  .extra-note *:contains('१.'),
+  .extra-note *:contains('२.'),
+  .extra-note *:contains('३.'),
+  .extra-note *:contains('४.'),
+  .extra-note *:contains('५.'),
+  .extra-note *:contains('६.'),
+  .extra-note *:contains('७.'),
+  .extra-note *:contains('८.'),
+  .extra-note *:contains('९.'),
+  .extra-note *:contains('१०.') {
+    display: block !important;
+    text-align: left !important;
+    margin-bottom: 2px !important;
+  }
+  
+  /* Production-ready: Prevent layout shifts and ensure stable rendering */
+  * {
+    box-sizing: border-box;
+  }
+  
+  .employment-ad * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+  }
+  
+  /* Prevent any visual changes during load */
+  .employment-ad {
+    visibility: hidden;
+    opacity: 0;
+    transition: none;
+  }
+  
+  .employment-ad.loaded {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Responsive behavior for different notice lengths */
+  .extra-note:has(.notice-content) {
+    /* When notice-content is present (country-specific notices) */
+    min-height: 0.6cm; /* Slightly larger minimum for country notices */
+  }
+  
+  .extra-note:not(:has(.notice-content)) {
+    /* When only manual extra_notes are present */
+    min-height: 0.4cm; /* Smaller minimum for manual notes */
   }
   
   .extra-note h4 {
@@ -489,6 +828,15 @@
     font-size: 3.5pt;
     font-weight: 200 !important;
     color:black;
+  }
+  
+  /* Center the note section */
+  .extra-note b:last-child {
+    text-align: left !important;
+    display: inline !important;
+    width: auto !important;
+    padding: 0px !important;
+    margin: 0px !important;
   }
   
   /* Print-specific styles to ensure light font weights */
@@ -518,16 +866,60 @@
     .extra-note {
       font-weight: 200 !important;
       font-family: Arial, sans-serif !important;
+      padding: 0px !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      display: inline !important;
+      width: auto !important;
     }
     
     .extra-note h4 {
       font-weight: 200 !important;
       font-family: Arial, sans-serif !important;
+  }
+  
+        .notice-content {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      display: inline !important;
+      width: auto !important;
+    }
+    
+    .extra-note *,
+    .notice-content * {
+      text-align: left !important;
+      text-justify: initial !important;
+      display: inline !important;
+      width: auto !important;
+      padding: 0px !important;
+      margin: 0px !important;
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+      padding-top: 0px !important;
+      padding-bottom: 0px !important;
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+      position: relative !important;
+      left: 0px !important;
+      right: 0px !important;
     }
     
     .notice-content {
       font-weight: 200 !important;
       font-family: Arial, sans-serif !important;
+    }
+    
+    /* Left align the note section in print */
+    .extra-note b:last-child {
+      text-align: left !important;
+      display: inline !important;
+      width: auto !important;
+      padding: 0px !important;
+      margin: 0px !important;
     }
     
     .main-table td.text-left {
@@ -590,7 +982,7 @@
     }
     
     .meta-item:last-child {
-      font-size: 5pt !important;
+      font-size: 4pt !important;
       font-weight: 500 !important;
     }
     
@@ -604,6 +996,253 @@
     .meta-bar {
       font-size: 5pt !important;
       font-weight: 500 !important;
+      height: 0.6cm !important;
+      max-height: 0.6cm !important;
+      min-height: 0.6cm !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+    }
+    
+    /* Company row in print */
+    .company-row {
+      font-size: 5pt !important;
+      font-weight: 600 !important;
+      height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+    
+    /* Meta items row in print */
+    .meta-items-row {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+      height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      display: grid !important;
+      grid-template-columns: 1fr 1fr 1fr 1fr !important;
+      gap: 0.1cm !important;
+      overflow: hidden !important;
+    }
+    
+    /* Adjust grid when city is long in print - keep uniform gaps */
+    .meta-items-row.long-city {
+      grid-template-columns: 1fr 1fr 1fr 1.3fr !important;
+      gap: 0.1cm !important;
+    }
+    
+    /* Meta items in print */
+    .meta-item {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+      padding: 0px 3px !important;
+      text-align: left !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+    }
+    
+    /* City field with smaller font in print */
+    .meta-item:last-child {
+      font-size: 4pt !important;
+      font-weight: 500 !important;
+    }
+    
+    /* City field responsive behavior in print */
+    .meta-item:last-child.long-city {
+      font-size: 3pt !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+    
+    /* Force city field to not be cropped in print */
+    #city-item {
+      min-width: 0 !important;
+      flex: 1 !important;
+      overflow: visible !important;
+    }
+    
+    #city-item.long-city {
+      justify-content: center !important;
+      text-align: center !important;
+      overflow: visible !important;
+      white-space: normal !important;
+    }
+    
+    /* Meta item data in print */
+    .meta-item b {
+      font-size: 6pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Japan content should not be justified in print - left aligned */
+    .extra-note.japan-content {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content bold headers should be on their own line in print */
+    .extra-note.japan-content b {
+      display: block !important;
+      margin-bottom: 4px !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content paragraphs should have proper spacing in print */
+    .extra-note.japan-content p {
+      margin-bottom: 8px !important;
+      display: block !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Override body center alignment for Japan content in print */
+    body .extra-note.japan-content {
+      text-align: left !important;
+    }
+    
+    body .extra-note.japan-content * {
+      text-align: left !important;
+    }
+    
+    .extra-note.japan-content p,
+    .extra-note.japan-content div,
+    .extra-note.japan-content b,
+    .extra-note.japan-content span {
+      text-align: left !important;
+      text-justify: initial !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 1.2 !important;
+    }
+    
+    /* Japan content bold headers should be on their own line in print */
+    .extra-note.japan-content b {
+      display: block !important;
+      margin-bottom: 2px !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content paragraphs should have proper spacing in print */
+    .extra-note.japan-content p {
+      margin-bottom: 4px !important;
+      display: block !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Override any inline styles that might be applied in print */
+    .extra-note.japan-content[style*="text-align: justify"] {
+      text-align: left !important;
+    }
+    
+    .extra-note.japan-content p[style*="text-align: justify"],
+    .extra-note.japan-content b[style*="text-align: justify"] {
+      text-align: left !important;
+    }
+    
+    /* Universal left alignment for all extra-note content in print */
+    .extra-note {
+      text-align: left !important;
+    }
+    
+    .extra-note * {
+      text-align: left !important;
+    }
+    
+    /* Override any justify alignment in print */
+    .extra-note[style*="justify"],
+    .extra-note *[style*="justify"] {
+      text-align: left !important;
+    }
+    
+    /* Nuclear option for print - override everything in extra-note */
+    .extra-note,
+    .extra-note *,
+    .extra-note p,
+    .extra-note div,
+    .extra-note span,
+    .extra-note br,
+    .extra-note strong,
+    .extra-note em,
+    .extra-note i,
+    .extra-note u {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Preserve bold formatting in print */
+    .extra-note b,
+    .extra-note strong {
+      font-weight: bold !important;
+      display: block !important;
+      margin-bottom: 4px !important;
+      text-align: left !important;
+    }
+    
+    /* Force left alignment on bold elements in print with maximum specificity */
+    body .extra-note b,
+    body .extra-note strong,
+    body div.extra-note b,
+    body div.extra-note strong {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Override any center alignment on bold elements in print */
+    .extra-note b[style*="center"],
+    .extra-note strong[style*="center"],
+    .extra-note b[style*="justify"],
+    .extra-note strong[style*="justify"] {
+      text-align: left !important;
+    }
+    
+    /* Force left alignment on all extra-note content in print */
+    .extra-note * {
+      text-align: left !important;
+    }
+    
+    /* Preserve paragraph formatting in print */
+    .extra-note p {
+      display: block !important;
+      margin-bottom: 8px !important;
+      text-align: left !important;
+      line-height: 1.4 !important;
+      font-weight: normal !important;
+    }
+    
+    /* Ensure bold elements in paragraphs are properly formatted in print */
+    .extra-note p b {
+      font-weight: bold !important;
+      display: inline !important;
+      margin-bottom: 0 !important;
+    }
+    
+    /* Force numbered items to be on separate lines in print */
+    .extra-note:not(:empty) {
+      text-align: left !important;
+    }
+    
+    .extra-note:not(:empty) * {
+      text-align: left !important;
+      display: block !important;
     }
     
     /* Only position header - "कामदारको पद" */
@@ -636,8 +1275,8 @@
   }
   
         .notice-content {
-        font-size: 3.76pt !important;
-        line-height: 1.4 !important;
+        font-size: 3.74pt !important;
+        line-height: 1.0 !important;
         color:#000;
         margin: 0 !important;
         padding: 0 !important;
@@ -645,21 +1284,20 @@
         max-width: 100% !important;
         box-sizing: border-box !important;
         font-weight: 200;
-        text-align: justify !important;
-        text-justify: inter-word !important;
+        text-align: left !important;
+        display: block !important;
         display: block !important;
       }
       
       .notice-paragraph {
         margin: 0 !important;
         padding: 0 !important;
-        text-align: justify !important;
-        text-justify: inter-word !important;
+        text-align: left !important;
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        font-size: 3.76pt !important;
-        line-height: 1.4 !important;
+        font-size: 3.74pt !important;
+        line-height: 1.0 !important;
         page-break-inside: avoid;
       }
       
@@ -758,8 +1396,23 @@
   }
   
   @media print {
-    body { margin: 0; padding: 0; background: #fff; }
-    .employment-ad { box-shadow: none; }
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background: #fff; 
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .employment-ad { 
+      box-shadow: none; 
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* Ensure stable print rendering */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
   }
 </style>
 </head>
@@ -768,9 +1421,9 @@
 <div class="employment-ad">
   <div class="main-content">
     <!-- Top Header - Centered title only -->
-    <div class="top-header">
-      <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
-    </div>
+  <div class="top-header">
+    <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
+  </div>
   
   <!-- Meta Information -->
   <div class="meta-bar">
@@ -780,11 +1433,11 @@
       <div class="company-right-section">{{ ad.right_section_text }}</div>
       {% endif %}
     </div>
-    <div class="meta-items-row">
-      <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
-      <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-      <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-      <div class="meta-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+    <div class="meta-items-row" id="meta-items-row">
+    <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
+    <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+    <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
+      <div class="meta-item" id="city-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
     </div>
   </div>
   
@@ -823,26 +1476,27 @@
       </tr>
     </div>
     </thead>
-    <!-- Data Rows - Dynamic from database -->
+        <!-- Data Rows - Dynamic from database -->
     <tbody>
       {% for position in positions %}
       <tr class="data-row">
         <td>{{ forloop.counter }}</td>
         <td class="text-left">{{ position.position }}</td>
-      <div>
         <td>{{ position.male_count }}</td>
         <td>{{ position.female_count }}</td>
         <td>{{ position.salary_amount }}</td>
         <td>{{ position.salary_npr|safe }}</td>
-      </div>
-        <td class="text-center">{{ position.min_qualification|safe|linebreaksbr }}</td>
-        <td class="col-overtime">{{ position.overtime }}</td>
-        <td>{{ position.hours_per_day|safe|linebreaksbr }}</td>
-        <td>{{ position.days_per_week|safe|linebreaksbr }}</td>
-        <td class="col-leave" style="text-align: center !important;">{{ position.yearly_leave }}</td>
-        <td>{{ position.food_provided }}</td>
-        <td>{{ position.housing_provided }}</td>
-        <td>{% if position.contract_duration %}{{ position.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
+        {% if forloop.first %}
+        <!-- Common fields - only show in first row and span across all positions -->
+        <td class="text-center" rowspan="{{ positions|length }}">{{ positions.0.min_qualification|safe|linebreaksbr }}</td>
+        <td class="col-overtime" rowspan="{{ positions|length }}">{{ positions.0.overtime }}</td>
+        <td rowspan="{{ positions|length }}">{{ positions.0.hours_per_day|safe|linebreaksbr }}</td>
+        <td rowspan="{{ positions|length }}">{{ positions.0.days_per_week|safe|linebreaksbr }}</td>
+        <td class="col-leave" style="text-align: center !important;" rowspan="{{ positions|length }}">{{ positions.0.yearly_leave }}</td>
+        <td rowspan="{{ positions|length }}">{{ positions.0.food_provided }}</td>
+        <td rowspan="{{ positions|length }}">{{ positions.0.housing_provided }}</td>
+        <td rowspan="{{ positions|length }}">{% if positions.0.contract_duration %}{{ positions.0.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
+        {% endif %}
       </tr>
       {% empty %}
       <!-- No positions exist - show empty table -->
@@ -940,6 +1594,83 @@
           // Call the function when page loads
           document.addEventListener('DOMContentLoaded', adjustCompanyNameAlignment);
           
+          // Handle city field alignment
+          function adjustCityAlignment() {
+            const cityItem = document.getElementById('city-item');
+            const metaItemsRow = document.getElementById('meta-items-row');
+            
+            if (cityItem && metaItemsRow) {
+              // Check if the city text content is too long (more than 12 characters)
+              const cityText = cityItem.textContent;
+              console.log('City text:', cityText, 'Length:', cityText.length);
+              if (cityText.length > 12) {
+                cityItem.classList.add('long-city');
+                metaItemsRow.classList.add('long-city');
+                // Apply smaller font size to city item
+                cityItem.style.fontSize = '3pt';
+                console.log('Added long-city class to city item and meta row, reduced font size');
+              } else {
+                cityItem.classList.remove('long-city');
+                metaItemsRow.classList.remove('long-city');
+                // Reset font size to normal
+                cityItem.style.fontSize = '4pt';
+                console.log('Removed long-city class from city item and meta row, reset font size');
+              }
+            }
+          }
+          
+          // Call the function when page loads
+          document.addEventListener('DOMContentLoaded', adjustCityAlignment);
+          
+          // Force left alignment for ALL extra-note content
+          function handleJapanContent() {
+            const extraNote = document.querySelector('.extra-note');
+            if (extraNote) {
+              // Simple and direct - force left alignment on everything
+              extraNote.style.setProperty('text-align', 'left', 'important');
+              extraNote.style.setProperty('text-justify', 'initial', 'important');
+              
+              // Format bold elements properly
+              const boldElements = extraNote.querySelectorAll('b, strong');
+              boldElements.forEach(function(bold) {
+                bold.style.setProperty('font-weight', 'bold', 'important');
+                bold.style.setProperty('display', 'block', 'important');
+                bold.style.setProperty('margin-bottom', '4px', 'important');
+                bold.style.setProperty('text-align', 'left', 'important');
+              });
+              
+              // Format paragraphs properly
+              const paragraphs = extraNote.querySelectorAll('p');
+              paragraphs.forEach(function(p) {
+                p.style.setProperty('display', 'block', 'important');
+                p.style.setProperty('margin-bottom', '8px', 'important');
+                p.style.setProperty('text-align', 'left', 'important');
+                p.style.setProperty('line-height', '1.4', 'important');
+                p.style.setProperty('font-weight', 'normal', 'important');
+                
+                // Format bold elements within paragraphs
+                const boldElements = p.querySelectorAll('b, strong');
+                boldElements.forEach(function(bold) {
+                  bold.style.setProperty('font-weight', 'bold', 'important');
+                  bold.style.setProperty('display', 'inline', 'important');
+                  bold.style.setProperty('margin-bottom', '0', 'important');
+                });
+              });
+              
+              // Force left alignment on all other elements
+              const allElements = extraNote.querySelectorAll('*');
+              allElements.forEach(function(element) {
+                element.style.setProperty('text-align', 'left', 'important');
+                element.style.setProperty('text-justify', 'initial', 'important');
+              });
+              
+              console.log('Applied left alignment to all extra-note content');
+            }
+          }
+          
+          // Call the function when page loads
+          document.addEventListener('DOMContentLoaded', handleJapanContent);
+          
           // Ensure each data row is strictly 0.4cm
           function adjustTbodyHeight() {
             const tbody = document.querySelector('.main-table tbody');
@@ -1006,66 +1737,123 @@
             }
           }
           
-          // Call the function when page loads with a small delay
+          // Single initialization - no timeouts to prevent flickering
           document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(adjustTbodyHeight, 100);
-            setTimeout(adjustTbodyHeight, 500); // Run again after a delay
+            // Run all functions immediately without delays
+            adjustTbodyHeight();
             
-            // Ensure extra-note h4 has correct font-weight
-            setTimeout(function() {
-              const extraNoteH4 = document.querySelector('.extra-note h4');
-              if (extraNoteH4) {
-                extraNoteH4.style.setProperty('font-weight', '200', 'important');
-              }
-            }, 200);
+            // Run all other functions immediately - no timeouts
+            handleJapanContent();
+            adjustCityAlignment();
+            adjustCompanyNameAlignment();
+            calculateInterviewDate();
             
-            // Ensure extra-table has correct font-weight
-            setTimeout(function() {
-              const extraTableCells = document.querySelectorAll('.extra-table th, .extra-table td');
-              extraTableCells.forEach(function(cell) {
-                cell.style.setProperty('font-weight', '100', 'important');
-              });
-            }, 300);
+            // Show content only after everything is processed
+            const employmentAd = document.querySelector('.employment-ad');
+            if (employmentAd) {
+              employmentAd.classList.add('loaded');
+            }
           });
           
-          // Handle print events to ensure correct font weights
+          // Production-ready font weight handler - prevents flickering
+          let fontsProcessed = false;
+          
           function forceLightFontWeights() {
+            // Prevent multiple executions to avoid flickering
+            if (fontsProcessed) {
+              return;
+            }
+            
             // Force apply light font weights
             const extraTableCells = document.querySelectorAll('.extra-table th, .extra-table td');
             extraTableCells.forEach(function(cell) {
-              cell.style.setProperty('font-weight', '100', 'important');
-              cell.style.fontWeight = '100';
-              cell.setAttribute('style', cell.getAttribute('style') + '; font-weight: 100 !important;');
+              if (!cell.dataset.fontProcessed) {
+                cell.style.setProperty('font-weight', '100', 'important');
+                cell.dataset.fontProcessed = 'true';
+              }
             });
             
             const extraNoteElements = document.querySelectorAll('.extra-note, .extra-note h4, .notice-content');
             extraNoteElements.forEach(function(element) {
-              element.style.setProperty('font-weight', '200', 'important');
-              element.style.fontWeight = '200';
-              element.style.setProperty('font-size', '3.76pt', 'important');
-              element.style.setProperty('line-height', '1.4', 'important');
-              element.style.setProperty('width', '100%', 'important');
-              element.style.setProperty('max-width', '100%', 'important');
-              element.style.setProperty('text-align', 'justify', 'important');
-              element.style.setProperty('text-justify', 'inter-word', 'important');
-              element.style.setProperty('padding', '0px', 'important');
-              element.style.setProperty('margin', '0px', 'important');
-              element.style.setProperty('box-sizing', 'border-box', 'important');
-              element.setAttribute('style', element.getAttribute('style') + '; font-weight: 200 !important; font-size: 3.76pt !important; line-height: 1.4 !important; width: 100% !important; max-width: 100% !important; text-align: justify !important; padding: 0px !important; margin: 0px !important;');
+              // Skip Japan content - it has its own formatting
+              if (element.classList.contains('japan-content')) {
+                return;
+              }
+              
+              if (!element.dataset.fontProcessed) {
+                element.style.setProperty('font-weight', '200', 'important');
+                element.style.setProperty('font-size', '3.76pt', 'important');
+                element.style.setProperty('line-height', '1.4', 'important');
+                // Don't apply justify to Japan content - let CSS handle it
+                if (!element.closest('.japan-content')) {
+                  element.style.setProperty('text-align', 'justify', 'important');
+                  element.style.setProperty('text-justify', 'inter-word', 'important');
+                }
+                element.style.setProperty('margin', '0px', 'important');
+                element.style.setProperty('padding', '0px', 'important');
+                element.dataset.fontProcessed = 'true';
+              }
             });
+            
+            // Handle Japan content formatting in print mode
+            const japanContent = document.querySelector('.extra-note.japan-content');
+            if (japanContent) {
+              // Apply left alignment to the main container
+              japanContent.style.setProperty('text-align', 'left', 'important');
+              japanContent.style.setProperty('text-justify', 'initial', 'important');
+              
+              // Handle bold elements
+              const boldElements = japanContent.querySelectorAll('b');
+              boldElements.forEach(function(bold) {
+                bold.style.setProperty('display', 'block', 'important');
+                bold.style.setProperty('margin-bottom', '2px', 'important');
+                bold.style.setProperty('font-weight', 'bold', 'important');
+                bold.style.setProperty('text-align', 'left', 'important');
+                bold.style.setProperty('text-justify', 'initial', 'important');
+              });
+              
+              // Handle paragraphs
+              const paragraphs = japanContent.querySelectorAll('p');
+              paragraphs.forEach(function(p) {
+                p.style.setProperty('display', 'block', 'important');
+                p.style.setProperty('margin-bottom', '4px', 'important');
+                p.style.setProperty('text-align', 'left', 'important');
+                p.style.setProperty('text-justify', 'initial', 'important');
+                p.style.setProperty('line-height', '1.2', 'important');
+                p.style.setProperty('font-size', '3.76pt', 'important');
+              });
+            }
             
             // Also target all paragraphs within notice content
             const noticeParagraphs = document.querySelectorAll('.notice-content p, .notice-content div, .extra-note p, .extra-note div');
             noticeParagraphs.forEach(function(element) {
-              element.style.setProperty('text-align', 'justify', 'important');
-              element.style.setProperty('text-justify', 'inter-word', 'important');
+              // Check if this is Japan content
+              const extraNote = element.closest('.extra-note');
+              if (extraNote && extraNote.classList.contains('japan-content')) {
+                element.style.setProperty('text-align', 'left', 'important');
+                element.style.setProperty('text-justify', 'initial', 'important');
+              } else {
+                element.style.setProperty('text-align', 'justify', 'important');
+                element.style.setProperty('text-justify', 'inter-word', 'important');
+              }
               element.style.setProperty('font-size', '3.76pt', 'important');
               element.style.setProperty('line-height', '1.4', 'important');
-              element.style.setProperty('width', '100%', 'important');
+              element.style.setProperty('width', 'auto', 'important');
               element.style.setProperty('max-width', '100%', 'important');
               element.style.setProperty('margin', '0px', 'important');
               element.style.setProperty('padding', '0px', 'important');
+              element.style.setProperty('display', 'inline', 'important');
             });
+            
+            // Left align the note section (last bold element)
+            const noteElement = document.querySelector('.extra-note b:last-child');
+            if (noteElement) {
+              noteElement.style.setProperty('text-align', 'left', 'important');
+              noteElement.style.setProperty('display', 'inline', 'important');
+              noteElement.style.setProperty('width', 'auto', 'important');
+              noteElement.style.setProperty('padding', '0px', 'important');
+              noteElement.style.setProperty('margin', '0px', 'important');
+            }
             
             const mainTableCells = document.querySelectorAll('.main-table td.text-left');
             mainTableCells.forEach(function(cell) {
@@ -1097,15 +1885,83 @@
             // Company row
             const companyRow = document.querySelectorAll('.company-row');
             companyRow.forEach(function(element) {
-              element.style.setProperty('font-size', '6pt', 'important');
+              element.style.setProperty('font-size', '5pt', 'important');
               element.style.setProperty('font-weight', '600', 'important');
+              element.style.setProperty('height', '0.3cm', 'important');
+              element.style.setProperty('max-height', '0.3cm', 'important');
+              element.style.setProperty('min-height', '0.3cm', 'important');
+              element.style.setProperty('display', 'flex', 'important');
+              element.style.setProperty('align-items', 'center', 'important');
+              element.style.setProperty('justify-content', 'center', 'important');
+              element.style.setProperty('overflow', 'hidden', 'important');
+              element.style.setProperty('text-overflow', 'ellipsis', 'important');
+              element.style.setProperty('white-space', 'nowrap', 'important');
             });
             
-            // Meta items row - labels (names) at 5pt
-            const metaItemsRow = document.querySelectorAll('.meta-items-row, .meta-item, .meta-bar');
+            // Meta bar
+            const metaBar = document.querySelectorAll('.meta-bar');
+            metaBar.forEach(function(element) {
+              element.style.setProperty('font-size', '5pt', 'important');
+              element.style.setProperty('font-weight', '500', 'important');
+              element.style.setProperty('height', '0.6cm', 'important');
+              element.style.setProperty('max-height', '0.6cm', 'important');
+              element.style.setProperty('min-height', '0.6cm', 'important');
+              element.style.setProperty('overflow', 'hidden', 'important');
+              element.style.setProperty('display', 'flex', 'important');
+              element.style.setProperty('flex-direction', 'column', 'important');
+            });
+            
+            // Meta items row
+            const metaItemsRow = document.querySelectorAll('.meta-items-row');
             metaItemsRow.forEach(function(element) {
               element.style.setProperty('font-size', '5pt', 'important');
               element.style.setProperty('font-weight', '500', 'important');
+              element.style.setProperty('height', '0.3cm', 'important');
+              element.style.setProperty('max-height', '0.3cm', 'important');
+              element.style.setProperty('min-height', '0.3cm', 'important');
+              element.style.setProperty('display', 'grid', 'important');
+              
+              // Adjust grid columns based on long-city class
+              if (element.classList.contains('long-city')) {
+                element.style.setProperty('grid-template-columns', '1fr 1fr 1fr 1.3fr', 'important');
+                element.style.setProperty('gap', '0.1cm', 'important');
+              } else {
+                element.style.setProperty('grid-template-columns', '1fr 1fr 1fr 1fr', 'important');
+                element.style.setProperty('gap', '0.1cm', 'important');
+              }
+              
+              element.style.setProperty('overflow', 'hidden', 'important');
+            });
+            
+            // Meta items
+            const metaItems = document.querySelectorAll('.meta-item');
+            metaItems.forEach(function(element) {
+              element.style.setProperty('font-size', '5pt', 'important');
+              element.style.setProperty('font-weight', '500', 'important');
+              element.style.setProperty('padding', '0px 3px', 'important');
+              element.style.setProperty('text-align', 'left', 'important');
+              element.style.setProperty('display', 'flex', 'important');
+              element.style.setProperty('align-items', 'center', 'important');
+              element.style.setProperty('justify-content', 'flex-start', 'important');
+              element.style.setProperty('overflow', 'hidden', 'important');
+              element.style.setProperty('text-overflow', 'ellipsis', 'important');
+              element.style.setProperty('white-space', 'nowrap', 'important');
+              
+              // Handle long city names specifically
+              if (element.id === 'city-item' && element.classList.contains('long-city')) {
+                element.style.setProperty('justify-content', 'center', 'important');
+                element.style.setProperty('text-align', 'center', 'important');
+              }
+            });
+            
+            // City field (last child) with smaller font for print
+            const cityItems = document.querySelectorAll('.meta-item:last-child');
+            cityItems.forEach(function(element) {
+              if (element.classList.contains('long-city')) {
+                element.style.setProperty('font-size', '3pt', 'important');
+              } else {
+                element.style.setProperty('font-size', '4pt', 'important');
+              }
             });
             
             // Meta item data (values) at 6pt
@@ -1142,30 +1998,20 @@
               element.style.setProperty('font-size', '6pt', 'important');
               element.style.setProperty('font-weight', '550', 'important');
             });
+            
+            // Mark as processed to prevent re-execution
+            fontsProcessed = true;
           }
           
-          // Multiple event listeners for print
+          // Production-ready event listeners - no flickering
           window.addEventListener('beforeprint', forceLightFontWeights);
           window.addEventListener('print', forceLightFontWeights);
           
-          // Force text justification on load
-          setTimeout(function() {
-            const noticeElements = document.querySelectorAll('.extra-note, .notice-content, .notice-paragraph');
-            noticeElements.forEach(function(element) {
-              element.style.setProperty('text-align', 'justify', 'important');
-              element.style.setProperty('text-justify', 'inter-word', 'important');
-              element.style.setProperty('font-size', '3.76pt', 'important');
-              element.style.setProperty('line-height', '1.4', 'important');
-              element.style.setProperty('width', '100%', 'important');
-              element.style.setProperty('max-width', '100%', 'important');
-              element.style.setProperty('padding', '0px', 'important');
-              element.style.setProperty('margin', '0px', 'important');
-            });
-          }, 500);
-          
-          // Also run on page load and periodically
-          setTimeout(forceLightFontWeights, 1000);
-          setTimeout(forceLightFontWeights, 3000);
+          // Run once on page load - no timeouts to prevent flickering
+          document.addEventListener('DOMContentLoaded', function() {
+            // Run immediately - no delays
+            forceLightFontWeights();
+          });
           
           // Nepali calendar conversion function
           function gregorianToNepali(gregorianDate) {
@@ -1386,18 +2232,42 @@
     <div class="extra-note">
       {% if ad.extra_notes %}
         <!-- Manual notice from user -->
-        {{ ad.extra_notes }}
+        {{ ad.extra_notes|safe }}
       {% else %}
         <!-- Country-specific automatic notice -->
         {% if country_notice %}
-          <h4>{{ country_notice.title }}</h4>
           <div class="notice-content" id="notice-content">
             {{ country_notice.content|safe }}
           </div>
+        {% else %}
+          <!-- Default Japan content format -->
+          <p><b>प्रशिक्षार्थीको आवश्यकता न्यूनतम योग्यता र काम गरेको अनुभव:</b> (क) नेपाली नागरिक हुनुपर्ने । (ख) प्रशिक्षणको उमेर १८ वर्ष पूरा भई २६ वर्ष ननाघेको हुनुपर्ने । (ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व वा अहिले सञ्चालन भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योग, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा काम गरेको अनुभव भएको हुनुपर्ने । (घ) निर्माण क्षेत्रमा काम गर्ने निर्माण सम्बन्धी उद्योग वा सम्बन्धित विषयका संस्थामा कम्तिमा दुई वर्ष काम गरेको अनुभव हुनुपर्ने । (ङ) प्रशिक्षणको विषय अनुसार काम गरेको अनुभव भएको र नेपालकै उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव हुनुपर्ने । (च) जापानी भाषा तथा संस्कृतिको सामान्य ज्ञान भएको हुनुपर्ने ।</p>
+
+          <p><b>दरखास्त साथ पेश गर्ने आवश्यक कागजातहरू:</b> (क) नेपाली नागरिकताको प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ख) शैक्षिक प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योगसंस्था, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा कम्तिमा २ वर्ष काम गरेको अनुभव सम्बन्धी प्रमाणपत्रको प्रमाणित प्रतिलिपि । (घ) सम्बन्धित विषयमा प्रशिक्षण प्राप्त गरेको प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ङ) प्रशिक्षणको विषयमा कामदारको रुपमा जान खोजेको विषयमा नेपालका उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव प्रमाणपत्रको प्रमाणित प्रतिलिपि । (च) प्रशिक्षणको विषय अनुसार जापानी भाषा तथा संस्कृतिको सम्बन्धमा तालिम लिएको हुनुपर्ने प्रमाणपत्रको प्रमाणित प्रतिलिपि । (छ) अनुभवीहरूको लागि प्रशिक्षणको विषय अनुसार नेपालमै काम गरिरहेको उद्योग प्रतिष्ठान, निकाय वा संस्थाको सिफारिस र नेपाल फर्किएपछि पनि सोही कार्यक्षेत्र वा निकाय समक्ष काम गर्ने प्रतिवद्धतासहितको प्रमाणित कागजात पेश गर्नु पर्ने ।</p>
+
+          <p><b>१) दरखास्त दाखिला गर्ने स्थान र मिति:</b> यस संस्थाको कार्यालयमा यो सूचना प्रकाशित भएको मितिले १५ दिन भित्र ।</p>
+
+          <p><b>२) परीक्षाशुल्क:</b> निर्धारित बैंक खाता नम्बरमा जम्मा गर्नुपर्नेछ । परीक्षाशुल्क रकम रू. ५०००।–</p>
+
+          <p><b>३) लिखित परीक्षा:</b> २०७८ साल माघ ३१ गते बिहान १०:०० बजे अनलाइन आप्रवासी कार्यालयमा आयोजित हुनेछ । परीक्षा दिन आउने परीक्षार्थीले आफ्नो नागरिकता प्रमाणपत्रको प्रतिलिपि ल्याउनुपर्नेछ ।</p>
+
+          <p><b>वैदेशिक रोजगार विभागद्वारा जारी गरिएको जानकारी:</b><br>
+          १. आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा कुनै त्रुटि भएमा तुरुन्तै सच्याउनुहोस् ।<br>
+          २. आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात सुरक्षित राख्नुहोस् ।<br>
+          ३. यस विज्ञापन सम्बन्धमा उल्झन भएमा विभागले कुनै जिम्मेवारी लिने छैन ।<br>
+          ४. विदेश जानु अघि अभिमुखीकरण तालिम लिनु पर्नेछ ।<br>
+          ५. विदेश जानु अघि श्रम सम्झौता अनिवार्य रुपमा गर्नुपर्नेछ ।<br>
+          ६. विदेश जानु अघि बीमा कम्पनीमा बीमा गर्नुपर्नेछ ।<br>
+          ७. विदेश जानु अघि कुनै दलाल वा एजेन्टलाई पैसा दिनु हुने छैन ।<br>
+          ८. पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट आफैंले बुझी लिनुहोस् ।<br>
+          ९. सीधै विमानस्थलमा जानुहोस् ।<br>
+          १०. पासपोर्टमा समस्या भएमा विभागमा सम्पर्क गर्नुहोस् ।</p>
+
+          <p><b>नोट:</b> जापानी भाषा N4 स्तरको ज्ञान भएकोलाई प्राथमिकता दिइनेछ ।</p>
         {% endif %}
       {% endif %}
     </div>
-  </div>
+    </div>
   </div>
   
   <!-- Company Banner - ATTACHED -->

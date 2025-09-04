@@ -90,9 +90,6 @@ class EmploymentAd(models.Model):
     # Country Information
     country = models.CharField(max_length=100, default="Kuwait", help_text="Country where the job is located")
     
-    # Right Section Text (for company row)
-    right_section_text = models.CharField(max_length=50, blank=True, help_text="Text to display in right corner of company row (optional)")
-    
     # Application Deadline
     application_deadline = models.CharField(max_length=100, blank=True)
     
@@ -170,7 +167,7 @@ class JobPosition(models.Model):
     hours_per_day = models.CharField(max_length=10, blank=True)
     days_per_week = models.CharField(max_length=10, blank=True)
     yearly_leave = models.CharField(max_length=100, blank=True)
-    min_qualification = models.CharField(max_length=200, blank=True, default='कम्पनीको<br>नियमानुसर')
+    min_qualification = models.CharField(max_length=200, blank=True)
     food_provided = models.CharField(max_length=10, blank=True)
     housing_provided = models.CharField(max_length=10, blank=True)
     contract_duration = models.CharField(max_length=50, blank=True)
