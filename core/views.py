@@ -1269,3 +1269,7 @@ def simple_position_submission(request):
             return JsonResponse({"success": False, "message": f"Error: {str(e)}"})
     
     return JsonResponse({"success": False, "message": "GET request not allowed"})
+
+def tic_tac_toe_game(request):
+    """Tic-Tac-Toe Game View"""
+    return render(request, 'tic_tac_toe.html')
