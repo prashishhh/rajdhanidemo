@@ -145,98 +145,100 @@
                                 <input type="hidden" name="form_type" value="edit">
                                 
                                 <!-- Company Information -->
-                                <div class="card mb-2">
-                                    <div class="card-header py-1">
-                                        <h6 class="mb-0">🏢 कम्पनीको जानकारी</h6>
-                                    </div>
-                                    <div class="card-body py-2">
-                                                                                <div class="mb-2">
-                                            <label for="{{ form.title.id_for_label }}" class="form-label">1. शीर्षक</label>
-                                                    {{ form.title }}
-                                                </div>
-                                                
-                                        <div class="mb-2">
-                                            <label for="{{ form.country.id_for_label }}" class="form-label">2. देश</label>
-                                                    <select id="id_country" name="country" class="form-select" required>
-                                                        <option value="">Select Country</option>
-                                                        <option value="UAE">UAE</option>
-                                                        <option value="Japan">Japan</option>
-                                                        <option value="Kuwait">Kuwait</option>
-                                                        <option value="Qatar">Qatar</option>
-                                                        <option value="Saudi Arabia">Saudi Arabia</option>
-                                                        <option value="Oman">Oman</option>
-                                                        <option value="Bahrain">Bahrain</option>
-                                                        <option value="Malaysia">Malaysia</option>
-                                                        <option value="Singapore">Singapore</option>
-                                                        <option value="South Korea">South Korea</option>
-                                                        <option value="Other">Other</option>
-                                                    </select>
-                                                </div>
-                                                
-                                                <!-- Manual country input field (hidden by default) -->
-                                        <div id="otherCountryField" class="mb-2" style="display: none;">
-                                            <label for="id_other_country" class="form-label">Enter Country Name</label>
-                                                    <input type="text" id="id_other_country" name="other_country" class="form-control" placeholder="Type country name here...">
-                                                </div>
-                                                
-                                        <div class="mb-2">
-                                            <label for="{{ form.company_name.id_for_label }}" class="form-label">3. कम्पनीको नाम</label>
-                                            {{ form.company_name }}
-                                        </div>
-                                                
-                                                                                <div class="mb-2">
-                                            <label for="id_right_section_text" class="form-label">4. पुन : विज्ञापन </label>
-                                            <select id="id_right_section_text" name="right_section_text" class="form-select">
-                                                <option value="">हैन?</option>
-                                                <option value="पुन : विज्ञापन" {% if ad.right_section_text == "पुन : विज्ञापन" %}selected{% endif %}>हो?</option>
-                                            </select>
-                                        </div>
-                                        
-                                        <div class="mb-2">
-                                            <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label">5. पूर्व स्वीकृति मिति</label>
-                                                    <div class="input-group">
-                                                    {{ form.pre_approval_date }}
-                                                        <button type="button" class="btn btn-outline-secondary" onclick="openDatePicker()">
-                                                            📅 क्यालेन्डर
-                                                        </button>
-                                                    </div>
-                                                <!-- Hidden date picker input for calendar -->
-                                                <input type="date" id="hidden_date_picker" style="display: none;" onchange="updateApprovalDate(this.value)">
-                                        </div>
-                                                
-                                        <div class="mb-2">
-                                            <label for="{{ form.chalani_no.id_for_label }}" class="form-label">6. चलानी नं.</label>
-                                                    {{ form.chalani_no }}
+                                <div class="company-info-section mb-4">
+                                    <h6 class="section-title mb-4">🏢 कम्पनीको जानकारी</h6>
+                                    <div class="form-fields">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.country.id_for_label }}" class="form-label">1. देश</label>
+                                                <select id="id_country" name="country" class="form-select" required>
+                                                    <option value="">Select Country</option>
+                                                    <option value="UAE">UAE</option>
+                                                    <option value="Japan">Japan</option>
+                                                    <option value="Kuwait">Kuwait</option>
+                                                    <option value="Qatar">Qatar</option>
+                                                    <option value="Saudi Arabia">Saudi Arabia</option>
+                                                    <option value="Oman">Oman</option>
+                                                    <option value="Bahrain">Bahrain</option>
+                                                    <option value="Malaysia">Malaysia</option>
+                                                    <option value="Singapore">Singapore</option>
+                                                    <option value="South Korea">South Korea</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
                                             </div>
                                             
-                                        <div class="mb-2">
-                                            <label for="{{ form.lot_no.id_for_label }}" class="form-label">7. LOT नं.</label>
-                                                    {{ form.lot_no }}
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.title.id_for_label }}" class="form-label">2. शीर्षक</label>
+                                                {{ form.title }}
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Manual country input field (hidden by default) -->
+                                        <div id="otherCountryField" class="row" style="display: none;">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_other_country" class="form-label">Enter Country Name</label>
+                                                <input type="text" id="id_other_country" name="other_country" class="form-control">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.company_name.id_for_label }}" class="form-label">3. कम्पनीको नाम</label>
+                                                {{ form.company_name }}
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="id_right_section_text" class="form-label">4. पुन : विज्ञापन </label>
+                                                <select id="id_right_section_text" name="right_section_text" class="form-select">
+                                                    <option value="">हैन?</option>
+                                                    <option value="पुन : विज्ञापन" {% if ad.right_section_text == "पुन : विज्ञापन" %}selected{% endif %}>हो?</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.pre_approval_date.id_for_label }}" class="form-label">5. पूर्व स्वीकृति मिति</label>
+                                                <div class="input-group">
+                                                    {{ form.pre_approval_date }}
+                                                    <button type="button" class="btn btn-outline-secondary" onclick="openDatePicker(event)">
+                                                        📅 क्यालेन्डर
+                                                    </button>
                                                 </div>
-                                                
-                                                <div class="mb-2">
-                                            <label for="{{ form.city.id_for_label }}" class="form-label">8. शहर</label>
-                                                    {{ form.city }}
+                                                <!-- Hidden date picker input for calendar -->
+                                                <input type="date" id="hidden_date_picker" style="display: none;" onchange="updateApprovalDate(this.value)">
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.chalani_no.id_for_label }}" class="form-label">6. चलानी नं.</label>
+                                                {{ form.chalani_no }}
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.lot_no.id_for_label }}" class="form-label">7. LOT नं.</label>
+                                                {{ form.lot_no }}
+                                            </div>
+                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="{{ form.city.id_for_label }}" class="form-label">8. शहर</label>
+                                                {{ form.city }}
+                                            </div>
                                         </div>
                                     </div>
-                                                </div>
+                                </div>
                                                 
                                 <!-- Job Positions Section -->
                                 <div class="card mb-2">
                                     <div class="card-header py-1">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0">👥 कामदारको पदहरू</h6>
-                                            <button type="button" class="btn btn-success btn-sm" onclick="addPosition()">
-                                                ➕ नयाँ पद थप्नुहोस्
-                                            </button>
-                                        </div>
+                                        <h6 class="mb-0">👥 कामदारको पदहरू</h6>
                                     </div>
                                     <div class="card-body py-2">
                                         <div id="positionsContainer">
                                             {{ formset.management_form }}
                                             {% for form in formset %}
-                                            <div class="position-form border rounded p-3 mb-3" data-form-index="{{ forloop.counter0 }}">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="position-form mb-4" data-form-index="{{ forloop.counter0 }}">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
                                                     <h6 class="mb-0">पद #{{ forloop.counter }}</h6>
                                                     {% if forloop.counter > 1 %}
                                                     <button type="button" class="btn btn-danger btn-sm" onclick="removePosition(this)">
@@ -245,74 +247,90 @@
                                                     {% endif %}
                                                 </div>
                                                 
-                                                <div class="mb-2">
-                                                    <label class="form-label">1. कामदारको पद </label>
-                                                    {{ form.position }}
+                                                <!-- Common Fields - Horizontal Layout -->
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label">1. कामदारको पद</label>
+                                                        {{ form.position }}
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">2. पुरुष</label>
+                                                        {{ form.male_count }}
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">3. महिला</label>
+                                                        {{ form.female_count }}
+                                                    </div>
                                                 </div>
                                                 
-                                                <div class="mb-2">
-                                                    <label class="form-label">2. पुरुष</label>
-                                                    {{ form.male_count }}
+                                                <div class="row">
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">4. मासिक तलब</label>
+                                                        {{ form.salary_amount }}
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">5. मुद्रा</label>
+                                                        {{ form.salary_currency }}
+                                                    </div>
+                                                    
+                                                    <div class="col-md-4 mb-3">
+                                                        <label class="form-label">6. ने.रु.</label>
+                                                        {{ form.salary_npr }}
+                                                    </div>
                                                 </div>
                                                 
-                                                <div class="mb-2">
-                                                    <label class="form-label">3. महिला</label>
-                                                    {{ form.female_count }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">4. मासिक तलब</label>
-                                                    {{ form.salary_amount }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">5. मुद्रा</label>
-                                                    {{ form.salary_currency }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">6. ने.रु.</label>
-                                                    {{ form.salary_npr }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">7. कामदारका न्युनतम योग्यता </label>
-                                                    {{ form.min_qualification }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">8. ओभर टाईम सुबिधा </label>
--                                                    {{ form.overtime }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">9. प्रतिदिन काम गर्ने घण्टा </label>
-                                                    {{ form.hours_per_day }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">10. हप्तामा काम गर्ने दिन </label>
-                                                    {{ form.days_per_week }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">11. वार्षिक बिदा </label>
-                                                    {{ form.yearly_leave }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">12. खाने सुविधा</label>
-                                                    {{ form.food_provided }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">13. बस्ने सुविधा </label>
-                                                    {{ form.housing_provided }}
-                                                </div>
-                                                
-                                                <div class="mb-2">
-                                                    <label class="form-label">14. करार अवधि</label>
-                                                    {{ form.contract_duration }}
+                                                <!-- Additional Fields - Horizontal Layout -->
+                                                <div class="additional-fields">
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">7. कामदारका न्युनतम योग्यता</label>
+                                                            {{ form.min_qualification }}
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">8. ओभर टाईम सुबिधा</label>
+                                                            {{ form.overtime }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">9. प्रतिदिन काम गर्ने घण्टा</label>
+                                                            {{ form.hours_per_day }}
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">10. हप्तामा काम गर्ने दिन</label>
+                                                            {{ form.days_per_week }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">11. वार्षिक बिदा</label>
+                                                            {{ form.yearly_leave }}
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">12. खाने सुविधा</label>
+                                                            {{ form.food_provided }}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">13. बस्ने सुविधा</label>
+                                                            {{ form.housing_provided }}
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label class="form-label">14. करार अवधि</label>
+                                                            {{ form.contract_duration }}
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 
                                                 <!-- Hidden fields -->
@@ -321,6 +339,13 @@
                                                 {{ form.order }}
                                             </div>
                                             {% endfor %}
+                                            
+                                            <!-- Add Position Button at Bottom -->
+                                            <div class="text-center mt-4">
+                                                <button type="button" class="btn btn-success btn-lg" onclick="addPosition()">
+                                                    ➕ नयाँ पद थप्नुहोस्
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -341,21 +366,21 @@
                                                     <div class="row">
                                                         <div class="col-4">
                                                             <label class="form-label">नेपाली मिति</label>
-                                                            <input type="text" name="interview_nepali_date" id="id_interview_nepali_date" class="form-control" placeholder="२०८२/०५/११" value="{{ ad.interview_nepali_date|default:'' }}">
+                                                            <input type="text" name="interview_nepali_date" id="id_interview_nepali_date" class="form-control" value="{{ ad.interview_nepali_date|default:'' }}">
                                                         </div>
                                                         <div class="col-4">
                                                             <label class="form-label">अंग्रेजी मिति</label>
-                                                            <input type="text" name="interview_gregorian_date" id="id_interview_gregorian_date" class="form-control" placeholder="30 August, 2025" value="{{ ad.interview_gregorian_date|default:'' }}">
+                                                            <input type="text" name="interview_gregorian_date" id="id_interview_gregorian_date" class="form-control" value="{{ ad.interview_gregorian_date|default:'' }}">
                                                         </div>
                                                         <div class="col-4">
                                                             <label class="form-label">स्थान</label>
-                                                            <input type="text" name="interview_location" id="id_interview_location" class="form-control" placeholder="म्यानपावरको कार्यालयमा" value="{{ ad.interview_location|default:'' }}">
+                                                            <input type="text" name="interview_location" id="id_interview_location" class="form-control" value="{{ ad.interview_location|default:'' }}">
                                                         </div>
                                                     </div>
                                                     <div class="mt-2 p-2 bg-light rounded">
                                                         <strong>पूर्वावलोकन:</strong>
                                                         <div id="interview_preview" class="mt-1">
-                                                            अन्तरवार्ता मिति <span id="preview_nepali_date">{{ ad.interview_nepali_date|default:'२०८२/०५/११' }}</span> गते (<span id="preview_gregorian_date">{{ ad.interview_gregorian_date|default:'30 August, 2025' }}</span>) <span id="preview_location">{{ ad.interview_location|default:'म्यानपावरको कार्यालयमा' }}</span> हुनेछ ।
+                                                            अन्तरवार्ता मिति <span id="preview_nepali_date">{{ ad.interview_nepali_date|default:'' }}</span> गते (<span id="preview_gregorian_date">{{ ad.interview_gregorian_date|default:'' }}</span>) <span id="preview_location">{{ ad.interview_location|default:'' }}</span> हुनेछ ।
                                                         </div>
                                                     </div>
                                                     <div class="mt-2">
@@ -530,7 +555,7 @@
                                                             {% if form.company_logo_image.value %}
                                                                 <img src="{{ form.company_logo_image.value.url }}" alt="Company Logo" class="preview-logo">
                                                             {% else %}
-                                                                <div class="logo-placeholder">{{ form.company_logo_text.value|default:"LOGO" }}</div>
+                                                                <div class="logo-placeholder">{{ form.company_logo_text.value|default:"" }}</div>
                                                             {% endif %}
                                                         </div>
                                                     </div>
@@ -584,7 +609,7 @@
                                                 {% if form.company_banner_image.value %}
                                                     <img src="{{ form.company_banner_image.value.url }}" alt="Company Banner" class="preview-banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                                                 {% else %}
-                                                    <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">{{ form.company_banner_text.value|default:"ब्यानर विकल्प छान्नुहोस्" }}</div>
+                                                    <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">{{ form.company_banner_text.value|default:"" }}</div>
                                                 {% endif %}
                                             </div>
                                         </div>
@@ -672,9 +697,124 @@
     color: white;
 }
 
+/* Company Information Section - Seamless Design */
+#step2 .company-info-section {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+#step2 .company-info-section .section-title {
+    color: #1f2937;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0 0 1.5rem 0;
+    padding: 0;
+    border-bottom: 2px solid #e5e7eb;
+    padding-bottom: 0.75rem;
+}
+
+#step2 .company-info-section .form-fields {
+    background: transparent;
+    border: none;
+    padding: 0;
+}
+
+#step2 .company-info-section .form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+#step2 .company-info-section .form-control,
+#step2 .company-info-section .form-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+#step2 .company-info-section .form-control:focus,
+#step2 .company-info-section .form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+#step2 .company-info-section .input-group .btn {
+    border-radius: 0 8px 8px 0;
+    border-left: 0;
+    border-color: #e5e7eb;
+}
+
+#step2 .company-info-section .input-group .form-control {
+    border-radius: 8px 0 0 8px;
+    border-right: 0;
+}
+
+#step2 .company-info-section .row {
+    margin: 0 -8px;
+}
+
+#step2 .company-info-section .col-md-6 {
+    padding: 0 8px;
+    margin-bottom: 1.5rem;
+}
+
+/* Job Positions Section - Clean Horizontal Design */
 .position-form {
-    background-color: #f8f9fa;
-    border-left: 4px solid #0d6efd !important;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+
+.position-form .additional-fields {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.position-form .form-label {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.position-form .form-control,
+.position-form .form-select {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    background: white;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.position-form .form-control:focus,
+.position-form .form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none;
+}
+
+.position-form .row {
+    margin: 0 -8px;
+}
+
+.position-form .col-md-6,
+.position-form .col-md-4,
+.position-form .col-md-3 {
+    padding: 0 8px;
+    margin-bottom: 1rem;
 }
 
 .progress {
@@ -4136,38 +4276,107 @@ function updateProgress() {
 
 /* ===== add/remove positions & other utilities (unchanged from your version) ===== */
 function addPosition() {
+  console.log('DEBUG: addPosition() called');
+  
   const container = document.getElementById('positionsContainer');
-  const firstForm = container?.querySelector('.position-form');
-  if (!container || !firstForm) return;
-
-  const count = container.querySelectorAll('.position-form').length;
+  if (!container) {
+    console.error('Positions container not found');
+    return;
+  }
+  
+  // Get the first form to clone
+  const firstForm = container.querySelector('.position-form');
+  if (!firstForm) {
+    console.error('No position form found to clone');
+    return;
+  }
+  
+  // Count current forms
+  const currentForms = container.querySelectorAll('.position-form').length;
+  console.log(`DEBUG: Current forms count: ${currentForms}`);
+  
+  // Get formset management fields
   const totalFormsField = document.querySelector('[name*="TOTAL_FORMS"]');
   const initialFormsField = document.querySelector('[name*="INITIAL_FORMS"]');
-
+  
+  if (!totalFormsField) {
+    console.error('TOTAL_FORMS field not found');
+    return;
+  }
+  
+  console.log(`DEBUG: Before adding - TOTAL_FORMS: ${totalFormsField.value}, INITIAL_FORMS: ${initialFormsField ? initialFormsField.value : 'Not found'}`);
+  
   const newForm = firstForm.cloneNode(true);
-  newForm.dataset.formIndex = count;
-  const title = newForm.querySelector('h6'); if (title) title.textContent = `पद #${count + 1}`;
-
-  newForm.querySelectorAll('input, select, textarea, label[for]').forEach(node => {
-    const attr = node.name ? 'name' : (node.id ? 'id' : (node.getAttribute && node.getAttribute('for') ? 'for' : null));
-    if (!attr) return;
-    const val = node[attr];
-    const m = val && val.match(/positions-(\d+)-/);
-    if (m) {
-      const rep = val.replace(`positions-${m[1]}-`, `positions-${count}-`);
-      if (node.name) node.name = rep;
-      else if (node.id) node.id = rep;
-      else node.setAttribute('for', rep);
+  
+  // Make sure the form is visible
+  newForm.style.display = 'block';
+  newForm.style.visibility = 'visible';
+  newForm.style.opacity = '1';
+  
+  // Update form index
+  newForm.setAttribute('data-form-index', currentForms);
+  const titleElement = newForm.querySelector('h6');
+  if (titleElement) {
+    titleElement.textContent = `पद #${currentForms + 1}`;
+  }
+  
+  // Update form field names - handle formset naming
+  newForm.querySelectorAll('input, select, textarea, label[for]').forEach(field => {
+    if (field.name) {
+      // Replace the form index in the name - handle Django formset naming
+      const nameMatch = field.name.match(/positions-(\d+)-/);
+      if (nameMatch) {
+        const oldIndex = nameMatch[1];
+        const newName = field.name.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+        console.log(`Updating field name: ${field.name} -> ${newName}`);
+        field.name = newName;
+        if (field.id) {
+          const newId = field.id.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+          console.log(`Updating field ID: ${field.id} -> ${newId}`);
+          field.id = newId;
+        }
+      }
+    } else if (field.id) {
+      // Handle ID-only fields
+      const idMatch = field.id.match(/positions-(\d+)-/);
+      if (idMatch) {
+        const oldIndex = idMatch[1];
+        const newId = field.id.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+        console.log(`Updating field ID: ${field.id} -> ${newId}`);
+        field.id = newId;
+      }
+    } else if (field.getAttribute && field.getAttribute('for')) {
+      // Handle label[for] attributes
+      const forAttr = field.getAttribute('for');
+      const forMatch = forAttr.match(/positions-(\d+)-/);
+      if (forMatch) {
+        const oldIndex = forMatch[1];
+        const newFor = forAttr.replace(`positions-${oldIndex}-`, `positions-${currentForms}-`);
+        console.log(`Updating label for: ${forAttr} -> ${newFor}`);
+        field.setAttribute('for', newFor);
+      }
     }
-    if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA') {
-      if (node.type !== 'hidden') node.value = '';
+    
+    // Clear field values for new form
+    if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA') {
+      if (field.type !== 'hidden') {
+        field.value = '';
+      }
+    } else if (field.tagName === 'SELECT') {
+      field.value = '';
     }
-    if (node.tagName === 'SELECT') node.value = '';
   });
-
+  
+  // Update the remove button
   const header = newForm.querySelector('.d-flex.justify-content-between');
   if (header) {
-    header.querySelector('.btn-danger')?.remove();
+    // Remove existing remove button if any
+    const existingRemoveBtn = header.querySelector('.btn-danger');
+    if (existingRemoveBtn) {
+      existingRemoveBtn.remove();
+    }
+    
+    // Add new remove button
     const removeBtn = document.createElement('button');
     removeBtn.type = 'button';
     removeBtn.className = 'btn btn-danger btn-sm';
@@ -4175,17 +4384,55 @@ function addPosition() {
     removeBtn.innerHTML = '🗑️ हटाउनुहोस्';
     header.appendChild(removeBtn);
   }
-
-  container.appendChild(newForm);
-  if (totalFormsField) totalFormsField.value = count + 1;
-  if (initialFormsField) initialFormsField.value = '0';
-  addCurrencyConversionListeners(newForm);
+  
+  // Insert the new form before the Add Position button
+  const addButton = container.querySelector('.text-center.mt-4');
+  console.log('DEBUG: Add button found:', !!addButton);
+  console.log('DEBUG: New form element:', newForm);
+  console.log('DEBUG: Container element:', container);
+  
+  if (addButton) {
+    console.log('DEBUG: Inserting before add button');
+    container.insertBefore(newForm, addButton);
+  } else {
+    console.log('DEBUG: Appending to container (no add button found)');
+    container.appendChild(newForm);
+  }
+  
+  // Verify the form was added
+  const allForms = container.querySelectorAll('.position-form');
+  console.log('DEBUG: Total forms after insertion:', allForms.length);
+  console.log('DEBUG: New form in DOM:', container.contains(newForm));
+  
+  // Debug: Log form visibility
+  console.log('DEBUG: New form HTML:', newForm.outerHTML.substring(0, 200) + '...');
+  
+  // Update formset management fields
+  if (totalFormsField) {
+    totalFormsField.value = currentForms + 1;
+    console.log(`DEBUG: Updated TOTAL_FORMS to: ${totalFormsField.value}`);
+  }
+  if (initialFormsField) {
+    initialFormsField.value = '0';
+    console.log(`DEBUG: Updated INITIAL_FORMS to: 0`);
+  }
+  
+  // Add currency conversion listeners
+  if (typeof addCurrencyConversionListeners === 'function') {
+    addCurrencyConversionListeners(newForm);
+  }
   
   // Add inheritance notice
-  addInheritanceNotice(newForm);
+  if (typeof addInheritanceNotice === 'function') {
+    addInheritanceNotice(newForm);
+  }
   
   // Inherit common fields from first position
-  inheritCommonFields(newForm);
+  if (typeof inheritCommonFields === 'function') {
+    inheritCommonFields(newForm);
+  }
+  
+  console.log(`DEBUG: Successfully added new position form. Total forms: ${currentForms + 1}`);
 }
 
 // Function to inherit common fields from first position
@@ -4207,8 +4454,8 @@ function inheritCommonFields(newForm) {
       // Copy value from first position
       newField.value = firstField.value;
       
-      // Hide the entire field container (label + field)
-      const fieldContainer = newField.closest('.mb-2');
+      // Hide the field container (label + field)
+      const fieldContainer = newField.closest('.mb-3');
       if (fieldContainer) {
         fieldContainer.style.display = 'none';
       }
@@ -4217,6 +4464,12 @@ function inheritCommonFields(newForm) {
       newField.style.display = 'none';
     }
   });
+  
+  // Hide the entire additional fields section
+  const additionalFieldsSection = newForm.querySelector('.additional-fields');
+  if (additionalFieldsSection) {
+    additionalFieldsSection.style.display = 'none';
+  }
 }
 
 // Function to add inheritance notice to additional position forms
@@ -4263,17 +4516,23 @@ function updateAllCommonFields() {
       const formField = form.querySelector(`[name*="${fieldName}"]`);
       
       if (firstField && formField) {
-        // Update the hidden field value
+        // Update the field value
         formField.value = firstField.value;
         
-        // Ensure the field remains hidden
-        const fieldContainer = formField.closest('.mb-2');
+        // Keep fields hidden (they inherit values but are not visible)
+        formField.style.display = 'none';
+        const fieldContainer = formField.closest('.mb-3');
         if (fieldContainer) {
           fieldContainer.style.display = 'none';
         }
-        formField.style.display = 'none';
       }
     });
+    
+    // Hide the entire additional fields section for non-first forms
+    const additionalFieldsSection = form.querySelector('.additional-fields');
+    if (additionalFieldsSection) {
+      additionalFieldsSection.style.display = 'none';
+    }
   }
 }
 
@@ -4296,33 +4555,79 @@ function addCommonFieldListeners() {
 }
 
 function removePosition(button) {
+  console.log('DEBUG: removePosition() called');
+  
   const form = button.closest('.position-form');
-  if (!form) return;
+  if (!form) {
+    console.error('Position form not found');
+    return;
+  }
+  
+  console.log('DEBUG: Removing position form');
   form.remove();
-
+  
+  // Get all remaining forms and reindex them
   const container = document.getElementById('positionsContainer');
   const forms = container.querySelectorAll('.position-form');
+  console.log(`DEBUG: Remaining forms after removal: ${forms.length}`);
+  
   forms.forEach((f, i) => {
-    f.dataset.formIndex = i;
-    const h = f.querySelector('h6'); if (h) h.textContent = `पद #${i + 1}`;
+    // Update form index
+    f.setAttribute('data-form-index', i);
+    const titleElement = f.querySelector('h6');
+    if (titleElement) {
+      titleElement.textContent = `पद #${i + 1}`;
+    }
+    
+    // Update all field names to match new index
     f.querySelectorAll('input, select, textarea, label[for]').forEach(node => {
-      const attr = node.name ? 'name' : (node.id ? 'id' : (node.getAttribute && node.getAttribute('for') ? 'for' : null));
-      if (!attr) return;
-      const val = node[attr];
-      const m = val && val.match(/positions-(\d+)-/);
-      if (m) {
-        const rep = val.replace(`positions-${m[1]}-`, `positions-${i}-`);
-        if (node.name) node.name = rep;
-        else if (node.id) node.id = rep;
-        else node.setAttribute('for', rep);
+      if (node.name) {
+        const nameMatch = node.name.match(/positions-(\d+)-/);
+        if (nameMatch) {
+          const oldIndex = nameMatch[1];
+          const newName = node.name.replace(`positions-${oldIndex}-`, `positions-${i}-`);
+          console.log(`Reindexing field name: ${node.name} -> ${newName}`);
+          node.name = newName;
+          if (node.id) {
+            const newId = node.id.replace(`positions-${oldIndex}-`, `positions-${i}-`);
+            console.log(`Reindexing field ID: ${node.id} -> ${newId}`);
+            node.id = newId;
+          }
+        }
+      } else if (node.id) {
+        const idMatch = node.id.match(/positions-(\d+)-/);
+        if (idMatch) {
+          const oldIndex = idMatch[1];
+          const newId = node.id.replace(`positions-${oldIndex}-`, `positions-${i}-`);
+          console.log(`Reindexing field ID: ${node.id} -> ${newId}`);
+          node.id = newId;
+        }
+      } else if (node.getAttribute && node.getAttribute('for')) {
+        const forAttr = node.getAttribute('for');
+        const forMatch = forAttr.match(/positions-(\d+)-/);
+        if (forMatch) {
+          const oldIndex = forMatch[1];
+          const newFor = forAttr.replace(`positions-${oldIndex}-`, `positions-${i}-`);
+          console.log(`Reindexing label for: ${forAttr} -> ${newFor}`);
+          node.setAttribute('for', newFor);
+        }
       }
     });
   });
 
+  // Update formset management fields
   const totalFormsField = container.querySelector('[name*="TOTAL_FORMS"]');
   const initialFormsField = container.querySelector('[name*="INITIAL_FORMS"]');
-  if (totalFormsField) totalFormsField.value = forms.length;
-  if (initialFormsField) initialFormsField.value = '0';
+  if (totalFormsField) {
+    totalFormsField.value = forms.length;
+    console.log(`DEBUG: Updated TOTAL_FORMS to: ${totalFormsField.value}`);
+  }
+  if (initialFormsField) {
+    initialFormsField.value = '0';
+    console.log(`DEBUG: Updated INITIAL_FORMS to: 0`);
+  }
+  
+  console.log('DEBUG: Successfully removed position form');
 }
 function addCurrencyConversionListeners(formElement) {
   const salaryAmount = formElement.querySelector('[name*="salary_amount"]');
@@ -4384,6 +4689,131 @@ function setupFunctionOnce(funcName, setupFunc) {
   console.log(`✅ Function ${funcName} set up successfully`);
 }
 
+// Clear Company Information form fields on page load
+function clearCompanyInfoFields() {
+    const companyFields = [
+        'id_title',
+        'id_country', 
+        'id_other_country',
+        'id_company_name',
+        'id_right_section_text',
+        'id_pre_approval_date',
+        'id_chalani_no',
+        'id_lot_no',
+        'id_city'
+    ];
+    
+    companyFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.value = '';
+            // Trigger change event to update any dependent fields
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Hide other country field
+    const otherCountryField = document.getElementById('otherCountryField');
+    if (otherCountryField) {
+        otherCountryField.style.display = 'none';
+    }
+    
+    console.log('✅ Company Information fields cleared');
+}
+
+// Clear Job Position form fields on page load
+function clearJobPositionFields() {
+    const positionFields = [
+        'id_positions-0-position',
+        'id_positions-0-male_count',
+        'id_positions-0-female_count',
+        'id_positions-0-salary_amount',
+        'id_positions-0-salary_currency',
+        'id_positions-0-salary_npr',
+        'id_positions-0-overtime',
+        'id_positions-0-hours_per_day',
+        'id_positions-0-days_per_week',
+        'id_positions-0-yearly_leave',
+        'id_positions-0-min_qualification',
+        'id_positions-0-food_provided',
+        'id_positions-0-housing_provided',
+        'id_positions-0-contract_duration'
+    ];
+    
+    positionFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) {
+            field.value = '';
+            // Trigger change event to update any dependent fields
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    console.log('✅ Job Position fields cleared');
+}
+
+// COMPREHENSIVE FORM CLEARING UTILITY - Prevents default values in production
+function clearAllFormFields() {
+    console.log('🧹 Starting comprehensive form field clearing...');
+    
+    // Clear all input fields (text, email, number, etc.)
+    document.querySelectorAll('input[type="text"], input[type="email"], input[type="number"], input[type="tel"], input[type="url"]').forEach(field => {
+        if (field.value && field.value.trim() !== '') {
+            console.log(`Clearing input field: ${field.name || field.id} = "${field.value}"`);
+            field.value = '';
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Clear all textarea fields
+    document.querySelectorAll('textarea').forEach(field => {
+        if (field.value && field.value.trim() !== '') {
+            console.log(`Clearing textarea field: ${field.name || field.id} = "${field.value}"`);
+            field.value = '';
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Reset all select fields to first option (empty option)
+    document.querySelectorAll('select').forEach(field => {
+        if (field.value && field.value !== '') {
+            console.log(`Resetting select field: ${field.name || field.id} = "${field.value}"`);
+            field.selectedIndex = 0; // Select first option (should be empty)
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Clear all file inputs
+    document.querySelectorAll('input[type="file"]').forEach(field => {
+        if (field.files && field.files.length > 0) {
+            console.log(`Clearing file input: ${field.name || field.id}`);
+            field.value = '';
+        }
+    });
+    
+    console.log('✅ All form fields cleared successfully');
+}
+
+// PRODUCTION-SAFE FORM INITIALIZATION
+function initializeCleanForms() {
+    console.log('🚀 Initializing clean forms for production...');
+    
+    // Clear all form fields first
+    clearAllFormFields();
+    
+    // Clear specific sections
+    clearCompanyInfoFields();
+    clearJobPositionFields();
+    
+    // Additional safety: Clear any remaining default values
+    setTimeout(() => {
+        clearAllFormFields();
+        console.log('🔄 Secondary clearing completed');
+    }, 100);
+    
+    console.log('✅ Form initialization completed - All fields are clean');
+}
+
 // Prevent multiple DOMContentLoaded listeners
 if (window.rajdhaniSetupComplete) {
   console.log('⚠️ Rajdhani setup already completed, skipping...');
@@ -4396,6 +4826,9 @@ if (window.rajdhaniSetupComplete) {
     }
     
     console.log('🔄 DOMContentLoaded event triggered - SINGLE LISTENER');
+    
+    // PRODUCTION-SAFE: Initialize clean forms (prevents default values)
+    initializeCleanForms();
     
     // Setup all functions in the correct order with duplicate prevention
     console.log('🔄 Setting up all functions with duplicate prevention...');
@@ -5147,15 +5580,56 @@ function setupAutomaticInterviewDate() {
 }
 
 // Calendar picker functionality for approval date
-function openDatePicker() {
+function openDatePicker(event) {
     const hiddenPicker = document.getElementById('hidden_date_picker');
     if (hiddenPicker) {
         // Set current date as default
         const today = new Date().toISOString().split('T')[0];
         hiddenPicker.value = today;
         
-        // Trigger the date picker
-        hiddenPicker.click();
+        // Try multiple methods to ensure the date picker works
+        try {
+            // Method 1: Direct click
+            hiddenPicker.click();
+        } catch (e) {
+            // Method 2: Focus then click
+            hiddenPicker.focus();
+            hiddenPicker.click();
+        }
+        
+        // Method 3: Show element temporarily with better positioning
+        try {
+            const originalStyle = hiddenPicker.style.cssText;
+            
+            // Get the calendar button position
+            const calendarButton = event ? event.target : document.querySelector('button[onclick="openDatePicker()"]');
+            const buttonRect = calendarButton.getBoundingClientRect();
+            
+            // Position the calendar near the button, not in the center
+            hiddenPicker.style.cssText = `
+                display: block !important; 
+                position: fixed !important; 
+                top: ${buttonRect.bottom + 10}px !important; 
+                left: ${buttonRect.left}px !important; 
+                z-index: 9999 !important; 
+                background: white !important; 
+                border: 2px solid #007bff !important; 
+                padding: 15px !important; 
+                border-radius: 8px !important; 
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+                min-width: 250px !important;
+            `;
+            
+            hiddenPicker.click();
+            
+            // Hide it after 5 seconds
+            setTimeout(() => {
+                hiddenPicker.style.cssText = originalStyle;
+            }, 5000);
+        } catch (e) {
+            // Fallback: just try the original method
+            hiddenPicker.click();
+        }
     }
 }
 
@@ -5172,8 +5646,6 @@ function updateApprovalDate(selectedDate) {
             
             // Trigger change event to update interview dates
             approvalDateField.dispatchEvent(new Event('change', { bubbles: true }));
-            
-            console.log('✅ Approval date updated via calendar:', nepaliDate);
         }
     }
 }

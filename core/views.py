@@ -469,7 +469,7 @@ def employment_ad_editor(request):
     employment_ad, created = EmploymentAd.objects.get_or_create(
         id=1,
         defaults={
-            'title': 'रोजगारी विज्ञापन',
+            'title': '',
             'company_name': '',
             'pre_approval_date': '',
             'chalani_no': '',
@@ -477,25 +477,25 @@ def employment_ad_editor(request):
             'city': '',
             'country': '',
             'application_deadline': '',
-            'medical_cost_local': 'कामदारले तिर्ने',
-            'medical_cost_foreign': 'कामदारले तिर्ने',
-            'insurance_local': 'कामदारले तिर्ने',
-            'insurance_employment': 'कामदारले तिर्ने',
-            'air_ticket': 'कामदारले तिर्ने',
-            'visa_fee': 'कामदारले तिर्ने',
-            'visa_stamp_fee': 'कामदारले तिर्ने',
-            'recruitment_fee': 'कामदारले तिर्ने',
-            'welfare_fund': 'रु. ७०० /-',
-            'labor_fee': 'कामदारले तिर्ने रु. १५०० /-',
-            'service_fee': 'कामदारले तिर्ने',
-            'extra_notes': 'उल्लेखित राशि भन्दा बाहेक अन्य कुनै रकम लिइने छैन। कामदार छनोट भएपछि आवश्यक कागजात र प्रक्रिया पूरा गर्नुपर्नेछ।',
-            'company_logo_text': 'LOGO',
-            'company_banner_title': 'BEST EMPLOYMENT HR SOLUTION',
-            'company_address': 'ठेगाना: Kathmandu-9, Gaushala, Nepal.',
-            'company_phone': 'फोन: +977-1-5922788',
-            'company_email': 'इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com',
-            'company_website': 'वेब: www.besthr.com.np',
-            'license_number': 'Gov. Lic. Number 1714/081/082',
+            'medical_cost_local': '',
+            'medical_cost_foreign': '',
+            'insurance_local': '',
+            'insurance_employment': '',
+            'air_ticket': '',
+            'visa_fee': '',
+            'visa_stamp_fee': '',
+            'recruitment_fee': '',
+            'welfare_fund': '',
+            'labor_fee': '',
+            'service_fee': '',
+            'extra_notes': '',
+            'company_logo_text': '',
+            'company_banner_title': '',
+            'company_address': '',
+            'company_phone': '',
+            'company_email': '',
+            'company_website': '',
+            'license_number': '',
         }
     )
     
@@ -903,11 +903,11 @@ def employment_ad_editor(request):
     
     # Set default interview data (not from database)
     interview_data = {
-        'nepali_date': '२०८१/१२/१८',
-        'gregorian_date': '31 मार्च, 2025',
+        'nepali_date': '',
+        'gregorian_date': '',
         'interview_hour': '',
         'interview_time': '',
-        'interview_location': 'म्यानपावरको कार्यालय बसुन्धारामा',
+        'interview_location': '',
     }
     
     # Populate form with interview data

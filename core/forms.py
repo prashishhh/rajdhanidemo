@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import inlineformset_factory, BaseInlineFormSet
 from .models import News, EmploymentAd, JobPosition, Interview, CurrencyRate
+from .mixins import ProductionSafeForm, ProductionSafeFormset
 
 
 class SignUpForm(UserCreationForm):
@@ -14,7 +15,7 @@ class SignUpForm(UserCreationForm):
 
 
 # Custom formset for job positions that handles new records properly
-class JobPositionFormSet(BaseInlineFormSet):
+class JobPositionFormSet(ProductionSafeFormset, BaseInlineFormSet):
     """Custom formset for job positions that handles new positions properly"""
     
     def clean(self):
@@ -90,7 +91,7 @@ class InterviewForm(forms.ModelForm):
             }),
         }
 
-class EmploymentAdForm(forms.ModelForm):
+class EmploymentAdForm(ProductionSafeForm):
     """Form for employment advertisement main information"""
     
     # Override title field to make it optional
@@ -98,8 +99,7 @@ class EmploymentAdForm(forms.ModelForm):
         max_length=200,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'जापानमा रोजगारी'
+            'class': 'form-control'
         })
     )
     
@@ -108,16 +108,14 @@ class EmploymentAdForm(forms.ModelForm):
         max_length=20, 
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': '२०८२/०५/११'
+            'class': 'form-control'
         })
     )
     interview_gregorian_date = forms.CharField(
         max_length=50, 
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': '30 August, 2025'
+            'class': 'form-control'
         })
     )
     interview_hour = forms.ChoiceField(
@@ -144,8 +142,7 @@ class EmploymentAdForm(forms.ModelForm):
         max_length=200, 
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'म्यानपावरको कार्यालय बसुन्धारामा'
+            'class': 'form-control'
         })
     )
     
@@ -160,48 +157,42 @@ class EmploymentAdForm(forms.ModelForm):
         max_length=200,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'BEST EMPLOYMENT HR SOLUTION'
+            'class': 'form-control'
         })
     )
     company_address = forms.CharField(
         max_length=300,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'ठेगाना: Kathmandu-9, Gaushala, Nepal.'
+            'class': 'form-control'
         })
     )
     company_phone = forms.CharField(
         max_length=100,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'फोन: +977-1-5922788'
+            'class': 'form-control'
         })
     )
     company_email = forms.CharField(
         max_length=200,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com'
+            'class': 'form-control'
         })
     )
     company_website = forms.CharField(
         max_length=100,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'वेब: www.besthr.com.np'
+            'class': 'form-control'
         })
     )
     license_number = forms.CharField(
         max_length=100,
         required=False,
         widget=forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Gov. Lic. Number 1714/081/082'
+            'class': 'form-control'
         })
     )
     
@@ -261,28 +252,22 @@ class EmploymentAdForm(forms.ModelForm):
         ]
         widgets = {
             'company_name': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'FINE FARE FOOD MARKET L.L.C'
+                'class': 'form-control'
             }),
             'country': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'Kuwait, UAE, Japan, etc. (देश अनुसार स्वचालित सूचना देखिनेछ)'
+                'class': 'form-control'
             }),
             'pre_approval_date': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': '2025-08-22'
+                'class': 'form-control'
             }),
             'chalani_no': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': '६०२३७४३२'
+                'class': 'form-control'
             }),
             'lot_no': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': '३२२८६२'
+                'class': 'form-control'
             }),
             'city': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'West Abu'
+                'class': 'form-control'
             }),
             # Extra Information fields with payment options
             'medical_cost_local': forms.Select(attrs={
@@ -334,12 +319,10 @@ class EmploymentAdForm(forms.ModelForm):
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'welfare_fund': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'रु. ७०० /-'
+                'class': 'form-control'
             }),
             'labor_fee': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'कामदारले तिर्ने रु. १५०० /-'
+                'class': 'form-control'
             }),
             'service_fee': forms.Select(attrs={
                 'class': 'form-control'
@@ -349,13 +332,11 @@ class EmploymentAdForm(forms.ModelForm):
             ]),
             'extra_notes': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'यहाँ आफ्नो विशेष सूचना लेख्नुहोस् (यदि कुनै छ भने)'
+                'rows': 3
             }),
             # Company Banner Widgets
             'company_logo_text': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'LOGO'
+                'class': 'form-control'
             }),
             'company_logo_image': forms.FileInput(attrs={
                 'class': 'form-control',
@@ -368,17 +349,15 @@ class EmploymentAdForm(forms.ModelForm):
                 'id': 'banner-upload'
             }),
             'company_banner_text': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Manual banner text (if no image uploaded)'
+                'class': 'form-control'
             }),
             'interview_custom_text': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 2,
-                'placeholder': 'यहाँ आफ्नो विशेष अन्तरवार्ता सूचना लेख्नुहोस् (खाली छोड्नुहोस् यदि स्वचालित ८ दिन गणना चाहनुहुन्छ भने)'
+                'rows': 2
             }),
         }
 
-class JobPositionForm(forms.ModelForm):
+class JobPositionForm(ProductionSafeForm):
     """Form for individual job positions"""
     
     class Meta:
@@ -390,20 +369,16 @@ class JobPositionForm(forms.ModelForm):
         ]
         widgets = {
             'position': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'BAKERY WORKER'
+                'class': 'form-control'
             }),
             'male_count': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'संख्या भर्नुहोस्'
+                'class': 'form-control'
             }),
             'female_count': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'संख्या भर्नुहोस्'
+                'class': 'form-control'
             }),
             'salary_amount': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': '140'
+                'class': 'form-control'
             }),
             'salary_currency': forms.Select(attrs={
                 'class': 'form-control'
@@ -423,7 +398,6 @@ class JobPositionForm(forms.ModelForm):
             ]),
             'salary_npr': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': '५२,९९२/-',
                 'readonly': 'readonly'
             }),
             'overtime': forms.Select(attrs={
@@ -435,12 +409,10 @@ class JobPositionForm(forms.ModelForm):
                 ('कम्पनीको नियमानुसार', 'कम्पनीको नियमानुसार')
             ]),
             'hours_per_day': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'घण्टा भर्नुहोस्'
+                'class': 'form-control'
             }),
             'days_per_week': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'दिन भर्नुहोस्'
+                'class': 'form-control'
             }),
             'yearly_leave': forms.Select(attrs={
                 'class': 'form-control'
@@ -475,8 +447,7 @@ class JobPositionForm(forms.ModelForm):
                 ('छैन', 'छैन')
             ]),
             'contract_duration': forms.TextInput(attrs={
-                'class': 'form-control', 
-                'placeholder': 'अवधि भर्नुहोस्'
+                'class': 'form-control'
             }),
             'order': forms.HiddenInput(),
         }

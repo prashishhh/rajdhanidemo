@@ -79,8 +79,8 @@ class EmploymentAd(models.Model):
     """Employment Advertisement model for storing OCR-extracted and manually edited data"""
     
     # Header Information
-    title = models.CharField(max_length=200, default="जापानमा रोजगारी")
-    person_name = models.CharField(max_length=200, default="Prashish Sapkota", help_text="Name of the person")
+    title = models.CharField(max_length=200, blank=True)
+    person_name = models.CharField(max_length=200, blank=True, help_text="Name of the person")
     company_name = models.CharField(max_length=200, blank=True)
     pre_approval_date = models.CharField(max_length=50, blank=True)
     chalani_no = models.CharField(max_length=50, blank=True)
@@ -88,23 +88,23 @@ class EmploymentAd(models.Model):
     city = models.CharField(max_length=100, blank=True)
     
     # Country Information
-    country = models.CharField(max_length=100, default="Kuwait", help_text="Country where the job is located")
+    country = models.CharField(max_length=100, blank=True, help_text="Country where the job is located")
     
     # Application Deadline
     application_deadline = models.CharField(max_length=100, blank=True)
     
     # Extra Information (for the bottom table)
-    medical_cost_local = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    medical_cost_foreign = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    insurance_local = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    insurance_employment = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    air_ticket = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    visa_fee = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    visa_stamp_fee = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    recruitment_fee = models.CharField(max_length=100, default="कामदारले तिर्ने")
-    welfare_fund = models.CharField(max_length=100, default="रु. ७०० /-")
-    labor_fee = models.CharField(max_length=100, default="कामदारले तिर्ने रु. १५०० /-")
-    service_fee = models.CharField(max_length=100, default="कामदारले तिर्ने")
+    medical_cost_local = models.CharField(max_length=100, blank=True)
+    medical_cost_foreign = models.CharField(max_length=100, blank=True)
+    insurance_local = models.CharField(max_length=100, blank=True)
+    insurance_employment = models.CharField(max_length=100, blank=True)
+    air_ticket = models.CharField(max_length=100, blank=True)
+    visa_fee = models.CharField(max_length=100, blank=True)
+    visa_stamp_fee = models.CharField(max_length=100, blank=True)
+    recruitment_fee = models.CharField(max_length=100, blank=True)
+    welfare_fund = models.CharField(max_length=100, blank=True)
+    labor_fee = models.CharField(max_length=100, blank=True)
+    service_fee = models.CharField(max_length=100, blank=True)
     
     # Extra Notes
     extra_notes = models.TextField(blank=True)
@@ -113,16 +113,16 @@ class EmploymentAd(models.Model):
     interview_custom_text = models.TextField(blank=True, help_text="Custom interview text (leave blank for automatic 8-day calculation)")
     
     # Company Banner Information
-    company_logo_text = models.CharField(max_length=50, default="LOGO")
+    company_logo_text = models.CharField(max_length=50, blank=True)
     company_logo_image = models.ImageField(upload_to='company_logos/', blank=True, null=True, help_text="Upload company logo (recommended size: 70x28px)")
     company_banner_image = models.ImageField(upload_to='company_banners/', blank=True, null=True, help_text="Upload company banner (recommended size: 12cm x 1.2cm)")
     company_banner_text = models.CharField(max_length=200, blank=True, help_text="Manual banner text (if no image uploaded)")
-    company_banner_title = models.CharField(max_length=200, default="BEST EMPLOYMENT HR SOLUTION")
-    company_address = models.CharField(max_length=300, default="ठेगाना: Kathmandu-9, Gaushala, Nepal.")
-    company_phone = models.CharField(max_length=100, default="फोन: +977-1-5922788")
-    company_email = models.CharField(max_length=200, default="इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com")
-    company_website = models.CharField(max_length=100, default="वेब: www.besthr.com.np")
-    license_number = models.CharField(max_length=100, default="Gov. Lic. Number 1714/081/082")
+    company_banner_title = models.CharField(max_length=200, blank=True)
+    company_address = models.CharField(max_length=300, blank=True)
+    company_phone = models.CharField(max_length=100, blank=True)
+    company_email = models.CharField(max_length=200, blank=True)
+    company_website = models.CharField(max_length=100, blank=True)
+    license_number = models.CharField(max_length=100, blank=True)
     
     # OCR and Processing
     ocr_text = models.TextField(blank=True)
@@ -149,7 +149,7 @@ class JobPosition(models.Model):
     
     # Salary Information
     salary_amount = models.CharField(max_length=50, blank=True, help_text="Salary amount")
-    salary_currency = models.CharField(max_length=10, default="KD", choices=[
+    salary_currency = models.CharField(max_length=10, blank=True, choices=[
         ('KD', 'Kuwaiti Dinar (KD)'),
         ('USD', 'US Dollar ($)'),
         ('EUR', 'Euro (€)'),
