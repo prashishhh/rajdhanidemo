@@ -149,6 +149,104 @@ class EmploymentAdForm(forms.ModelForm):
         })
     )
     
+    # Add clear field for banner image
+    company_banner_image_clear = forms.BooleanField(
+        required=False,
+        widget=forms.HiddenInput()
+    )
+    
+    # Override company banner fields to make them optional
+    company_banner_title = forms.CharField(
+        max_length=200,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'BEST EMPLOYMENT HR SOLUTION'
+        })
+    )
+    company_address = forms.CharField(
+        max_length=300,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'ठेगाना: Kathmandu-9, Gaushala, Nepal.'
+        })
+    )
+    company_phone = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'फोन: +977-1-5922788'
+        })
+    )
+    company_email = forms.CharField(
+        max_length=200,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com'
+        })
+    )
+    company_website = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'वेब: www.besthr.com.np'
+        })
+    )
+    license_number = forms.CharField(
+        max_length=100,
+        required=False,
+        widget=forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Gov. Lic. Number 1714/081/082'
+        })
+    )
+    
+    def clean_company_banner_title(self):
+        """Validate company banner title"""
+        title = self.cleaned_data.get('company_banner_title', '').strip()
+        if title and len(title) > 200:
+            raise forms.ValidationError('कम्पनीको नाम २०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return title
+    
+    def clean_company_address(self):
+        """Validate company address"""
+        address = self.cleaned_data.get('company_address', '').strip()
+        if address and len(address) > 300:
+            raise forms.ValidationError('ठेगाना ३०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return address
+    
+    def clean_company_phone(self):
+        """Validate company phone"""
+        phone = self.cleaned_data.get('company_phone', '').strip()
+        if phone and len(phone) > 100:
+            raise forms.ValidationError('फोन नम्बर १०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return phone
+    
+    def clean_company_email(self):
+        """Validate company email"""
+        email = self.cleaned_data.get('company_email', '').strip()
+        if email and len(email) > 200:
+            raise forms.ValidationError('इमेल २०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return email
+    
+    def clean_company_website(self):
+        """Validate company website"""
+        website = self.cleaned_data.get('company_website', '').strip()
+        if website and len(website) > 100:
+            raise forms.ValidationError('वेबसाइट १०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return website
+    
+    def clean_license_number(self):
+        """Validate license number"""
+        license_num = self.cleaned_data.get('license_number', '').strip()
+        if license_num and len(license_num) > 100:
+            raise forms.ValidationError('लाइसेन्स नम्बर १०० अक्षर भन्दा लामो हुनुहुँदैन।')
+        return license_num
+    
     class Meta:
         model = EmploymentAd
         fields = [
@@ -158,8 +256,8 @@ class EmploymentAdForm(forms.ModelForm):
             'air_ticket', 'visa_fee', 'visa_stamp_fee', 'recruitment_fee', 'welfare_fund',
             'labor_fee', 'service_fee', 'extra_notes', 'interview_custom_text',
             # Company Banner Fields
-            'company_logo_text', 'company_logo_image', 'company_banner_title', 'company_address', 'company_phone',
-            'company_email', 'company_website', 'license_number'
+            'company_logo_text', 'company_logo_image', 'company_banner_image', 'company_banner_text', 'company_banner_title', 'company_address', 'company_phone',
+            'company_email', 'company_website', 'license_number', 'company_banner_image_clear'
         ]
         widgets = {
             'company_name': forms.TextInput(attrs={
@@ -264,29 +362,14 @@ class EmploymentAdForm(forms.ModelForm):
                 'accept': 'image/*',
                 'id': 'logo-upload'
             }),
-            'company_banner_title': forms.TextInput(attrs={
+            'company_banner_image': forms.FileInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'BEST EMPLOYMENT HR SOLUTION'
+                'accept': 'image/*',
+                'id': 'banner-upload'
             }),
-            'company_address': forms.TextInput(attrs={
+            'company_banner_text': forms.TextInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'ठेगाना: Kathmandu-9, Gaushala, Nepal.'
-            }),
-            'company_phone': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'फोन: +977-1-5922788'
-            }),
-            'company_email': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com'
-            }),
-            'company_website': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'वेब: www.besthr.com.np'
-            }),
-            'license_number': forms.TextInput(attrs={
-                'class': 'form-control',
-                'placeholder': 'Gov. Lic. Number 1714/081/082'
+                'placeholder': 'Manual banner text (if no image uploaded)'
             }),
             'interview_custom_text': forms.Textarea(attrs={
                 'class': 'form-control',

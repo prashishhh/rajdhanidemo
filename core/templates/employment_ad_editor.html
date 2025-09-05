@@ -463,77 +463,130 @@
                                         <small class="text-muted">तलको ब्यानरमा देखिने कम्पनीको जानकारी र लोगो</small>
                                     </div>
                                     <div class="card-body py-2">
-                                        <div class="row">
-                                            <div class="col-md-3">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_logo_text.id_for_label }}" class="form-label">लोगो टेक्स्ट</label>
-                                                    {{ form.company_logo_text }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_logo_image.id_for_label }}" class="form-label">लोगो इमेज</label>
-                                                    {{ form.company_logo_image }}
-                                                    <small class="text-muted d-block">सिफारिस: 70x28px</small>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_banner_title.id_for_label }}" class="form-label">कम्पनीको नाम</label>
-                                                    {{ form.company_banner_title }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <!-- Logo Preview -->
-                                        <div class="row mb-2">
-                                            <div class="col-md-3">
-                                                <div class="logo-preview-container">
-                                                    <label class="form-label">लोगो पूर्वावलोकन</label>
-                                                    <div class="logo-preview" id="logo-preview">
-                                                        {% if form.company_logo_image.value %}
-                                                            <img src="{{ form.company_logo_image.value.url }}" alt="Company Logo" class="preview-logo">
-                                                        {% else %}
-                                                            <div class="logo-placeholder">{{ form.company_logo_text.value|default:"LOGO" }}</div>
-                                                        {% endif %}
+                                        <!-- Banner Choice Section - Right under header -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label class="form-label fw-bold">ब्यानर विकल्प:</label>
+                                                <div class="d-flex gap-4">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="banner_option" id="banner_preset" value="preset" onchange="toggleBannerOptions()">
+                                                        <label class="form-check-label" for="banner_preset">
+                                                            <strong>प्रीसेट ब्यानर छ</strong>
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="banner_option" id="banner_manual" value="manual" onchange="toggleBannerOptions()">
+                                                        <label class="form-check-label" for="banner_manual">
+                                                            <strong>म्यानुअल प्रविष्टि</strong>
+                                                        </label>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_address.id_for_label }}" class="form-label">ठेगाना</label>
-                                                    {{ form.company_address }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_phone.id_for_label }}" class="form-label">फोन नम्बर</label>
-                                                    {{ form.company_phone }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_email.id_for_label }}" class="form-label">इमेल</label>
-                                                    {{ form.company_email }}
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="mb-2">
-                                                    <label for="{{ form.company_website.id_for_label }}" class="form-label">वेबसाइट</label>
-                                                    {{ form.company_website }}
+                                        <!-- Preset Banner Upload Section - Only image upload -->
+                                        <div id="preset-banner-section" class="banner-option-section" style="display: none;">
+                                            <div class="row mb-2">
+                                                <div class="col-md-12">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_banner_image.id_for_label }}" class="form-label">ब्यानर इमेज अपलोड गर्नुहोस्</label>
+                                                        {{ form.company_banner_image }}
+                                                        <small class="text-muted d-block">सिफारिस: 12cm x 1.2cm (1.2cm उचाइ)</small>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         
-                                        <div class="mb-2">
-                                            <label for="{{ form.license_number.id_for_label }}" class="form-label">लाइसेन्स नम्बर</label>
-                                            {{ form.license_number }}
+                                        <!-- Manual Banner Details Section - All company fields -->
+                                        <div id="manual-banner-section" class="banner-option-section" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_logo_text.id_for_label }}" class="form-label">लोगो टेक्स्ट</label>
+                                                        {{ form.company_logo_text }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_logo_image.id_for_label }}" class="form-label">लोगो इमेज</label>
+                                                        {{ form.company_logo_image }}
+                                                        <small class="text-muted d-block">सिफारिस: 70x28px</small>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_banner_title.id_for_label }}" class="form-label">कम्पनीको नाम</label>
+                                                        {{ form.company_banner_title }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Logo Preview -->
+                                            <div class="row mb-2">
+                                                <div class="col-md-3">
+                                                    <div class="logo-preview-container">
+                                                        <label class="form-label">लोगो पूर्वावलोकन</label>
+                                                        <div class="logo-preview" id="logo-preview">
+                                                            {% if form.company_logo_image.value %}
+                                                                <img src="{{ form.company_logo_image.value.url }}" alt="Company Logo" class="preview-logo">
+                                                            {% else %}
+                                                                <div class="logo-placeholder">{{ form.company_logo_text.value|default:"LOGO" }}</div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_address.id_for_label }}" class="form-label">ठेगाना</label>
+                                                        {{ form.company_address }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_phone.id_for_label }}" class="form-label">फोन नम्बर</label>
+                                                        {{ form.company_phone }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_email.id_for_label }}" class="form-label">इमेल</label>
+                                                        {{ form.company_email }}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="mb-2">
+                                                        <label for="{{ form.company_website.id_for_label }}" class="form-label">वेबसाइट</label>
+                                                        {{ form.company_website }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="mb-2">
+                                                <label for="{{ form.license_number.id_for_label }}" class="form-label">लाइसेन्स नम्बर</label>
+                                                {{ form.license_number }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Banner Preview -->
+                                <div class="row mb-2">
+                                    <div class="col-md-12">
+                                        <div class="banner-preview-container">
+                                            <label class="form-label">ब्यानर पूर्वावलोकन</label>
+                                            <div class="banner-preview" id="banner-preview" style="width: 12cm; height: 1.2cm; border: 1px solid #ccc; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                                {% if form.company_banner_image.value %}
+                                                    <img src="{{ form.company_banner_image.value.url }}" alt="Company Banner" class="preview-banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                                {% else %}
+                                                    <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">{{ form.company_banner_text.value|default:"ब्यानर विकल्प छान्नुहोस्" }}</div>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -878,13 +931,50 @@
             width: 100%;
         }
 }
+
+/* Banner Option Styling */
+.banner-option-section {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #f8f9fa;
+}
+
+.form-check {
+    margin-bottom: 0;
+}
+
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-check-label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.banner-preview-container {
+    margin-top: 15px;
+}
+
+.banner-preview {
+    border: 2px dashed #dee2e6;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out;
+}
+
+.banner-preview:hover {
+    border-color: #0d6efd;
+}
 </style>
 
 <script src="https://unpkg.com/tesseract.js@5/dist/tesseract.min.js"></script>
 
 <script>
 let currentStep = 1;
-const totalSteps = 3;
+const totalSteps = 3; // step1, step2, step3 (which maps to step4 content)
 
 // Upload functionality
 document.addEventListener('DOMContentLoaded', function() {
@@ -995,12 +1085,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Remove file functionality
     const removeBtn = uploadedFiles.querySelector('.btn-outline-danger');
-    removeBtn.addEventListener('click', function() {
-        uploadedFiles.style.display = 'none';
-        draggedFiles.style.display = 'none';
-        importBtn.style.display = 'none';
-        fileInput.value = '';
-    });
+    if (removeBtn) {
+        removeBtn.addEventListener('click', function() {
+            uploadedFiles.style.display = 'none';
+            draggedFiles.style.display = 'none';
+            importBtn.style.display = 'none';
+            fileInput.value = '';
+        });
+    }
 });
 
 
@@ -4323,6 +4415,9 @@ if (window.rajdhaniSetupComplete) {
     // 5. Setup logo preview
     setupFunctionOnce('LogoPreview', setupLogoPreview);
     
+    // 6. Setup banner preview
+    setupFunctionOnce('BannerPreview', setupBannerPreview);
+    
     // 6. Setup interview preview listeners (only once)
     ['id_interview_nepali_date','id_interview_gregorian_date','id_interview_location']
       .forEach(id => { 
@@ -4366,6 +4461,343 @@ function setupLogoPreview() {
     });
   }
 }
+
+function setupBannerPreview() {
+  const bannerUpload = document.querySelector('input[name="company_banner_image"]');
+  const bannerPreview = document.getElementById('banner-preview');
+  
+  console.log('DEBUG: Setting up banner preview');
+  console.log('DEBUG: Banner upload element:', bannerUpload);
+  console.log('DEBUG: Banner preview element:', bannerPreview);
+  
+  if (bannerUpload) {
+    // Use our safe event listener function to prevent duplicates
+    addEventListenerOnce(bannerUpload, 'change', function(e) {
+      console.log('DEBUG: Banner upload change event triggered');
+      try {
+        const file = e.target.files[0];
+        if (!file) {
+          console.log('No file selected');
+          return;
+        }
+        console.log('DEBUG: File selected:', file.name, file.type, file.size);
+        
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          alert('कृपया एउटा इमेज फाइल छान्नुहोस्। (JPG, PNG, GIF, WebP)');
+          e.target.value = ''; // Clear the input
+          return;
+        }
+        
+        // Validate file size (5MB limit)
+        const maxSize = 5 * 1024 * 1024; // 5MB in bytes
+        if (file.size > maxSize) {
+          alert('फाइल साइज 5MB भन्दा ठूलो हुनुहुँदैन।');
+          e.target.value = ''; // Clear the input
+          return;
+        }
+        
+        // Validate image dimensions (optional - basic check)
+        const img = new Image();
+        img.onload = function() {
+          const maxWidth = 2000; // Reasonable max width
+          const maxHeight = 500; // Reasonable max height
+          
+          if (img.width > maxWidth || img.height > maxHeight) {
+            if (!confirm(`इमेजको आकार ठूलो छ (${img.width}x${img.height}px)। यो 12cm x 1.2cm ब्यानरका लागि उपयुक्त हुन सक्छ। जारी राख्नुहुन्छ?`)) {
+              e.target.value = ''; // Clear the input
+              return;
+            }
+          }
+          
+          // Show preview
+          console.log('DEBUG: Creating FileReader for preview');
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            console.log('DEBUG: FileReader loaded, updating preview');
+            try {
+              if (bannerPreview) {
+                bannerPreview.innerHTML = `<img src="${e.target.result}" alt="Company Banner" class="preview-banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+                console.log('DEBUG: Banner preview updated successfully');
+              } else {
+                console.error('DEBUG: Banner preview element not found');
+              }
+            } catch (error) {
+              console.error('Error updating banner preview:', error);
+              bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">त्रुटि: पूर्वावलोकन लोड गर्न सकिएन</div>';
+            }
+          };
+          reader.onerror = function() {
+            console.error('Error reading file');
+            alert('फाइल पढ्नमा त्रुटि भयो।');
+            e.target.value = '';
+          };
+          reader.readAsDataURL(file);
+        };
+        
+        img.onerror = function() {
+          console.error('Invalid image file');
+          alert('अवैध इमेज फाइल।');
+          e.target.value = '';
+        };
+        
+        img.src = URL.createObjectURL(file);
+        
+      } catch (error) {
+        console.error('Error handling banner upload:', error);
+        alert('ब्यानर अपलोड गर्दा त्रुटि भयो।');
+        e.target.value = '';
+      }
+    });
+  }
+  
+  // Setup listeners for manual entry fields
+  const manualFields = [
+    'id_company_banner_title',
+    'id_company_address', 
+    'id_company_phone',
+    'id_company_email',
+    'id_company_website',
+    'id_license_number'
+  ];
+  
+  manualFields.forEach(fieldId => {
+    const field = document.getElementById(fieldId);
+    if (field) {
+      addEventListenerOnce(field, 'input', function() {
+        updateManualBannerPreview();
+      });
+      addEventListenerOnce(field, 'change', function() {
+        updateManualBannerPreview();
+      });
+    }
+  });
+  
+  // Initialize banner preview on page load
+  if (bannerPreview) {
+    bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर विकल्प छान्नुहोस्</div>';
+  }
+}
+
+function updateManualBannerPreview() {
+  try {
+    const manualOption = document.getElementById('banner_manual');
+    const bannerPreview = document.getElementById('banner-preview');
+    
+    if (!manualOption || !bannerPreview) {
+      console.warn('Manual banner preview: Required elements not found');
+      return;
+    }
+    
+    if (manualOption.checked) {
+      // Ensure clear field is present when manual mode is active
+      ensureClearFieldPresent();
+      
+      // Get field values with error handling
+      const getFieldValue = (fieldId) => {
+        try {
+          const field = document.getElementById(fieldId);
+          return field ? (field.value || '').trim() : '';
+        } catch (error) {
+          console.warn(`Error getting value for field ${fieldId}:`, error);
+          return '';
+        }
+      };
+      
+      const companyName = getFieldValue('id_company_banner_title');
+      const address = getFieldValue('id_company_address');
+      const phone = getFieldValue('id_company_phone');
+      const email = getFieldValue('id_company_email');
+      const website = getFieldValue('id_company_website');
+      const license = getFieldValue('id_license_number');
+      
+      // Check if any fields have values
+      const hasValues = companyName || address || phone || email || website || license;
+      
+      if (hasValues) {
+        // Create banner content with company info (only include fields that have values)
+        const parts = [];
+        if (companyName) parts.push(companyName);
+        if (address) parts.push(address);
+        if (phone) parts.push(phone);
+        if (email) parts.push(email);
+        if (website) parts.push(website);
+        if (license) parts.push(license);
+        
+        const bannerContent = parts.join(' | ');
+        // Escape HTML to prevent XSS
+        const escapedContent = bannerContent.replace(/[&<>"']/g, function(match) {
+          const escapeMap = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+          };
+          return escapeMap[match];
+        });
+        
+        bannerPreview.innerHTML = `<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666; font-weight: bold;">${escapedContent}</div>`;
+      } else {
+        // Show placeholder when no values
+        bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+      }
+    }
+  } catch (error) {
+    console.error('Error in updateManualBannerPreview:', error);
+    const bannerPreview = document.getElementById('banner-preview');
+    if (bannerPreview) {
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">त्रुटि: पूर्वावलोकन अपडेट गर्न सकिएन</div>';
+    }
+  }
+}
+
+function ensureClearFieldPresent() {
+  try {
+    // Ensure clear field is present when manual mode is active
+    const existingClearInput = document.querySelector('input[name="company_banner_image_clear"]');
+    if (!existingClearInput) {
+      const clearBannerInput = document.createElement('input');
+      clearBannerInput.type = 'hidden';
+      clearBannerInput.name = 'company_banner_image_clear';
+      clearBannerInput.value = 'on';
+      clearBannerInput.id = 'manual_mode_clear_flag';
+      
+      const form = document.querySelector('form');
+      if (form) {
+        form.appendChild(clearBannerInput);
+        console.log('Clear field added to form');
+      } else {
+        console.warn('No form found to add clear field');
+      }
+    }
+  } catch (error) {
+    console.error('Error ensuring clear field present:', error);
+  }
+}
+
+function toggleBannerOptions() {
+  try {
+    const presetOption = document.getElementById('banner_preset');
+    const manualOption = document.getElementById('banner_manual');
+    const presetSection = document.getElementById('preset-banner-section');
+    const manualSection = document.getElementById('manual-banner-section');
+    const bannerPreview = document.getElementById('banner-preview');
+    
+    // Validate required elements exist
+    if (!presetOption || !manualOption || !presetSection || !manualSection || !bannerPreview) {
+      console.error('Banner toggle: Required elements not found');
+      return;
+    }
+  
+    if (presetOption && presetOption.checked) {
+      presetSection.style.display = 'block';
+      manualSection.style.display = 'none';
+      
+      // Clear all manual fields when switching to preset
+      const manualFields = [
+        'id_company_banner_title',
+        'id_company_address', 
+        'id_company_phone',
+        'id_company_email',
+        'id_company_website',
+        'id_license_number'
+      ];
+      
+      manualFields.forEach(fieldId => {
+        try {
+          const field = document.getElementById(fieldId);
+          if (field) {
+            field.value = '';
+            // Trigger change event to update any dependent logic
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        } catch (error) {
+          console.warn(`Failed to clear field ${fieldId}:`, error);
+        }
+      });
+      
+      // Remove any existing clear field when switching to preset
+      const existingClearInput = document.querySelector('input[name="company_banner_image_clear"]');
+      if (existingClearInput) {
+        existingClearInput.remove();
+      }
+      
+      // Show default preview for preset
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+      
+    } else if (manualOption && manualOption.checked) {
+      presetSection.style.display = 'none';
+      manualSection.style.display = 'block';
+      
+      try {
+        // ALWAYS clear banner image when switching to manual mode
+        const bannerUpload = document.querySelector('input[name="company_banner_image"]');
+        if (bannerUpload) {
+          bannerUpload.value = '';
+          bannerUpload.files = null;
+          // Force clear by creating a new file input
+          const newFileInput = bannerUpload.cloneNode(true);
+          newFileInput.value = '';
+          bannerUpload.parentNode.replaceChild(newFileInput, bannerUpload);
+        }
+        
+        // ALWAYS add clear input when switching to manual mode
+        const clearBannerInput = document.createElement('input');
+        clearBannerInput.type = 'hidden';
+        clearBannerInput.name = 'company_banner_image_clear';
+        clearBannerInput.value = 'on';
+        clearBannerInput.id = 'manual_mode_clear_flag';
+        
+        // Remove any existing clear input
+        const existingClearInput = document.querySelector('input[name="company_banner_image_clear"]');
+        if (existingClearInput) {
+          existingClearInput.remove();
+        }
+        
+        // Add the clear input to the form
+        const form = document.querySelector('form');
+        if (form) {
+          form.appendChild(clearBannerInput);
+        }
+        
+      } catch (error) {
+        console.error('Error clearing banner image:', error);
+      }
+      
+      // Show default preview for manual and update it
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+      
+      // Update manual preview after a short delay to ensure fields are visible
+      setTimeout(() => {
+        try {
+          updateManualBannerPreview();
+        } catch (error) {
+          console.error('Error updating manual banner preview:', error);
+        }
+      }, 100);
+      
+    } else {
+      presetSection.style.display = 'none';
+      manualSection.style.display = 'none';
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर विकल्प छान्नुहोस्</div>';
+    }
+    
+  } catch (error) {
+    console.error('Error in toggleBannerOptions:', error);
+    // Fallback: ensure sections are hidden
+    const presetSection = document.getElementById('preset-banner-section');
+    const manualSection = document.getElementById('manual-banner-section');
+    const bannerPreview = document.getElementById('banner-preview');
+    
+    if (presetSection) presetSection.style.display = 'none';
+    if (manualSection) manualSection.style.display = 'none';
+    if (bannerPreview) {
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">त्रुटि: ब्यानर विकल्प लोड गर्न सकिएन</div>';
+    }
+  }
+}
+
 function calculateInterviewDate() {
   const pre = document.getElementById('id_pre_approval_date')?.value;
   if (!pre) return alert('कृपया पहिले पूर्व स्वीकृति मिति भर्नुहोस्।');
@@ -4419,23 +4851,24 @@ function updateCurrencyBasedOnCountry(country) {
   fields.forEach(f => { if (!f.value || f.value === 'KD') f.value = def; });
 }
 
-/* === forms submit (same as yours) === */
-document.getElementById('mainForm')?.addEventListener('submit', function(e){
-  e.preventDefault();
-  if (!validateCurrentStep()) return;
-  const formData = new FormData(this);
-  fetch(window.location.href, { method:'POST', body:formData, headers:{'X-Requested-With':'XMLHttpRequest'} })
-    .then(r => r.json()).then(d => { if (d.success){ alert('मुख्य जानकारी सफलतापूर्वक सेभ गरियो!'); goToStep(3);} else alert('त्रुटि: '+d.error); })
-    .catch(err => { console.error(err); alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।'); });
-});
-document.getElementById('positionForm')?.addEventListener('submit', function(e){
-  e.preventDefault();
-  if (!validateCurrentStep()) return;
-  const formData = new FormData(this);
-  fetch(window.location.href, { method:'POST', body:formData, headers:{'X-Requested-With':'XMLHttpRequest'} })
-    .then(r => r.json()).then(d => { if (d.success){ alert('पदहरू सफलतापूर्वक सेभ गरियो!'); goToStep(4);} else alert('त्रुटि: '+d.error); })
-    .catch(err => { console.error(err); alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।'); });
-});
+/* === forms submit (duplicate removed - using comprehensive handlers below) === */
+
+// Global submission prevention
+let isSubmitting = false;
+
+function preventDoubleSubmission() {
+    if (isSubmitting) {
+        console.log('DEBUG: Global submission prevention - already submitting');
+        return true;
+    }
+    isSubmitting = true;
+    return false;
+}
+
+function resetSubmissionFlag() {
+    isSubmitting = false;
+    console.log('DEBUG: Global submission flag reset');
+}
 
 console.log('=== JAVASCRIPT LOADED ===');
 
@@ -4532,10 +4965,14 @@ function setupCountryDropdown() {
                         titleField.dispatchEvent(new Event('input', { bubbles: true }));
                         titleField.dispatchEvent(new Event('change', { bubbles: true }));
                     }
-                }
-            });
-        }
+                        }
+      });
+    } else {
+      console.warn('DEBUG: Banner upload element not found');
     }
+  } else {
+    console.warn('DEBUG: Banner preview element not found');
+  }
 }
 
 // Function to generate title based on country
@@ -4900,18 +5337,28 @@ function goToStep(step) {
     });
     
     // Show target tab
-    const targetTab = document.getElementById(`step${step}`);
-    targetTab.classList.add('show', 'active');
+    // Handle step 3 mapping to step 4 content
+    const targetStepId = step === 3 ? 'step4' : `step${step}`;
+    const targetTab = document.getElementById(targetStepId);
+    if (targetTab) {
+        targetTab.classList.add('show', 'active');
+    }
     
     // Update navigation
     document.querySelectorAll('.nav-link').forEach(link => {
         link.classList.remove('active');
     });
-    document.getElementById(`step${step}-tab`).classList.add('active');
+    const navLink = document.getElementById(`step${step}-tab`);
+    if (navLink) {
+        navLink.classList.add('active');
+    }
     
     // Update progress bar
     const progress = (step / totalSteps) * 100;
-    document.getElementById('progressBar').style.width = progress + '%';
+    const progressBar = document.getElementById('progressBar');
+    if (progressBar) {
+        progressBar.style.width = progress + '%';
+    }
 }
 // Function to validate current step before proceeding
 function validateCurrentStep() {
@@ -4944,8 +5391,8 @@ function validateCurrentStep() {
             return false;
         }
         
-    } else if (stepId === 'step3') {
-        // Validate job positions
+    } else if (stepId === 'step3' || stepId === 'step4') {
+        // Validate job positions (step3 maps to step4 content)
         const positionForms = document.querySelectorAll('.position-form');
         console.log(`Validating Step 3: Found ${positionForms.length} position forms`);
         
@@ -5015,7 +5462,8 @@ function validateCurrentStep() {
 }
 
 // Function to add new position
-function addPosition() {
+// DUPLICATE FUNCTION - COMMENTED OUT
+/*function addPosition() {
     console.log('DEBUG: addPosition() called');
     
     const container = document.getElementById('positionsContainer');
@@ -5146,7 +5594,7 @@ function addPosition() {
     }
     
     console.log(`Added new position form. Total forms: ${totalFormsField.value}`);
-}
+}*/
 
 // Function to remove position
 function removePosition(button) {
@@ -5284,8 +5732,15 @@ function updateProgress() {
 }
 
 // Form submission handlers
-document.getElementById('mainForm').addEventListener('submit', function(e) {
+document.getElementById('mainForm')?.addEventListener('submit', function(e) {
     console.log('DEBUG: Main form submit event triggered!');
+    
+    // Prevent double submission
+    if (this.dataset.submitting === 'true' || preventDoubleSubmission()) {
+        console.log('DEBUG: Form already submitting, preventing double submission');
+        e.preventDefault();
+        return;
+    }
     
     // Debug: Check current step
     const currentStepElement = document.querySelector('.tab-pane.active');
@@ -5301,6 +5756,9 @@ document.getElementById('mainForm').addEventListener('submit', function(e) {
     }
     
     console.log('DEBUG: Form validation passed, submitting...');
+    
+    // Mark form as submitting
+    this.dataset.submitting = 'true';
     
     // Debug: Log form data being sent
     const formData = new FormData(this);
@@ -5330,16 +5788,31 @@ document.getElementById('mainForm').addEventListener('submit', function(e) {
     .catch(error => {
         console.error('DEBUG: Form submission error:', error);
         alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
+    })
+    .finally(() => {
+        // Reset submission flag
+        this.dataset.submitting = 'false';
+        resetSubmissionFlag();
+        console.log('DEBUG: Form submission completed, reset flag');
     });
 });
 
-document.getElementById('positionForm').addEventListener('submit', function(e) {
+document.getElementById('positionForm')?.addEventListener('submit', function(e) {
     e.preventDefault();
+    
+    // Prevent double submission
+    if (this.dataset.submitting === 'true' || preventDoubleSubmission()) {
+        console.log('DEBUG: Position form already submitting, preventing double submission');
+        return;
+    }
     
     // Validate required fields before submission
     if (!validateCurrentStep()) {
         return;
     }
+    
+    // Mark form as submitting
+    this.dataset.submitting = 'true';
     
     // Debug: Log form data being sent
     const formData = new FormData(this);
@@ -5415,6 +5888,12 @@ document.getElementById('positionForm').addEventListener('submit', function(e) {
     .catch(error => {
         console.error('Error:', error);
         alert('त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।');
+    })
+    .finally(() => {
+        // Reset submission flag
+        this.dataset.submitting = 'false';
+        resetSubmissionFlag();
+        console.log('DEBUG: Position form submission completed, reset flag');
     });
 });
 
@@ -5441,7 +5920,7 @@ function debugValidation() {
             const field = document.getElementById(fieldId);
             message += `- ${field ? (field.value.trim() ? 'Filled' : 'Empty') : 'Not Found'}: ${field ? field.previousElementSibling?.textContent || fieldId : 'N/A'}\n`;
         });
-    } else if (stepId === 'step3') {
+    } else if (stepId === 'step3' || stepId === 'step4') {
         message += 'Job Positions Validation:\n';
         const positionForms = document.querySelectorAll('.position-form');
         if (positionForms.length === 0) {
@@ -5609,6 +6088,54 @@ function setupCountryNoticePreview() {
         
         // Initial preview
         updateCountryNoticePreview();
+    }
+}
+
+// Function to update country notice preview
+function updateCountryNoticePreview() {
+    const countryField = document.getElementById('id_country');
+    const extraNotesField = document.getElementById('id_extra_notes');
+    const previewDiv = document.getElementById('noticePreview');
+    const previewText = document.getElementById('noticePreviewText');
+    
+    if (!countryField || !previewDiv || !previewText) return;
+    
+    const country = countryField.value.trim();
+    const extraNotes = extraNotesField ? extraNotesField.value.trim() : '';
+    
+    if (country && !extraNotes) {
+        // Show country-specific notice
+        let noticeText = '';
+        switch(country) {
+            case 'UAE':
+                noticeText = 'यूएईमा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'Qatar':
+                noticeText = 'कतारमा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'Saudi Arabia':
+                noticeText = 'साउदी अरबमा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'Kuwait':
+                noticeText = 'कुवेतमा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'Malaysia':
+                noticeText = 'मलेसियामा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'Japan':
+                noticeText = 'जापानमा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            case 'South Korea':
+                noticeText = 'दक्षिण कोरियामा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।';
+                break;
+            default:
+                noticeText = `${country}मा रोजगारीका लागि काम गर्ने व्यक्तिले निम्नलिखित कागजातहरू तयार गर्नुपर्छ: पासपोर्ट, शैक्षिक प्रमाणपत्र, अनुभव प्रमाणपत्र, मेडिकल रिपोर्ट, पुलिस क्लियरेन्स, फोटोहरू।`;
+        }
+        
+        previewText.textContent = noticeText;
+        previewDiv.style.display = 'block';
+    } else {
+        previewDiv.style.display = 'none';
     }
 }
 

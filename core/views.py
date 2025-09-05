@@ -682,6 +682,40 @@ def employment_ad_editor(request):
                     interview_time = request.POST.get('interview_time', '')
                     interview_location = request.POST.get('interview_location', '')
                     
+                    # Handle banner image clear field with robust validation
+                    try:
+                        clear_field = request.POST.get('company_banner_image_clear')
+                        print(f"DEBUG: company_banner_image_clear = {clear_field}")
+                        
+                        # ALWAYS clear banner image when clear field is present (manual mode selected)
+                        if clear_field == 'on':
+                            print("DEBUG: Clearing banner image - manual mode selected")
+                            employment_ad.company_banner_image = None
+                            employment_ad.save()
+                            print("DEBUG: Banner image cleared")
+                        
+                        # Additional check: if manual banner fields have custom values, also clear
+                        manual_banner_title = request.POST.get('company_banner_title', '').strip()
+                        manual_banner_address = request.POST.get('company_address', '').strip()
+                        manual_banner_phone = request.POST.get('company_phone', '').strip()
+                        
+                        # Check for custom values (not default values)
+                        has_custom_values = (
+                            (manual_banner_title and manual_banner_title != "BEST EMPLOYMENT HR SOLUTION") or
+                            (manual_banner_address and manual_banner_address != "ठेगाना: Kathmandu-9, Gaushala, Nepal.") or
+                            (manual_banner_phone and manual_banner_phone != "फोन: +977-1-5922788")
+                        )
+                        
+                        if has_custom_values:
+                            print("DEBUG: Manual banner fields with custom values detected, ensuring banner image is cleared")
+                            employment_ad.company_banner_image = None
+                            employment_ad.save()
+                            print("DEBUG: Banner image cleared due to custom manual fields")
+                            
+                    except Exception as e:
+                        print(f"ERROR: Failed to handle banner image clearing: {e}")
+                        # Continue processing even if banner clearing fails
+                    
                     # Save the main form
                     form.save()
                     

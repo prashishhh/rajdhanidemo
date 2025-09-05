@@ -2272,21 +2272,33 @@
   
   <!-- Company Banner - ATTACHED -->
   <div class="company-banner">
-    <div class="company-logo">
-      <div>LOGO</div>
-    </div>
-    
-    <div class="company-info">
-      <h1>{% if ad.company_banner_title %}{{ ad.company_banner_title }}{% else %}कुनै कम्पनी{% endif %}</h1>
-      <p>
-        {% if ad.company_address %}{{ ad.company_address }}{% else %}कुनै ठेगाना{% endif %} • {% if ad.company_phone %}{{ ad.company_phone }}{% else %}कुनै फोन{% endif %}<br>
-        {% if ad.company_email %}{{ ad.company_email }}{% else %}कुनै इमेल{% endif %} • {% if ad.company_website %}{{ ad.company_website }}{% else %}कुनै वेब{% endif %}
-      </p>
-    </div>
-    
-    <div class="license-box">
-      {% if ad.license_number %}{{ ad.license_number }}{% else %}कुनै लाइसेन्स{% endif %}
-    </div>
+    {% if ad.company_banner_image %}
+      <!-- Display uploaded banner image -->
+      <div class="banner-image-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+        <img src="{{ ad.company_banner_image.url }}" alt="Company Banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+      </div>
+    {% else %}
+      <!-- Manual entry or default banner layout with company info -->
+      <div class="company-logo">
+        {% if ad.company_logo_image %}
+          <img src="{{ ad.company_logo_image.url }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+        {% else %}
+          <div>{{ ad.company_logo_text|default:"LOGO" }}</div>
+        {% endif %}
+      </div>
+      
+      <div class="company-info">
+        <h1>{% if ad.company_banner_title %}{{ ad.company_banner_title }}{% else %}कुनै कम्पनी{% endif %}</h1>
+        <p>
+          {% if ad.company_address %}{{ ad.company_address }}{% else %}कुनै ठेगाना{% endif %} • {% if ad.company_phone %}{{ ad.company_phone }}{% else %}कुनै फोन{% endif %}<br>
+          {% if ad.company_email %}{{ ad.company_email }}{% else %}कुनै इमेल{% endif %} • {% if ad.company_website %}{{ ad.company_website }}{% else %}कुनै वेब{% endif %}
+        </p>
+      </div>
+      
+      <div class="license-box">
+        {% if ad.license_number %}{{ ad.license_number }}{% else %}कुनै लाइसेन्स{% endif %}
+      </div>
+    {% endif %}
   </div>
 </div>
 

@@ -115,6 +115,8 @@ class EmploymentAd(models.Model):
     # Company Banner Information
     company_logo_text = models.CharField(max_length=50, default="LOGO")
     company_logo_image = models.ImageField(upload_to='company_logos/', blank=True, null=True, help_text="Upload company logo (recommended size: 70x28px)")
+    company_banner_image = models.ImageField(upload_to='company_banners/', blank=True, null=True, help_text="Upload company banner (recommended size: 12cm x 1.2cm)")
+    company_banner_text = models.CharField(max_length=200, blank=True, help_text="Manual banner text (if no image uploaded)")
     company_banner_title = models.CharField(max_length=200, default="BEST EMPLOYMENT HR SOLUTION")
     company_address = models.CharField(max_length=300, default="ठेगाना: Kathmandu-9, Gaushala, Nepal.")
     company_phone = models.CharField(max_length=100, default="फोन: +977-1-5922788")
