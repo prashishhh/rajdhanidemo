@@ -250,9 +250,35 @@ class PrintService:
             # Generate country-specific notice
             country_notice = get_country_specific_notice(employment_ad.country)
             
+            # Add base64 encoded images for PDF generation
+            import base64
+            import os
+            
+            # Create a copy of the employment_ad object with base64 image data
+            ad_with_base64 = employment_ad
+            if hasattr(employment_ad, 'company_banner_image') and employment_ad.company_banner_image:
+                try:
+                    with open(employment_ad.company_banner_image.path, 'rb') as img_file:
+                        ad_with_base64.company_banner_image_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                except Exception as e:
+                    logger.warning(f"Could not encode banner image: {e}")
+                    ad_with_base64.company_banner_image_base64 = None
+            else:
+                ad_with_base64.company_banner_image_base64 = None
+                
+            if hasattr(employment_ad, 'company_logo_image') and employment_ad.company_logo_image:
+                try:
+                    with open(employment_ad.company_logo_image.path, 'rb') as img_file:
+                        ad_with_base64.company_logo_image_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                except Exception as e:
+                    logger.warning(f"Could not encode logo image: {e}")
+                    ad_with_base64.company_logo_image_base64 = None
+            else:
+                ad_with_base64.company_logo_image_base64 = None
+            
             # Render HTML content with full context
             html_content = render_to_string(template_name, {
-                'ad': employment_ad,
+                'ad': ad_with_base64,
                 'positions': filtered_positions,
                 'interview_data': interview_data,
                 'country_notice': country_notice,
