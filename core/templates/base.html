@@ -4,6 +4,31 @@
     <meta charset="UTF-8" />
     <title>{% block title %}Rajdhani Daily{% endblock %}</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    
+    <!-- Global Banner Hiding CSS - Prevents banner content from appearing on all pages -->
+    <style>
+    /* Hide banner content on all pages except employment ad editor */
+    body:not([data-page="employment-ad-editor"]) #company-banner-section,
+    body:not([data-page="employment-ad-editor"]) .company-banner-section,
+    body:not([data-page="employment-ad-editor"]) [class*="banner"],
+    body:not([data-page="employment-ad-editor"]) [class*="ब्यानर"] {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    
+    /* Hide any card containing banner text */
+    body:not([data-page="employment-ad-editor"]) .card:has(.card-header:has(h6:contains("ब्यानर"))) {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+    }
+    </style>
+    
     {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -42,6 +67,71 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Global Banner Hiding Script - Prevents banner content from appearing on all pages -->
+    <script>
+    (function() {
+      'use strict';
+      
+      function hideBannerGlobally() {
+        // Only run if NOT on employment ad editor page
+        if (window.location.pathname.includes('employment-ad-editor')) {
+          return;
+        }
+        
+        // Hide any banner-related content
+        const bannerTexts = [
+          'कम्पनी ब्यानर जानकारी',
+          'ब्यानर विकल्प',
+          'प्रीसेट ब्यानर छ',
+          'म्यानुअल प्रविष्टि',
+          'ब्यानर इमेज अपलोड',
+          'ब्यानर पूर्वावलोकन'
+        ];
+        
+        bannerTexts.forEach(text => {
+          // Find elements containing banner text
+          const elements = Array.from(document.querySelectorAll('*')).filter(el => {
+            return el.textContent && el.textContent.includes(text);
+          });
+          
+          elements.forEach(el => {
+            // Hide the element and its parent card
+            let parent = el.closest('.card');
+            if (parent) {
+              parent.style.display = 'none !important';
+              parent.style.visibility = 'hidden';
+              parent.style.opacity = '0';
+              parent.style.height = '0';
+              parent.style.overflow = 'hidden';
+            }
+            
+            // Also hide the element itself
+            el.style.display = 'none !important';
+            el.style.visibility = 'hidden';
+            el.style.opacity = '0';
+            el.style.height = '0';
+            el.style.overflow = 'hidden';
+          });
+        });
+      }
+      
+      // Run immediately
+      hideBannerGlobally();
+      
+      // Run on DOM ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', hideBannerGlobally);
+      }
+      
+      // Run on page load
+      window.addEventListener('load', hideBannerGlobally);
+      
+      // Run periodically to catch dynamically added content
+      setInterval(hideBannerGlobally, 1000);
+    })();
+    </script>
+    
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

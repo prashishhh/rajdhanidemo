@@ -136,7 +136,7 @@
                         </div>
 
                         <!-- Step 2: Main Information -->
-                        <div class="tab-pane fade" id="step2" role="tabpanel">
+                        <div class="tab-pane fade" id="step2" role="tabpanel" style="min-height: 1200px;">
                             <h5 class="mb-1">🏢 मुख्य जानकारी</h5>
                             <p class="text-muted mb-2">कम्पनी र विज्ञापनको मुख्य विवरण भर्नुहोस्</p>
                             
@@ -187,11 +187,8 @@
                                                 {{ form.company_name }}
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label for="id_right_section_text" class="form-label">4. पुन : विज्ञापन </label>
-                                                <select id="id_right_section_text" name="right_section_text" class="form-select">
-                                                    <option value="">हैन?</option>
-                                                    <option value="पुन : विज्ञापन" {% if ad.right_section_text == "पुन : विज्ञापन" %}selected{% endif %}>हो?</option>
-                                                </select>
+                                                <label for="{{ form.right_section_text.id_for_label }}" class="form-label">4. पुन : विज्ञापन </label>
+                                                {{ form.right_section_text }}
                                             </div>
                                         </div>
                                         
@@ -400,59 +397,59 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="mb-2">
-                                                    <label for="{{ form.medical_cost_local.id_for_label }}" class="form-label">स्वदेशमा मेडिकल खर्च</label>
+                                                    <label for="{{ form.medical_cost_local.id_for_label }}" class="form-label">1. स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने</label>
                                                     {{ form.medical_cost_local }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.medical_cost_foreign.id_for_label }}" class="form-label">विदेशमा मेडिकल खर्च</label>
+                                                    <label for="{{ form.medical_cost_foreign.id_for_label }}" class="form-label">2. विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने</label>
                                                     {{ form.medical_cost_foreign }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.insurance_local.id_for_label }}" class="form-label">स्वदेशमा बीमा</label>
+                                                    <label for="{{ form.insurance_local.id_for_label }}" class="form-label">3. स्वदेशमा गरिने म्यादी जीवन बिमा खर्च कसले व्यहोर्ने</label>
                                                     {{ form.insurance_local }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.insurance_employment.id_for_label }}" class="form-label">रोजगारमा बीमा</label>
+                                                    <label for="{{ form.insurance_employment.id_for_label }}" class="form-label">4. रोजगारमा बिमा शुल्क हुने/नहुने र प्रिमियम कसले व्यहोर्ने</label>
                                                     {{ form.insurance_employment }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.air_ticket.id_for_label }}" class="form-label">हवाई टिकट</label>
+                                                    <label for="{{ form.air_ticket.id_for_label }}" class="form-label">5. कामदारलाई हवाई टिकट कसले दिने र कति लाग्ने</label>
                                                     {{ form.air_ticket }}
                                                 </div>
                                             </div>
                                             
                                             <div class="col-md-6">
                                                 <div class="mb-2">
-                                                    <label for="{{ form.visa_fee.id_for_label }}" class="form-label">भिसा शुल्क</label>
+                                                    <label for="{{ form.visa_fee.id_for_label }}" class="form-label">6. भिसा शुल्क कसले व्यहोर्ने</label>
                                                     {{ form.visa_fee }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.visa_stamp_fee.id_for_label }}" class="form-label">भिसा स्ट्याम्प शुल्क</label>
+                                                    <label for="{{ form.visa_stamp_fee.id_for_label }}" class="form-label">7. भिसा स्ट्याम्प शुल्क कसले व्यहोर्ने</label>
                                                     {{ form.visa_stamp_fee }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.recruitment_fee.id_for_label }}" class="form-label">अभिकृतिकरण शुल्क</label>
+                                                    <label for="{{ form.recruitment_fee.id_for_label }}" class="form-label">8. अभिकृतिकरण शुल्क कति लाग्ने र कसले व्यहोर्ने</label>
                                                     {{ form.recruitment_fee }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.welfare_fund.id_for_label }}" class="form-label">कल्याणकारी कोष</label>
+                                                    <label for="{{ form.welfare_fund.id_for_label }}" class="form-label">9. सामाजिक सुरक्षा कोष</label>
                                                     {{ form.welfare_fund }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.labor_fee.id_for_label }}" class="form-label">श्रमशुल्क</label>
+                                                    <label for="{{ form.labor_fee.id_for_label }}" class="form-label">10. कल्याणकारी कोष सम्बन्धी व्यवस्था</label>
                                                     {{ form.labor_fee }}
                                                 </div>
                                                 
                                                 <div class="mb-2">
-                                                    <label for="{{ form.service_fee.id_for_label }}" class="form-label">सेवा शुल्क</label>
+                                                    <label for="{{ form.service_fee.id_for_label }}" class="form-label">11. सेवा शुल्क</label>
                                                     {{ form.service_fee }}
                                                 </div>
                                             </div>
@@ -482,19 +479,19 @@
                                 </div>
                                 
                                 <!-- Company Banner Information -->
-                                <div class="card mb-2">
-                                    <div class="card-header py-1">
+                                <div class="card mb-2" style="min-height: 500px;">
+                                    <div class="card-header py-2">
                                         <h6 class="mb-0">🏢 कम्पनी ब्यानर जानकारी</h6>
                                         <small class="text-muted">तलको ब्यानरमा देखिने कम्पनीको जानकारी र लोगो</small>
                                     </div>
-                                    <div class="card-body py-2">
+                                    <div class="card-body py-4" style="min-height: 450px;">
                                         <!-- Banner Choice Section - Right under header -->
-                                        <div class="row mb-3">
+                                        <div class="row mb-4">
                                             <div class="col-md-12">
                                                 <label class="form-label fw-bold">ब्यानर विकल्प:</label>
                                                 <div class="d-flex gap-4">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="radio" name="banner_option" id="banner_preset" value="preset" onchange="toggleBannerOptions()">
+                                                        <input class="form-check-input" type="radio" name="banner_option" id="banner_preset" value="preset" onchange="toggleBannerOptions()" checked>
                                                         <label class="form-check-label" for="banner_preset">
                                                             <strong>प्रीसेट ब्यानर छ</strong>
                                                         </label>
@@ -510,7 +507,7 @@
                                         </div>
                                         
                                         <!-- Preset Banner Upload Section - Only image upload -->
-                                        <div id="preset-banner-section" class="banner-option-section" style="display: none;">
+                                        <div id="preset-banner-section" class="banner-option-section" style="display: block;">
                                             <div class="row mb-2">
                                                 <div class="col-md-12">
                                                     <div class="mb-2">
@@ -520,57 +517,54 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            
+                                            <!-- Banner Preview for Preset -->
+                                            <div class="row mb-2">
+                                                <div class="col-md-12">
+                                                    <div class="banner-preview-container">
+                                                        <label class="form-label">ब्यानर पूर्वावलोकन</label>
+                                                        <div class="banner-preview" id="preset-banner-preview" style="width: 100%; height: 80px; border: 2px solid #ccc; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 10px 0;">
+                                                            <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर इमेज अपलोड गर्नुहोस्</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         
                                         <!-- Manual Banner Details Section - All company fields -->
                                         <div id="manual-banner-section" class="banner-option-section" style="display: none;">
                                             <div class="row">
                                                 <div class="col-md-3">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_logo_text.id_for_label }}" class="form-label">लोगो टेक्स्ट</label>
                                                         {{ form.company_logo_text }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_logo_image.id_for_label }}" class="form-label">लोगो इमेज</label>
                                                         {{ form.company_logo_image }}
                                                         <small class="text-muted d-block">सिफारिस: 70x28px</small>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_banner_title.id_for_label }}" class="form-label">कम्पनीको नाम</label>
                                                         {{ form.company_banner_title }}
                                                     </div>
                                                 </div>
                                             </div>
                                             
-                                            <!-- Logo Preview -->
-                                            <div class="row mb-2">
-                                                <div class="col-md-3">
-                                                    <div class="logo-preview-container">
-                                                        <label class="form-label">लोगो पूर्वावलोकन</label>
-                                                        <div class="logo-preview" id="logo-preview">
-                                                            {% if form.company_logo_image.value %}
-                                                                <img src="{{ form.company_logo_image.value.url }}" alt="Company Logo" class="preview-logo">
-                                                            {% else %}
-                                                                <div class="logo-placeholder">{{ form.company_logo_text.value|default:"" }}</div>
-                                                            {% endif %}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
                                             
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_address.id_for_label }}" class="form-label">ठेगाना</label>
                                                         {{ form.company_address }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_phone.id_for_label }}" class="form-label">फोन नम्बर</label>
                                                         {{ form.company_phone }}
                                                     </div>
@@ -579,22 +573,34 @@
                                             
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_email.id_for_label }}" class="form-label">इमेल</label>
                                                         {{ form.company_email }}
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <div class="mb-2">
+                                                    <div class="mb-3">
                                                         <label for="{{ form.company_website.id_for_label }}" class="form-label">वेबसाइट</label>
                                                         {{ form.company_website }}
                                                     </div>
                                                 </div>
                                             </div>
                                             
-                                            <div class="mb-2">
+                                            <div class="mb-3">
                                                 <label for="{{ form.license_number.id_for_label }}" class="form-label">लाइसेन्स नम्बर</label>
                                                 {{ form.license_number }}
+                                            </div>
+                                            
+                                            <!-- Banner Preview for Manual -->
+                                            <div class="row mb-2">
+                                                <div class="col-md-12">
+                                                    <div class="banner-preview-container">
+                                                        <label class="form-label">ब्यानर पूर्वावलोकन</label>
+                                                        <div class="banner-preview" id="manual-banner-preview" style="width: 100%; height: 80px; border: 2px solid #ccc; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden; margin: 10px 0;">
+                                                            <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -734,10 +740,8 @@
     border-radius: 8px;
     padding: 12px 16px;
     font-size: 14px;
-    transition: all 0.2s ease;
-    background: white;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
+
 
 #step2 .company-info-section .form-control:focus,
 #step2 .company-info-section .form-select:focus {
@@ -4108,18 +4112,6 @@ function handleSalaryConversion(formElement) {
   }
 }
 
-/* ===== interview preview & date listeners (IDs fixed) ===== */
-function updateInterviewPreview() {
-  const nepaliDate = document.getElementById('id_interview_nepali_date')?.value || '';
-  const gregorianDate = document.getElementById('id_interview_gregorian_date')?.value || '';
-  const location = document.getElementById('id_interview_location')?.value || '';
-  let previewText = 'अन्तरवार्ता ';
-  if (nepaliDate) previewText += `मिति ${nepaliDate} `;
-  if (gregorianDate) previewText += `(${gregorianDate}) `;
-  if (location) previewText += `${location} हुनेछ।`;
-  const out = document.getElementById('interview_preview');
-  if (out) out.textContent = previewText;
-}
 
 // rough converters (optional)
 function convertNepaliToGregorian(nepaliDate) {
@@ -4140,11 +4132,9 @@ function setupDateConversion() {
   if (nep && gre) {
     nep.addEventListener('input', function() {
       if (this.value.includes('/')) gre.value = convertNepaliToGregorian(this.value);
-      updateInterviewPreview();
     });
     gre.addEventListener('input', function() {
       if (this.value.includes('-')) nep.value = convertGregorianToNepali(this.value);
-      updateInterviewPreview();
     });
   }
 }
@@ -4851,12 +4841,14 @@ if (window.rajdhaniSetupComplete) {
     // 6. Setup banner preview
     setupFunctionOnce('BannerPreview', setupBannerPreview);
     
-    // 6. Setup interview preview listeners (only once)
-    ['id_interview_nepali_date','id_interview_gregorian_date','id_interview_location']
-      .forEach(id => { 
-        const el = document.getElementById(id); 
-        if (el) addEventListenerOnce(el, 'input', updateInterviewPreview); 
-      });
+    // 7. Initialize banner options
+    setupFunctionOnce('BannerOptions', function() {
+      setTimeout(function() {
+        if (typeof toggleBannerOptions === 'function') {
+          toggleBannerOptions();
+        }
+      }, 100);
+    });
     
     // Setup common field inheritance
     addCommonFieldListeners();
@@ -5012,12 +5004,40 @@ function setupBannerPreview() {
   }
 }
 
+function updatePresetBannerPreview(event) {
+  try {
+    const file = event.target.files[0];
+    const presetBannerPreview = document.getElementById('preset-banner-preview');
+    const bannerPreview = document.getElementById('banner-preview');
+    
+    if (!presetBannerPreview || !bannerPreview) {
+      return;
+    }
+    
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = `<img src="${e.target.result}" alt="Banner Preview" style="max-width: 100%; max-height: 100%; object-fit: contain;">`;
+        presetBannerPreview.innerHTML = img;
+        bannerPreview.innerHTML = img;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      presetBannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 12pt; text-align: center; color: #666; padding: 20px;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+    }
+  } catch (error) {
+    console.error('Error updating preset banner preview:', error);
+  }
+}
+
 function updateManualBannerPreview() {
   try {
     const manualOption = document.getElementById('banner_manual');
     const bannerPreview = document.getElementById('banner-preview');
+    const manualBannerPreview = document.getElementById('manual-banner-preview');
     
-    if (!manualOption || !bannerPreview) {
+    if (!manualOption || !bannerPreview || !manualBannerPreview) {
       console.warn('Manual banner preview: Required elements not found');
       return;
     }
@@ -5057,9 +5077,9 @@ function updateManualBannerPreview() {
         if (website) parts.push(website);
         if (license) parts.push(license);
         
-        const bannerContent = parts.join(' | ');
+        const bannerText = parts.join(' | ');
         // Escape HTML to prevent XSS
-        const escapedContent = bannerContent.replace(/[&<>"']/g, function(match) {
+        const escapedContent = bannerText.replace(/[&<>"']/g, function(match) {
           const escapeMap = {
             '&': '&amp;',
             '<': '&lt;',
@@ -5070,10 +5090,14 @@ function updateManualBannerPreview() {
           return escapeMap[match];
         });
         
-        bannerPreview.innerHTML = `<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666; font-weight: bold;">${escapedContent}</div>`;
+        const bannerContent = `<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666; font-weight: bold;">${escapedContent}</div>`;
+        bannerPreview.innerHTML = bannerContent;
+        manualBannerPreview.innerHTML = `<div class="banner-placeholder" style="font-size: 12pt; text-align: center; color: #666; font-weight: bold; padding: 20px;">${escapedContent}</div>`;
       } else {
         // Show placeholder when no values
-        bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+        const placeholderContent = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+        bannerPreview.innerHTML = placeholderContent;
+        manualBannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 12pt; text-align: center; color: #666; padding: 20px;">कम्पनी जानकारी भर्नुहोस्</div>';
       }
     }
   } catch (error) {
@@ -5122,10 +5146,34 @@ function toggleBannerOptions() {
       console.error('Banner toggle: Required elements not found');
       return;
     }
+    
+    // Only force preset if neither is checked
+    if (!presetOption.checked && !manualOption.checked) {
+      presetOption.checked = true;
+    } else if (presetOption.checked && manualOption.checked) {
+      manualOption.checked = false;
+    }
   
     if (presetOption && presetOption.checked) {
-      presetSection.style.display = 'block';
-      manualSection.style.display = 'none';
+      console.log('🔄 Showing preset section');
+      presetSection.style.setProperty('display', 'block', 'important');
+      presetSection.style.setProperty('visibility', 'visible', 'important');
+      presetSection.style.setProperty('height', 'auto', 'important');
+      presetSection.style.setProperty('overflow', 'visible', 'important');
+      presetSection.style.setProperty('background-color', 'yellow', 'important');
+      presetSection.style.setProperty('border', '3px solid red', 'important');
+      presetSection.style.setProperty('min-height', '100px', 'important');
+      presetSection.style.setProperty('position', 'relative', 'important');
+      presetSection.style.setProperty('z-index', '9999', 'important');
+      presetSection.style.setProperty('top', '0', 'important');
+      presetSection.style.setProperty('left', '0', 'important');
+      presetSection.style.setProperty('width', '100%', 'important');
+      presetSection.style.setProperty('opacity', '1', 'important');
+      manualSection.style.setProperty('display', 'none', 'important');
+      manualSection.style.setProperty('visibility', 'hidden', 'important');
+      
+      // Simple confirmation that section is visible
+      console.log('✅ Preset section is now visible');
       
       // Clear all manual fields when switching to preset
       const manualFields = [
@@ -5157,11 +5205,63 @@ function toggleBannerOptions() {
       }
       
       // Show default preview for preset
-      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+      if (bannerPreview) {
+        bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+      }
+      
+      // Update preset banner preview
+      const presetBannerPreview = document.getElementById('preset-banner-preview');
+      if (presetBannerPreview) {
+        presetBannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 12pt; text-align: center; color: #666; padding: 20px;">ब्यानर इमेज अपलोड गर्नुहोस्</div>';
+      }
+      
+      // Reset positioning to normal but ensure visibility
+      presetSection.style.setProperty('position', 'static', 'important');
+      presetSection.style.setProperty('top', 'auto', 'important');
+      presetSection.style.setProperty('left', 'auto', 'important');
+      presetSection.style.setProperty('right', 'auto', 'important');
+      presetSection.style.setProperty('z-index', 'auto', 'important');
+      presetSection.style.setProperty('background', '#f8f9fa', 'important');
+      presetSection.style.setProperty('border', '1px solid #e0e0e0', 'important');
+      presetSection.style.setProperty('padding', '15px', 'important');
+      presetSection.style.setProperty('max-height', 'none', 'important');
+      presetSection.style.setProperty('overflow', 'visible', 'important');
+      
+      // Force all form elements to be visible
+      const allFormElements = presetSection.querySelectorAll('input, select, textarea, label, div, span');
+      allFormElements.forEach(element => {
+        element.style.setProperty('display', 'block', 'important');
+        element.style.setProperty('visibility', 'visible', 'important');
+        element.style.setProperty('opacity', '1', 'important');
+        element.style.setProperty('height', 'auto', 'important');
+        element.style.setProperty('width', 'auto', 'important');
+      });
+      
+      // Add event listener for banner image upload in preset section
+      const bannerImageInput = presetSection.querySelector('input[name="company_banner_image"]');
+      if (bannerImageInput) {
+        bannerImageInput.addEventListener('change', function(e) {
+          updatePresetBannerPreview(e);
+        });
+      }
       
     } else if (manualOption && manualOption.checked) {
-      presetSection.style.display = 'none';
-      manualSection.style.display = 'block';
+      console.log('🔄 Showing manual section');
+      presetSection.style.setProperty('display', 'none', 'important');
+      presetSection.style.setProperty('visibility', 'hidden', 'important');
+      manualSection.style.setProperty('display', 'block', 'important');
+      manualSection.style.setProperty('visibility', 'visible', 'important');
+      manualSection.style.setProperty('height', 'auto', 'important');
+      manualSection.style.setProperty('overflow', 'visible', 'important');
+      manualSection.style.setProperty('opacity', '1', 'important');
+      manualSection.style.setProperty('position', 'static', 'important');
+      manualSection.style.setProperty('z-index', 'auto', 'important');
+      manualSection.style.setProperty('background-color', '#f8f9fa', 'important');
+      manualSection.style.setProperty('border', '1px solid #e0e0e0', 'important');
+      manualSection.style.setProperty('min-height', 'auto', 'important');
+      manualSection.style.setProperty('width', '100%', 'important');
+      
+      console.log('✅ Manual section is now visible');
       
       try {
         // ALWAYS clear banner image when switching to manual mode
@@ -5199,7 +5299,46 @@ function toggleBannerOptions() {
       }
       
       // Show default preview for manual and update it
-      bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+      if (bannerPreview) {
+        bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">कम्पनी जानकारी भर्नुहोस्</div>';
+      }
+      
+      // Update manual banner preview
+      const manualBannerPreview = document.getElementById('manual-banner-preview');
+      if (manualBannerPreview) {
+        manualBannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 12pt; text-align: center; color: #666; padding: 20px;">कम्पनी जानकारी भर्नुहोस्</div>';
+      }
+      
+      // Manual section is now working properly
+      
+      // Force all form elements in manual section to be visible
+      const allManualFormElements = manualSection.querySelectorAll('input, select, textarea, label, div, span');
+      allManualFormElements.forEach(element => {
+        element.style.setProperty('display', 'block', 'important');
+        element.style.setProperty('visibility', 'visible', 'important');
+        element.style.setProperty('opacity', '1', 'important');
+        element.style.setProperty('height', 'auto', 'important');
+        element.style.setProperty('width', 'auto', 'important');
+      });
+      
+      // Add event listeners for manual section fields
+      const manualFields = [
+        'company_banner_title',
+        'company_address', 
+        'company_phone',
+        'company_email',
+        'company_website',
+        'license_number'
+      ];
+      
+      manualFields.forEach(fieldName => {
+        const field = document.getElementById(`id_${fieldName}`);
+        if (field) {
+          field.addEventListener('input', function() {
+            updateManualBannerPreview();
+          });
+        }
+      });
       
       // Update manual preview after a short delay to ensure fields are visible
       setTimeout(() => {
@@ -5211,6 +5350,7 @@ function toggleBannerOptions() {
       }, 100);
       
     } else {
+      console.log('🔄 No radio button selected, hiding both sections');
       presetSection.style.display = 'none';
       manualSection.style.display = 'none';
       bannerPreview.innerHTML = '<div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">ब्यानर विकल्प छान्नुहोस्</div>';
@@ -5245,16 +5385,24 @@ function calculateInterviewDate() {
     alert(`स्वचालित मिति गणना सफल: ${nep} (${eng})`);
   } catch { alert('मिति गणनामा त्रुटि भयो। YYYY-MM-DD प्रयोग गर्नुहोस्।'); }
 }
+
 function setupCountryNoticePreview() {
   const countryField = document.getElementById('id_country');
   const extraNotesField = document.getElementById('id_extra_notes');
   const previewDiv = document.getElementById('countryNoticePreview');
   const previewText = document.getElementById('noticePreviewText');
   if (!(countryField && extraNotesField && previewDiv && previewText)) return;
+  
   const update = () => {
     const country = (countryField.value||'').trim().toLowerCase();
     const hasCustom = (extraNotesField.value||'').trim();
-    if (!country || hasCustom) { previewDiv.style.display = 'none'; return; }
+    console.log('Country notice preview update:', { country, hasCustom, extraNotesFieldId: extraNotesField.id });
+    
+    if (!country || hasCustom) { 
+      previewDiv.style.display = 'none'; 
+      return; 
+    }
+    
     let notice = '';
     if (['kuwait','uae','saudi','qatar','oman','bahrain','jordan','lebanon','iraq','iran','syria','yemen'].some(c => country.includes(c))) notice = 'बैदेशिक रोजगार बिभागबाट गराइएको जानकारी (मध्य पूर्वी देशहरूको लागि)';
     else if (country.includes('japan')) notice = 'प्रशिक्षार्थीको आवश्यक न्यूनतम योग्यता र काम गरेको अनुभव (जापानको लागि)';
@@ -5263,6 +5411,70 @@ function setupCountryNoticePreview() {
     previewDiv.style.display = 'block';
     updateCurrencyBasedOnCountry(country);
   };
+  
+  // Clean interview custom text field handler with preview management
+  const interviewCustomTextField = document.getElementById('id_interview_custom_text');
+  const interviewPreview = document.getElementById('interview_preview');
+  
+  if (interviewCustomTextField && interviewPreview) {
+    console.log('✅ Interview custom text field and preview found, setting up handlers');
+    console.log('🔍 Initial preview state:', interviewPreview.style.display);
+    console.log('🔍 Initial custom text value:', interviewCustomTextField.value);
+    
+    function updateInterviewDisplay() {
+      const customText = interviewCustomTextField.value.trim();
+      
+      console.log('🔄 Updating interview display, custom text:', customText);
+      
+      if (customText) {
+        // If there's custom text, hide the date-based preview
+        interviewPreview.style.display = 'none';
+        console.log('📝 Custom interview text entered - hiding date preview');
+      } else {
+        // If no custom text, show the date-based preview
+        interviewPreview.style.display = 'block';
+        console.log('📝 No custom interview text - showing date preview');
+      }
+      
+      console.log('🔍 Preview display after update:', interviewPreview.style.display);
+    }
+    
+    // Update display when user types
+    interviewCustomTextField.addEventListener('input', function(e) {
+      console.log('📝 Interview text updated:', this.value.substring(0, 50) + (this.value.length > 50 ? '...' : ''));
+      updateInterviewDisplay();
+    }, { passive: true });
+    
+    // Update display on focus/blur
+    interviewCustomTextField.addEventListener('focus', updateInterviewDisplay);
+    interviewCustomTextField.addEventListener('blur', updateInterviewDisplay);
+    
+    // Prevent Enter key from accidentally submitting the form
+    interviewCustomTextField.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        console.log('🛑 Prevented Enter key form submission in interview field');
+        e.preventDefault();
+      }
+    });
+    
+    // Initial update - force show preview initially
+    console.log('🚀 Running initial update...');
+    updateInterviewDisplay();
+    
+    // Also ensure preview is visible by default
+    setTimeout(() => {
+      if (!interviewCustomTextField.value.trim()) {
+        interviewPreview.style.display = 'block';
+        console.log('🔧 Forced preview to show on load');
+      }
+    }, 100);
+  } else {
+    console.log('❌ Interview elements not found:', {
+      customField: !!interviewCustomTextField,
+      preview: !!interviewPreview
+    });
+  }
+  
   countryField.addEventListener('input', update);
   extraNotesField.addEventListener('input', update);
   update();
@@ -5313,34 +5525,7 @@ console.log('=== JAVASCRIPT LOADED ===');
 
 
 
-// Function to update interview preview
-function updateInterviewPreview() {
-    const nepaliDate = document.getElementById('id_nepali_date').value;
-    const gregorianDate = document.getElementById('id_gregorian_date').value;
-    const location = document.getElementById('id_interview_location').value;
-    
-    let previewText = 'अन्तरवार्ता ';
-    if (nepaliDate) previewText += `मिति ${nepaliDate} `;
-    if (gregorianDate) previewText += `(${gregorianDate}) `;
-    if (location) previewText += `${location} हुनेछ।`;
-    
-    document.getElementById('interview_preview').textContent = previewText;
-}
 
-// Auto-convert between Nepali and Gregorian dates
-function convertNepaliToGregorian(nepaliDate) {
-    // Simple conversion - you can enhance this with proper Nepali calendar logic
-    const nepaliYear = parseInt(nepaliDate.split('/')[0]);
-    const gregorianYear = nepaliYear - 57; // Approximate conversion
-    return `${gregorianYear}-${nepaliDate.split('/')[1]}-${nepaliDate.split('/')[2]}`;
-}
-
-function convertGregorianToNepali(gregorianDate) {
-    // Simple conversion - you can enhance this with proper Nepali calendar logic
-    const gregorianYear = parseInt(gregorianDate.split('-')[0]);
-    const nepaliYear = gregorianYear + 57; // Approximate conversion
-    return `${nepaliYear}/${gregorianDate.split('-')[1]}/${gregorianDate.split('-')[2]}`;
-}
 
 
 
@@ -6171,12 +6356,6 @@ function setupProgressAndCurrency() {
         addCurrencyConversionListeners(form);
     });
     
-    // Add interview preview listeners
-    document.getElementById('id_nepali_date')?.addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_gregorian_date')?.addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_hour')?.addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_time')?.addEventListener('input', updateInterviewPreview);
-    document.getElementById('id_interview_location')?.addEventListener('input', updateInterviewPreview);
     
     // Setup number conversion
     setupNumberConversion();
@@ -6205,11 +6384,11 @@ function updateProgress() {
 
 // Form submission handlers
 document.getElementById('mainForm')?.addEventListener('submit', function(e) {
-    console.log('DEBUG: Main form submit event triggered!');
+    console.log('📤 Main form submission started');
     
-    // Prevent double submission
+    // Only prevent double submission
     if (this.dataset.submitting === 'true' || preventDoubleSubmission()) {
-        console.log('DEBUG: Form already submitting, preventing double submission');
+        console.log('⚠️ Preventing double submission');
         e.preventDefault();
         return;
     }
@@ -6224,6 +6403,7 @@ document.getElementById('mainForm')?.addEventListener('submit', function(e) {
     // Validate required fields before submission
     if (!validateCurrentStep()) {
         console.log('DEBUG: Form validation failed');
+        resetSubmissionFlag(); // Reset flag on validation failure
         return;
     }
     
@@ -6280,6 +6460,7 @@ document.getElementById('positionForm')?.addEventListener('submit', function(e) 
     
     // Validate required fields before submission
     if (!validateCurrentStep()) {
+        resetSubmissionFlag(); // Reset flag on validation failure
         return;
     }
     
@@ -6536,32 +6717,6 @@ function resetFormsetFields() {
     console.log('=== END RESET ===');
 }
 
-// Country Notice Preview Function
-function setupCountryNoticePreview() {
-    const countryField = document.getElementById('id_country');
-    const extraNotesField = document.getElementById('id_extra_notes');
-    const previewDiv = document.getElementById('countryNoticePreview');
-    const previewText = document.getElementById('noticePreviewText');
-    
-    if (countryField && extraNotesField && previewDiv && previewText) {
-        // Show preview when country changes
-        countryField.addEventListener('input', function() {
-            updateCountryNoticePreview();
-        });
-        
-        // Hide preview when user types in extra notes
-        extraNotesField.addEventListener('input', function() {
-            if (this.value.trim()) {
-                previewDiv.style.display = 'none';
-            } else {
-                updateCountryNoticePreview();
-            }
-        });
-        
-        // Initial preview
-        updateCountryNoticePreview();
-    }
-}
 
 // Function to update country notice preview
 function updateCountryNoticePreview() {
@@ -6784,5 +6939,226 @@ function submitFormManually() {
 }
 
 // Test form submission function
+
+// Set default values for form fields
+function setDefaultValues() {
+    console.log('Setting default values...');
+    
+    // Default values mapping - using exact option values
+    const defaults = {
+        'medical_cost_local': 'कामदारले तिर्ने',
+        'medical_cost_foreign': 'रोजगारदाताले व्यहोर्ने',
+        'insurance_local': 'कामदारले तिर्ने',
+        'insurance_employment': 'बिमा हुने र प्रिमियम रोजगारदाताले व्यहोर्ने',
+        'air_ticket': 'रोजगारदाताले दिने',
+        'visa_fee': 'रोजगारदाताले व्यहोर्ने',
+        'visa_stamp_fee': 'रोजगारदाताले व्यहोर्ने',
+        'recruitment_fee': 'रू.७००/- कामदारले व्यहोर्ने',
+        'service_fee': 'नि:शुल्क',
+        'welfare_fund': 'रू.२३०८/- कामदारले व्यहोर्ने',
+        'labor_fee': 'रू.१५००/- कामदारले व्यहोर्ने'
+    };
+    
+    // Set default values for job position forms
+    const minQualificationFields = document.querySelectorAll('select[name*="min_qualification"]');
+    const overtimeFields = document.querySelectorAll('select[name*="overtime"]');
+    const hoursPerDayFields = document.querySelectorAll('select[name*="hours_per_day"]');
+    const daysPerWeekFields = document.querySelectorAll('select[name*="days_per_week"]');
+    const yearlyLeaveFields = document.querySelectorAll('select[name*="yearly_leave"]');
+    const contractDurationFields = document.querySelectorAll('select[name*="contract_duration"]');
+    
+    console.log(`Found ${minQualificationFields.length} min_qualification fields`);
+    console.log(`Found ${overtimeFields.length} overtime fields`);
+    console.log(`Found ${hoursPerDayFields.length} hours_per_day fields`);
+    console.log(`Found ${daysPerWeekFields.length} days_per_week fields`);
+    console.log(`Found ${yearlyLeaveFields.length} yearly_leave fields`);
+    console.log(`Found ${contractDurationFields.length} contract_duration fields`);
+    
+    // Get country value to determine hours per day default
+    const countryField = document.getElementById('id_country');
+    const country = countryField ? countryField.value.toLowerCase() : '';
+    console.log(`Country field found:`, countryField);
+    console.log(`Country value: "${country}"`);
+    console.log(`Country field type:`, countryField ? countryField.tagName : 'not found');
+    
+    // Set min_qualification defaults
+    minQualificationFields.forEach((field, index) => {
+        console.log(`Min Qual Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = 'सम्बन्धित काममा दक्ष';
+            console.log(`Set min_qualification ${index + 1} to: सम्बन्धित काममा दक्ष`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Set overtime defaults
+    overtimeFields.forEach((field, index) => {
+        console.log(`Overtime Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = 'कम्पनीको नियमानुसार';
+            console.log(`Set overtime ${index + 1} to: कम्पनीको नियमानुसार`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Set defaults based on country
+    const hoursDefault = (country === 'japan' || country === 'जापान') ? '७ घण्टा' : '८ घण्टा';
+    const yearlyLeaveDefault = (country === 'japan' || country === 'जापान') ? '२१ दिन' : 'कम्पनीको नियमानुसार';
+    const contractDurationDefault = (country === 'japan' || country === 'जापान') ? '३ वर्ष' : '२ वर्ष';
+    
+    console.log(`Setting hours_per_day default to: ${hoursDefault} (Country: ${country})`);
+    console.log(`Setting yearly_leave default to: ${yearlyLeaveDefault} (Country: ${country})`);
+    console.log(`Setting contract_duration default to: ${contractDurationDefault} (Country: ${country})`);
+    
+    hoursPerDayFields.forEach((field, index) => {
+        console.log(`Hours Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = hoursDefault;
+            console.log(`Set hours_per_day ${index + 1} to: ${hoursDefault}`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Set days_per_week defaults
+    daysPerWeekFields.forEach((field, index) => {
+        console.log(`Days Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = '६ दिन';
+            console.log(`Set days_per_week ${index + 1} to: ६ दिन`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Set yearly_leave defaults based on country
+    yearlyLeaveFields.forEach((field, index) => {
+        console.log(`Yearly Leave Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = yearlyLeaveDefault;
+            console.log(`Set yearly_leave ${index + 1} to: ${yearlyLeaveDefault}`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Set contract_duration defaults based on country
+    contractDurationFields.forEach((field, index) => {
+        console.log(`Contract Duration Field ${index + 1}: Current value = "${field.value}"`);
+        if (field && (!field.value || field.value === '')) {
+            field.value = contractDurationDefault;
+            console.log(`Set contract_duration ${index + 1} to: ${contractDurationDefault}`);
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+    });
+    
+    // Debug: Check specific fields first
+    const debugFields = ['medical_cost_local', 'insurance_local', 'air_ticket'];
+    debugFields.forEach(fieldName => {
+        const field = document.getElementById(`id_${fieldName}`);
+        if (field) {
+            console.log(`DEBUG: ${fieldName} - Current value: "${field.value}"`);
+            console.log(`DEBUG: ${fieldName} - Options:`, Array.from(field.options).map(opt => `"${opt.value}"`));
+            console.log(`DEBUG: ${fieldName} - Option texts:`, Array.from(field.options).map(opt => `"${opt.text}"`));
+        } else {
+            console.log(`DEBUG: ${fieldName} - Field not found`);
+        }
+    });
+    
+    // Set values for select fields
+    Object.keys(defaults).forEach(fieldName => {
+        const field = document.getElementById(`id_${fieldName}`);
+        if (field) {
+            // Force set the default value regardless of current value
+            field.value = defaults[fieldName];
+            console.log(`Set ${fieldName} to: ${defaults[fieldName]}`);
+            
+            // Trigger change event to ensure the value is properly set
+            field.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+            console.log(`Field not found: id_${fieldName}`);
+        }
+    });
+}
+
+// Run when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Page loaded, setting default values...');
+    setDefaultValues();
+    
+        // Initialize banner options as fallback
+        setTimeout(function() {
+            if (typeof toggleBannerOptions === 'function') {
+                toggleBannerOptions();
+            }
+            
+            // Add direct event listeners as additional fallback
+            const presetRadio = document.getElementById('banner_preset');
+            const manualRadio = document.getElementById('banner_manual');
+            
+            // Force preset to be checked on initialization
+            if (presetRadio && manualRadio) {
+                manualRadio.checked = false;
+                presetRadio.checked = true;
+            }
+            
+            if (presetRadio) {
+                presetRadio.addEventListener('change', function() {
+                    toggleBannerOptions();
+                });
+            }
+            
+            if (manualRadio) {
+                manualRadio.addEventListener('change', function() {
+                    toggleBannerOptions();
+                });
+            }
+        }, 500);
+});
+
+// Also run after a short delay to ensure all elements are loaded
+setTimeout(setDefaultValues, 1000);
+setTimeout(setDefaultValues, 2000);
+
+// Add event listener for country change to update hours_per_day
+document.addEventListener('DOMContentLoaded', function() {
+    const countryField = document.getElementById('id_country');
+    if (countryField) {
+        countryField.addEventListener('change', function() {
+            console.log('Country changed to:', this.value);
+            const country = this.value.toLowerCase();
+            const hoursDefault = (country === 'japan' || country === 'जापान') ? '७ घण्टा' : '८ घण्टा';
+            const yearlyLeaveDefault = (country === 'japan' || country === 'जापान') ? '२१ दिन' : 'कम्पनीको नियमानुसार';
+            const contractDurationDefault = (country === 'japan' || country === 'जापान') ? '३ वर्ष' : '२ वर्ष';
+            
+            // Update all empty hours_per_day fields
+            const hoursPerDayFields = document.querySelectorAll('select[name*="hours_per_day"]');
+            hoursPerDayFields.forEach((field, index) => {
+                if (field && (!field.value || field.value === '')) {
+                    field.value = hoursDefault;
+                    console.log(`Updated hours_per_day ${index + 1} to: ${hoursDefault}`);
+                    field.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+            
+            // Update all empty yearly_leave fields
+            const yearlyLeaveFields = document.querySelectorAll('select[name*="yearly_leave"]');
+            yearlyLeaveFields.forEach((field, index) => {
+                if (field && (!field.value || field.value === '')) {
+                    field.value = yearlyLeaveDefault;
+                    console.log(`Updated yearly_leave ${index + 1} to: ${yearlyLeaveDefault}`);
+                    field.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+            
+            // Update all empty contract_duration fields
+            const contractDurationFields = document.querySelectorAll('select[name*="contract_duration"]');
+            contractDurationFields.forEach((field, index) => {
+                if (field && (!field.value || field.value === '')) {
+                    field.value = contractDurationDefault;
+                    console.log(`Updated contract_duration ${index + 1} to: ${contractDurationDefault}`);
+                    field.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        });
+    }
+});
 </script>
 {% endblock %}

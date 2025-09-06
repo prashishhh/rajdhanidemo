@@ -94,6 +94,24 @@ class InterviewForm(forms.ModelForm):
 class EmploymentAdForm(ProductionSafeForm):
     """Form for employment advertisement main information"""
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set default values for select fields - always set defaults
+        # This will show defaults every time the form loads
+        self.fields['medical_cost_local'].initial = 'कामदारले तिर्ने'
+        self.fields['medical_cost_foreign'].initial = 'रोजगारदाताले व्यहोर्ने'
+        self.fields['insurance_local'].initial = 'कामदारले तिर्ने'
+        self.fields['insurance_employment'].initial = 'बिमा हुने र प्रिमियम रोजगारदाताले व्यहोर्ने'
+        self.fields['air_ticket'].initial = 'रोजगारदाताले दिने'
+        self.fields['visa_fee'].initial = 'रोजगारदाताले व्यहोर्ने'
+        self.fields['visa_stamp_fee'].initial = 'रोजगारदाताले व्यहोर्ने'
+        self.fields['recruitment_fee'].initial = 'रू.७००/- कामदारले व्यहोर्ने'
+        self.fields['service_fee'].initial = 'नि:शुल्क'
+        
+        # Set default values for text fields
+        self.fields['welfare_fund'].initial = 'रू.२३०८/- कामदारले व्यहोर्ने'
+        self.fields['labor_fee'].initial = 'रू.१५००/- कामदारले व्यहोर्ने'
+    
     # Override title field to make it optional
     title = forms.CharField(
         max_length=200,
@@ -241,7 +259,7 @@ class EmploymentAdForm(ProductionSafeForm):
     class Meta:
         model = EmploymentAd
         fields = [
-            'title', 'company_name', 'country', 'pre_approval_date', 'chalani_no', 
+            'title', 'company_name', 'right_section_text', 'country', 'pre_approval_date', 'chalani_no', 
             'lot_no', 'city',
             'medical_cost_local', 'medical_cost_foreign', 'insurance_local', 'insurance_employment',
             'air_ticket', 'visa_fee', 'visa_stamp_fee', 'recruitment_fee', 'welfare_fund',
@@ -254,6 +272,12 @@ class EmploymentAdForm(ProductionSafeForm):
             'company_name': forms.TextInput(attrs={
                 'class': 'form-control'
             }),
+            'right_section_text': forms.Select(attrs={
+                'class': 'form-control'
+            }, choices=[
+                ('', 'हैन?'),
+                ('पुन : विज्ञापन', 'हो?')
+            ]),
             'country': forms.TextInput(attrs={
                 'class': 'form-control'
             }),
@@ -273,63 +297,73 @@ class EmploymentAdForm(ProductionSafeForm):
             'medical_cost_local': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'medical_cost_foreign': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'insurance_local': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'insurance_employment': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
-                ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
+                ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने'),
+                ('बिमा हुने र प्रिमियम रोजगारदाताले व्यहोर्ने', 'बिमा हुने र प्रिमियम रोजगारदाताले व्यहोर्ने')
             ]),
             'air_ticket': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले दिने', 'रोजगारदाताले दिने')
             ]),
             'visa_fee': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'visa_stamp_fee': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
                 ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
             ]),
             'recruitment_fee': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
+                ('', 'छान्नुहोस्...'),
                 ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
-                ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
+                ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने'),
+                ('रू.७००/- कामदारले व्यहोर्ने', 'रू.७००/- कामदारले व्यहोर्ने')
             ]),
             'welfare_fund': forms.TextInput(attrs={
-                'class': 'form-control'
+                'class': 'form-control',
+                'placeholder': 'रू.२३०८/- कामदारले व्यहोर्ने'
             }),
             'labor_fee': forms.TextInput(attrs={
-                'class': 'form-control'
+                'class': 'form-control',
+                'placeholder': 'रू.१५००/- कामदारले व्यहोर्ने'
             }),
-            'service_fee': forms.Select(attrs={
-                'class': 'form-control'
-            }, choices=[
-                ('कामदारले तिर्ने', 'कामदारले तिर्ने'),
-                ('रोजगारदाताले व्यहोर्ने', 'रोजगारदाताले व्यहोर्ने')
-            ]),
+            'service_fee': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'नि:शुल्क'
+            }),
             'extra_notes': forms.Textarea(attrs={
                 'class': 'form-control',
                 'rows': 3
@@ -359,6 +393,16 @@ class EmploymentAdForm(ProductionSafeForm):
 
 class JobPositionForm(ProductionSafeForm):
     """Form for individual job positions"""
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set default values for job position fields
+        self.fields['min_qualification'].initial = 'सम्बन्धित काममा दक्ष'
+        self.fields['overtime'].initial = 'कम्पनीको नियमानुसार'
+        self.fields['hours_per_day'].initial = '८ घण्टा'
+        self.fields['days_per_week'].initial = '६ दिन'
+        self.fields['yearly_leave'].initial = 'कम्पनीको नियमानुसार'
+        self.fields['contract_duration'].initial = '२ वर्ष'
     
     class Meta:
         model = JobPosition
@@ -408,19 +452,33 @@ class JobPositionForm(ProductionSafeForm):
                 ('छैन', 'छैन'),
                 ('कम्पनीको नियमानुसार', 'कम्पनीको नियमानुसार')
             ]),
-            'hours_per_day': forms.TextInput(attrs={
+            'hours_per_day': forms.Select(attrs={
                 'class': 'form-control'
-            }),
-            'days_per_week': forms.TextInput(attrs={
+            }, choices=[
+                ('', 'छान्नुहोस्...'),
+                ('६ घण्टा', '६ घण्टा'),
+                ('७ घण्टा', '७ घण्टा'),
+                ('८ घण्टा', '८ घण्टा'),
+                ('९ घण्टा', '९ घण्टा'),
+                ('१० घण्टा', '१० घण्टा'),
+                ('१२ घण्टा', '१२ घण्टा')
+            ]),
+            'days_per_week': forms.Select(attrs={
                 'class': 'form-control'
-            }),
+            }, choices=[
+                ('', 'छान्नुहोस्...'),
+                ('५ दिन', '५ दिन'),
+                ('६ दिन', '६ दिन'),
+                ('७ दिन', '७ दिन')
+            ]),
             'yearly_leave': forms.Select(attrs={
                 'class': 'form-control'
             }, choices=[
                 ('', 'छान्नुहोस्'),
                 ('छ', 'छ'), 
                 ('छैन', 'छैन'),
-                ('कम्पनीको नियमानुसार', 'कम्पनीको नियमानुसार')
+                ('कम्पनीको नियमानुसार', 'कम्पनीको नियमानुसार'),
+                ('२१ दिन', '२१ दिन')
             ]),
             'min_qualification': forms.Select(attrs={
                 'class': 'form-control'
@@ -446,9 +504,16 @@ class JobPositionForm(ProductionSafeForm):
                 ('छ', 'छ'), 
                 ('छैन', 'छैन')
             ]),
-            'contract_duration': forms.TextInput(attrs={
+            'contract_duration': forms.Select(attrs={
                 'class': 'form-control'
-            }),
+            }, choices=[
+                ('', 'छान्नुहोस्...'),
+                ('१ वर्ष', '१ वर्ष'),
+                ('२ वर्ष', '२ वर्ष'),
+                ('३ वर्ष', '३ वर्ष'),
+                ('४ वर्ष', '४ वर्ष'),
+                ('५ वर्ष', '५ वर्ष')
+            ]),
             'order': forms.HiddenInput(),
         }
     

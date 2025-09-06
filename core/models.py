@@ -82,6 +82,7 @@ class EmploymentAd(models.Model):
     title = models.CharField(max_length=200, blank=True)
     person_name = models.CharField(max_length=200, blank=True, help_text="Name of the person")
     company_name = models.CharField(max_length=200, blank=True)
+    right_section_text = models.CharField(max_length=50, blank=True, help_text="Text to display in right corner of company row (optional)")
     pre_approval_date = models.CharField(max_length=50, blank=True)
     chalani_no = models.CharField(max_length=50, blank=True)
     lot_no = models.CharField(max_length=50, blank=True)
