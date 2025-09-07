@@ -4150,9 +4150,28 @@ function setupNumberConversion() {
   const nodes = document.querySelectorAll('input[name*="male_count"], input[name*="female_count"], input[name*="hours_per_day"], input[name*="days_per_week"]');
   nodes.forEach(field => {
     field.addEventListener('input', function() {
-      if (/^\d+$/.test(this.value)) this.value = convertToNepaliNumbers(this.value);
+      // Convert Nepali numbers to English numbers
+      this.value = convertNepaliToEnglish(this.value);
     });
   });
+}
+
+// Convert Nepali numbers to English numbers
+function convertNepaliToEnglish(input) {
+  const nepaliToEnglish = {
+    '०': '0', '१': '1', '२': '2', '३': '3', '४': '4',
+    '५': '5', '६': '6', '७': '7', '८': '8', '९': '9'
+  };
+  
+  if (!input) return input;
+  
+  // Convert all Nepali numbers to English
+  let result = input;
+  for (const [nepali, english] of Object.entries(nepaliToEnglish)) {
+    result = result.replace(new RegExp(nepali, 'g'), english);
+  }
+  
+  return result;
 }
 
 // apply client-side OCR data (new function)
@@ -5835,23 +5854,7 @@ function updateApprovalDate(selectedDate) {
     }
 }
 
-// Auto-convert English numbers to Nepali numbers (first number only)
-function convertToNepaliNumbers(input) {
-    const englishToNepali = {
-        '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
-        '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
-    };
-    
-    if (!input) return input;
-    
-    // Convert only the first number to Nepali, keep rest in English
-    const firstChar = input.charAt(0);
-    if (englishToNepali[firstChar]) {
-        return englishToNepali[firstChar] + input.slice(1);
-    }
-    
-    return input;
-}
+// This function is no longer needed - we now convert to English numbers
 
 
 
