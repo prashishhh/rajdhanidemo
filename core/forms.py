@@ -428,6 +428,7 @@ class JobPositionForm(ProductionSafeForm):
                 'class': 'form-control'
             }, choices=[
                 ('', 'छान्नुहोस्'),
+                ('JPY', 'Japanese Yen (¥)'),
                 ('KD', 'Kuwaiti Dinar (KD)'),
                 ('USD', 'US Dollar ($)'),
                 ('EUR', 'Euro (€)'),
