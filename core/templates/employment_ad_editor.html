@@ -630,56 +630,59 @@
 
                         <!-- Step 3: Preview -->
                         <div class="tab-pane fade" id="step4" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
                             <h5 class="mb-1">👁️ पूर्वावलोकन</h5>
-                            <p class="text-muted">आफ्नो विज्ञापनको अन्तिम रूप हेर्नुहोस् र PDF डाउनलोड गर्नुहोस्</p>
-                            
-                            <div class="row mb-3">
-                                <div class="col-md-4">
-                                    <a href="{% url 'employment_ad_preview' %}" target="_blank" class="btn btn-primary btn-lg w-100">
+                                    <p class="text-muted mb-0">आफ्नो विज्ञापनको अन्तिम रूप हेर्नुहोस्</p>
+                                </div>
+                                <div>
+                                    <a href="{% url 'employment_ad_preview' %}" target="_blank" class="btn btn-outline-primary btn-sm me-2">
                                         🔍 नयाँ ट्याबमा हेर्नुहोस्
                                     </a>
                                 </div>
-                                <div class="col-md-4">
-                                    <a href="{% url 'employment_ad_design' %}" target="_blank" class="btn btn-info btn-lg w-100">
-                                        🎨 नयाँ डिजाइन हेर्नुहोस्
-                                    </a>
                                 </div>
-                                <div class="col-md-4">
-                                    <a href="{% url 'download_pdf' %}" class="btn btn-success btn-lg w-100">
-                                        📄 PDF डाउनलोड गर्नुहोस्
-                                    </a>
-                                </div>
-                            </div>
                             
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6>📋 विज्ञापन सारांश:</h6>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <p><strong>कम्पनी:</strong> {{ employment_ad.company_name|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>देश:</strong> {{ employment_ad.country|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>पदहरू:</strong> {{ employment_ad.positions.count|default:"0" }}</p>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <p><strong>अन्तिम मिति:</strong> {{ employment_ad.application_deadline|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>शहर:</strong> {{ employment_ad.city|default:"भर्नुहोस्" }}</p>
+                            <!-- Live Preview Table -->
+                            <div class="preview-container mb-4">
+                                <div class="preview-table-wrapper">
+                                    <div class="preview-header">
+                                        <h6 class="mb-0">📋 रोजगार विज्ञापन पूर्वावलोकन</h6>
+                                        <small class="text-muted">यो पूर्वावलोकन तपाईंले भरेका डाटा अनुसार अपडेट हुन्छ</small>
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary me-2" onclick="refreshPreview()">
+                                                🔄 अपडेट गर्नुहोस्
+                                            </button>
+                                            <a href="{% url 'employment_ad_preview' %}" target="_blank" class="btn btn-sm btn-outline-secondary">
+                                                🔍 नयाँ ट्याबमा हेर्नुहोस्
+                                            </a>
                                         </div>
                                     </div>
                                     
-                                    <hr>
-                                    <h6>💰 भुक्तानी व्यवस्था:</h6>
+                                    <!-- Embedded Preview -->
+                                    <div class="iframe-container">
+                                        <iframe id="preview-iframe" 
+                                                src="{% url 'employment_ad_preview' %}?iframe=1" 
+                                                width="100%" 
+                                                height="600" 
+                                                frameborder="0" 
+                                                style="border: 1px solid #dee2e6; border-radius: 8px; background: white; min-height: 400px; max-height: 800px;">
+                                            <p>Your browser does not support iframes. <a href="{% url 'employment_ad_preview' %}" target="_blank">Click here to view the preview</a></p>
+                                        </iframe>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Navigation Buttons -->
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p><strong>मेडिकल खर्च:</strong> {{ employment_ad.medical_cost_local|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>बीमा:</strong> {{ employment_ad.insurance_local|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>हवाई टिकट:</strong> {{ employment_ad.air_ticket|default:"भर्नुहोस्" }}</p>
+                                    <button type="button" class="btn btn-secondary btn-lg w-100" onclick="goToStep(2)">
+                                        ← मुख्य जानकारीमा फर्कनुहोस्
+                                    </button>
                                         </div>
                                         <div class="col-md-6">
-                                            <p><strong>भिसा शुल्क:</strong> {{ employment_ad.visa_fee|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>कल्याणकारी कोष:</strong> {{ employment_ad.welfare_fund|default:"भर्नुहोस्" }}</p>
-                                            <p><strong>श्रमशुल्क:</strong> {{ employment_ad.labor_fee|default:"भर्नुहोस्" }}</p>
-                                        </div>
-                                    </div>
+                                    <a href="{% url 'download_pdf' %}" class="btn btn-success btn-lg w-100">
+                                        📄 PDF डाउनलोड गर्नुहोस्
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -701,6 +704,863 @@
 .nav-pills .nav-link.active {
     background-color: #0d6efd;
     color: white;
+}
+
+/* Preview Container Styling */
+.preview-container {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preview-table-wrapper {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    width: 100%;
+    max-width: 1000px;
+}
+
+        .iframe-container {
+            width: 100%;
+            height: auto;
+            min-height: 400px;
+            max-height: 800px;
+            overflow: visible;
+            border-radius: 8px;
+            margin: 20px auto;
+            max-width: 90%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .iframe-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .iframe-container iframe:hover {
+            box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+        }
+
+        .preview-header {
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+        
+        /* Live Preview Styles */
+        .live-preview-content {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow-x: auto;
+        }
+        
+        .employment-ad-preview {
+            width: 12cm;
+            max-width: 12cm;
+            min-width: 12cm;
+            min-height: 4.9cm;
+            height: auto !important;
+            background: #fff;
+            border: 0.5px solid #000;
+            box-sizing: border-box;
+            overflow: visible !important;
+            font-size: 6pt;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .top-header {
+            background: white;
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 6px;
+            font-weight: 900;
+            font-size: 5pt;
+            height: 0.4cm;
+            max-height: 0.4cm;
+            min-height: 0.4cm;
+            box-sizing: border-box;
+            margin-bottom: 0px;
+            overflow: hidden;
+        }
+        
+        .header-left {
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        
+        .meta-bar {
+            background: white;
+            color: black;
+            border-top: 0.5px solid #000;
+            border-bottom: 0.5px solid #000;
+            padding: 0px 6px;
+            font-size: 4pt;
+            height: 0.6cm;
+            max-height: 0.6cm;
+            min-height: 0.6cm;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+        
+        .company-row {
+            font-size: 5pt;
+            font-weight: 600;
+            height: 0.3cm;
+            max-height: 0.3cm;
+            min-height: 0.3cm;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0px 3px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .meta-items-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 0.1cm;
+            height: 0.3cm;
+            min-height: 0.3cm;
+            max-height: 0.3cm;
+            overflow: hidden;
+        }
+        
+        .meta-item {
+            font-size: 5pt;
+            font-weight: 500;
+            padding: 0px 3px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .meta-item b {
+            font-size: 6pt;
+            font-weight: 700;
+        }
+        
+        .main-table {
+            width: 12cm;
+            max-width: 12cm;
+            min-width: 12cm;
+            border-collapse: collapse !important;
+            border-spacing: 0px !important;
+            font-size: 4pt;
+            font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif;
+            margin-left: auto;
+            margin-right: auto;
+            min-height: 0.9cm;
+            height: auto !important;
+            table-layout: fixed;
+            overflow: visible !important;
+            border-right: none;
+            box-sizing: border-box;
+        }
+        
+        .main-table th,
+        .main-table td {
+            border: 0.25px solid #000;
+            padding: 0px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 4pt;
+            box-sizing: border-box;
+        }
+        
+        .main-table thead tr:first-child th {
+            border-top: 0.5px solid #000;
+        }
+        
+        .main-table thead {
+            height: 0.5cm;
+            max-height: 0.5cm;
+        }
+        
+        .main-table thead tr {
+            height: 0.25cm;
+            max-height: 0.25cm;
+        }
+        
+        .main-table th:first-child,
+        .main-table td:first-child {
+            border-left: none;
+        }
+        
+        .main-table th:last-child,
+        .main-table td:last-child {
+            border-right: none;
+        }
+        
+        .main-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .main-table tbody {
+            max-height: none !important;
+            min-height: auto !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        
+        .main-table td {
+            height: 0.4cm !important;
+            min-height: 0.4cm !important;
+            max-height: 0.4cm !important;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+            font-size: 4pt !important;
+        }
+        
+        .main-table th {
+            background: #f8f8f8;
+            font-weight: 700;
+            font-size: 3pt;
+            overflow: hidden !important;
+            text-overflow: ellipsis !important;
+            white-space: nowrap !important;
+        }
+        
+        .main-table th.col-position {
+            font-weight: 900;
+            font-size: 6pt;
+        }
+        
+        .main-table th.col-salary {
+            font-weight: 900;
+            font-size: 4pt;
+        }
+        
+        .main-table th[colspan="2"] {
+            font-weight: 900;
+            font-size: 4pt;
+        }
+        
+        .main-table th.col-gender {
+            font-weight: 900;
+            font-size: 4pt;
+        }
+        
+        .main-table .text-left {
+            text-align: left;
+        }
+        
+        .main-table .text-center {
+            text-align: center !important;
+            font-size: 3pt !important;
+        }
+        
+        .main-table td.text-left {
+            font-weight: 400 !important;
+            font-size: 7pt !important;
+            padding-left: 2px !important;
+        }
+        
+        .main-table td:nth-child(3),
+        .main-table td:nth-child(4),
+        .main-table td:nth-child(12),
+        .main-table td:nth-child(13) {
+            font-weight: 700;
+            font-size: 6pt;
+        }
+        
+        .main-table td:nth-child(5),
+        .main-table td:nth-child(6) {
+            font-weight: 700;
+            font-size: 4pt;
+        }
+        
+        .col-sn { width: 3%; }
+        .col-position { width: 28%; }
+        .col-gender { width: 1%; }
+        .col-salary { width: 12%; }
+        .col-overtime { width: 5%; }
+        .col-hours { width: 5%; }
+        .col-days { width: 5%; }
+        .col-leave { width: 5%; }
+        .col-education { width: 7%; }
+        .col-food { width: 5%; }
+        .col-housing { width: 4%; }
+        .col-contract { width: 7%; }
+        
+        .main-table td.col-leave {
+            text-align: center !important;
+            font-size: 3pt !important;
+        }
+        
+        .main-table td.col-overtime {
+            text-align: center !important;
+            font-size: 3pt !important;
+        }
+        
+        .main-table th.col-education,
+        .main-table th.col-overtime,
+        .main-table th.col-hours,
+        .main-table th.col-days,
+        .main-table th.col-leave,
+        .main-table th.col-food,
+        .main-table th.col-housing,
+        .main-table th.col-contract {
+            font-weight: normal;
+            font-size: 3pt;
+        }
+        
+        .main-table th.col-contract,
+        .main-table td.col-contract {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            text-align: center;
+            font-size: 2.5pt;
+            padding: 0px 1px;
+            max-width: 100%;
+            white-space: normal;
+            border-right: none;
+        }
+        
+        .data-row td {
+            vertical-align: middle !important;
+            font-size: 4pt !important;
+            padding: 0px !important;
+        }
+        
+        .interview-section {
+            background: white;
+            color: black;
+            border-top: 0.5px solid #000;
+            padding: 0px 6px;
+            font-size: 4pt;
+            height: 0.4cm;
+            max-height: 0.4cm;
+            min-height: 0.4cm;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        
+        .extra-section {
+            border-top: none;
+            font-size: 2.5pt;
+            margin-top: 0px;
+            margin-bottom: 0px;
+            padding-top: 0px;
+            padding-bottom: 0px;
+            min-height: 0.65cm;
+            max-height: none;
+            overflow: visible;
+            box-sizing: border-box;
+            width: 100%;
+        }
+        
+        .extra-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .extra-table th,
+        .extra-table td {
+            border: 0.15px solid #000;
+            padding: 0.25px 0.5px;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 3pt;
+            line-height: 1;
+            word-break: break-word;
+            font-weight: 100 !important;
+        }
+        
+        .extra-table th {
+            background: #f8f8f8;
+            font-weight: 100 !important;
+            height: 0.35cm;
+        }
+        
+        .extra-table td {
+            height: 0.3cm;
+        }
+        
+        .extra-table td:last-child {
+            font-weight: 100 !important;
+            font-size: 2.5pt;
+        }
+        
+        .extra-table th:first-child,
+        .extra-table td:first-child {
+            border-left: none;
+        }
+        
+        .extra-table th:last-child,
+        .extra-table td:last-child {
+            border-right: none;
+        }
+
+.preview-section {
+    margin-bottom: 25px;
+}
+
+.preview-section-title {
+    color: #495057;
+    font-weight: 600;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.preview-position {
+    background: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-left: 4px solid #007bff;
+}
+
+.preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f3f4;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+.preview-label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 120px;
+}
+
+.preview-value {
+    color: #212529;
+    text-align: right;
+    flex: 1;
+}
+
+/* Exact Same Styles as PDF Preview */
+.employment-ad-preview {
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    background: #fff;
+    border: 0.5px solid #000;
+    box-sizing: border-box;
+    overflow: visible !important;
+    font-size: 6pt;
+    font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif;
+    margin: 0 auto;
+}
+
+.top-header {
+    background: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 6px;
+    font-weight: 900;
+    font-size: 5pt;
+    height: 0.4cm;
+    max-height: 0.4cm;
+    min-height: 0.4cm;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    overflow: hidden;
+}
+
+.meta-bar {
+    background: white;
+    color: black;
+    border-top: 0.5px solid #000;
+    border-bottom: 0.5px solid #000;
+    padding: 0px 6px;
+    font-size: 4pt;
+    height: 0.6cm;
+    max-height: 0.6cm;
+    min-height: 0.6cm;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.company-row {
+    font-size: 5pt;
+    font-weight: 600;
+    height: 0.3cm;
+    max-height: 0.3cm;
+    min-height: 0.3cm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.meta-items-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 0.1cm;
+    height: 0.3cm;
+    min-height: 0.3cm;
+    max-height: 0.3cm;
+    overflow: hidden;
+}
+
+.meta-item {
+    font-size: 5pt;
+    font-weight: 500;
+    padding: 0px 3px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.meta-item b {
+    font-size: 6pt;
+    font-weight: 700;
+}
+
+.main-table {
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    border-collapse: collapse !important;
+    border-spacing: 0px !important;
+    font-size: 4pt;
+    font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 0.9cm;
+    height: auto !important;
+    table-layout: fixed;
+    overflow: visible !important;
+    border-right: none;
+    box-sizing: border-box;
+}
+
+.main-table th,
+.main-table td {
+    border: 0.25px solid #000;
+    padding: 0px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 4pt;
+    box-sizing: border-box;
+}
+
+.main-table thead tr:first-child th {
+    border-top: 0.5px solid #000;
+}
+
+.main-table thead {
+    height: 0.5cm;
+    max-height: 0.5cm;
+}
+
+.main-table thead tr {
+    height: 0.25cm;
+    max-height: 0.25cm;
+}
+
+.main-table th:first-child,
+.main-table td:first-child {
+    border-left: none;
+}
+
+.main-table th:last-child,
+.main-table td:last-child {
+    border-right: none;
+}
+
+.main-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.main-table tbody {
+    max-height: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+}
+
+.main-table td {
+    height: 0.4cm !important;
+    min-height: 0.4cm !important;
+    max-height: 0.4cm !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    font-size: 4pt !important;
+}
+
+.main-table th {
+    background: #f8f8f8;
+    font-weight: 700;
+    font-size: 3pt;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+.main-table th.col-position {
+    font-weight: 900;
+    font-size: 6pt;
+}
+
+.main-table th.col-salary {
+    font-weight: 900;
+    font-size: 4pt;
+}
+
+.main-table th[colspan="2"] {
+    font-weight: 900;
+    font-size: 4pt;
+}
+
+.main-table th.col-gender {
+    font-weight: 900;
+    font-size: 4pt;
+}
+
+.main-table .text-left {
+    text-align: left;
+}
+
+.main-table .text-center {
+    text-align: center !important;
+    font-size: 3pt !important;
+}
+
+.main-table td.text-left {
+    font-weight: 400 !important;
+    font-size: 7pt !important;
+    padding-left: 2px !important;
+}
+
+.main-table td:nth-child(3),
+.main-table td:nth-child(4),
+.main-table td:nth-child(12),
+.main-table td:nth-child(13) {
+    font-weight: 700;
+    font-size: 6pt;
+}
+
+.main-table td:nth-child(5),
+.main-table td:nth-child(6) {
+    font-weight: 700;
+    font-size: 4pt;
+}
+
+/* Column widths optimized for 12cm */
+.col-sn { width: 3%; }
+.col-position { width: 28%; }
+.col-gender { width: 1%; }
+.col-salary { width: 12%; }
+.col-overtime { width: 5%; }
+.col-hours { width: 5%; }
+.col-days { width: 5%; }
+.col-leave { width: 5%; }
+.col-education { width: 7%; }
+.col-food { width: 5%; }
+.col-housing { width: 4%; }
+.col-contract { width: 7%; }
+
+.main-table td.col-leave {
+    text-align: center !important;
+    font-size: 3pt !important;
+}
+
+.main-table td.col-overtime {
+    text-align: center !important;
+    font-size: 3pt !important;
+}
+
+.main-table th.col-education,
+.main-table th.col-overtime,
+.main-table th.col-hours,
+.main-table th.col-days,
+.main-table th.col-leave,
+.main-table th.col-food,
+.main-table th.col-housing,
+.main-table th.col-contract {
+    font-weight: normal;
+    font-size: 3pt;
+}
+
+.main-table th.col-contract,
+.main-table td.col-contract {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-align: center;
+    font-size: 2.5pt;
+    padding: 0px 1px;
+    max-width: 100%;
+    white-space: normal;
+    border-right: none;
+}
+
+.data-row td {
+    vertical-align: middle !important;
+    font-size: 4pt !important;
+    padding: 0px !important;
+}
+
+/* Interview Section */
+.interview-section {
+    background: white;
+    color: black;
+    border-top: 0.5px solid #000;
+    padding: 0px 6px;
+    font-size: 4pt;
+    height: 0.4cm;
+    max-height: 0.4cm;
+    min-height: 0.4cm;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* Extra Information Section */
+.extra-section {
+    border-top: none;
+    font-size: 2.5pt;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    min-height: 0.65cm;
+    max-height: none;
+    overflow: visible;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.extra-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.extra-table th,
+.extra-table td {
+    border: 0.15px solid #000;
+    padding: 0.25px 0.5px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 3pt;
+    line-height: 1;
+    word-break: break-word;
+    font-weight: 100 !important;
+}
+
+.extra-table th {
+    background: #f8f8f8;
+    font-weight: 100 !important;
+    height: 0.35cm;
+}
+
+.extra-table td {
+    height: 0.3cm;
+}
+
+.extra-table td:last-child {
+    font-weight: 100 !important;
+    font-size: 2.5pt;
+}
+
+.extra-table th:first-child,
+.extra-table td:first-child {
+    border-left: none;
+}
+
+.extra-table th:last-child,
+.extra-table td:last-child {
+    border-right: none;
+}
+
+.extra-note {
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size: 3.74pt !important;
+    line-height: 1.0 !important;
+    text-align: left !important;
+    text-justify: initial !important;
+    border: none;
+    background: #fff;
+    min-height: 0.4cm;
+    max-height: none;
+    overflow: visible;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-weight: 200;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: inline !important;
+    height: auto;
+}
+
+.extra-note * {
+    text-align: left !important;
+    text-justify: initial !important;
+}
+
+.extra-note b,
+.extra-note strong {
+    font-weight: bold !important;
+    display: block !important;
+    margin-bottom: 4px !important;
+    text-align: left !important;
+}
+
+.extra-note p {
+    display: block !important;
+    margin-bottom: 8px !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    font-weight: normal !important;
+}
+
+.extra-note p b {
+    font-weight: bold !important;
+    display: inline !important;
+    margin-bottom: 0 !important;
 }
 
 /* Company Information Section - Seamless Design */
@@ -6395,6 +7255,8 @@ document.getElementById('mainForm')?.addEventListener('submit', function(e) {
         if (data.success) {
             alert('मुख्य जानकारी सफलतापूर्वक सेभ गरियो!');
             goToStep(3);
+            // Refresh iframe preview after form submission
+            setTimeout(refreshPreview, 500);
         } else {
             alert('त्रुटि: ' + data.error);
         }
@@ -6495,7 +7357,9 @@ document.getElementById('positionForm')?.addEventListener('submit', function(e) 
     .then(data => {
         if (data.success) {
             alert('पदहरू सफलतापूर्वक सेभ गरियो!');
-            goToStep(4);
+            goToStep(3);
+            // Refresh iframe preview after form submission
+            setTimeout(refreshPreview, 500);
         } else {
             alert('त्रुटि: ' + data.error);
         }
@@ -6727,6 +7591,277 @@ function updateCountryNoticePreview() {
         previewDiv.style.display = 'none';
     }
 }
+
+// Live Preview Update Functions
+function updateLivePreview() {
+    console.log('updateLivePreview called');
+    try {
+        updatePreviewHeader();
+        updatePreviewMetaInfo();
+        updatePreviewPositions();
+        updatePreviewInterview();
+        updatePreviewExtraInfo();
+        console.log('All preview updates completed');
+    } catch (error) {
+        console.error('Error in updateLivePreview:', error);
+    }
+}
+
+function updatePreviewHeader() {
+    console.log('updatePreviewHeader called');
+    const countryField = document.getElementById('id_country');
+    const previewCountry = document.getElementById('preview-country');
+    
+    console.log('Country field:', countryField);
+    console.log('Preview country element:', previewCountry);
+    
+    if (countryField && previewCountry) {
+        const country = countryField.value.trim();
+        console.log('Country value:', country);
+        if (country) {
+            previewCountry.textContent = `${country} मा रोजगारी`;
+        } else {
+            previewCountry.textContent = 'देश मा रोजगारी';
+        }
+        console.log('Updated preview country text:', previewCountry.textContent);
+    } else {
+        console.log('Missing elements - countryField:', !!countryField, 'previewCountry:', !!previewCountry);
+    }
+}
+
+function updatePreviewMetaInfo() {
+    // Company name
+    const companyField = document.getElementById('id_company_name');
+    const previewCompany = document.getElementById('preview-company');
+    if (companyField && previewCompany) {
+        const company = companyField.value.trim();
+        previewCompany.textContent = `कम्पनी: ${company || 'कुनै कम्पनी'}`;
+    }
+    
+    // Pre approval date
+    const preApprovalField = document.getElementById('id_pre_approval_date');
+    const previewPreApproval = document.getElementById('preview-pre-approval');
+    if (preApprovalField && previewPreApproval) {
+        const date = preApprovalField.value.trim();
+        previewPreApproval.textContent = date || 'कुनै मिति';
+    }
+    
+    // Chalani number
+    const chalaniField = document.getElementById('id_chalani_no');
+    const previewChalani = document.getElementById('preview-chalani');
+    if (chalaniField && previewChalani) {
+        const chalani = chalaniField.value.trim();
+        previewChalani.textContent = chalani || 'कुनै नम्बर';
+    }
+    
+    // LOT number
+    const lotField = document.getElementById('id_lot_no');
+    const previewLot = document.getElementById('preview-lot');
+    if (lotField && previewLot) {
+        const lot = lotField.value.trim();
+        previewLot.textContent = lot || 'कुनै नम्बर';
+    }
+    
+    // City
+    const cityField = document.getElementById('id_city');
+    const previewCity = document.getElementById('preview-city');
+    if (cityField && previewCity) {
+        const city = cityField.value.trim();
+        previewCity.textContent = city || 'कुनै शहर';
+    }
+}
+
+function updatePreviewPositions() {
+    const tbody = document.getElementById('preview-positions-tbody');
+    if (!tbody) return;
+    
+    // Get all position forms
+    const positionForms = document.querySelectorAll('.position-form');
+    const positions = [];
+    
+    positionForms.forEach((form, index) => {
+        const position = form.querySelector('input[name$="-position"]')?.value?.trim();
+        const maleCount = form.querySelector('input[name$="-male_count"]')?.value?.trim() || '0';
+        const femaleCount = form.querySelector('input[name$="-female_count"]')?.value?.trim() || '0';
+        const salaryAmount = form.querySelector('input[name$="-salary_amount"]')?.value?.trim() || '0';
+        const salaryCurrency = form.querySelector('select[name$="-salary_currency"]')?.value || 'KD';
+        
+        if (position) {
+            positions.push({
+                position: position,
+                maleCount: maleCount,
+                femaleCount: femaleCount,
+                salaryAmount: salaryAmount,
+                salaryCurrency: salaryCurrency
+            });
+        }
+    });
+    
+    // Update currency header
+    const currencyHeader = document.getElementById('preview-currency');
+    if (currencyHeader && positions.length > 0) {
+        currencyHeader.textContent = positions[0].salaryCurrency;
+    }
+    
+    // Clear existing rows
+    tbody.innerHTML = '';
+    
+    if (positions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="13" style="text-align: center; color: #999;">कुनै पदहरू फेला परेनन्</td></tr>';
+        return;
+    }
+    
+    // Add position rows
+    positions.forEach((pos, index) => {
+        const row = document.createElement('tr');
+        row.className = 'data-row';
+        row.innerHTML = `
+            <td>${index + 1}</td>
+            <td class="text-left">${pos.position}</td>
+            <td>${pos.maleCount}</td>
+            <td>${pos.femaleCount}</td>
+            <td>${pos.salaryAmount}</td>
+            <td>ने.रु.</td>
+            <td class="text-center" rowspan="${positions.length}">योग्यता</td>
+            <td class="col-overtime" rowspan="${positions.length}">होइन</td>
+            <td rowspan="${positions.length}">8</td>
+            <td rowspan="${positions.length}">6</td>
+            <td class="col-leave" style="text-align: center !important;" rowspan="${positions.length}">30</td>
+            <td rowspan="${positions.length}">होइन</td>
+            <td rowspan="${positions.length}">होइन</td>
+            <td rowspan="${positions.length}">2<br>वर्ष</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+function updatePreviewInterview() {
+    const interviewSection = document.getElementById('preview-interview');
+    if (!interviewSection) return;
+    
+    const customText = document.getElementById('id_interview_custom_text')?.value?.trim();
+    const nepaliDate = document.getElementById('id_interview_nepali_date')?.value?.trim();
+    const gregorianDate = document.getElementById('id_interview_gregorian_date')?.value?.trim();
+    const location = document.getElementById('id_interview_location')?.value?.trim();
+    
+    if (customText) {
+        interviewSection.textContent = customText;
+    } else if (nepaliDate && gregorianDate && location) {
+        interviewSection.textContent = `अन्तरवार्ता मिति ${nepaliDate} गते (${gregorianDate}) ${location} हुनेछ ।`;
+    } else {
+        interviewSection.textContent = 'अन्तरवार्ता मिति निर्धारण गर्नुहोस्।';
+    }
+}
+
+function updatePreviewExtraInfo() {
+    // Medical costs
+    const medicalLocal = document.getElementById('id_medical_cost_local')?.value?.trim();
+    const medicalForeign = document.getElementById('id_medical_cost_foreign')?.value?.trim();
+    const insuranceLocal = document.getElementById('id_insurance_local')?.value?.trim();
+    const insuranceEmployment = document.getElementById('id_insurance_employment')?.value?.trim();
+    const airTicket = document.getElementById('id_air_ticket')?.value?.trim();
+    const visaFee = document.getElementById('id_visa_fee')?.value?.trim();
+    const visaStamp = document.getElementById('id_visa_stamp_fee')?.value?.trim();
+    const recruitment = document.getElementById('id_recruitment_fee')?.value?.trim();
+    const welfare = document.getElementById('id_welfare_fund')?.value?.trim();
+    const labor = document.getElementById('id_labor_fee')?.value?.trim();
+    const service = document.getElementById('id_service_fee')?.value?.trim();
+    
+    // Update preview elements
+    const elements = {
+        'preview-medical-local': medicalLocal,
+        'preview-medical-foreign': medicalForeign,
+        'preview-insurance-local': insuranceLocal,
+        'preview-insurance-employment': insuranceEmployment,
+        'preview-air-ticket': airTicket,
+        'preview-visa-fee': visaFee,
+        'preview-visa-stamp': visaStamp,
+        'preview-recruitment': recruitment,
+        'preview-welfare': welfare,
+        'preview-labor': labor,
+        'preview-service': service
+    };
+    
+    Object.entries(elements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value || 'कुनै जानकारी';
+        }
+    });
+}
+
+// Add event listeners for live preview updates
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up live preview...');
+    
+    // Add event listeners to all form fields
+    const formFields = document.querySelectorAll('input, select, textarea');
+    console.log('Found form fields:', formFields.length);
+    
+    formFields.forEach(field => {
+        field.addEventListener('input', function() {
+            console.log('Field changed:', field.name, field.value);
+            updateLivePreview();
+        });
+        field.addEventListener('change', function() {
+            console.log('Field changed (change event):', field.name, field.value);
+            updateLivePreview();
+        });
+    });
+    
+    // Initial preview update
+    console.log('Running initial preview update...');
+    updateLivePreview();
+});
+
+// Also add a simple test function
+function testPreviewUpdate() {
+    console.log('Testing preview update...');
+    updateLivePreview();
+}
+
+// Function to refresh the iframe preview
+function refreshPreview() {
+    const iframe = document.getElementById('preview-iframe');
+    if (iframe) {
+        iframe.src = iframe.src; // This will reload the iframe
+        console.log('Preview iframe refreshed');
+        // Auto-resize after refresh
+        setTimeout(autoResizeIframe, 1000);
+    }
+}
+
+// Function to auto-resize iframe based on content
+function autoResizeIframe() {
+    const iframe = document.getElementById('preview-iframe');
+    if (iframe) {
+        try {
+            // Get the content height
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const height = iframeDoc.body.scrollHeight;
+            
+            // Set iframe height to content height (with some padding)
+            const newHeight = Math.min(Math.max(height + 50, 400), 800);
+            iframe.style.height = newHeight + 'px';
+            
+            console.log('Iframe resized to:', newHeight + 'px');
+        } catch (error) {
+            console.log('Could not auto-resize iframe:', error);
+            // Fallback to default height
+            iframe.style.height = '600px';
+        }
+    }
+}
+
+// Auto-resize when iframe loads
+document.addEventListener('DOMContentLoaded', function() {
+    const iframe = document.getElementById('preview-iframe');
+    if (iframe) {
+        iframe.addEventListener('load', function() {
+            setTimeout(autoResizeIframe, 500);
+        });
+    }
+});
 
 
 

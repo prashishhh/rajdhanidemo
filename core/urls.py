@@ -11,6 +11,7 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('employment-ad-editor/', views.employment_ad_editor, name='employment_ad_editor'),
     path('employment-ad-preview/', views.employment_ad_preview, name='employment_ad_preview'),
+    path('employment-ad-preview-embed/', views.employment_ad_preview_embed, name='employment_ad_preview_embed'),
     path('employment-ad-design/', views.employment_ad_design, name='employment_ad_design'),
     path('download-design-pdf/', views.download_design_pdf, name='download_design_pdf'),
     path('download-pdf/', views.download_pdf, name='download_pdf'),

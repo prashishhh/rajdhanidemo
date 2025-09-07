@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.conf import settings
 import os
 import json
@@ -993,6 +994,7 @@ def update_currency_rates_view(request):
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+@xframe_options_exempt
 def employment_ad_preview(request):
     """Preview the employment advertisement with proper country-based notices"""
     
@@ -1023,6 +1025,44 @@ def employment_ad_preview(request):
     # Generate country-specific notice
     country_notice = get_country_specific_notice(employment_ad.country)
     
+    # Check if this is being loaded in an iframe
+    is_iframe = request.GET.get('iframe', False)
+    
+    context = {
+        'ad': employment_ad,
+        'positions': positions,
+        'interview_data': interview_data,
+        'country_notice': country_notice,
+        'is_iframe': is_iframe,
+    }
+    
+    return render(request, 'employment_ad_preview.html', context)
+
+@xframe_options_exempt
+def employment_ad_preview_embed(request):
+    """Preview the employment advertisement for embedding in iframe"""
+    
+    employment_ad = get_object_or_404(EmploymentAd, id=1)
+    
+    # Clean up any duplicate positions before displaying
+    cleanup_duplicate_positions(employment_ad)
+    
+    positions = employment_ad.positions.all().order_by('order')
+    
+    # Get interview data if it exists
+    try:
+        interview = Interview.objects.filter(employment_ad=employment_ad).first()
+        interview_data = {
+            'nepali_date': interview.nepali_date if interview else '',
+            'gregorian_date': interview.gregorian_date if interview else '',
+            'location': interview.location if interview else '',
+        } if interview else {}
+    except:
+        interview_data = {}
+    
+    # Generate country-specific notice
+    country_notice = get_country_specific_notice(employment_ad.country)
+    
     context = {
         'ad': employment_ad,
         'positions': positions,
@@ -1030,7 +1070,7 @@ def employment_ad_preview(request):
         'country_notice': country_notice,
     }
     
-    return render(request, 'employment_ad_preview.html', context)
+    return render(request, 'employment_ad_preview_embed.html', context)
 
 def download_pdf(request):
     """Download employment advertisement as PDF"""

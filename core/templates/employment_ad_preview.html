@@ -20,6 +20,13 @@
   }
   {% endif %}
   
+  /* Iframe mode - reduce padding for iframe embedding */
+  {% if is_iframe %}
+  body {
+    padding-top: 50px !important; /* Minimal padding for iframe */
+  }
+  {% endif %}
+  
 
   
   /* Top Header - Single row with centered title */
