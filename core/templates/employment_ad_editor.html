@@ -7249,7 +7249,33 @@ document.getElementById('mainForm')?.addEventListener('submit', function(e) {
             'X-Requested-With': 'XMLHttpRequest',
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('DEBUG: Response status:', response.status);
+        console.log('DEBUG: Response headers:', response.headers);
+        console.log('DEBUG: Content-Type:', response.headers.get('content-type'));
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        return response.text().then(text => {
+            console.log('DEBUG: Raw response text:', text);
+            
+            // Check if response is HTML (error page)
+            if (text.trim().startsWith('<!DOCTYPE') || text.trim().startsWith('<html')) {
+                console.error('DEBUG: Server returned HTML instead of JSON');
+                throw new Error('Server returned HTML error page instead of JSON');
+            }
+            
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.error('DEBUG: JSON parse error:', e);
+                console.error('DEBUG: Invalid JSON text:', text);
+                throw new Error('Invalid JSON response: ' + text.substring(0, 200));
+            }
+        });
+    })
     .then(data => {
         console.log('DEBUG: Form submission response:', data);
         if (data.success) {
@@ -7353,7 +7379,19 @@ document.getElementById('positionForm')?.addEventListener('submit', function(e) 
             'X-Requested-With': 'XMLHttpRequest',
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('DEBUG: Job positions response status:', response.status);
+        return response.text().then(text => {
+            console.log('DEBUG: Job positions raw response:', text);
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                console.error('DEBUG: Job positions JSON parse error:', e);
+                console.error('DEBUG: Invalid JSON text:', text);
+                throw new Error('Invalid JSON response: ' + text.substring(0, 200));
+            }
+        });
+    })
     .then(data => {
         if (data.success) {
             alert('पदहरू सफलतापूर्वक सेभ गरियो!');
