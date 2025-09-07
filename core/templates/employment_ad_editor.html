@@ -1607,8 +1607,9 @@ function parseFromOCR(raw){
 
   // header fields (bilingual)
   let m;
-  m = text.match(/(?:LT\.?\s*No\.?|एल\.?\s*टी\.?\s*नं\.?)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)/i);
-  if (m) out.lt_no = m[1];
+  // Extract LOT/LT number with multiple patterns
+  m = text.match(/(?:LT\.?\s*No\.?|एल\.?\s*टी\.?\s*नं\.?|LOT\.?\s*No\.?|LOT\.?\s*नं\.?)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)/i);
+  if (m) out.lot_no = m[1];
 
   m = text.match(/(?:चलानी\s*नं\.?|Chalani\s*No\.?)\s*[:\-]?\s*([A-Za-z0-9\-\/]+)/i);
   if (m) out.chalani_no = m[1];
@@ -2295,7 +2296,7 @@ function testYourActualOCR() {
   let resultText = '🔍 Your Actual OCR Test Results:\n\n';
   resultText += `Company: ${result.company_name || 'Not found'}\n`;
   resultText += `Country: ${result.country || 'Not found'}\n`;
-  resultText += `LT No: ${result.lt_no || 'Not found'}\n`;
+  resultText += `LT No: ${result.lot_no || 'Not found'}\n`;
   resultText += `Challan No: ${result.chalani_no || 'Not found'}\n`;
   resultText += `Positions found: ${result.positions?.length || 0}\n\n`;
   
@@ -2344,7 +2345,7 @@ function testJobTableParsing() {
   let resultText = '🧪 Job Table Parsing Test Results:\n\n';
   resultText += `Company: ${result.company_name || 'Not found'}\n`;
   resultText += `Country: ${result.country || 'Not found'}\n`;
-  resultText += `LT No: ${result.lt_no || 'Not found'}\n`;
+  resultText += `LT No: ${result.lot_no || 'Not found'}\n`;
   resultText += `Challan No: ${result.chalani_no || 'Not found'}\n`;
   resultText += `Positions found: ${result.positions?.length || 0}\n\n`;
   
