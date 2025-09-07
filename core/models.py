@@ -151,6 +151,7 @@ class JobPosition(models.Model):
     # Salary Information
     salary_amount = models.CharField(max_length=50, blank=True, help_text="Salary amount")
     salary_currency = models.CharField(max_length=10, blank=True, choices=[
+        ('JPY', 'Japanese Yen (¥)'),
         ('KD', 'Kuwaiti Dinar (KD)'),
         ('USD', 'US Dollar ($)'),
         ('EUR', 'Euro (€)'),
