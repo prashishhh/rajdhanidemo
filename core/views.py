@@ -13,10 +13,15 @@ from decimal import Decimal
 from .models import EmploymentAd, JobPosition, News, NewsArticle, Meeting, UserProfile, Interview, CurrencyRate
 from .forms import EmploymentAdForm, JobPositionForm, JobPositionFormSet, InterviewFormSet, SignUpForm, NewsForm, MeetingForm
 from .services.print_service import PrintService
+from .utils import ensure_unicode_environment, safe_unicode_string
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django.utils.timezone import localtime
+
+# Ensure Unicode environment is set
+ensure_unicode_environment()
 
 # OCR and Image Processing
 try:
