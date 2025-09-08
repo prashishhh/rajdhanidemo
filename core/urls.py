@@ -18,3 +18,9 @@ urlpatterns = [
     path('test-form-submission/', views.test_form_submission, name='test_form_submission'),
     path('simple-position-submission/', views.simple_position_submission, name='simple_position_submission'),
 ]
+
+# Tic-Tac-Toe Path
+from django.urls import path
+urlpatterns += [
+    path('tic-tac-toe/', views.tic_tac_toe_game, name='tic_tac_toe_game'),
+]
