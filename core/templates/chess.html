@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>चेस (Chess) - राजधानी दैनिक</title>
+</head>
+<body style="margin: 0; padding: 0;">
+<!-- Include Chessboard.js CSS -->
+<link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
+<div style="background-color: #f8f9fa; min-height: 100vh; padding: 40px 20px; font-family: 'Mukta', sans-serif;">
+    <div style="max-width: 800px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px; text-align: center;">
+        <h1 style="font-weight: 800; color: #1e4080; font-size: 3rem; margin-bottom: 10px;">चेस (Chess)</h1>
+        <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 30px;">विपक्षीलाई चेकमेट (Checkmate) गर्नुहोस्!</p>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 500px; margin: 0 auto 20px;">
+            <div id="status" style="font-size: 1.4rem; font-weight: bold; color: #1e4080; padding: 10px 20px; background: #e2e8f0; border-radius: 10px; border: 2px solid #cbd5e1; width: 100%;">
+                सेतोको पालो (White to move)
+            </div>
+        </div>
+
+        <div id="myBoard" style="width: 100%; max-width: 500px; margin: 0 auto 30px;"></div>
+
+        <div style="margin-top: 20px;">
+            <a href="{% url 'home' %}#game-section" style="display: inline-block; padding: 12px 30px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; margin-right: 15px; transition: background 0.3s;">पछाडि जानुहोस्</a>
+            <button id="startBtn" style="background: #198754; color: white; border: none; padding: 12px 20px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s; font-weight: bold;">सुरुदेखि (Start)</button>
+            <button id="clearBtn" style="background: #dc3545; color: white; border: none; padding: 12px 20px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; transition: background 0.3s; font-weight: bold; margin-left: 10px;">बोर्ड खाली गर्नुहोस् (Clear)</button>
+        </div>
+    </div>
+</div>
+
+<!-- Include jQuery, Chessboard.js, and Chess.js -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    var board = null
+    var game = new Chess()
+    var $status = $('#status')
+
+    function onDragStart (source, piece, position, orientation) {
+        // do not pick up pieces if the game is over
+        if (game.game_over()) return false
+
+        // only pick up pieces for the side to move
+        if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+            (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+            return false
+        }
+    }
+
+    function onDrop (source, target) {
+        // see if the move is legal
+        var move = game.move({
+            from: source,
+            to: target,
+            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+        })
+
+        // illegal move
+        if (move === null) return 'snapback'
+
+        updateStatus()
+    }
+
+    // update the board position after the piece snap
+    // for castling, en passant, pawn promotion
+    function onSnapEnd () {
+        board.position(game.fen())
+    }
+
+    function updateStatus () {
+        var statusHTML = ''
+
+        var moveColor = 'सेतोको पालो (White)'
+        if (game.turn() === 'b') {
+            moveColor = 'कालोको पालो (Black)'
+        }
+
+        // checkmate?
+        if (game.in_checkmate()) {
+            statusHTML = 'खेल समाप्त, ' + moveColor + ' चेकमेट भयो! (Checkmate)'
+            $status.css({ 'color': '#dc3545', 'background': '#fff5f5', 'border-color': '#dc3545' })
+        }
+        // draw?
+        else if (game.in_draw()) {
+            statusHTML = 'खेल बराबरी भयो! (Draw)'
+            $status.css({ 'color': '#6c757d', 'background': '#e9ecef', 'border-color': '#6c757d' })
+        }
+        // game still on
+        else {
+            statusHTML = moveColor + ' को पालो'
+            $status.css({ 'color': '#1e4080', 'background': '#e2e8f0', 'border-color': '#cbd5e1' })
+
+            // check?
+            if (game.in_check()) {
+                statusHTML += ', ' + moveColor + ' चेकमा छ! (Check)'
+                $status.css({ 'color': '#dc3545', 'background': '#fff5f5', 'border-color': '#dc3545' })
+            }
+        }
+
+        $status.html(statusHTML)
+    }
+
+    var config = {
+        draggable: true,
+        position: 'start',
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd,
+        pieceTheme: 'https://chessboardjs.com/img/chesspieces/wikipedia/{piece}.png'
+    }
+    board = Chessboard('myBoard', config)
+
+    updateStatus()
+
+    $('#startBtn').on('click', function() {
+        game.reset()
+        board.start()
+        updateStatus()
+    })
+
+    $('#clearBtn').on('click', function() {
+        board.clear()
+        game.clear()
+        $status.html('बोर्ड खाली छ (Board Empty)')
+        $status.css({ 'color': '#6c757d', 'background': '#e9ecef', 'border-color': '#6c757d' })
+    })
+});
+</script>
+</body>
+</html>
