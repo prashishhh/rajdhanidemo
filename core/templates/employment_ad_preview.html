@@ -38,10 +38,10 @@
     justify-content: center;
     padding: 0px 6px;
     font-weight: 900;
-    font-size: 5pt;
-    height: 0.4cm;
-    max-height: 0.4cm;
-    min-height: 0.4cm;
+    font-size: 11pt;
+    height: 0.6cm;
+    max-height: 0.6cm;
+    min-height: 0.6cm;
     box-sizing: border-box;
     margin-bottom: 0px;
     overflow: hidden;
@@ -72,7 +72,7 @@
     align-items: center;
     justify-content: center;
     padding: 0px 3px;
-    font-size: 5pt;
+    font-size: 7pt;
     font-weight: 900;
     text-align: center;
     height: 0.3cm;
@@ -136,6 +136,14 @@
     align-items: center;
     justify-content: flex-start;
   }
+  .meta-item-city {
+    padding: 0px 3px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 5pt;
+  }
   
 
   
@@ -143,7 +151,7 @@
     font-weight: 700;
   }
   
-  /* City field with smaller font */
+  /* City field with smaller font 
   .meta-item:last-child {
     font-size: 4pt;
   }
@@ -338,6 +346,43 @@
   .main-table td:nth-child(13) {
     font-weight: 700;
     font-size: 6pt;
+  }
+  
+  /* Food and Housing columns - 12.5px font size */
+  .col-food-house {
+    font-size: 12.5px !important;
+    font-weight: 900 !important;
+  }
+  
+  /* Contract Duration column - 8pt font size */
+  .col-contract-duration {
+    font-size: 8pt !important;
+    font-weight: 700 !important;
+  }
+  
+  /* Extra section table - 3.74pt font size */
+  .extra-table {
+    font-size: 3.74pt !important;
+  }
+  
+  .extra-table th,
+  .extra-table td {
+    font-size: 3.74pt !important;
+    font-weight: 200 !important;
+  }
+  
+  /* Insurance column - wider width */
+  .extra-table .col-insurance {
+    width: 14% !important;
+    min-width: 14% !important;
+    max-width: 14% !important;
+  }
+  
+  /* Service fee column - 8% width */
+  .extra-table .col-service-fee {
+    width: 8% !important;
+    min-width: 8% !important;
+    max-width: 8% !important;
   }
   
   .main-table td:nth-child(5),
@@ -962,7 +1007,7 @@
     
     /* Only increase header elements */
     .header-left {
-      font-size: 8pt !important;
+      font-size: 13pt !important;
       font-weight: 700 !important;
     }
     
@@ -973,7 +1018,7 @@
     
     /* Company row */
     .company-row {
-      font-size: 6pt !important;
+      font-size: 7pt !important;
       font-weight: 600 !important;
     }
     
@@ -1013,7 +1058,7 @@
     
     /* Company row in print */
     .company-row {
-      font-size: 5pt !important;
+      font-size: 7pt !important;
       font-weight: 600 !important;
       height: 0.3cm !important;
       max-height: 0.3cm !important;
@@ -1279,6 +1324,43 @@
       font-size: 6pt !important;
       font-weight: 550 !important;
     }
+    
+    /* Food and Housing columns - 12.5px font size for PDF */
+    .col-food-house {
+      font-size: 12.5px !important;
+      font-weight: 900 !important;
+    }
+    
+    /* Contract Duration column - 8pt font size for PDF */
+    .col-contract-duration {
+      font-size: 8pt !important;
+      font-weight: 700 !important;
+    }
+    
+    /* Extra section table - 3.74pt font size for PDF */
+    .extra-table {
+      font-size: 3.74pt !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-size: 3.74pt !important;
+      font-weight: 200 !important;
+    }
+    
+    /* Insurance column - wider width for PDF */
+    .extra-table .col-insurance {
+      width: 14% !important;
+      min-width: 14% !important;
+      max-width: 14% !important;
+    }
+    
+    /* Service fee column - 8% width for PDF */
+    .extra-table .col-service-fee {
+      width: 8% !important;
+      min-width: 8% !important;
+      max-width: 8% !important;
+    }
   }
   
         .notice-content {
@@ -1444,7 +1526,8 @@
     <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
     <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
     <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-      <div class="meta-item" id="city-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+
+      <div class="meta-item-city">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
     </div>
   </div>
   
@@ -1500,11 +1583,11 @@
         <td rowspan="{{ positions|length }}">{{ positions.0.hours_per_day|safe|linebreaksbr }}</td>
         <td rowspan="{{ positions|length }}">{{ positions.0.days_per_week|safe|linebreaksbr }}</td>
         <td class="col-leave" style="text-align: center !important;" rowspan="{{ positions|length }}">{{ positions.0.yearly_leave }}</td>
-        <td rowspan="{{ positions|length }}">{{ positions.0.food_provided }}</td>
-        <td rowspan="{{ positions|length }}">{{ positions.0.housing_provided }}</td>
-        <td rowspan="{{ positions|length }}">{% if positions.0.contract_duration %}{{ positions.0.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
+        <td class="col-food-house" rowspan="{{ positions|length }}">{{ positions.0.food_provided }}</td>
+        <td class="col-food-house" rowspan="{{ positions|length }}">{{ positions.0.housing_provided }}</td>
+        <td class="col-contract-duration" rowspan="{{ positions|length }}">{% if positions.0.contract_duration %}{{ positions.0.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
         {% endif %}
-      </tr>
+        </tr>
       {% empty %}
       <!-- No positions exist - show empty table -->
       <tr class="data-row">
@@ -1879,7 +1962,7 @@
             // Only increase header elements
             const headerLeft = document.querySelectorAll('.header-left');
             headerLeft.forEach(function(element) {
-              element.style.setProperty('font-size', '8pt', 'important');
+              element.style.setProperty('font-size', '13pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
             });
             
@@ -1892,7 +1975,7 @@
             // Company row
             const companyRow = document.querySelectorAll('.company-row');
             companyRow.forEach(function(element) {
-              element.style.setProperty('font-size', '5pt', 'important');
+              element.style.setProperty('font-size', '7pt', 'important');
               element.style.setProperty('font-weight', '600', 'important');
               element.style.setProperty('height', '0.3cm', 'important');
               element.style.setProperty('max-height', '0.3cm', 'important');
@@ -2004,6 +2087,27 @@
             specificDataCells.forEach(function(element) {
               element.style.setProperty('font-size', '6pt', 'important');
               element.style.setProperty('font-weight', '550', 'important');
+            });
+            
+            // Food and Housing columns - 12.5px font size
+            const foodHousingCells = document.querySelectorAll('.col-food-house');
+            foodHousingCells.forEach(function(element) {
+              element.style.setProperty('font-size', '12.5px', 'important');
+              element.style.setProperty('font-weight', '900', 'important');
+            });
+            
+            // Contract Duration column - 8pt font size
+            const contractDurationCells = document.querySelectorAll('.col-contract-duration');
+            contractDurationCells.forEach(function(element) {
+              element.style.setProperty('font-size', '8pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+            });
+            
+            // Extra section table - 3.74pt font size
+            const extraTableElements = document.querySelectorAll('.extra-table, .extra-table th, .extra-table td');
+            extraTableElements.forEach(function(element) {
+              element.style.setProperty('font-size', '3.74pt', 'important');
+              element.style.setProperty('font-weight', '200', 'important');
             });
             
             // Mark as processed to prevent re-execution
@@ -2208,14 +2312,14 @@
           <th>स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने </th>
           <th>विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने</th>
           <th>स्वदेशमा गरिने म्यादी जीवन बिमा खर्च कसले व्यहोर्ने</th>
-          <th>रोजगारमा बिमा शुल्क हुने/नहुने र प्रिमियम कसले व्यहोर्ने</th>
+          <th class="col-insurance">रोजगारमा बिमा शुल्क हुने/नहुने<br>र प्रिमियम कसले व्यहोर्ने</th>
           <th>कामदारलाई हवाई टिकट कसले दिने र कति लाग्ने</th>
           <th>सामाजिक सुरक्षा कोष </th>
           <th>भिसा शुल्क कसले व्यहोर्ने</th>
           <th>भिसा स्ट्याम्प शुल्क कसले व्यहोर्ने</th>
           <th>अभिकृतिकरण शुल्क कति लाग्ने र कसले व्यहोर्ने</th>
           <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
-          <th>सेवा शुल्क</th>
+          <th class="col-service-fee">सेवा शुल्क</th>
         </tr>
       </thead>
       <tbody>
@@ -2230,7 +2334,7 @@
           <td>{% if ad.recruitment_fee %}{{ ad.recruitment_fee }}{% else %}कुनै जानकारी{% endif %}</td>
           <td>{% if ad.welfare_fund %}{{ ad.welfare_fund }}{% else %}कुनै जानकारी{% endif %}</td>
           <td>{% if ad.labor_fee %}{{ ad.labor_fee }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.service_fee %}{{ ad.service_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td class="col-service-fee">{% if ad.service_fee %}{{ ad.service_fee }}{% else %}कुनै जानकारी{% endif %}</td>
         </tr>
       </tbody>
     </table>

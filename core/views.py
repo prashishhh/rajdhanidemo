@@ -1386,3 +1386,39 @@ def simple_position_submission(request):
             return JsonResponse({"success": False, "message": f"Error: {str(e)}"})
     
     return JsonResponse({"success": False, "message": "GET request not allowed"})
+
+
+def ad_preview_svg(request):
+    """Preview SVG template with sample data"""
+    from django.template.loader import render_to_string
+    
+    t = {
+        "country": "जापान",
+        "company": "Ideal International Recruitment",
+        "pre_approval_date": "2025/08/17",
+        "chalani_no": "60243265",
+        "lot_no": "327122",
+        "city": "Tokyo",
+
+        "position": "Welder",
+        "male": "5",
+        "female": "2",
+        "salary_kd": "120",
+        "salary_npr": "39,600",
+        "overtime": "Yes",
+        "hours_per_day": "8",
+        "days_per_week": "6",
+        "yearly_leave": "14",
+        "min_qualification": "SLC पास",
+        "eating": "दिन्छ",
+        "sleeping": "दिन्छ",
+        "tenure": "2 वर्ष",
+
+        "notice_text": "यहाँ नोटिसको लिखत आउनेछ।"
+    }
+
+    # Optional: split notice into lines for tspans
+    notice_lines = [line for line in t.get("notice_text","").splitlines() if line.strip()]
+
+    svg = render_to_string("ads/ad_template.svg", {"t": t, "notice_lines": notice_lines})
+    return HttpResponse(svg, content_type="image/svg+xml")

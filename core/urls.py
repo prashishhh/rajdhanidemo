@@ -18,4 +18,5 @@ urlpatterns = [
     path('update-currency-rates/', views.update_currency_rates_view, name='update_currency_rates'),
     path('test-form-submission/', views.test_form_submission, name='test_form_submission'),
     path('simple-position-submission/', views.simple_position_submission, name='simple_position_submission'),
+    path('ads/preview.svg', views.ad_preview_svg, name='ad_preview_svg'),
 ]

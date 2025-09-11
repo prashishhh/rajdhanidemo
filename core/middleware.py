@@ -34,3 +34,4 @@ class UnicodeMiddleware(MiddlewareMixin):
             sys.stderr.reconfigure(encoding='utf-8')
         
         return None
+

@@ -1,0 +1,123 @@
+{% load static %}
+<!-- Strict 12cm x 5cm canvas -->
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="12cm" height="5cm"
+     viewBox="0 0 1200 500">
+
+  <!-- ============ Fonts & base styles ============ -->
+  <style>
+    /* Embed your exact fonts */
+    @font-face {
+      font-family: 'Ganesh';
+      src: url('{% static "fonts/GANESH.TTF" %}') format('truetype');
+      font-weight: normal; font-style: normal;
+    }
+    @font-face {
+      font-family: 'OlympiaBold';
+      src: url('{% static "fonts/olympia-bold.TTF" %}') format('truetype');
+      font-weight: bold; font-style: normal;
+    }
+
+    /* Helpers */
+    .ganesh   { font-family: 'Ganesh', sans-serif; }
+    .olympiaB { font-family: 'OlympiaBold', sans-serif; font-weight: bold; }
+    .center   { text-anchor: middle; }
+    .left     { text-anchor: start; }
+    .right    { text-anchor: end; }
+    .black    { fill: #000; }
+    .thin     { stroke: #000; stroke-width: 1; }
+    .hair     { stroke: #000; stroke-width: 0.6; }
+
+    /* Sizes you gave me */
+    .hdr   { font-size: 12pt; }  /* Ganesh 12pt (Top Header) */
+    .metaC { font-size: 7pt;  }  /* Olympia Bold 7pt (Company) */
+    .meta  { font-size: 5pt;  }  /* Olympia Bold 5pt (others)  */
+
+    /* Table text sizes (tweak as you like) */
+    .th    { font-size: 6pt; font-weight: bold; }
+    .td    { font-size: 6pt; }
+
+    /* Notice text (small) */
+    .notice { font-size: 5pt; }
+  </style>
+
+  <!-- (Optional) outer border to see the box while aligning -->
+  <!-- <rect x="0.5" y="0.5" width="1199" height="499" fill="none" stroke="#000" stroke-width="1"/> -->
+
+  <!-- ============ Header (Top) ============ -->
+  <!-- Bar height ~ 40 units. We keep text centered horizontally. -->
+  <rect x="0" y="0" width="1200" height="40" fill="#fff"/>
+  <text x="600" y="26" class="ganesh hdr center black">
+    {% if t.country and t.country.strip %}{{ t.country }}{% else %}देश{% endif %} मा रोजगारी
+  </text>
+
+  <!-- ============ Meta Section ============ -->
+  <!-- First line: "१. company" (Olympia Bold 7pt) -->
+  <text x="20" y="65" class="olympiaB metaC left black">
+    १. {{ t.company|default:"" }}
+  </text>
+
+  <!-- Second line: Pre-approval / Chalani / LOT / City (Olympia Bold 5pt) -->
+  <text x="20"  y="85"  class="olympiaB meta left black">प्रि अप्रूवल मिति: {{ t.pre_approval_date|default:"" }}</text>
+  <text x="380" y="85"  class="olympiaB meta left black">चलानी नं.: {{ t.chalani_no|default:"" }}</text>
+  <text x="650" y="85"  class="olympiaB meta left black">लट नं.: {{ t.lot_no|default:"" }}</text>
+  <text x="900" y="85"  class="olympiaB meta left black">सहर: {{ t.city|default:"" }}</text>
+
+  <!-- ============ Table Grid (header row) ============ -->
+  <!-- Table area top at 110. Header band 36 high. Adjust x positions to match your PDF. -->
+  <rect x="20" y="110" width="1160" height="36" fill="#f0f0f0" class="thin"/>
+
+  <!-- Column x positions (approx). Tune these to match exactly: -->
+  <!-- SN:  30  | Position: 130 | M: 560 | F: 620 | KD: 700 | NPR: 800 | OT: 880 | Hours: 960 | Days: 1030 | Leave: 1100 | Edu: 1160? (we’ll wrap) -->
+  <!-- Because we have many columns in 12cm, tighter spacing is needed. Adjust as needed. -->
+
+  <text x="40"   y="133" class="olympiaB th left black">सि.नं.</text>
+  <text x="120"  y="133" class="olympiaB th left black">कामदारको पद</text>
+  <text x="520"  y="133" class="olympiaB th left black">पुरुष</text>
+  <text x="570"  y="133" class="olympiaB th left black">महिला</text>
+  <text x="620"  y="133" class="olympiaB th left black">KD</text>
+  <text x="680"  y="133" class="olympiaB th left black">ने.रु.</text>
+  <text x="750"  y="133" class="olympiaB th left black">ओभर टाइम</text>
+  <text x="830"  y="133" class="olympiaB th left black">घण्टा/दिन</text>
+  <text x="910"  y="133" class="olympiaB th left black">दिन/हप्ता</text>
+  <text x="980"  y="133" class="olympiaB th left black">वार्षिक विदा</text>
+  <text x="1060" y="133" class="olympiaB th left black">शैक्षिक योग्यता</text>
+  <text x="1135" y="133" class="olympiaB th left black right">खाना/बस्ने/करार</text>
+
+  <!-- Header underline -->
+  <line x1="20" y1="146" x2="1180" y2="146" class="hair"/>
+
+  <!-- ============ One Data Row (matches your old HTML) ============ -->
+  <!-- Row top baseline at 168; row height ~ 20. Adjust y’s to match PDF. -->
+  <text x="40"   y="168" class="td left black">१</text>
+  <text x="120"  y="168" class="td left black">{{ t.position|default:"" }}</text>
+  <text x="520"  y="168" class="td left black">{{ t.male|default:"" }}</text>
+  <text x="570"  y="168" class="td left black">{{ t.female|default:"" }}</text>
+  <text x="620"  y="168" class="td left black">{{ t.salary_kd|default:"" }}</text>
+  <text x="680"  y="168" class="td left black">{{ t.salary_npr|default:"" }}</text>
+  <text x="750"  y="168" class="td left black">{{ t.overtime|default:"" }}</text>
+  <text x="830"  y="168" class="td left black">{{ t.hours_per_day|default:"" }}</text>
+  <text x="910"  y="168" class="td left black">{{ t.days_per_week|default:"" }}</text>
+  <text x="980"  y="168" class="td left black">{{ t.yearly_leave|default:"" }}</text>
+  <text x="1060" y="168" class="td left black">{{ t.min_qualification|default:"" }}</text>
+
+  <!-- Rightmost “triple” (eating/sleeping/tenure) stacked to save space -->
+  <text x="1180" y="160" class="td right black">{{ t.eating|default:"" }}</text>
+  <text x="1180" y="172" class="td right black">{{ t.sleeping|default:"" }}</text>
+  <text x="1180" y="184" class="td right black">{{ t.tenure|default:"" }}</text>
+
+  <!-- Optional horizontal rule under the row -->
+  <line x1="20" y1="190" x2="1180" y2="190" class="hair"/>
+
+  <!-- ============ Notice (wrap small text) ============ -->
+  <!-- For multi-line, it’s best to split lines in the view (see Step 4) and render each as a <tspan>. -->
+  <text x="20" y="215" class="notice left black">
+    {% if notice_lines %}
+      {% for line in notice_lines %}
+        <tspan x="20" dy="{{ forloop.first|yesno:'0,1.2em' }}">{{ line }}</tspan>
+      {% endfor %}
+    {% else %}
+      {{ t.notice_text|default:"" }}
+    {% endif %}
+  </text>
+</svg>

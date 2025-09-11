@@ -39,3 +39,4 @@ def fix_unicode_environment():
 
 if __name__ == "__main__":
     fix_unicode_environment()
+

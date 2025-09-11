@@ -41,3 +41,4 @@ def safe_unicode_string(text):
         except UnicodeDecodeError:
             return text.decode('utf-8', errors='replace')
     return str(text)
+

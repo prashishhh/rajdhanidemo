@@ -128,3 +128,4 @@ After implementing the fix, test with:
 3. OCR processing of Nepali documents
 
 The error should be resolved and your app should handle Nepali characters properly.
+
