@@ -291,17 +291,33 @@ class PrintService:
                 if pdf_content:
                     return pdf_content
             
-            # Fallback to WeasyPrint
+            # Try WeasyPrint (good HTML rendering)
             if self.weasyprint_available:
                 pdf_content = self.generate_pdf_weasyprint(html_content)
                 if pdf_content:
                     return pdf_content
             
-            # Fallback to ReportLab
+            # Skip ReportLab fallback - it creates a different layout
+            # Instead, try to force WeasyPrint installation
+            logger.warning("Playwright and WeasyPrint not available. PDF generation may fail.")
+            logger.warning("Please install WeasyPrint: pip install weasyprint")
+            
+            # Only use ReportLab as absolute last resort
             if self.reportlab_available:
+                logger.warning("Using ReportLab fallback - this will create a simplified layout")
                 pdf_content = self.generate_pdf_reportlab(employment_ad)
                 if pdf_content:
                     return pdf_content
+            
+            # Final fallback to cPanel PDF service
+            try:
+                from .cpanel_pdf_service import cpanel_pdf_service
+                pdf_content = cpanel_pdf_service.generate_employment_ad_pdf(employment_ad, template_name)
+                if pdf_content:
+                    logger.info("Used cPanel PDF service fallback")
+                    return pdf_content
+            except Exception as e:
+                logger.warning(f"cPanel PDF service fallback failed: {e}")
             
             logger.error("No PDF generation method available")
             return None

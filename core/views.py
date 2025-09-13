@@ -1103,9 +1103,9 @@ def download_pdf(request):
         'country_notice': country_notice,
     }
     
-    # Generate PDF using the print service
+    # Generate PDF using the print service with the exact same template as preview
     print_service = PrintService()
-    pdf_content = print_service.generate_employment_ad_pdf(employment_ad)
+    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, template_name="employment_ad_preview.html")
     
     if pdf_content:
         response = HttpResponse(pdf_content, content_type='application/pdf')
@@ -1422,3 +1422,38 @@ def ad_preview_svg(request):
 
     svg = render_to_string("ads/ad_template.svg", {"t": t, "notice_lines": notice_lines})
     return HttpResponse(svg, content_type="image/svg+xml")
+
+def test_pdf_generation(request):
+    """Test PDF generation and show which library is being used"""
+    from core.services.print_service import PrintService
+    from core.models import EmploymentAd
+    
+    service = PrintService()
+    ad = EmploymentAd.objects.first()
+    
+    # Check which libraries are available
+    status = {
+        'playwright_available': service.playwright_available,
+        'weasyprint_available': service.weasyprint_available,
+        'reportlab_available': service.reportlab_available,
+    }
+    
+    # Try to generate PDF
+    pdf_content = None
+    error_message = None
+    
+    if ad:
+        try:
+            pdf_content = service.generate_employment_ad_pdf(ad)
+        except Exception as e:
+            error_message = str(e)
+    
+    context = {
+        'status': status,
+        'pdf_generated': pdf_content is not None,
+        'pdf_size': len(pdf_content) if pdf_content else 0,
+        'error_message': error_message,
+        'ad': ad,
+    }
+    
+    return render(request, 'test_pdf_generation.html', context)

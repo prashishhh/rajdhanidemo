@@ -4,6 +4,48 @@
 <meta charset="utf-8">
 <title>Employment Advertisement - Dynamic Design</title>
 <style>
+  /* Font Face Declaration for Kalimati - Unicode Devanagari Support */
+  @font-face {
+    font-family: 'Kalimati';
+    src: url('{{ STATIC_URL }}fonts/Kalimati.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    unicode-range: U+0900-097F, U+0000-00FF;
+  }
+  
+  /* Fallback for Kalimati */
+  @font-face {
+    font-family: 'Kalimati-Fallback';
+    src: url('{{ STATIC_URL }}fonts/Kalimati.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0900-097F, U+0000-00FF;
+  }
+  
+  /* Lato font for Company text - Local files */
+  @font-face {
+    font-family: 'Lato';
+    src: url('{{ STATIC_URL }}templates/font/lato.regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Lato';
+    src: url('{{ STATIC_URL }}templates/font/Lato-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+  
+  /* Roboto font for Meta items */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+  
   body { 
     margin: 20px auto; 
     font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif; 
@@ -49,7 +91,22 @@
   
   .header-left {
     text-align: center;
-    letter-spacing: 0.3px;
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    font-size: 15pt !important;
+    line-height: 11pt !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  
+  /* Force Kalimati font in all contexts */
+  .header-left * {
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
   }
   
 
@@ -61,35 +118,106 @@
     border-bottom: none;
     font-size: 5pt;
     box-sizing: border-box;
-    height: 0.6cm;
-    max-height: 0.6cm;
-    min-height: 0.6cm;
+    height: 0.85cm;
+    max-height: 0.85cm;
+    min-height: 0.85cm;
     overflow: hidden;
+    padding-top: 0.1cm;
+  }
+  
+  .company-container {
+    display: flex;
+    align-items: center;
+    height: 0.3cm;
   }
   
   .company-row {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0px 3px;
-    font-size: 7pt;
-    font-weight: 900;
-    text-align: center;
-    height: 0.3cm;
-    min-height: 0.3cm;
-    max-height: 0.3cm;
-    border-bottom: none;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    flex: 1; /* Take up available space */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0px 3px !important;
+    font-family: "Lato", Arial, sans-serif !important;
+    font-size: 9.8pt !important;
+    line-height: 12.512pt !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-align: center !important;
+    height: 0.3cm !important;
+    min-height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    border-bottom: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important; /* Take up available space */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
   
   .company-row.long-name {
-    justify-content: flex-start;
-    text-align: left;
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  
+  /* Company label - Lato Regular */
+  .company-label {
+    font-family: "Lato", Arial, sans-serif !important;
+    font-size: 9.8pt !important;
+    line-height: 12.512pt !important;
+    font-weight: 400 !important; /* Regular */
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  /* Lato Black text class */
+  .lato-black-text {
+    font-family: "Lato", sans-serif !important;
+    font-weight: 900 !important;         /* Black */
+    font-size: 9.8pt !important;        /* ≈ 13.1px */
+    line-height: 12.512pt !important;    /* ≈ 16.7px */
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+  
+  /* More specific selector to ensure styles are applied */
+  .meta-bar .company-container .company-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0px 3px !important;
+    font-family: "Lato", Arial, sans-serif !important;
+    font-size: 9.8pt !important;
+    line-height: 12.512pt !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-align: center !important;
+    height: 0.3cm !important;
+    min-height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    border-bottom: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
   
   .company-right-section {
@@ -114,35 +242,68 @@
   
   .meta-items-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
     gap: 0.1cm;
     height: 0.3cm;
     min-height: 0.3cm;
     max-height: 0.3cm;
     width: 100%;
     overflow: hidden;
+    margin-top: 0.1cm;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 5.5pt !important;
+    font-weight: 700 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
   
   /* Adjust grid when city is long - keep uniform gaps */
   .meta-items-row.long-city {
-    grid-template-columns: 1fr 1fr 1fr 1.3fr;
+    grid-template-columns: 1.2fr 1fr 1fr 1.3fr;
     gap: 0.1cm;
   }
   
   .meta-item {
-    padding: 0px 3px;
+    padding: 0px 1px;
     text-align: left;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 5.5pt !important;
+    font-weight: 700 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
   .meta-item-city {
-    padding: 0px 3px;
+    padding: 0px 1px;
     text-align: left;
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    font-size: 5pt;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 5.5pt !important;
+    font-weight: 700 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
   }
   
 
@@ -360,29 +521,93 @@
     font-weight: 700 !important;
   }
   
-  /* Extra section table - 3.74pt font size */
+  /* Extra section table - 3.54pt font size */
   .extra-table {
-    font-size: 3.74pt !important;
+    font-size: 3.54pt !important;
   }
   
   .extra-table th,
   .extra-table td {
-    font-size: 3.74pt !important;
+    font-size: 3.54pt !important;
     font-weight: 200 !important;
   }
   
-  /* Insurance column - wider width */
-  .extra-table .col-insurance {
-    width: 14% !important;
-    min-width: 14% !important;
-    max-width: 14% !important;
+  /* Column widths for extra-table */
+  .extra-table th:nth-child(1),
+  .extra-table td:nth-child(1) {
+    width: 1.30cm !important;
+    min-width: 1.30cm !important;
+    max-width: 1.30cm !important;
   }
   
-  /* Service fee column - 8% width */
-  .extra-table .col-service-fee {
-    width: 8% !important;
-    min-width: 8% !important;
-    max-width: 8% !important;
+  .extra-table th:nth-child(2),
+  .extra-table td:nth-child(2) {
+    width: 1.10cm !important;
+    min-width: 1.10cm !important;
+    max-width: 1.10cm !important;
+  }
+  
+  .extra-table th:nth-child(3),
+  .extra-table td:nth-child(3) {
+    width: 1.40cm !important;
+    min-width: 1.40cm !important;
+    max-width: 1.40cm !important;
+  }
+  
+  .extra-table th:nth-child(4),
+  .extra-table td:nth-child(4) {
+    width: 1.20cm !important;
+    min-width: 1.20cm !important;
+    max-width: 1.20cm !important;
+  }
+  
+  .extra-table th:nth-child(5),
+  .extra-table td:nth-child(5) {
+    width: 1.20cm !important;
+    min-width: 1.20cm !important;
+    max-width: 1.20cm !important;
+  }
+  
+  .extra-table th:nth-child(6),
+  .extra-table td:nth-child(6) {
+    width: 0.75cm !important;
+    min-width: 0.75cm !important;
+    max-width: 0.75cm !important;
+  }
+  
+  .extra-table th:nth-child(7),
+  .extra-table td:nth-child(7) {
+    width: 0.75cm !important;
+    min-width: 0.75cm !important;
+    max-width: 0.75cm !important;
+  }
+  
+  .extra-table th:nth-child(8),
+  .extra-table td:nth-child(8) {
+    width: 0.90cm !important;
+    min-width: 0.90cm !important;
+    max-width: 0.90cm !important;
+  }
+  
+  .extra-table th:nth-child(9),
+  .extra-table td:nth-child(9) {
+    width: 1.10cm !important;
+    min-width: 1.10cm !important;
+    max-width: 1.10cm !important;
+  }
+  
+  .extra-table th:nth-child(10),
+  .extra-table td:nth-child(10) {
+    width: 1.00cm !important;
+    min-width: 1.00cm !important;
+    max-width: 1.00cm !important;
+  }
+  
+  .extra-table th:nth-child(11),
+  .extra-table td:nth-child(11) {
+    width: 0.90cm !important;
+    min-width: 0.90cm !important;
+    max-width: 0.90cm !important;
   }
   
   .main-table td:nth-child(5),
@@ -548,24 +773,24 @@
   }
   
   .extra-note {
-    padding: 0px !important;
+    padding: 2px 4px !important;
     margin: 0px !important;
-    font-size: 3.74pt !important;
-    line-height: 1.0 !important;
-    text-align: justify !important;
-    text-justify: inter-word !important;
+    font-size: 3.54pt !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    text-justify: initial !important;
     border: none;
     background: #fff;
     min-height: 0.4cm; /* Minimum height for short content (Middle East notices) */
     max-height: none; /* Allow unlimited height for longer content (Japan notice) */
     overflow: visible; /* Changed from auto to visible */
     word-wrap: break-word;
+    display: block !important;
+    width: 100% !important;
     overflow-wrap: break-word;
     font-weight: 200;
-    width: 100% !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
-    display: inline !important;
     /* Dynamic height based on content */
     height: auto;
   }
@@ -725,10 +950,11 @@
   /* Preserve paragraph formatting */
   .extra-note p {
     display: block !important;
-    margin-bottom: 8px !important;
+    margin: 0px 0px 6px 0px !important;
     text-align: left !important;
     line-height: 1.4 !important;
     font-weight: normal !important;
+    width: 100% !important;
   }
   
   /* Ensure bold elements in paragraphs are properly formatted */
@@ -893,6 +1119,40 @@
   
   /* Print-specific styles to ensure light font weights */
   @media print {
+    /* Ensure GANESH font loads for print/PDF - Safari compatible */
+    @font-face {
+      font-family: 'GANESH';
+      src: url('{{ STATIC_URL }}fonts/GANESH.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'GANESH-Safari';
+      src: url('{{ STATIC_URL }}fonts/GANESH.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    /* Lato font for print - Local files */
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{ STATIC_URL }}templates/font/lato.regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Lato';
+      src: url('{{ STATIC_URL }}templates/font/Lato-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    
     * {
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -918,7 +1178,7 @@
     .extra-note {
       font-weight: 200 !important;
       font-family: Arial, sans-serif !important;
-      padding: 0px !important;
+      padding: 2px 4px !important;
       text-align: left !important;
       text-justify: initial !important;
       display: inline !important;
@@ -935,22 +1195,20 @@
       font-family: Arial, sans-serif !important;
       text-align: left !important;
       text-justify: initial !important;
-      display: inline !important;
-      width: auto !important;
+      display: block !important;
+      width: 100% !important;
+      line-height: 1.4 !important;
     }
     
     .extra-note *,
     .notice-content * {
       text-align: left !important;
       text-justify: initial !important;
-      display: inline !important;
-      width: auto !important;
+      display: block !important;
+      width: 100% !important;
       padding: 0px !important;
-      margin: 0px !important;
-      padding-left: 0px !important;
-      padding-right: 0px !important;
-      padding-top: 0px !important;
-      padding-bottom: 0px !important;
+      margin: 0px 0px 4px 0px !important;
+      line-height: 1.4 !important;
       margin-left: 0px !important;
       margin-right: 0px !important;
       margin-top: 0px !important;
@@ -963,6 +1221,9 @@
     .notice-content {
       font-weight: 200 !important;
       font-family: Arial, sans-serif !important;
+      display: block !important;
+      width: 100% !important;
+      line-height: 1.4 !important;
     }
     
     /* Left align the note section in print */
@@ -1005,10 +1266,25 @@
       font-weight: 100 !important;
     }
     
-    /* Only increase header elements */
+    /* Header-left with InDesign specifications */
     .header-left {
-      font-size: 13pt !important;
-      font-weight: 700 !important;
+      text-align: center !important;
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+      font-size: 15pt !important;
+      line-height: 11pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    
+    /* Force Kalimati font in print/PDF */
+    .header-left * {
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
     }
     
     .header-right {
@@ -1016,21 +1292,125 @@
       font-weight: 600 !important;
     }
     
+    /* Company container */
+    .company-container {
+      display: flex !important;
+      align-items: center !important;
+      height: 0.3cm !important;
+    }
+    
     /* Company row */
     .company-row {
-      font-size: 7pt !important;
-      font-weight: 600 !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* More specific selector for print */
+    .meta-bar .company-container .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Company label in print - Lato Regular */
+    .company-label {
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Lato Black text in print */
+    .lato-black-text {
+      font-family: "Lato", sans-serif !important;
+      font-weight: 900 !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     /* Meta items row */
     .meta-items-row {
-      font-size: 5pt !important;
-      font-weight: 500 !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 5.5pt !important;
+      font-weight: 700 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      margin-top: 0.1cm !important;
+      gap: 0.1cm !important;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     .meta-item {
-      font-size: 5pt !important;
-      font-weight: 500 !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 5.5pt !important;
+      font-weight: 700 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      padding: 0px 1px !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     .meta-item:last-child {
@@ -1048,54 +1428,143 @@
     .meta-bar {
       font-size: 5pt !important;
       font-weight: 500 !important;
-      height: 0.6cm !important;
-      max-height: 0.6cm !important;
-      min-height: 0.6cm !important;
+      height: 0.85cm !important;
+      max-height: 0.85cm !important;
+      min-height: 0.85cm !important;
       overflow: hidden !important;
       display: flex !important;
       flex-direction: column !important;
+      padding-top: 0.1cm !important;
+    }
+    
+    /* Company container in print */
+    .company-container {
+      display: flex !important;
+      align-items: center !important;
+      height: 0.3cm !important;
     }
     
     /* Company row in print */
     .company-row {
-      font-size: 7pt !important;
-      font-weight: 600 !important;
-      height: 0.3cm !important;
-      max-height: 0.3cm !important;
-      min-height: 0.3cm !important;
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
       padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* More specific selector for second print media query */
+    .meta-bar .company-container .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
       white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Company label in print - Lato Regular */
+    .company-label {
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      font-weight: 400 !important;
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Lato Black text in print */
+    .lato-black-text {
+      font-family: "Lato", sans-serif !important;
+      font-weight: 900 !important;
+      font-size: 9.8pt !important;
+      line-height: 12.512pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     /* Meta items row in print */
     .meta-items-row {
-      font-size: 5pt !important;
-      font-weight: 500 !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 5.5pt !important;
+      font-weight: 700 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
       height: 0.3cm !important;
       max-height: 0.3cm !important;
       min-height: 0.3cm !important;
       display: grid !important;
-      grid-template-columns: 1fr 1fr 1fr 1fr !important;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr !important;
       gap: 0.1cm !important;
       overflow: hidden !important;
+      margin-top: 0.1cm !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     /* Adjust grid when city is long in print - keep uniform gaps */
     .meta-items-row.long-city {
-      grid-template-columns: 1fr 1fr 1fr 1.3fr !important;
+      grid-template-columns: 1.2fr 1fr 1fr 1.3fr !important;
       gap: 0.1cm !important;
     }
     
     /* Meta items in print */
     .meta-item {
-      font-size: 5pt !important;
-      font-weight: 500 !important;
-      padding: 0px 3px !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 5.5pt !important;
+      font-weight: 700 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      padding: 0px 1px !important;
       text-align: left !important;
       display: flex !important;
       align-items: center !important;
@@ -1103,6 +1572,9 @@
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
     }
     
     /* City field with smaller font in print */
@@ -1337,34 +1809,98 @@
       font-weight: 700 !important;
     }
     
-    /* Extra section table - 3.74pt font size for PDF */
+    /* Extra section table - 3.54pt font size for PDF */
     .extra-table {
-      font-size: 3.74pt !important;
+      font-size: 3.54pt !important;
     }
     
     .extra-table th,
     .extra-table td {
-      font-size: 3.74pt !important;
+      font-size: 3.54pt !important;
       font-weight: 200 !important;
     }
     
-    /* Insurance column - wider width for PDF */
-    .extra-table .col-insurance {
-      width: 14% !important;
-      min-width: 14% !important;
-      max-width: 14% !important;
+    /* Column widths for extra-table in print */
+    .extra-table th:nth-child(1),
+    .extra-table td:nth-child(1) {
+      width: 1.30cm !important;
+      min-width: 1.30cm !important;
+      max-width: 1.30cm !important;
     }
     
-    /* Service fee column - 8% width for PDF */
-    .extra-table .col-service-fee {
-      width: 8% !important;
-      min-width: 8% !important;
-      max-width: 8% !important;
+    .extra-table th:nth-child(2),
+    .extra-table td:nth-child(2) {
+      width: 1.10cm !important;
+      min-width: 1.10cm !important;
+      max-width: 1.10cm !important;
+    }
+    
+    .extra-table th:nth-child(3),
+    .extra-table td:nth-child(3) {
+      width: 1.40cm !important;
+      min-width: 1.40cm !important;
+      max-width: 1.40cm !important;
+    }
+    
+    .extra-table th:nth-child(4),
+    .extra-table td:nth-child(4) {
+      width: 1.20cm !important;
+      min-width: 1.20cm !important;
+      max-width: 1.20cm !important;
+    }
+    
+    .extra-table th:nth-child(5),
+    .extra-table td:nth-child(5) {
+      width: 1.20cm !important;
+      min-width: 1.20cm !important;
+      max-width: 1.20cm !important;
+    }
+    
+    .extra-table th:nth-child(6),
+    .extra-table td:nth-child(6) {
+      width: 0.75cm !important;
+      min-width: 0.75cm !important;
+      max-width: 0.75cm !important;
+    }
+    
+    .extra-table th:nth-child(7),
+    .extra-table td:nth-child(7) {
+      width: 0.75cm !important;
+      min-width: 0.75cm !important;
+      max-width: 0.75cm !important;
+    }
+    
+    .extra-table th:nth-child(8),
+    .extra-table td:nth-child(8) {
+      width: 0.90cm !important;
+      min-width: 0.90cm !important;
+      max-width: 0.90cm !important;
+    }
+    
+    .extra-table th:nth-child(9),
+    .extra-table td:nth-child(9) {
+      width: 1.10cm !important;
+      min-width: 1.10cm !important;
+      max-width: 1.10cm !important;
+    }
+    
+    .extra-table th:nth-child(10),
+    .extra-table td:nth-child(10) {
+      width: 1.00cm !important;
+      min-width: 1.00cm !important;
+      max-width: 1.00cm !important;
+    }
+    
+    .extra-table th:nth-child(11),
+    .extra-table td:nth-child(11) {
+      width: 0.90cm !important;
+      min-width: 0.90cm !important;
+      max-width: 0.90cm !important;
     }
   }
   
         .notice-content {
-        font-size: 3.74pt !important;
+        font-size: 3.54pt !important;
         line-height: 1.0 !important;
         color:#000;
         margin: 0 !important;
@@ -1385,7 +1921,7 @@
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        font-size: 3.74pt !important;
+        font-size: 3.54pt !important;
         line-height: 1.0 !important;
         page-break-inside: avoid;
       }
@@ -1497,6 +2033,27 @@
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
+    /* Ensure extra-section fits within container in print */
+    .extra-section {
+      width: 100% !important;
+    }
+    .extra-note {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    /* Meta bar in second print media query */
+    .meta-bar {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+      height: 0.85cm !important;
+      max-height: 0.85cm !important;
+      min-height: 0.85cm !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding-top: 0.1cm !important;
+    }
+    
     /* Ensure stable print rendering */
     * {
       -webkit-print-color-adjust: exact !important;
@@ -1516,8 +2073,11 @@
   
   <!-- Meta Information -->
   <div class="meta-bar">
-    <div style="display: flex; align-items: center; height: 0.3cm;">
-      <div class="company-row" id="company-row">कम्पनी: {% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</div>
+    <div class="company-container">
+      <div class="company-row" id="company-row">
+        <span class="company-label">Company:</span>
+        <span class="lato-black-text">{% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</span>
+      </div>
       {% if ad.right_section_text %}
       <div class="company-right-section">{{ ad.right_section_text }}</div>
       {% endif %}
@@ -1872,15 +2432,14 @@
               
               if (!element.dataset.fontProcessed) {
                 element.style.setProperty('font-weight', '200', 'important');
-                element.style.setProperty('font-size', '3.76pt', 'important');
+                element.style.setProperty('font-size', '3.56pt', 'important');
                 element.style.setProperty('line-height', '1.4', 'important');
-                // Don't apply justify to Japan content - let CSS handle it
-                if (!element.closest('.japan-content')) {
-                  element.style.setProperty('text-align', 'justify', 'important');
-                  element.style.setProperty('text-justify', 'inter-word', 'important');
-                }
+                element.style.setProperty('text-align', 'left', 'important');
+                element.style.setProperty('text-justify', 'initial', 'important');
                 element.style.setProperty('margin', '0px', 'important');
-                element.style.setProperty('padding', '0px', 'important');
+                element.style.setProperty('padding', '2px 4px', 'important');
+                element.style.setProperty('display', 'block', 'important');
+                element.style.setProperty('width', '100%', 'important');
                 element.dataset.fontProcessed = 'true';
               }
             });
@@ -1910,7 +2469,7 @@
                 p.style.setProperty('text-align', 'left', 'important');
                 p.style.setProperty('text-justify', 'initial', 'important');
                 p.style.setProperty('line-height', '1.2', 'important');
-                p.style.setProperty('font-size', '3.76pt', 'important');
+                p.style.setProperty('font-size', '3.56pt', 'important');
               });
             }
             
@@ -1926,7 +2485,7 @@
                 element.style.setProperty('text-align', 'justify', 'important');
                 element.style.setProperty('text-justify', 'inter-word', 'important');
               }
-              element.style.setProperty('font-size', '3.76pt', 'important');
+              element.style.setProperty('font-size', '3.56pt', 'important');
               element.style.setProperty('line-height', '1.4', 'important');
               element.style.setProperty('width', 'auto', 'important');
               element.style.setProperty('max-width', '100%', 'important');
@@ -1959,12 +2518,204 @@
               cell.setAttribute('style', cell.getAttribute('style') + '; font-weight: 200 !important;');
             });
             
-            // Only increase header elements
+            // Header-left with InDesign specifications and GANESH font conversion
+            document.addEventListener('DOMContentLoaded', function() {
             const headerLeft = document.querySelectorAll('.header-left');
+            
+            // GANESH font specific character mapping (based on actual font encoding)
+            function convertToGaneshLayout(text) {
+              // GANESH font uses specific character codes for Devanagari
+              // This mapping is based on the actual GANESH.TTF font encoding
+              const devanagariToGanesh = {
+                // Complete words first (to avoid partial replacements)
+                'मा रोजगारी': 'ma rojagari',
+                'देश': 'desh',
+                'कम्पनी': 'kampani',
+                'जानकारी': 'jankari',
+                'कुनै': 'kunai',
+                'मिति': 'miti',
+                'नम्बर': 'nambar',
+                'शहर': 'sahar',
+                'काम': 'kam',
+                'सेवा': 'sewa',
+                'विभाग': 'vibhag',
+                'कार्यालय': 'karyalaya',
+                'सम्पर्क': 'sampark',
+                'फोन': 'phone',
+                'ईमेल': 'email',
+                'वेबसाइट': 'website',
+                'पता': 'pata',
+                
+                // Individual characters (GANESH font specific mapping)
+                'अ': 'a', 'आ': 'aa', 'इ': 'i', 'ई': 'ii', 'उ': 'u', 'ऊ': 'uu', 'ए': 'e', 'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
+                'ा': 'aa', 'ि': 'i', 'ी': 'ii', 'ु': 'u', 'ू': 'uu', 'े': 'e', 'ै': 'ai', 'ो': 'o', 'ौ': 'au',
+                'क': 'k', 'ख': 'kh', 'ग': 'g', 'घ': 'gh', 'ङ': 'ng',
+                'च': 'c', 'छ': 'ch', 'ज': 'j', 'झ': 'jh', 'ञ': 'ny',
+                'ट': 't', 'ठ': 'th', 'ड': 'd', 'ढ': 'dh', 'ण': 'n',
+                'त': 't', 'थ': 'th', 'द': 'd', 'ध': 'dh', 'न': 'n',
+                'प': 'p', 'फ': 'ph', 'ब': 'b', 'भ': 'bh', 'म': 'm',
+                'य': 'y', 'र': 'r', 'ल': 'l', 'व': 'v', 'श': 'sh', 'ष': 'sh', 'स': 's', 'ह': 'h',
+                
+                // Punctuation and symbols
+                ' ': ' ', '।': '.', '?': '?', '!': '!', ':': ':', ';': ';',
+                ',': ',', '.': '.', '-': '-', '–': '-', '—': '-',
+                '०': '0', '१': '1', '२': '2', '३': '3', '४': '4',
+                '५': '5', '६': '6', '७': '7', '८': '8', '९': '9'
+              };
+              
+              let convertedText = text;
+              
+              // Replace complete words/phrases first
+              for (const [devanagari, ganesh] of Object.entries(devanagariToGanesh)) {
+                if (devanagari.length > 1) {
+                  convertedText = convertedText.replace(new RegExp(devanagari, 'g'), ganesh);
+                }
+              }
+              
+              // Then replace individual characters
+              for (const [devanagari, ganesh] of Object.entries(devanagariToGanesh)) {
+                if (devanagari.length === 1) {
+                  convertedText = convertedText.replace(new RegExp(devanagari, 'g'), ganesh);
+                }
+              }
+              
+              return convertedText;
+            }
+            
+            // Function to apply Kalimati font with proper loading
+            function applyKalimatiFont() {
             headerLeft.forEach(function(element) {
-              element.style.setProperty('font-size', '13pt', 'important');
-              element.style.setProperty('font-weight', '700', 'important');
-            });
+                // Apply Kalimati font directly (no text conversion needed for Unicode)
+                element.style.setProperty('text-align', 'center', 'important');
+                element.style.setProperty('font-family', 'Kalimati, Kalimati-Fallback, Noto Sans Devanagari, Hind, Arial, sans-serif', 'important');
+                element.style.setProperty('font-size', '15pt', 'important');
+                element.style.setProperty('line-height', '11pt', 'important');
+                element.style.setProperty('font-weight', '400', 'important');
+                element.style.setProperty('font-style', 'normal', 'important');
+                element.style.setProperty('letter-spacing', '0', 'important');
+                element.style.setProperty('word-spacing', '0', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+              });
+              
+            }
+            
+            // Detect Safari browser
+            function isSafari() {
+              return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+            }
+            
+            // Force Kalimati font loading
+            window.forceKalimatiFont = function() {
+              const fontFamily = 'Kalimati, Kalimati-Fallback, Noto Sans Devanagari, Hind, Arial, sans-serif';
+              
+              // Create a hidden element to force font loading
+              const testElement = document.createElement('div');
+              testElement.style.fontFamily = fontFamily;
+              testElement.style.position = 'absolute';
+              testElement.style.left = '-9999px';
+              testElement.style.visibility = 'hidden';
+              testElement.style.fontSize = '15pt';
+              testElement.textContent = 'मा रोजगारी';
+              document.body.appendChild(testElement);
+              
+              // Force font loading by measuring
+              const canvas = document.createElement('canvas');
+              const context = canvas.getContext('2d');
+              context.font = '15pt ' + fontFamily;
+              context.measureText('मा रोजगारी');
+              
+              // Preload Kalimati font
+              const link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'font';
+              link.type = 'font/ttf';
+              link.href = '{{ STATIC_URL }}fonts/Kalimati.ttf';
+              link.crossOrigin = 'anonymous';
+              document.head.appendChild(link);
+              
+              // Clean up
+              document.body.removeChild(testElement);
+              
+              console.log('Kalimati font forced to load');
+              return true;
+            }
+            
+            // Debug: Check if elements exist
+            console.log('Header elements found:', headerLeft.length);
+            
+            if (headerLeft.length === 0) {
+              console.log('No header-left elements found, retrying...');
+              setTimeout(function() {
+                const retryElements = document.querySelectorAll('.header-left');
+                console.log('Retry - Header elements found:', retryElements.length);
+                if (retryElements.length > 0) {
+                  headerLeft = retryElements;
+                  if (typeof forceKalimatiFont === 'function') {
+                    forceKalimatiFont();
+                  }
+                  if (typeof applyKalimatiFont === 'function') {
+                    applyKalimatiFont();
+                  }
+                }
+              }, 100);
+            } else {
+            // Force Kalimati font loading and apply
+            if (typeof forceKalimatiFont === 'function') {
+              forceKalimatiFont();
+            }
+            if (typeof applyKalimatiFont === 'function') {
+              applyKalimatiFont();
+            }
+            }
+            
+            // Reapply multiple times to ensure proper rendering
+            setTimeout(function() {
+              console.log('Reapplying Kalimati font...');
+              applyKalimatiFont();
+            }, 500);
+            
+            setTimeout(function() {
+              console.log('Final Kalimati font application...');
+              applyKalimatiFont();
+            }, 1500);
+            
+            // Additional debugging - check font loading
+            setTimeout(function() {
+              const testDiv = document.createElement('div');
+              testDiv.style.fontFamily = 'Kalimati';
+              testDiv.style.fontSize = '15pt';
+              testDiv.textContent = 'मा रोजगारी';
+              testDiv.style.position = 'absolute';
+              testDiv.style.left = '-9999px';
+              document.body.appendChild(testDiv);
+              
+              const computedStyle = window.getComputedStyle(testDiv);
+              console.log('GANESH font computed:', computedStyle.fontFamily);
+              console.log('GANESH font size:', computedStyle.fontSize);
+              
+              document.body.removeChild(testDiv);
+            }, 2000);
+            
+            }); // End of DOMContentLoaded
+            
+            // Fallback: Run immediately if DOM is already loaded
+            if (document.readyState === 'loading') {
+              // DOM is still loading, DOMContentLoaded will handle it
+            } else {
+              // DOM is already loaded, run immediately
+              const headerLeft = document.querySelectorAll('.header-left');
+              if (headerLeft.length > 0) {
+                console.log('DOM already loaded, running Kalimati font immediately');
+                if (typeof forceKalimatiFont === 'function') {
+                  forceKalimatiFont();
+                }
+                if (typeof applyKalimatiFont === 'function') {
+                  applyKalimatiFont();
+                }
+              }
+            }
             
             const headerRight = document.querySelectorAll('.header-right');
             headerRight.forEach(function(element) {
@@ -1972,20 +2723,94 @@
               element.style.setProperty('font-weight', '600', 'important');
             });
             
+            // Function to apply company row styles
+            function applyCompanyRowStyles() {
+              // Company container
+              const companyContainer = document.querySelectorAll('.company-container');
+              console.log('Found company containers:', companyContainer.length);
+              companyContainer.forEach(function(element) {
+                element.style.setProperty('display', 'flex', 'important');
+                element.style.setProperty('align-items', 'center', 'important');
+                element.style.setProperty('height', '0.3cm', 'important');
+                console.log('Applied styles to company container');
+            });
+            
             // Company row
             const companyRow = document.querySelectorAll('.company-row');
+              console.log('Found company rows:', companyRow.length);
             companyRow.forEach(function(element) {
-              element.style.setProperty('font-size', '7pt', 'important');
-              element.style.setProperty('font-weight', '600', 'important');
-              element.style.setProperty('height', '0.3cm', 'important');
-              element.style.setProperty('max-height', '0.3cm', 'important');
-              element.style.setProperty('min-height', '0.3cm', 'important');
               element.style.setProperty('display', 'flex', 'important');
               element.style.setProperty('align-items', 'center', 'important');
               element.style.setProperty('justify-content', 'center', 'important');
+                element.style.setProperty('padding', '0px 3px', 'important');
+                element.style.setProperty('font-family', '"Lato", Arial, sans-serif', 'important');
+                element.style.setProperty('font-size', '9.8pt', 'important');
+                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('font-weight', '400', 'important');
+                element.style.setProperty('text-align', 'center', 'important');
+                element.style.setProperty('height', '0.3cm', 'important');
+                element.style.setProperty('min-height', '0.3cm', 'important');
+                element.style.setProperty('max-height', '0.3cm', 'important');
+                element.style.setProperty('border-bottom', 'none', 'important');
+                element.style.setProperty('word-wrap', 'break-word', 'important');
+                element.style.setProperty('overflow-wrap', 'break-word', 'important');
+                element.style.setProperty('white-space', 'nowrap', 'important');
               element.style.setProperty('overflow', 'hidden', 'important');
               element.style.setProperty('text-overflow', 'ellipsis', 'important');
-              element.style.setProperty('white-space', 'nowrap', 'important');
+                element.style.setProperty('flex', '1', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                console.log('Applied Lato styles to company row:', element.textContent);
+              });
+              
+              // Company label - Lato Regular
+              const companyLabel = document.querySelectorAll('.company-label');
+              companyLabel.forEach(function(element) {
+                element.style.setProperty('font-family', '"Lato", Arial, sans-serif', 'important');
+                element.style.setProperty('font-size', '9.8pt', 'important');
+                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('font-weight', '400', 'important');
+                element.style.setProperty('font-style', 'normal', 'important');
+                element.style.setProperty('letter-spacing', '0', 'important');
+                element.style.setProperty('word-spacing', '0', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                console.log('Applied Lato Regular to company label');
+              });
+              
+              // Lato Black text
+              const latoBlackText = document.querySelectorAll('.lato-black-text');
+              latoBlackText.forEach(function(element) {
+                element.style.setProperty('font-family', '"Lato", sans-serif', 'important');
+                element.style.setProperty('font-weight', '900', 'important');
+                element.style.setProperty('font-size', '9.8pt', 'important');
+                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('letter-spacing', '0', 'important');
+                element.style.setProperty('word-spacing', '0', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                console.log('Applied Lato Black to company name');
+              });
+            }
+            
+            // Apply styles immediately
+            applyCompanyRowStyles();
+            
+            // Apply styles again after a short delay to ensure they stick
+            setTimeout(applyCompanyRowStyles, 100);
+            setTimeout(applyCompanyRowStyles, 500);
+            
+            // Additional debugging for company row
+            console.log('Company row debugging:');
+            const companyRowDebug = document.querySelectorAll('.company-row');
+            companyRowDebug.forEach(function(element, index) {
+              console.log('Company row', index, ':', element.textContent);
+              console.log('Font family:', window.getComputedStyle(element).fontFamily);
+              console.log('Font size:', window.getComputedStyle(element).fontSize);
+              console.log('Font weight:', window.getComputedStyle(element).fontWeight);
             });
             
             // Meta bar
@@ -1993,30 +2818,42 @@
             metaBar.forEach(function(element) {
               element.style.setProperty('font-size', '5pt', 'important');
               element.style.setProperty('font-weight', '500', 'important');
-              element.style.setProperty('height', '0.6cm', 'important');
-              element.style.setProperty('max-height', '0.6cm', 'important');
-              element.style.setProperty('min-height', '0.6cm', 'important');
+              element.style.setProperty('height', '0.85cm', 'important');
+              element.style.setProperty('max-height', '0.85cm', 'important');
+              element.style.setProperty('min-height', '0.85cm', 'important');
               element.style.setProperty('overflow', 'hidden', 'important');
               element.style.setProperty('display', 'flex', 'important');
               element.style.setProperty('flex-direction', 'column', 'important');
+              element.style.setProperty('padding-top', '0.1cm', 'important');
             });
             
             // Meta items row
             const metaItemsRow = document.querySelectorAll('.meta-items-row');
-            metaItemsRow.forEach(function(element) {
-              element.style.setProperty('font-size', '5pt', 'important');
-              element.style.setProperty('font-weight', '500', 'important');
+            console.log('Found meta items rows:', metaItemsRow.length);
+            metaItemsRow.forEach(function(element, index) {
+              console.log('Applying styles to meta items row', index);
+              element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
+              element.style.setProperty('font-size', '5.5pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+              element.style.setProperty('line-height', '4.5pt', 'important');
+              element.style.setProperty('letter-spacing', '0', 'important');
+              element.style.setProperty('word-spacing', '0', 'important');
               element.style.setProperty('height', '0.3cm', 'important');
               element.style.setProperty('max-height', '0.3cm', 'important');
               element.style.setProperty('min-height', '0.3cm', 'important');
               element.style.setProperty('display', 'grid', 'important');
+              element.style.setProperty('gap', '0.1cm', 'important');
+              element.style.setProperty('margin-top', '0.1cm', 'important');
+              element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+              element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+              element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
               
               // Adjust grid columns based on long-city class
               if (element.classList.contains('long-city')) {
-                element.style.setProperty('grid-template-columns', '1fr 1fr 1fr 1.3fr', 'important');
+                element.style.setProperty('grid-template-columns', '1.2fr 1fr 1fr 1.3fr', 'important');
                 element.style.setProperty('gap', '0.1cm', 'important');
               } else {
-                element.style.setProperty('grid-template-columns', '1fr 1fr 1fr 1fr', 'important');
+                element.style.setProperty('grid-template-columns', '1.2fr 1fr 1fr 1fr', 'important');
                 element.style.setProperty('gap', '0.1cm', 'important');
               }
               
@@ -2026,22 +2863,16 @@
             // Meta items
             const metaItems = document.querySelectorAll('.meta-item');
             metaItems.forEach(function(element) {
-              element.style.setProperty('font-size', '5pt', 'important');
-              element.style.setProperty('font-weight', '500', 'important');
-              element.style.setProperty('padding', '0px 3px', 'important');
-              element.style.setProperty('text-align', 'left', 'important');
-              element.style.setProperty('display', 'flex', 'important');
-              element.style.setProperty('align-items', 'center', 'important');
-              element.style.setProperty('justify-content', 'flex-start', 'important');
-              element.style.setProperty('overflow', 'hidden', 'important');
-              element.style.setProperty('text-overflow', 'ellipsis', 'important');
-              element.style.setProperty('white-space', 'nowrap', 'important');
-              
-              // Handle long city names specifically
-              if (element.id === 'city-item' && element.classList.contains('long-city')) {
-                element.style.setProperty('justify-content', 'center', 'important');
-                element.style.setProperty('text-align', 'center', 'important');
-              }
+              element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
+              element.style.setProperty('font-size', '5.5pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+              element.style.setProperty('line-height', '4.5pt', 'important');
+              element.style.setProperty('letter-spacing', '0', 'important');
+              element.style.setProperty('word-spacing', '0', 'important');
+              element.style.setProperty('padding', '0px 1px', 'important');
+              element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+              element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+              element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
             });
             
             // City field (last child) with smaller font for print
@@ -2106,7 +2937,7 @@
             // Extra section table - 3.74pt font size
             const extraTableElements = document.querySelectorAll('.extra-table, .extra-table th, .extra-table td');
             extraTableElements.forEach(function(element) {
-              element.style.setProperty('font-size', '3.74pt', 'important');
+              element.style.setProperty('font-size', '3.54pt', 'important');
               element.style.setProperty('font-weight', '200', 'important');
             });
             
@@ -2309,32 +3140,32 @@
     <table class="extra-table">
       <thead>
         <tr>
-          <th>स्वदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने </th>
-          <th>विदेशमा गरिने मेडिकल खर्च कसले व्यहोर्ने</th>
-          <th>स्वदेशमा गरिने म्यादी जीवन बिमा खर्च कसले व्यहोर्ने</th>
-          <th class="col-insurance">रोजगारमा बिमा शुल्क हुने/नहुने<br>र प्रिमियम कसले व्यहोर्ने</th>
-          <th>कामदारलाई हवाई टिकट कसले दिने र कति लाग्ने</th>
-          <th>सामाजिक सुरक्षा कोष </th>
-          <th>भिसा शुल्क कसले व्यहोर्ने</th>
-          <th>भिसा स्ट्याम्प शुल्क कसले व्यहोर्ने</th>
-          <th>अभिकृतिकरण शुल्क कति लाग्ने र कसले व्यहोर्ने</th>
+          <th>स्वदेशमा गरिने मेडिकल खर्च कस्ले व्यहोर्ने र कति लाग्ने</th>
+          <th>विदेशमा गरिने मेडिकल खर्च कस्ले व्यहोर्ने</th>
+          <th>स्वदेशमा गरिने म्यादेजीवन बीमा कस्ले व्यहोर्ने र कति लाग्ने</th>
+          <th class="col-insurance">रोजगारमा बीमा हुने/नहुने र प्रिमियर कसले व्यहोर्ने</th>
+          <th>कामदारलाई हवाई टिकट कस्ले दिने र कति लाग्ने</th>
+          <th>सामाजिक सुरक्षाकोष</th>
+          <th>भिषा शुल्क कसले व्यहोर्ने</th>
+          <th>भिषा स्ट्याम्पी शुल्क कसले व्यहोर्ने</th>
+          <th>अभिमुखिकरण शुल्क कति लाग्ने र कस्ले व्यहोर्ने</th>
           <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
-          <th class="col-service-fee">सेवा शुल्क</th>
+          <th class="col-service-fee">शेवा शुल्क</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>{% if ad.medical_cost_local %}{{ ad.medical_cost_local }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.medical_cost_foreign %}{{ ad.medical_cost_foreign }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.insurance_local %}{{ ad.insurance_local }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.insurance_employment %}{{ ad.insurance_employment }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.air_ticket %}{{ ad.air_ticket }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.visa_fee %}{{ ad.visa_fee }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.visa_stamp_fee %}{{ ad.visa_stamp_fee }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.recruitment_fee %}{{ ad.recruitment_fee }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.welfare_fund %}{{ ad.welfare_fund }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td>{% if ad.labor_fee %}{{ ad.labor_fee }}{% else %}कुनै जानकारी{% endif %}</td>
-          <td class="col-service-fee">{% if ad.service_fee %}{{ ad.service_fee }}{% else %}कुनै जानकारी{% endif %}</td>
+          <td>कामदार आफैले</td>
+          <td>रोजगादाताले व्यहोर्ने</td>
+          <td>कामदार आफैले</td>
+          <td>बीम हुने/प्रिमियम रोजगारदाताले तिर्ने</td>
+          <td>रोजगारदाता कम्पनीले व्यहोर्ने</td>
+          <td>रू. २५९६/- कामदार आफैले</td>
+          <td>रोजगारदाताले व्यहोर्ने</td>
+          <td>रोजगारदाताले व्यहोर्ने</td>
+          <td>रू. ७००/- कामदार आफैले</td>
+          <td>रू. १५००/- कामदार आफैले</td>
+          <td class="col-service-fee">निःशूल्क</td>
         </tr>
       </tbody>
     </table>

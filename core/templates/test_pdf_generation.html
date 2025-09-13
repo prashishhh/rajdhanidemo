@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Generation Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .status-item {
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+            flex: 1;
+        }
+        .available {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .unavailable {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .test-button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 PDF Generation Test</h1>
+        <p>This page helps diagnose PDF generation issues on cPanel.</p>
+        
+        <h2>Library Status</h2>
+        <div class="status">
+            <div class="status-item {% if status.playwright_available %}available{% else %}unavailable{% endif %}">
+                <h3>Playwright</h3>
+                <p>{% if status.playwright_available %}✅ Available{% else %}❌ Not Available{% endif %}</p>
+            </div>
+            <div class="status-item {% if status.weasyprint_available %}available{% else %}unavailable{% endif %}">
+                <h3>WeasyPrint</h3>
+                <p>{% if status.weasyprint_available %}✅ Available{% else %}❌ Not Available{% endif %}</p>
+            </div>
+            <div class="status-item {% if status.reportlab_available %}available{% else %}unavailable{% endif %}">
+                <h3>ReportLab</h3>
+                <p>{% if status.reportlab_available %}✅ Available{% else %}❌ Not Available{% endif %}</p>
+            </div>
+        </div>
+        
+        <h2>PDF Generation Test</h2>
+        {% if pdf_generated %}
+            <div class="success">
+                <h3>✅ PDF Generation Successful!</h3>
+                <p>PDF Size: {{ pdf_size }} bytes</p>
+                <p>The PDF was generated successfully using the available libraries.</p>
+            </div>
+        {% else %}
+            <div class="error">
+                <h3>❌ PDF Generation Failed</h3>
+                {% if error_message %}
+                    <p><strong>Error:</strong> {{ error_message }}</p>
+                {% else %}
+                    <p>No PDF content was generated. Check the library status above.</p>
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        <h2>Diagnosis</h2>
+        {% if status.weasyprint_available %}
+            <div class="success">
+                <h3>✅ WeasyPrint is Available</h3>
+                <p>This means PDF downloads should work correctly and show the exact same layout as the preview.</p>
+            </div>
+        {% elif status.playwright_available %}
+            <div class="info">
+                <h3>⚠️ Only Playwright Available</h3>
+                <p>Playwright is available but WeasyPrint is not. PDF generation should work, but WeasyPrint is more reliable on cPanel.</p>
+            </div>
+        {% elif status.reportlab_available %}
+            <div class="error">
+                <h3>❌ Only ReportLab Available</h3>
+                <p>Only ReportLab is available. This will create a simplified PDF layout instead of the exact preview template.</p>
+                <p><strong>Solution:</strong> Install WeasyPrint on cPanel to get the correct PDF layout.</p>
+            </div>
+        {% else %}
+            <div class="error">
+                <h3>❌ No PDF Libraries Available</h3>
+                <p>No PDF generation libraries are installed. PDF downloads will not work.</p>
+                <p><strong>Solution:</strong> Install WeasyPrint: <code>pip3 install weasyprint</code></p>
+            </div>
+        {% endif %}
+        
+        <h2>Actions</h2>
+        <a href="{% url 'download_pdf' %}" class="test-button">Test PDF Download</a>
+        <a href="{% url 'employment_ad_preview' %}" class="test-button">View Preview</a>
+        <a href="{% url 'test_pdf_generation' %}" class="test-button">Refresh Test</a>
+        
+        {% if ad %}
+            <h2>Test Data</h2>
+            <p><strong>Employment Ad ID:</strong> {{ ad.id }}</p>
+            <p><strong>Company:</strong> {{ ad.company_name|default:"Not set" }}</p>
+            <p><strong>Country:</strong> {{ ad.country|default:"Not set" }}</p>
+        {% endif %}
+        
+        <h2>Installation Instructions</h2>
+        <div class="info">
+            <h3>To Install WeasyPrint on cPanel:</h3>
+            <ol>
+                <li>Go to cPanel → Terminal</li>
+                <li>Run: <code>cd public_html/rajdhani</code></li>
+                <li>Run: <code>pip3 install weasyprint</code></li>
+                <li>Refresh this page to test again</li>
+            </ol>
+        </div>
+    </div>
+</body>
+</html>
