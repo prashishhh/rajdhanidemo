@@ -61,7 +61,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="mb-0">Import Employment Ad</h4>
-                                                    <p class="text-muted mb-0">Upload a JPG to import employment advertisement data to your system.</p>
+                                                    <p class="text-muted mb-0">Upload an image or PDF to import employment advertisement data.</p>
                                                 </div>
                                             </div>
                                             <button type="button" class="btn-close" aria-label="Close"></button>
@@ -73,8 +73,9 @@
                                                 <div class="dropzone-icon">
                                                     <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-3"></i>
                                                 </div>
-                                                <h5 class="mb-2">Drag JPG or Image here to import employment ad</h5>
-                                                <p class="text-muted mb-3">or, click to browse (10 MB max).</p>
+                                                <h5 class="mb-2">Drag an image or PDF here to import an employment ad</h5>
+                                                <p class="text-muted mb-2">or, click to browse.</p>
+                                                <p class="upload-hint mb-3">Supported formats: JPG, PNG, PDF. Maximum file size: {{ upload_max_size_mb|default:10 }} MB.</p>
                                     
                                     <form method="post" enctype="multipart/form-data" id="ocrForm">
                                         {% csrf_token %}
@@ -82,7 +83,7 @@
                                                     <input type="file" class="form-control" id="id_document" name="document" accept="image/*,.pdf" required style="display: none;">
                                                 </form>
                                                 
-                                                <button type="button" class="btn btn-primary btn-lg" onclick="document.getElementById('id_document').click()">
+                                                <button type="button" class="btn btn-primary btn-lg" aria-label="Select employment ad file" onclick="document.getElementById('id_document').click()">
                                                     Select files
                                                 </button>
                                         </div>
@@ -97,7 +98,7 @@
                                         </div>
                                         
                                         <!-- Uploaded Files Section -->
-                                        <div class="uploaded-files" id="uploadedFiles" style="display: none;">
+                                        <div class="uploaded-files" id="uploadedFiles" aria-live="polite" style="display: none;">
                                             <div class="file-item">
                                                 <div class="file-info">
                                                     <i class="fas fa-file-pdf text-danger me-2" id="fileIcon"></i>
@@ -110,7 +111,7 @@
                                                     </div>
                                                     <span class="progress-text">100%</span>
                                                 </div>
-                                                <button type="button" class="btn btn-sm btn-outline-danger">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" aria-label="Remove selected file">
                                                     <i class="fas fa-trash"></i>
                                         </button>
                                             </div>
@@ -121,7 +122,7 @@
                                         <!-- Action Buttons -->
                                         <div class="upload-actions">
                                             <button type="button" class="btn btn-outline-secondary" onclick="goToStep(2)">
-                                                Cancel
+                                                Skip upload
                                             </button>
                                             <button type="submit" class="btn btn-primary" id="importBtn" form="ocrForm" style="display: none;">
                                                 Import employment ad
@@ -706,6 +707,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const importBtn = document.getElementById('importBtn');
     const uploadedFiles = document.getElementById('uploadedFiles');
     const draggedFiles = document.getElementById('draggedFiles');
+    const maxUploadSizeMb = Number('{{ upload_max_size_mb|default:10 }}');
+    const maxUploadSize = maxUploadSizeMb * 1024 * 1024;
     
     // Drag and drop functionality
     dropzone.addEventListener('dragover', function(e) {
@@ -737,6 +740,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle file selection
     function handleFileSelection(file) {
+        if (file.size > maxUploadSize) {
+            resetSelectedFile();
+            alert(`Selected file is larger than ${maxUploadSizeMb} MB. Please choose a smaller file.`);
+            return;
+        }
+
         // Set the file to the hidden input
         const dataTransfer = new DataTransfer();
         dataTransfer.items.add(file);
@@ -774,6 +783,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const progressText = fileItem.querySelector('.progress-text');
         
         let progress = 0;
+        progressBar.style.width = '0%';
+        progressText.textContent = '0%';
         const interval = setInterval(() => {
             progress += Math.random() * 15;
             if (progress >= 100) {
@@ -805,16 +816,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         uploadedFiles.style.display = 'block';
     }
+
+    function resetSelectedFile() {
+        uploadedFiles.style.display = 'none';
+        draggedFiles.style.display = 'none';
+        importBtn.style.display = 'none';
+        fileInput.value = '';
+    }
     
     // Remove file functionality
     const removeBtn = uploadedFiles.querySelector('.btn-outline-danger');
     if (removeBtn) {
-        removeBtn.addEventListener('click', function() {
-            uploadedFiles.style.display = 'none';
-            draggedFiles.style.display = 'none';
-            importBtn.style.display = 'none';
-            fileInput.value = '';
-        });
+        removeBtn.addEventListener('click', resetSelectedFile);
     }
 });
 
