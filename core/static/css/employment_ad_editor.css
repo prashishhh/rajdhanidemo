@@ -1106,6 +1106,17 @@
         border-color: #3182ce;
         background: #ebf8ff;
     }
+
+    .upload-dropzone:focus-within {
+        border-color: #0d6efd;
+        background: #eff6ff;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+    }
+
+    .upload-hint {
+        color: #64748b;
+        font-size: 0.875rem;
+    }
     
     .upload-dropzone.dragover {
         border-color: #3182ce;
@@ -1152,6 +1163,7 @@
         background: #f8fafc;
         border-radius: 8px;
         margin-bottom: 0.5rem;
+        border: 1px solid #e2e8f0;
     }
     
     .file-info {

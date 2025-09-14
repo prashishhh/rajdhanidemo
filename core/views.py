@@ -942,6 +942,7 @@ def employment_ad_editor(request):
         'positions': employment_ad.positions.all().order_by('order'),  # Get existing positions
         'ocr_text': ocr_text,
         'parsed_data': parsed_data,
+        'upload_max_size_mb': 10,
     }
     
     return render(request, 'employment_ad_editor.html', context)
