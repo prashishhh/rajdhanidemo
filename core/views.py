@@ -1273,3 +1273,7 @@ def simple_position_submission(request):
 def tic_tac_toe_game(request):
     """Tic-Tac-Toe Game View"""
     return render(request, 'tic_tac_toe.html')
+
+def chess_game(request):
+    """Chess Game View"""
+    return render(request, 'chess.html')
