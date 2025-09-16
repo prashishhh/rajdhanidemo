@@ -94,7 +94,7 @@
   
 
   
-  /* Top Header - Single row with centered title */
+  /* Top Header - Single row with centered title and right section */
   .top-header {
     background: white;
     color: black;
@@ -110,6 +110,7 @@
     box-sizing: border-box;
     margin-bottom: 0px;
     overflow: hidden;
+    position: relative;
   }
   
   .header-left {
@@ -133,6 +134,24 @@
   /* Force Kalimati font in all contexts */
   .header-left * {
     font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 6.5pt !important;
+    font-weight: 800 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important;
+    -webkit-text-stroke: 0.01em transparent !important;
+    text-align: right;
   }
   
 
@@ -286,7 +305,7 @@
     margin-top: 0.15cm;
     font-family: "Roboto", Arial, sans-serif !important;
     font-size: 5.5pt !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     line-height: 4.5pt !important;
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
@@ -311,7 +330,7 @@
     justify-content: flex-start;
     font-family: "Roboto", Arial, sans-serif !important;
     font-size: 5.5pt !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     line-height: 4.5pt !important;
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
@@ -332,7 +351,7 @@
     justify-content: flex-start;
     font-family: "Roboto", Arial, sans-serif !important;
     font-size: 5.5pt !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     line-height: 4.5pt !important;
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
@@ -513,7 +532,7 @@
   /* Specific styling for serial number and position columns */
   .main-table th.col-sn {
     font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
-    font-weight: 700 !important; /* Original font weight for serial number */
+    font-weight: 800 !important; /* Original font weight for serial number */
     font-size: 5pt !important; /* Original font size for serial number */
     line-height: 4pt !important; /* Original line height for serial number */
   }
@@ -528,7 +547,7 @@
   /* Increase font size for hours and days data cells */
   .main-table td.col-hours,
   .main-table td.col-days {
-    font-size: 8pt !important; /* Increased by 4pt from 4pt to 8pt */
+    font-size: 7pt !important; /* Increased by 4pt from 4pt to 8pt */
     line-height: 9pt !important; /* Increased proportionally */
   }
 
@@ -620,7 +639,7 @@
   .main-table .text-left {
     text-align: left;
     font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-    font-size: 8pt !important;
+    font-size: 7pt !important;
     line-height: 8pt !important; /* Leading = font size for single-line spacing */
     font-weight: 900 !important; /* Bold weight to match InDesign */
     font-stretch: condensed !important; /* Condensed variant */
@@ -642,8 +661,8 @@
   /* Olympia font for specific data cells (male_count, female_count, salary_amount) */
   .main-table .olympia-data {
     font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-    font-size: 8pt !important;
-    line-height: 8pt !important;
+    font-size: 6.5pt !important;
+    line-height: 6.5pt !important;
     font-weight: 900 !important; /* Bold weight */
     font-stretch: condensed !important; /* Condensed variant */
     text-transform: uppercase !important; /* Uppercase */
@@ -679,8 +698,8 @@
   
   /* Contract Duration column - 8pt font size */
   .col-contract-duration {
-    font-size: 8pt !important;
-    font-weight: 700 !important;
+    font-size: 7pt !important;
+    font-weight: 800 !important;
   }
   
   /* Extra section table - 3.54pt font size */
@@ -859,7 +878,7 @@
   
   .data-row td {
     vertical-align: middle !important;
-    font-size: 4pt !important;
+    font-size: 6.5pt !important;
     padding: 0px !important;
     margin: 0px !important;
     height: 0.4cm !important;
@@ -878,15 +897,23 @@
     margin: 0px;
     margin-bottom: 0px; /* Ensure no bottom margin */
     border: none;
-    font-size: 7pt;
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    font-size: 7pt !important;
     text-align: center;
-    font-weight: 600;
-    line-height: 1.2;
+    font-weight: 800 !important;
+    line-height: 7pt !important;
+    letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
+    font-kerning: auto !important; /* Kerning: Metrics (automatic) */
     min-height: 0.4cm;
     overflow: visible;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important;
+    -webkit-text-stroke: 0.01em transparent !important;
     box-sizing: border-box;
   }
   
@@ -1412,7 +1439,7 @@
     
     .main-table td.text-left {
       font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-      font-size: 8pt !important;
+      font-size: 7pt !important;
       line-height: 8pt !important; /* Leading = font size for single-line spacing */
       font-weight: 900 !important; /* Bold weight to match InDesign */
       font-stretch: condensed !important; /* Condensed variant */
@@ -1450,7 +1477,7 @@
     /* Specific overrides for elements that need different weights */
     .main-table td.text-left {
       font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-      font-size: 8pt !important;
+      font-size: 7pt !important;
       line-height: 8pt !important; /* Leading = font size for single-line spacing */
       font-weight: 900 !important; /* Bold weight to match InDesign */
       font-stretch: condensed !important; /* Condensed variant */
@@ -1470,8 +1497,8 @@
     /* Olympia font for specific data cells in print */
     .main-table .olympia-data {
       font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-      font-size: 8pt !important;
-      line-height: 8pt !important;
+      font-size: 6.5pt !important;
+      line-height: 6.5pt !important;
       font-weight: 900 !important; /* Bold weight */
       font-stretch: condensed !important; /* Condensed variant */
       text-transform: uppercase !important; /* Uppercase */
@@ -1509,8 +1536,21 @@
     }
     
     .header-right {
-      font-size: 7pt !important;
-      font-weight: 600 !important;
+      position: absolute !important;
+      right: 6px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6.5pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important;
+      -webkit-text-stroke: 0.01em transparent !important;
+      text-align: right !important;
     }
     
     /* Company container */
@@ -1608,8 +1648,8 @@
     /* Meta items row */
     .meta-items-row {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 5.5pt !important;
-      font-weight: 700 !important;
+      font-size: 6.5pt !important;
+      font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -1623,8 +1663,8 @@
     
     .meta-item {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 5.5pt !important;
-      font-weight: 700 !important;
+      font-size: 6.5pt !important;
+      font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -1753,8 +1793,8 @@
     /* Meta items row in print */
     .meta-items-row {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 5.5pt !important;
-      font-weight: 700 !important;
+      font-size: 6.5pt !important;
+      font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -1780,8 +1820,8 @@
     /* Meta items in print */
     .meta-item {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 5.5pt !important;
-      font-weight: 700 !important;
+      font-size: 6.5pt !important;
+      font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -2006,7 +2046,7 @@
     /* Specific styling for serial number and position columns in print */
     .main-table th.col-sn {
       font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
-      font-weight: 700 !important; /* Original font weight for serial number */
+      font-weight: 800 !important; /* Original font weight for serial number */
       font-size: 5pt !important; /* Original font size for serial number */
       line-height: 4pt !important; /* Original line height for serial number */
     }
@@ -2021,7 +2061,7 @@
     /* Increase font size for hours and days data cells in print */
     .main-table td.col-hours,
     .main-table td.col-days {
-      font-size: 8pt !important; /* Increased by 4pt from 4pt to 8pt */
+      font-size: 7pt !important; /* Increased by 4pt from 4pt to 8pt */
       line-height: 9pt !important; /* Increased proportionally */
     }
 
@@ -2124,8 +2164,8 @@
     
     /* Contract Duration column - 8pt font size for PDF */
     .col-contract-duration {
-      font-size: 8pt !important;
-      font-weight: 700 !important;
+      font-size: 7pt !important;
+      font-weight: 800 !important;
     }
     
     /* Extra section table - 3.54pt font size for PDF */
@@ -2352,6 +2392,21 @@
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
+    /* Interview section print styles */
+    .interview-section {
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+      font-size: 7pt !important;
+      font-weight: 800 !important;
+      line-height: 7pt !important;
+      letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
+      font-kerning: auto !important; /* Kerning: Metrics (automatic) */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important;
+      -webkit-text-stroke: 0.01em transparent !important;
+    }
+    
     /* Ensure extra-section fits within container in print */
     .extra-section {
       width: 100% !important;
@@ -2540,6 +2595,9 @@
     <!-- Top Header - Centered title only -->
   <div class="top-header">
     <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
+    {% if ad.right_section_text %}
+    <div class="header-right">{{ ad.right_section_text }}</div>
+    {% endif %}
   </div>
   
   <!-- Meta Information -->
@@ -2549,9 +2607,6 @@
         <span class="company-label">Company:</span>
         <span class="lato-black-text">{% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</span>
       </div>
-      {% if ad.right_section_text %}
-      <div class="company-right-section">{{ ad.right_section_text }}</div>
-      {% endif %}
     </div>
     <div class="meta-items-row" id="meta-items-row">
     <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
@@ -2825,7 +2880,7 @@
                   
                   // Don't override font-size for position field (text-left class), min_qualification field (text-center class), or hours/days cells
                   if (!cell.classList.contains('text-left') && !cell.classList.contains('text-center') && !cell.classList.contains('col-hours') && !cell.classList.contains('col-days')) {
-                    cell.style.setProperty('font-size', '4pt', 'important');
+                    cell.style.setProperty('font-size', '6.5pt', 'important');
                   }
                   
                   // Ensure position field has correct font size and styling
@@ -3001,8 +3056,8 @@
             const olympiaDataCells = document.querySelectorAll('.main-table .olympia-data');
             olympiaDataCells.forEach(function(cell) {
               cell.style.setProperty('font-family', "'Olympia-BoldCond', Arial, sans-serif", 'important');
-              cell.style.setProperty('font-size', '8pt', 'important');
-              cell.style.setProperty('line-height', '8pt', 'important');
+              cell.style.setProperty('font-size', '6.5pt', 'important');
+              cell.style.setProperty('line-height', '6.5pt', 'important');
               cell.style.setProperty('font-weight', '900', 'important');
               cell.style.setProperty('font-stretch', 'condensed', 'important');
               cell.style.setProperty('text-transform', 'uppercase', 'important');
@@ -3217,8 +3272,37 @@
             
             const headerRight = document.querySelectorAll('.header-right');
             headerRight.forEach(function(element) {
+              element.style.setProperty('position', 'absolute', 'important');
+              element.style.setProperty('right', '6px', 'important');
+              element.style.setProperty('top', '50%', 'important');
+              element.style.setProperty('transform', 'translateY(-50%)', 'important');
+              element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
+              element.style.setProperty('font-size', '6.5pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+              element.style.setProperty('line-height', '4.5pt', 'important');
+              element.style.setProperty('letter-spacing', '0', 'important');
+              element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+              element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+              element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+              element.style.setProperty('font-synthesis', 'none', 'important');
+              element.style.setProperty('-webkit-text-stroke', '0.01em transparent', 'important');
+              element.style.setProperty('text-align', 'right', 'important');
+            });
+            
+            // Apply Kalimati font to interview section
+            const interviewSections = document.querySelectorAll('.interview-section');
+            interviewSections.forEach(function(element) {
+              element.style.setProperty('font-family', '"Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif', 'important');
               element.style.setProperty('font-size', '7pt', 'important');
-              element.style.setProperty('font-weight', '600', 'important');
+              element.style.setProperty('font-weight', '800', 'important');
+              element.style.setProperty('line-height', '7pt', 'important');
+              element.style.setProperty('letter-spacing', '-0.05em', 'important'); /* Tracking: -5 */
+              element.style.setProperty('font-kerning', 'auto', 'important'); /* Kerning: Metrics */
+              element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+              element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+              element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+              element.style.setProperty('font-synthesis', 'none', 'important');
+              element.style.setProperty('-webkit-text-stroke', '0.01em transparent', 'important');
             });
             
             // Function to apply company row styles
@@ -3331,7 +3415,7 @@
             metaItemsRow.forEach(function(element, index) {
               console.log('Applying styles to meta items row', index);
               element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
-              element.style.setProperty('font-size', '5.5pt', 'important');
+              element.style.setProperty('font-size', '6.5pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
               element.style.setProperty('line-height', '4.5pt', 'important');
               element.style.setProperty('letter-spacing', '0', 'important');
@@ -3362,7 +3446,7 @@
             const metaItems = document.querySelectorAll('.meta-item');
             metaItems.forEach(function(element) {
               element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
-              element.style.setProperty('font-size', '5.5pt', 'important');
+              element.style.setProperty('font-size', '6.5pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
               element.style.setProperty('line-height', '4.5pt', 'important');
               element.style.setProperty('letter-spacing', '0', 'important');
