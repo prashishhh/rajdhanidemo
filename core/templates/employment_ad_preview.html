@@ -912,30 +912,63 @@
   
   /* Interview Section */
   .interview-section {
-    background: #000;
-    color: #fff;
-    padding: 0px;
-    margin: 0px;
-    margin-bottom: 0px; /* Ensure no bottom margin */
-    border: none;
-    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    background: #000 !important;
+    color: #fff !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 0px !important; /* Ensure no bottom margin */
+    border: none !important;
+    font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
     font-size: 7pt !important;
-    text-align: center;
-    font-weight: 800 !important;
+    text-align: center !important;
+    font-weight: 900 !important;
+    font-weight: bold !important; /* Fallback for better browser support */
     line-height: 7pt !important;
     letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
     font-kerning: auto !important; /* Kerning: Metrics (automatic) */
-    min-height: 0.4cm;
-    overflow: visible;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    min-height: 0.4cm !important;
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     font-synthesis: none !important;
     -webkit-text-stroke: 0.01em transparent !important;
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+  }
+  
+  /* MAXIMUM SPECIFICITY - Force interview section styling */
+  body .employment-ad .main-content .interview-section,
+  body .employment-ad .interview-section,
+  .employment-ad .main-content .interview-section,
+  .employment-ad .interview-section,
+  .interview-section {
+    background: #000 !important;
+    color: #fff !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 0px !important;
+    border: none !important;
+    text-align: center !important;
+    min-height: 0.4cm !important;
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Interview Section - Make all text content bold */
+  .interview-section,
+  .interview-section *,
+  .interview-section span,
+  .interview-section #interview-date-text,
+  .interview-section #calculated-interview-date,
+  .interview-section #calculated-interview-date-english {
+    font-weight: 900 !important;
+    font-weight: bold !important; /* Fallback for better browser support */
   }
   
   /* Extra Information Section */
@@ -1340,7 +1373,7 @@
     margin: 0px !important;
   }
   
-  /* Print-specific styles to ensure light font weights */
+  /* Print-specific styles to ensure light font weights - Updated: 2024-12-19 */
   @media print {
     /* Ensure GANESH font loads for print/PDF - Safari compatible */
     @font-face {
@@ -2436,17 +2469,63 @@
     }
     /* Interview section print styles */
     .interview-section {
-      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+      background: #000 !important;
+      color: #fff !important;
+      padding: 0px !important;
+      margin: 0px !important;
+      margin-bottom: 0px !important; /* Ensure no bottom margin */
+      border: none !important;
+      font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
       font-size: 7pt !important;
-      font-weight: 800 !important;
+      text-align: center !important;
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Fallback for better browser support */
       line-height: 7pt !important;
       letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
       font-kerning: auto !important; /* Kerning: Metrics (automatic) */
+      min-height: 0.4cm !important;
+      overflow: visible !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
       text-rendering: optimizeLegibility !important;
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale !important;
       font-synthesis: none !important;
       -webkit-text-stroke: 0.01em transparent !important;
+    }
+    
+    /* Interview Section Print - Make all text content bold */
+    .interview-section,
+    .interview-section *,
+    .interview-section span,
+    .interview-section #interview-date-text,
+    .interview-section #calculated-interview-date,
+    .interview-section #calculated-interview-date-english {
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Fallback for better browser support */
+    }
+    
+    /* MAXIMUM SPECIFICITY FOR PRINT - Force interview section styling */
+    body .employment-ad .main-content .interview-section,
+    body .employment-ad .interview-section,
+    .employment-ad .main-content .interview-section,
+    .employment-ad .interview-section,
+    .interview-section {
+      background: #000 !important;
+      color: #fff !important;
+      padding: 0px !important;
+      margin: 0px !important;
+      margin-bottom: 0px !important;
+      border: none !important;
+      text-align: center !important;
+      min-height: 0.4cm !important;
+      overflow: visible !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
     }
     
     /* Ensure extra-section fits within container in print */
@@ -2627,6 +2706,31 @@
     font-size: 6.3pt !important;
     font-weight: 900 !important;
     font-family: Arial, sans-serif !important;
+  }
+  
+  /* NUCLEAR OPTION - Ultra-specific interview section styling */
+  html body .employment-ad .main-content .interview-section,
+  html body .employment-ad .interview-section,
+  body .employment-ad .main-content .interview-section,
+  body .employment-ad .interview-section,
+  .employment-ad .main-content .interview-section,
+  .employment-ad .interview-section,
+  .interview-section {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    color: white !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 0px !important;
+    border: none !important;
+    text-align: center !important;
+    min-height: 0.4cm !important;
+    overflow: visible !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
   }
 </style>
 </head>
@@ -3360,9 +3464,23 @@
             // Apply Kalimati font to interview section
             const interviewSections = document.querySelectorAll('.interview-section');
             interviewSections.forEach(function(element) {
-              element.style.setProperty('font-family', '"Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif', 'important');
+              element.style.setProperty('background', '#000', 'important');
+              element.style.setProperty('color', '#fff', 'important');
+              element.style.setProperty('padding', '0px', 'important');
+              element.style.setProperty('margin', '0px', 'important');
+              element.style.setProperty('margin-bottom', '0px', 'important');
+              element.style.setProperty('border', 'none', 'important');
+              element.style.setProperty('text-align', 'center', 'important');
+              element.style.setProperty('min-height', '0.4cm', 'important');
+              element.style.setProperty('overflow', 'visible', 'important');
+              element.style.setProperty('display', 'flex', 'important');
+              element.style.setProperty('align-items', 'center', 'important');
+              element.style.setProperty('justify-content', 'center', 'important');
+              element.style.setProperty('box-sizing', 'border-box', 'important');
+              element.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
               element.style.setProperty('font-size', '7pt', 'important');
-              element.style.setProperty('font-weight', '800', 'important');
+              element.style.setProperty('font-weight', '900', 'important');
+              element.style.setProperty('font-weight', 'bold', 'important'); // Fallback
               element.style.setProperty('line-height', '7pt', 'important');
               element.style.setProperty('letter-spacing', '-0.05em', 'important'); /* Tracking: -5 */
               element.style.setProperty('font-kerning', 'auto', 'important'); /* Kerning: Metrics */
@@ -3371,7 +3489,143 @@
               element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
               element.style.setProperty('font-synthesis', 'none', 'important');
               element.style.setProperty('-webkit-text-stroke', '0.01em transparent', 'important');
+              
+              // Also make all child elements bold
+              const childElements = element.querySelectorAll('*');
+              childElements.forEach(function(child) {
+                child.style.setProperty('font-weight', '900', 'important');
+                child.style.setProperty('font-weight', 'bold', 'important');
+                child.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
+              });
             });
+            
+            // AGGRESSIVE INTERVIEW SECTION STYLING - Run multiple times to ensure it sticks
+            function forceInterviewSectionStyling() {
+              console.log('=== FORCING INTERVIEW SECTION STYLING ===');
+              const interviewSections = document.querySelectorAll('.interview-section');
+              console.log('Found interview sections:', interviewSections.length);
+              
+              interviewSections.forEach(function(element, index) {
+                console.log(`Processing interview section ${index}:`, element);
+                console.log('Element text content:', element.textContent);
+                console.log('Element classes:', element.className);
+                
+                // Force all critical styling properties
+                element.style.cssText += 'background: #000 !important; color: #fff !important; padding: 0px !important; margin: 0px !important; margin-bottom: 0px !important; border: none !important; text-align: center !important; min-height: 0.4cm !important; overflow: visible !important; display: flex !important; align-items: center !important; justify-content: center !important; box-sizing: border-box !important; font-weight: 900 !important; font-weight: bold !important;';
+                
+                // Also set individual properties as backup
+                element.style.setProperty('background', '#000', 'important');
+                element.style.setProperty('color', '#fff', 'important');
+                element.style.setProperty('text-align', 'center', 'important');
+                element.style.setProperty('display', 'flex', 'important');
+                element.style.setProperty('align-items', 'center', 'important');
+                element.style.setProperty('justify-content', 'center', 'important');
+                element.style.setProperty('font-weight', '900', 'important');
+                element.style.setProperty('font-weight', 'bold', 'important'); // Fallback
+                
+                // Also make all child elements bold
+                const childElements = element.querySelectorAll('*');
+                childElements.forEach(function(child) {
+                  child.style.setProperty('font-weight', '900', 'important');
+                  child.style.setProperty('font-weight', 'bold', 'important');
+                  child.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
+                });
+                
+                console.log('Applied styles to interview section:', element.textContent);
+                console.log('Final computed style:', window.getComputedStyle(element).backgroundColor);
+              });
+            }
+            
+            // Run immediately
+            forceInterviewSectionStyling();
+            
+            // Run again after a short delay
+            setTimeout(forceInterviewSectionStyling, 100);
+            setTimeout(forceInterviewSectionStyling, 500);
+            setTimeout(forceInterviewSectionStyling, 1000);
+            
+            // Also try with different selectors in case the class name is different
+            function forceInterviewSectionStylingAlternative() {
+              console.log('=== TRYING ALTERNATIVE SELECTORS ===');
+              
+              // Try different possible selectors
+              const selectors = [
+                '.interview-section',
+                'div.interview-section',
+                '.main-content .interview-section',
+                '.employment-ad .interview-section',
+                'div[class*="interview"]',
+                'div[class*="Interview"]'
+              ];
+              
+              selectors.forEach(function(selector) {
+                const elements = document.querySelectorAll(selector);
+                console.log(`Selector "${selector}" found ${elements.length} elements`);
+                elements.forEach(function(element, index) {
+                  console.log(`Element ${index} from ${selector}:`, element);
+                  console.log('Text content:', element.textContent.substring(0, 100));
+                  
+                  // Apply styling
+                  element.style.setProperty('background', '#000', 'important');
+                  element.style.setProperty('color', '#fff', 'important');
+                  element.style.setProperty('text-align', 'center', 'important');
+                  element.style.setProperty('display', 'flex', 'important');
+                  element.style.setProperty('align-items', 'center', 'important');
+                  element.style.setProperty('justify-content', 'center', 'important');
+                  element.style.setProperty('font-weight', '900', 'important');
+                  element.style.setProperty('font-weight', 'bold', 'important'); // Fallback
+                  
+                  // Also make all child elements bold
+                  const childElements = element.querySelectorAll('*');
+                  childElements.forEach(function(child) {
+                    child.style.setProperty('font-weight', '900', 'important');
+                    child.style.setProperty('font-weight', 'bold', 'important');
+                    child.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
+                  });
+                });
+              });
+            }
+            
+            // Run alternative approach
+            setTimeout(forceInterviewSectionStylingAlternative, 200);
+            setTimeout(forceInterviewSectionStylingAlternative, 1200);
+            
+            // Debug function to check interview section styling
+            function debugInterviewSection() {
+              console.log('=== DEBUGGING INTERVIEW SECTION ===');
+              const interviewSections = document.querySelectorAll('.interview-section');
+              console.log('Found interview sections:', interviewSections.length);
+              
+              if (interviewSections.length === 0) {
+                console.log('NO INTERVIEW SECTIONS FOUND!');
+                console.log('Looking for any elements with "interview" in class name...');
+                const allElements = document.querySelectorAll('*');
+                allElements.forEach(function(el) {
+                  if (el.className && el.className.includes('interview')) {
+                    console.log('Found element with interview in class:', el, el.className);
+                  }
+                });
+                return;
+              }
+              
+              interviewSections.forEach(function(element, index) {
+                const computedStyle = window.getComputedStyle(element);
+                console.log(`Interview section ${index}:`, {
+                  element: element,
+                  textContent: element.textContent.substring(0, 50) + '...',
+                  background: computedStyle.backgroundColor,
+                  color: computedStyle.color,
+                  textAlign: computedStyle.textAlign,
+                  display: computedStyle.display,
+                  alignItems: computedStyle.alignItems,
+                  justifyContent: computedStyle.justifyContent
+                });
+              });
+            }
+            
+            // Run debug after styling
+            setTimeout(debugInterviewSection, 200);
+            setTimeout(debugInterviewSection, 1200);
             
             // Function to apply company row styles
             function applyCompanyRowStyles() {

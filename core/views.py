@@ -1159,9 +1159,9 @@ def download_design_pdf(request):
         'country_notice': country_notice,
     }
     
-    # Generate PDF using the print service with the new design template
+    # Generate PDF using the print service with the preview template (design template doesn't exist)
     print_service = PrintService()
-    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, 'employment_ad_design.html')
+    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, 'employment_ad_preview.html')
     
     if pdf_content:
         response = HttpResponse(pdf_content, content_type='application/pdf')
