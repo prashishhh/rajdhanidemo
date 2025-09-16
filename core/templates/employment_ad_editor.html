@@ -6472,8 +6472,118 @@ function generateTitleFromCountry(country, titleField) {
             break;
     }
     
-    // Only set the title if it's empty or if user hasn't manually typed something
-    if (!titleField.value.trim() || titleField.value.trim() === 'जापानमा रोजगारी') {
+    // Only set the title if it's empty or if it's a default country-based title
+    // Allow manual title input to be preserved
+    const currentValue = titleField.value.trim();
+    const isDefaultTitle = currentValue === 'जापानमा रोजगारी' || 
+                          currentValue === 'दुबईमा रोजगारी' || 
+                          currentValue === 'कतारमा रोजगारी' ||
+                          currentValue === 'साउदी अरबमा रोजगारी' ||
+                          currentValue === 'मलेशियामा रोजगारी' ||
+                          currentValue === 'सिङ्गापुरमा रोजगारी' ||
+                          currentValue === 'कोरियामा रोजगारी' ||
+                          currentValue === 'ताइवानमा रोजगारी' ||
+                          currentValue === 'हङकङमा रोजगारी' ||
+                          currentValue === 'मकाउमा रोजगारी' ||
+                          currentValue === 'भारतमा रोजगारी' ||
+                          currentValue === 'चीनमा रोजगारी' ||
+                          currentValue === 'थाइल्यान्डमा रोजगारी' ||
+                          currentValue === 'भिएतनाममा रोजगारी' ||
+                          currentValue === 'फिलिपिन्समा रोजगारी' ||
+                          currentValue === 'इन्डोनेसियामा रोजगारी' ||
+                          currentValue === 'बङ्गलादेशमा रोजगारी' ||
+                          currentValue === 'श्रीलङ्कामा रोजगारी' ||
+                          currentValue === 'पाकिस्तानमा रोजगारी' ||
+                          currentValue === 'अफगानिस्तानमा रोजगारी' ||
+                          currentValue === 'इरानमा रोजगारी' ||
+                          currentValue === 'इराकमा रोजगारी' ||
+                          currentValue === 'कुवेतमा रोजगारी' ||
+                          currentValue === 'बहराइनमा रोजगारी' ||
+                          currentValue === 'ओमानमा रोजगारी' ||
+                          currentValue === 'युएईमा रोजगारी' ||
+                          currentValue === 'जोर्डनमा रोजगारी' ||
+                          currentValue === 'लेबनानमा रोजगारी' ||
+                          currentValue === 'तुर्कीमा रोजगारी' ||
+                          currentValue === 'इजरायलमा रोजगारी' ||
+                          currentValue === 'मिस्रमा रोजगारी' ||
+                          currentValue === 'लिबियामा रोजगारी' ||
+                          currentValue === 'सुडानमा रोजगारी' ||
+                          currentValue === 'इथियोपियामा रोजगारी' ||
+                          currentValue === 'केन्यामा रोजगारी' ||
+                          currentValue === 'तान्जानियामा रोजगारी' ||
+                          currentValue === 'युगान्डामा रोजगारी' ||
+                          currentValue === 'रुवान्डामा रोजगारी' ||
+                          currentValue === 'दक्षिण अफ्रिकामा रोजगारी' ||
+                          currentValue === 'नाइजेरियामा रोजगारी' ||
+                          currentValue === 'घानामा रोजगारी' ||
+                          currentValue === 'सेनेगलमा रोजगारी' ||
+                          currentValue === 'मोरक्कोमा रोजगारी' ||
+                          currentValue === 'अल्जेरियामा रोजगारी' ||
+                          currentValue === 'ट्युनिसियामा रोजगारी' ||
+                          currentValue === 'रूसमा रोजगारी' ||
+                          currentValue === 'युक्रेनमा रोजगारी' ||
+                          currentValue === 'पोल्यान्डमा रोजगारी' ||
+                          currentValue === 'जर्मनीमा रोजगारी' ||
+                          currentValue === 'फ्रान्समा रोजगारी' ||
+                          currentValue === 'इटालीमा रोजगारी' ||
+                          currentValue === 'स्पेनमा रोजगारी' ||
+                          currentValue === 'पोर्चुगलमा रोजगारी' ||
+                          currentValue === 'नेदरल्यान्डमा रोजगारी' ||
+                          currentValue === 'बेल्जियममा रोजगारी' ||
+                          currentValue === 'स्विजरल्यान्डमा रोजगारी' ||
+                          currentValue === 'अस्ट्रियामा रोजगारी' ||
+                          currentValue === 'स्विडेनमा रोजगारी' ||
+                          currentValue === 'नर्वेमा रोजगारी' ||
+                          currentValue === 'डेनमार्कमा रोजगारी' ||
+                          currentValue === 'फिनल्यान्डमा रोजगारी' ||
+                          currentValue === 'आइसल्यान्डमा रोजगारी' ||
+                          currentValue === 'आयरल्यान्डमा रोजगारी' ||
+                          currentValue === 'युनाइटेड किङ्गडममा रोजगारी' ||
+                          currentValue === 'क्यानाडामा रोजगारी' ||
+                          currentValue === 'अमेरिकामा रोजगारी' ||
+                          currentValue === 'मेक्सिकोमा रोजगारी' ||
+                          currentValue === 'ब्राजिलमा रोजगारी' ||
+                          currentValue === 'अर्जेन्टिनामा रोजगारी' ||
+                          currentValue === 'चिलीमा रोजगारी' ||
+                          currentValue === 'पेरुमा रोजगारी' ||
+                          currentValue === 'कोलम्बियामा रोजगारी' ||
+                          currentValue === 'भेनेजुएलामा रोजगारी' ||
+                          currentValue === 'इक्वाडोरमा रोजगारी' ||
+                          currentValue === 'बोलिभियामा रोजगारी' ||
+                          currentValue === 'पाराग्वेमा रोजगारी' ||
+                          currentValue === 'उरुग्वेमा रोजगारी' ||
+                          currentValue === 'अस्ट्रेलियामा रोजगारी' ||
+                          currentValue === 'न्युजिल्यान्डमा रोजगारी' ||
+                          currentValue === 'फिजीमा रोजगारी' ||
+                          currentValue === 'पापुवा न्युगिनीमा रोजगारी' ||
+                          currentValue === 'सोलोमन टापुमा रोजगारी' ||
+                          currentValue === 'वानुअतुमा रोजगारी' ||
+                          currentValue === 'सामोआमा रोजगारी' ||
+                          currentValue === 'टोङ्गामा रोजगारी' ||
+                          currentValue === 'किरिबाटीमा रोजगारी' ||
+                          currentValue === 'तुवालुमा रोजगारी' ||
+                          currentValue === 'नाउरुमा रोजगारी' ||
+                          currentValue === 'पलाउमा रोजगारी' ||
+                          currentValue === 'मार्शल टापुमा रोजगारी' ||
+                          currentValue === 'माइक्रोनेसियामा रोजगारी' ||
+                          currentValue === 'ग्वाममा रोजगारी' ||
+                          currentValue === 'उत्तरी मारियाना टापुमा रोजगारी' ||
+                          currentValue === 'अमेरिकी सामोआमा रोजगारी' ||
+                          currentValue === 'हवाईमा रोजगारी' ||
+                          currentValue === 'अलास्कामा रोजगारी' ||
+                          currentValue === 'ग्रीनल्यान्डमा रोजगारी' ||
+                          currentValue === 'फरो टापुमा रोजगारी' ||
+                          currentValue === 'जान मेयेनमा रोजगारी' ||
+                          currentValue === 'स्वालबार्डमा रोजगारी' ||
+                          currentValue === 'नोरफोक टापुमा रोजगारी' ||
+                          currentValue === 'क्रिसमस टापुमा रोजगारी' ||
+                          currentValue === 'कोकोस टापुमा रोजगारी' ||
+                          currentValue === 'हर्ड टापुमा रोजगारी' ||
+                          currentValue === 'म्याकडोनाल्ड टापुमा रोजगारी' ||
+                          currentValue === 'विदेशमा रोजगारी' ||
+                          currentValue === 'देशमा रोजगारी';
+    
+    if (!currentValue || isDefaultTitle) {
         titleField.value = title;
         titleField.dispatchEvent(new Event('input', { bubbles: true }));
         titleField.dispatchEvent(new Event('change', { bubbles: true }));
@@ -7774,7 +7884,7 @@ function updatePreviewPositions() {
 }
 
 function updatePreviewInterview() {
-    const interviewSection = document.getElementById('preview-interview');
+    const interviewSection = document.getElementById('interview_preview');
     if (!interviewSection) return;
     
     const customText = document.getElementById('id_interview_custom_text')?.value?.trim();
@@ -7783,11 +7893,11 @@ function updatePreviewInterview() {
     const location = document.getElementById('id_interview_location')?.value?.trim();
     
     if (customText) {
-        interviewSection.textContent = customText;
+        interviewSection.innerHTML = customText;
     } else if (nepaliDate && gregorianDate && location) {
-        interviewSection.textContent = `अन्तरवार्ता मिति ${nepaliDate} गते (${gregorianDate}) ${location} हुनेछ ।`;
+        interviewSection.innerHTML = `अन्तरवार्ता मिति <span id="preview_nepali_date">${nepaliDate}</span> गते (<span id="preview_gregorian_date">${gregorianDate}</span>) <span id="preview_location">${location}</span> हुनेछ ।`;
     } else {
-        interviewSection.textContent = 'अन्तरवार्ता मिति निर्धारण गर्नुहोस्।';
+        interviewSection.innerHTML = 'अन्तरवार्ता मिति निर्धारण गर्नुहोस्।';
     }
 }
 
