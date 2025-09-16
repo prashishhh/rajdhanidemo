@@ -709,8 +709,29 @@
   
   .extra-table th,
   .extra-table td {
-    font-size: 3.54pt !important;
+    font-size: 3.04pt !important;
     font-weight: 200 !important;
+  }
+  
+  .extra-table th {
+    font-size: 3pt !important;
+    font-weight: 500 !important;
+    line-height: 4pt !important;
+    letter-spacing: 0 !important;
+    font-kerning: auto !important;
+  }
+  
+  .extra-table td {
+    line-height: 1.2 !important;
+  }
+  
+  .extra-table td:has(br) {
+    line-height: 1.4 !important;
+  }
+  
+  .extra-table td.col-service-fee {
+    font-size: 6.04pt !important;
+    font-weight: 700 !important;
   }
   
   /* Column widths for extra-table */
@@ -2175,8 +2196,29 @@
     
     .extra-table th,
     .extra-table td {
-      font-size: 3.54pt !important;
+      font-size: 3.04pt !important;
       font-weight: 200 !important;
+    }
+    
+    .extra-table th {
+      font-size: 3pt !important;
+      font-weight: 500 !important;
+      line-height: 4pt !important;
+      letter-spacing: 0 !important;
+      font-kerning: auto !important;
+    }
+    
+    .extra-table td {
+      line-height: 1.2 !important;
+    }
+    
+    .extra-table td:has(br) {
+      line-height: 1.4 !important;
+    }
+    
+    .extra-table td.col-service-fee {
+      font-size: 6.04pt !important;
+      font-weight: 700 !important;
     }
     
     /* Column widths for extra-table in print */
@@ -2594,7 +2636,15 @@
   <div class="main-content">
     <!-- Top Header - Centered title only -->
   <div class="top-header">
-    <div class="header-left">{% if ad.country and ad.country.strip %}{{ ad.country }} {% else %}देश {% endif %}मा रोजगारी</div>
+    <div class="header-left">
+      {% if ad.title and ad.title.strip %}
+        {{ ad.title }}
+      {% elif ad.country and ad.country.strip %}
+        {% if ad.country == "जापान" %}Japan{% elif ad.country == "दुबई" %}Dubai{% elif ad.country == "कतार" %}Qatar{% elif ad.country == "साउदी अरब" %}Saudi Arabia{% elif ad.country == "मलेशिया" %}Malaysia{% elif ad.country == "सिङ्गापुर" %}Singapore{% elif ad.country == "कोरिया" %}Korea{% elif ad.country == "ताइवान" %}Taiwan{% elif ad.country == "हङकङ" %}Hong Kong{% elif ad.country == "मकाउ" %}Macau{% else %}{{ ad.country }}{% endif %} मा रोजगारी
+      {% else %}
+        देश मा रोजगारी
+      {% endif %}
+    </div>
     {% if ad.right_section_text %}
     <div class="header-right">{{ ad.right_section_text }}</div>
     {% endif %}
@@ -3150,6 +3200,12 @@
                 element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
                 element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
                 element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                
+                // Ensure text is not converted - keep original text
+                const originalText = element.textContent;
+                if (originalText && originalText !== element.textContent) {
+                  element.textContent = originalText;
+                }
               });
               
             }
@@ -3622,10 +3678,41 @@
             });
             
             // Extra section table - 3.74pt font size
-            const extraTableElements = document.querySelectorAll('.extra-table, .extra-table th, .extra-table td');
+            const extraTableElements = document.querySelectorAll('.extra-table, .extra-table td');
             extraTableElements.forEach(function(element) {
-              element.style.setProperty('font-size', '3.54pt', 'important');
+              element.style.setProperty('font-size', '3.04pt', 'important');
               element.style.setProperty('font-weight', '200', 'important');
+            });
+            
+            // Apply line-height to td elements
+            const extraTableTds = document.querySelectorAll('.extra-table td');
+            extraTableTds.forEach(function(element) {
+              element.style.setProperty('line-height', '1.2', 'important');
+            });
+            
+            // Apply increased line-height to td elements with br tags
+            const extraTableTdsWithBr = document.querySelectorAll('.extra-table td');
+            extraTableTdsWithBr.forEach(function(element) {
+              if (element.innerHTML.includes('<br')) {
+                element.style.setProperty('line-height', '1.4', 'important');
+              }
+            });
+            
+            // Apply special styling to col-service-fee cells
+            const serviceFeeCells = document.querySelectorAll('.extra-table td.col-service-fee');
+            serviceFeeCells.forEach(function(element) {
+              element.style.setProperty('font-size', '6.04pt', 'important');
+              element.style.setProperty('font-weight', '700', 'important');
+            });
+            
+            // Extra table headers with specific styling
+            const extraTableHeaders = document.querySelectorAll('.extra-table th');
+            extraTableHeaders.forEach(function(element) {
+              element.style.setProperty('font-size', '3pt', 'important');
+              element.style.setProperty('font-weight', '500', 'important');
+              element.style.setProperty('line-height', '4pt', 'important');
+              element.style.setProperty('letter-spacing', '0', 'important');
+              element.style.setProperty('font-kerning', 'auto', 'important');
             });
             
             // Mark as processed to prevent re-execution
@@ -3827,14 +3914,14 @@
     <table class="extra-table">
       <thead>
         <tr>
-          <th>स्वदेशमा गरिने मेडिकल खर्च कस्ले व्यहोर्ने र कति लाग्ने</th>
+          <th>स्वदेशमा गरिने मेडिकल खर्च <br> कस्ले व्यहोर्ने र कति लाग्ने</th>
           <th>विदेशमा गरिने मेडिकल खर्च कस्ले व्यहोर्ने</th>
           <th>स्वदेशमा गरिने म्यादेजीवन बीमा कस्ले व्यहोर्ने र कति लाग्ने</th>
-          <th class="col-insurance">रोजगारमा बीमा हुने/नहुने र प्रिमियर कसले व्यहोर्ने</th>
-          <th>कामदारलाई हवाई टिकट कस्ले दिने र कति लाग्ने</th>
+          <th class="col-insurance">रोजगारमा बीमा हुने/नहुने <br> र प्रिमियर कसले व्यहोर्ने</th>
+          <th>कामदारलाई हवाई टिकट <br> कस्ले दिने र कति लाग्ने</th>
           <th>सामाजिक सुरक्षाकोष</th>
           <th>भिषा शुल्क कसले व्यहोर्ने</th>
-          <th>भिषा स्ट्याम्पी शुल्क कसले व्यहोर्ने</th>
+          <th>भिषा स्ट्याम्पी <br> शुल्क कसले व्यहोर्ने</th>
           <th>अभिमुखिकरण शुल्क कति लाग्ने र कस्ले व्यहोर्ने</th>
           <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
           <th class="col-service-fee">शेवा शुल्क</th>
@@ -3845,14 +3932,14 @@
           <td>कामदार आफैले</td>
           <td>रोजगादाताले व्यहोर्ने</td>
           <td>कामदार आफैले</td>
-          <td>बीम हुने/प्रिमियम रोजगारदाताले तिर्ने</td>
+          <td>बीम हुने/प्रिमियम <br> रोजगारदाताले तिर्ने</td>
           <td>रोजगारदाता कम्पनीले व्यहोर्ने</td>
           <td>रू. २५९६/- कामदार आफैले</td>
           <td>रोजगारदाताले व्यहोर्ने</td>
           <td>रोजगारदाताले व्यहोर्ने</td>
-          <td>रू. ७००/- कामदार आफैले</td>
-          <td>रू. १५००/- कामदार आफैले</td>
-          <td class="col-service-fee">निःशूल्क</td>
+          <td>रू. ७००/- <br>कामदार आफैले</td>
+          <td>रू. १५००/- <br> कामदार आफैले</td>
+          <td class="col-service-fee">{% if ad.service_fee %}{{ ad.service_fee }}{% else %}निःशूल्क{% endif %}</td>
         </tr>
       </tbody>
     </table>
