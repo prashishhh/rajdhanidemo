@@ -24,3 +24,8 @@ from django.urls import path
 urlpatterns += [
     path('tic-tac-toe/', views.tic_tac_toe_game, name='tic_tac_toe_game'),
 ]
+
+# Chess Path
+urlpatterns += [
+    path('chess/', views.chess_game, name='chess_game'),
+]
