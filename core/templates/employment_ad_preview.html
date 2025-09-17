@@ -103,10 +103,10 @@
     justify-content: center;
     padding: 0px 6px;
     font-weight: 900;
-    font-size: 10pt;
-    height: 0.6cm;
-    max-height: 0.6cm;
-    min-height: 0.6cm;
+    font-size: 7pt;
+    height: 0.4cm;
+    max-height: 0.4cm;
+    min-height: 0.4cm;
     box-sizing: border-box;
     margin-bottom: 0px;
     overflow: hidden;
@@ -115,19 +115,21 @@
   
   .header-left {
     text-align: center;
-    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
-    font-size: 13pt !important;
-    line-height: 10pt !important;
-    font-weight: 900 !important; /* Bold weight to match InDesign */
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 0.4cm !important;
+    font-weight: 900 !important; /* Maximum bold weight */
+    font-weight: bold !important; /* Additional bold fallback */
+    text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor, 0 0.3px 0 currentColor, 0 -0.3px 0 currentColor !important;
     font-style: normal !important;
-    letter-spacing: 0 !important;
-    word-spacing: 0 !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
     text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
     font-synthesis: none !important; /* Prevent browser from synthesizing bold */
-    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
-    text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke */
+    text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
   }
   
   
@@ -163,11 +165,11 @@
     border-bottom: none;
     font-size: 5pt;
     box-sizing: border-box;
-    height: 1.0cm;
-    max-height: 1.0cm;
-    min-height: 1.0cm;
+    height: 0.75cm;
+    max-height: 0.75cm;
+    min-height: 0.75cm;
     overflow: hidden;
-    padding-top: 0.1cm;
+    padding-top: 0.08cm;
   }
   
   .company-container {
@@ -189,9 +191,9 @@
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
     text-align: center !important;
-    height: 0.3cm !important;
-    min-height: 0.3cm !important;
-    max-height: 0.3cm !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
     border-bottom: none !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
@@ -213,10 +215,21 @@
   
   /* Company label - Lato Regular */
   .company-label {
-    font-family: "Lato", Arial, sans-serif !important;
-    font-size: 9.8pt !important;
-    line-height: 12.512pt !important;
-    font-weight: 400 !important; /* Regular */
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 8pt !important;
+    font-weight: 900 !important; /* Maximum bold weight */
+    font-weight: bold !important; /* Additional bold fallback */
+    text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+    font-style: normal !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+    text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
     font-style: normal !important;
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
@@ -229,10 +242,21 @@
   
   /* Lato Black text class */
   .lato-black-text {
-    font-family: "Lato", sans-serif !important;
-    font-weight: 900 !important;         /* Black */
-    font-size: 9.8pt !important;        /* ≈ 13.1px */
-    line-height: 12.512pt !important;    /* ≈ 16.7px */
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-weight: 900 !important;         /* Maximum black */
+    font-weight: bold !important; /* Additional bold fallback */
+    font-size: 7pt !important;        /* Increased from 6pt */
+    line-height: 8pt !important;    /* Increased from 7pt */
+    text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+    font-style: normal !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+    text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
     text-rendering: optimizeLegibility !important;
@@ -249,16 +273,16 @@
     justify-content: center !important;
     padding: 0px 3px !important;
     font-family: "Lato", Arial, sans-serif !important;
-    font-size: 9.8pt !important;
-    line-height: 12.512pt !important;
+    font-size: 7pt !important;
+    line-height: 8pt !important;
     font-weight: 400 !important;
     font-style: normal !important;
     letter-spacing: 0 !important;
     word-spacing: 0 !important;
     text-align: center !important;
-    height: 0.3cm !important;
-    min-height: 0.3cm !important;
-    max-height: 0.3cm !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
     border-bottom: none !important;
     word-wrap: break-word !important;
     overflow-wrap: break-word !important;
@@ -297,14 +321,14 @@
     display: grid;
     grid-template-columns: 1.2fr 1fr 1fr 1fr;
     gap: 0.1cm;
-    height: 0.4cm;
-    min-height: 0.4cm;
+    height: 0.3cm;
+    min-height: 0.3cm;
     max-height: 0.4cm;
     width: 100%;
     overflow: hidden;
-    margin-top: 0.15cm;
+    margin-top: 0.05cm;
     font-family: "Roboto", Arial, sans-serif !important;
-    font-size: 5.5pt !important;
+    font-size: 6pt !important;
     font-weight: 800 !important;
     line-height: 4.5pt !important;
     letter-spacing: 0 !important;
@@ -498,9 +522,9 @@
   }
   
   .main-table td {
-    height: 0.4cm !important;
-    min-height: 0.4cm !important;
-    max-height: 0.4cm !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
     overflow: hidden !important;
     line-height: 1.0 !important;
     padding: 0px !important;
@@ -890,11 +914,24 @@
 }
   /* Data Row */
   .data-row {
-    height: 0.4cm !important;
-    min-height: 0.4cm !important;
-    max-height: 0.4cm !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
     margin: 0px !important;
     padding: 0px !important;
+  }
+  
+  /* More specific rules to ensure data-row height is applied */
+  .main-table tbody tr.data-row {
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
+  }
+  
+  .main-table tbody tr.data-row td {
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
   }
   
   .data-row td {
@@ -902,9 +939,9 @@
     font-size: 6.5pt !important;
     padding: 0px !important;
     margin: 0px !important;
-    height: 0.4cm !important;
-    min-height: 0.4cm !important;
-    max-height: 0.4cm !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
     overflow: hidden !important;
     line-height: 1.0 !important;
     border-spacing: 0px !important;
@@ -1375,6 +1412,25 @@
   
   /* Print-specific styles to ensure light font weights - Updated: 2024-12-19 */
   @media print {
+    /* Data row height for print/PDF */
+    .data-row {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
+    .main-table tbody tr.data-row {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
+    .main-table tbody tr.data-row td {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
     /* Ensure GANESH font loads for print/PDF - Safari compatible */
     @font-face {
       font-family: 'GANESH';
@@ -1551,7 +1607,7 @@
     /* Olympia font for specific data cells in print */
     .main-table .olympia-data {
       font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       line-height: 6.5pt !important;
       font-weight: 900 !important; /* Bold weight */
       font-stretch: condensed !important; /* Condensed variant */
@@ -1569,18 +1625,20 @@
     /* Header-left with InDesign specifications */
     .header-left {
       text-align: center !important;
-      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
-      font-size: 13pt !important;
-      line-height: 10pt !important;
-      font-weight: 900 !important; /* Bold weight to match InDesign */
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 0.4cm !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor, 0 0.3px 0 currentColor, 0 -0.3px 0 currentColor !important;
       font-style: normal !important;
-      letter-spacing: 0 !important;
-      word-spacing: 0 !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
       text-rendering: optimizeLegibility !important;
       -webkit-font-smoothing: antialiased !important;
       -moz-osx-font-smoothing: grayscale !important;
-      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
-      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke */
+      text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
     }
     
     
@@ -1595,7 +1653,7 @@
       top: 50% !important;
       transform: translateY(-50%) !important;
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
@@ -1621,8 +1679,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -1650,8 +1708,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -1674,10 +1732,21 @@
     
     /* Company label in print - Lato Regular */
     .company-label {
-      font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
-      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       font-style: normal !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -1688,10 +1757,21 @@
     
     /* Lato Black text in print */
     .lato-black-text {
-      font-family: "Lato", sans-serif !important;
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
       font-weight: 900 !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
       text-rendering: optimizeLegibility !important;
@@ -1702,7 +1782,7 @@
     /* Meta items row */
     .meta-items-row {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
@@ -1717,7 +1797,7 @@
     
     .meta-item {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
@@ -1743,13 +1823,13 @@
     .meta-bar {
       font-size: 5pt !important;
       font-weight: 500 !important;
-      height: 1.0cm !important;
-      max-height: 1.0cm !important;
-      min-height: 1.0cm !important;
+      height: 0.75cm !important;
+      max-height: 0.75cm !important;
+      min-height: 0.75cm !important;
       overflow: hidden !important;
       display: flex !important;
       flex-direction: column !important;
-      padding-top: 0.1cm !important;
+      padding-top: 0.08cm !important;
     }
     
     /* Company container in print */
@@ -1766,8 +1846,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -1795,8 +1875,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -1819,10 +1899,21 @@
     
     /* Company label in print - Lato Regular */
     .company-label {
-      font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
-      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       font-style: normal !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -1833,10 +1924,21 @@
     
     /* Lato Black text in print */
     .lato-black-text {
-      font-family: "Lato", sans-serif !important;
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
       font-weight: 900 !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
       text-rendering: optimizeLegibility !important;
@@ -1847,7 +1949,7 @@
     /* Meta items row in print */
     .meta-items-row {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
@@ -1874,7 +1976,7 @@
     /* Meta items in print */
     .meta-item {
       font-family: "Roboto", Arial, sans-serif !important;
-      font-size: 6.5pt !important;
+      font-size: 6pt !important;
       font-weight: 800 !important;
       line-height: 4.5pt !important;
       letter-spacing: 0 !important;
@@ -2455,6 +2557,25 @@
   }
   
   @media print {
+    /* Data row height for print/PDF - Second media query */
+    .data-row {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
+    .main-table tbody tr.data-row {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
+    .main-table tbody tr.data-row td {
+      height: 0.2cm !important;
+      min-height: 0.2cm !important;
+      max-height: 0.2cm !important;
+    }
+    
     body { 
       margin: 0; 
       padding: 0; 
@@ -2540,13 +2661,13 @@
     .meta-bar {
       font-size: 5pt !important;
       font-weight: 500 !important;
-      height: 1.0cm !important;
-      max-height: 1.0cm !important;
-      min-height: 1.0cm !important;
+      height: 0.75cm !important;
+      max-height: 0.75cm !important;
+      min-height: 0.75cm !important;
       overflow: hidden !important;
       display: flex !important;
       flex-direction: column !important;
-      padding-top: 0.1cm !important;
+      padding-top: 0.08cm !important;
     }
     
     /* Company container in second print media query */
@@ -2567,8 +2688,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -2596,8 +2717,8 @@
       justify-content: center !important;
       padding: 0px 3px !important;
       font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
       font-weight: 600 !important; /* Semi-bold for better visibility in print */
       font-style: normal !important;
       letter-spacing: 0 !important;
@@ -2620,10 +2741,21 @@
     
     /* Company label in second print media query - Lato Regular */
     .company-label {
-      font-family: "Lato", Arial, sans-serif !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
-      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       font-style: normal !important;
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
@@ -2634,10 +2766,21 @@
     
     /* Lato Black text in second print media query */
     .lato-black-text {
-      font-family: "Lato", sans-serif !important;
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
       font-weight: 900 !important;
-      font-size: 9.8pt !important;
-      line-height: 12.512pt !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
       letter-spacing: 0 !important;
       word-spacing: 0 !important;
       text-rendering: optimizeLegibility !important;
@@ -3008,7 +3151,7 @@
           // Call the function when page loads
           document.addEventListener('DOMContentLoaded', handleJapanContent);
           
-          // Ensure each data row is strictly 0.4cm
+          // Ensure each data row is strictly 0.2cm
           function adjustTbodyHeight() {
             const tbody = document.querySelector('.main-table tbody');
             if (tbody) {
@@ -3019,20 +3162,20 @@
               tbody.style.setProperty('min-height', 'auto', 'important');
               tbody.style.setProperty('max-height', 'none', 'important');
               
-              // Set each row to strictly 0.4cm with no padding/margin
+              // Set each row to strictly 0.2cm with no padding/margin
               dataRows.forEach(row => {
-                row.style.setProperty('height', '0.4cm', 'important');
-                row.style.setProperty('min-height', '0.4cm', 'important');
-                row.style.setProperty('max-height', '0.4cm', 'important');
+                row.style.setProperty('height', '0.2cm', 'important');
+                row.style.setProperty('min-height', '0.2cm', 'important');
+                row.style.setProperty('max-height', '0.2cm', 'important');
                 row.style.setProperty('margin', '0px', 'important');
                 row.style.setProperty('padding', '0px', 'important');
                 
-                // Set each cell in the row to 0.4cm with no padding/margin
+                // Set each cell in the row to 0.2cm with no padding/margin
                 const cells = row.querySelectorAll('td');
                 cells.forEach(cell => {
-                  cell.style.setProperty('height', '0.4cm', 'important');
-                  cell.style.setProperty('min-height', '0.4cm', 'important');
-                  cell.style.setProperty('max-height', '0.4cm', 'important');
+                  cell.style.setProperty('height', '0.2cm', 'important');
+                  cell.style.setProperty('min-height', '0.2cm', 'important');
+                  cell.style.setProperty('max-height', '0.2cm', 'important');
                   cell.style.setProperty('overflow', 'hidden', 'important');
                   cell.style.setProperty('line-height', '1.0', 'important');
                   cell.style.setProperty('padding', '0px', 'important');
@@ -3306,13 +3449,16 @@
             headerLeft.forEach(function(element) {
                 // Apply Kalimati font directly (no text conversion needed for Unicode)
                 element.style.setProperty('text-align', 'center', 'important');
-                element.style.setProperty('font-family', 'Kalimati, Kalimati-Fallback, Noto Sans Devanagari, Hind, Arial, sans-serif', 'important');
-                element.style.setProperty('font-size', '15pt', 'important');
-                element.style.setProperty('line-height', '11pt', 'important');
-                element.style.setProperty('font-weight', '400', 'important');
+                element.style.setProperty('font-family', 'Arial Black, Arial, Kalimati, Kalimati-Fallback, Noto Sans Devanagari, Hind, sans-serif', 'important');
+                element.style.setProperty('font-size', '7pt', 'important');
+                element.style.setProperty('line-height', '0.4cm', 'important');
+                element.style.setProperty('font-weight', '900', 'important');
+                element.style.setProperty('font-weight', 'bold', 'important');
+                element.style.setProperty('text-shadow', '0.3px 0 0 currentColor, -0.3px 0 0 currentColor, 0 0.3px 0 currentColor, 0 -0.3px 0 currentColor', 'important');
+                element.style.setProperty('-webkit-text-stroke', '0.01em black', 'important');
                 element.style.setProperty('font-style', 'normal', 'important');
-                element.style.setProperty('letter-spacing', '0', 'important');
-                element.style.setProperty('word-spacing', '0', 'important');
+                element.style.setProperty('letter-spacing', '0.05em', 'important');
+                element.style.setProperty('word-spacing', '0.1em', 'important');
                 element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
                 element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
                 element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
@@ -3449,7 +3595,7 @@
               element.style.setProperty('top', '50%', 'important');
               element.style.setProperty('transform', 'translateY(-50%)', 'important');
               element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
-              element.style.setProperty('font-size', '6.5pt', 'important');
+              element.style.setProperty('font-size', '6pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
               element.style.setProperty('line-height', '4.5pt', 'important');
               element.style.setProperty('letter-spacing', '0', 'important');
@@ -3648,8 +3794,8 @@
               element.style.setProperty('justify-content', 'center', 'important');
                 element.style.setProperty('padding', '0px 3px', 'important');
                 element.style.setProperty('font-family', '"Lato", Arial, sans-serif', 'important');
-                element.style.setProperty('font-size', '9.8pt', 'important');
-                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('font-size', '7pt', 'important');
+                element.style.setProperty('line-height', '8pt', 'important');
                 element.style.setProperty('font-weight', '400', 'important');
                 element.style.setProperty('text-align', 'center', 'important');
                 element.style.setProperty('height', '0.4cm', 'important');
@@ -3671,10 +3817,21 @@
               // Company label - Lato Regular
               const companyLabel = document.querySelectorAll('.company-label');
               companyLabel.forEach(function(element) {
-                element.style.setProperty('font-family', '"Lato", Arial, sans-serif', 'important');
-                element.style.setProperty('font-size', '9.8pt', 'important');
-                element.style.setProperty('font-weight', '600', 'important');
-                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('font-family', '"Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
+                element.style.setProperty('font-size', '7pt', 'important');
+                element.style.setProperty('font-weight', '900', 'important');
+                element.style.setProperty('font-weight', 'bold', 'important');
+                element.style.setProperty('line-height', '8pt', 'important');
+                element.style.setProperty('text-shadow', '0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor', 'important');
+                element.style.setProperty('font-style', 'normal', 'important');
+                element.style.setProperty('letter-spacing', '0.05em', 'important');
+                element.style.setProperty('word-spacing', '0.1em', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                element.style.setProperty('font-synthesis', 'none', 'important');
+                element.style.setProperty('-webkit-text-stroke', '0.01em black', 'important');
+                element.style.setProperty('text-shadow', '0.3px 0.3px 0px rgba(0,0,0,0.2)', 'important');
                 element.style.setProperty('font-style', 'normal', 'important');
                 element.style.setProperty('letter-spacing', '0', 'important');
                 element.style.setProperty('word-spacing', '0', 'important');
@@ -3687,10 +3844,21 @@
               // Lato Black text
               const latoBlackText = document.querySelectorAll('.lato-black-text');
               latoBlackText.forEach(function(element) {
-                element.style.setProperty('font-family', '"Lato", sans-serif', 'important');
+                element.style.setProperty('font-family', '"Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
                 element.style.setProperty('font-weight', '900', 'important');
-                element.style.setProperty('font-size', '9.8pt', 'important');
-                element.style.setProperty('line-height', '12.512pt', 'important');
+                element.style.setProperty('font-weight', 'bold', 'important');
+                element.style.setProperty('font-size', '7pt', 'important');
+                element.style.setProperty('line-height', '8pt', 'important');
+                element.style.setProperty('text-shadow', '0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor', 'important');
+                element.style.setProperty('font-style', 'normal', 'important');
+                element.style.setProperty('letter-spacing', '0.05em', 'important');
+                element.style.setProperty('word-spacing', '0.1em', 'important');
+                element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
+                element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
+                element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
+                element.style.setProperty('font-synthesis', 'none', 'important');
+                element.style.setProperty('-webkit-text-stroke', '0.01em black', 'important');
+                element.style.setProperty('text-shadow', '0.3px 0.3px 0px rgba(0,0,0,0.2)', 'important');
                 element.style.setProperty('letter-spacing', '0', 'important');
                 element.style.setProperty('word-spacing', '0', 'important');
                 element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
@@ -3722,13 +3890,13 @@
             metaBar.forEach(function(element) {
               element.style.setProperty('font-size', '5pt', 'important');
               element.style.setProperty('font-weight', '500', 'important');
-              element.style.setProperty('height', '1.0cm', 'important');
-              element.style.setProperty('max-height', '1.0cm', 'important');
-              element.style.setProperty('min-height', '1.0cm', 'important');
+              element.style.setProperty('height', '0.75cm', 'important');
+              element.style.setProperty('max-height', '0.75cm', 'important');
+              element.style.setProperty('min-height', '0.75cm', 'important');
               element.style.setProperty('overflow', 'hidden', 'important');
               element.style.setProperty('display', 'flex', 'important');
               element.style.setProperty('flex-direction', 'column', 'important');
-              element.style.setProperty('padding-top', '0.1cm', 'important');
+              element.style.setProperty('padding-top', '0.08cm', 'important');
             });
             
             // Meta items row
@@ -3737,17 +3905,17 @@
             metaItemsRow.forEach(function(element, index) {
               console.log('Applying styles to meta items row', index);
               element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
-              element.style.setProperty('font-size', '6.5pt', 'important');
+              element.style.setProperty('font-size', '6pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
               element.style.setProperty('line-height', '4.5pt', 'important');
               element.style.setProperty('letter-spacing', '0', 'important');
               element.style.setProperty('word-spacing', '0', 'important');
-              element.style.setProperty('height', '0.4cm', 'important');
-              element.style.setProperty('max-height', '0.4cm', 'important');
-              element.style.setProperty('min-height', '0.4cm', 'important');
+              element.style.setProperty('height', '0.3cm', 'important');
+              element.style.setProperty('max-height', '0.3cm', 'important');
+              element.style.setProperty('min-height', '0.3cm', 'important');
               element.style.setProperty('display', 'grid', 'important');
               element.style.setProperty('gap', '0.1cm', 'important');
-              element.style.setProperty('margin-top', '0.15cm', 'important');
+              element.style.setProperty('margin-top', '0.05cm', 'important');
               element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
               element.style.setProperty('-webkit-font-smoothing', 'antialiased', 'important');
               element.style.setProperty('-moz-osx-font-smoothing', 'grayscale', 'important');
@@ -3768,7 +3936,7 @@
             const metaItems = document.querySelectorAll('.meta-item');
             metaItems.forEach(function(element) {
               element.style.setProperty('font-family', '"Roboto", Arial, sans-serif', 'important');
-              element.style.setProperty('font-size', '6.5pt', 'important');
+              element.style.setProperty('font-size', '6pt', 'important');
               element.style.setProperty('font-weight', '700', 'important');
               element.style.setProperty('line-height', '4.5pt', 'important');
               element.style.setProperty('letter-spacing', '0', 'important');
