@@ -1462,6 +1462,12 @@
   
   /* Print-specific styles to ensure light font weights - Updated: 2024-12-19 */
   @media print {
+    /* Add top margin for print to center content on page */
+    body {
+      margin-top: 5cm !important; /* Add top margin for print */
+      padding-top: 0 !important; /* Remove padding for print */
+    }
+    
     /* Data row height for print/PDF */
     .data-row {
       height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
@@ -2633,6 +2639,12 @@
   }
   
   @media print {
+    /* Add top margin for print to center content on page - Second media query */
+    body {
+      margin-top: 5cm !important; /* Add top margin for print */
+      padding-top: 0 !important; /* Remove padding for print */
+    }
+    
     /* Data row height for print/PDF - Second media query */
     .data-row {
       height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
