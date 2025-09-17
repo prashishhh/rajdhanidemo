@@ -407,18 +407,29 @@
     text-align: center;
   }
   
-  /* Force city field to not be cropped */
-  #city-item {
-    min-width: 0;
-    flex: 1;
-    overflow: visible;
+  /* Force city field to not be cropped - AGGRESSIVE */
+  #city-item,
+  .meta-item-city {
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    text-overflow: initial !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: none !important;
+    width: auto !important;
   }
   
-  #city-item.long-city {
+  #city-item.long-city,
+  .meta-item-city.long-city {
     justify-content: center !important;
     text-align: center !important;
     overflow: visible !important;
     white-space: normal !important;
+    text-overflow: initial !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
   }
   
   /* Main Table */
@@ -521,10 +532,43 @@
     overflow: visible !important;
   }
   
+  /* Meta Body Row - Height reduced by reducing individual data-row heights */
+  .meta-body-row {
+    /* Height is now controlled by individual data-row heights (0.18cm instead of 0.2cm) */
+  }
+  
+  /* Force height reduction with maximum specificity */
+  .main-table tbody.meta-body-row tr.data-row,
+  .main-table tbody.meta-body-row tr.data-row td {
+    height: 0.18cm !important;
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  /* Ultra-specific rule to override everything */
+  table.main-table tbody#meta-body-row tr.data-row td {
+    height: 0.18cm !important;
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  /* Force line breaks to display in min_qualification field - ULTRA SPECIFIC */
+  table.main-table tbody tr.data-row td.col-education,
+  table.main-table tbody tr.data-row td.text-center.col-education,
+  .main-table td.col-education,
+  .main-table td.text-center.col-education {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: initial !important;
+    line-height: 1.2 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
   .main-table td {
-    height: 0.2cm !important;
-    min-height: 0.2cm !important;
-    max-height: 0.2cm !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
     overflow: hidden !important;
     line-height: 1.0 !important;
     padding: 0px !important;
@@ -846,12 +890,12 @@
   .col-sn { width: 3%; }
   .col-position { width: 28%; } /* Reduced by 2% from 30% to 28% */
   .col-gender { width: 0.5%; } /* Reduced further from 1% to 0.5% */
-  .col-salary { width: 13%; } /* Increased by 1% from 12% to 13% */
-  .col-overtime { width: 6%; } /* Increased from 5% to 6% */
+  .col-salary { width: 15%; } /* Increased from 13% to 15% */
+  .col-overtime { width: 5%; } /* Reduced from 6% to 5% */
   .col-hours { width: 5%; }
   .col-days { width: 5%; }
   .col-leave { width: 6%; } /* Increased from 5% to 6% */
-  .col-education { width: 7%; } /* Increased by 2% */
+  .col-education { width: 6%; } /* Increased from 5% to 6% */
   .col-food { width: 5%; }
   .col-housing { width: 4%; }
   .col-contract { width: 6%; } /* Reduced from 7% to 6% */
@@ -914,24 +958,24 @@
 }
   /* Data Row */
   .data-row {
-    height: 0.2cm !important;
-    min-height: 0.2cm !important;
-    max-height: 0.2cm !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
     margin: 0px !important;
     padding: 0px !important;
   }
   
   /* More specific rules to ensure data-row height is applied */
   .main-table tbody tr.data-row {
-    height: 0.2cm !important;
-    min-height: 0.2cm !important;
-    max-height: 0.2cm !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
   }
   
   .main-table tbody tr.data-row td {
-    height: 0.2cm !important;
-    min-height: 0.2cm !important;
-    max-height: 0.2cm !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
   }
   
   .data-row td {
@@ -939,9 +983,9 @@
     font-size: 6.5pt !important;
     padding: 0px !important;
     margin: 0px !important;
-    height: 0.2cm !important;
-    min-height: 0.2cm !important;
-    max-height: 0.2cm !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
     overflow: hidden !important;
     line-height: 1.0 !important;
     border-spacing: 0px !important;
@@ -1414,21 +1458,30 @@
   @media print {
     /* Data row height for print/PDF */
     .data-row {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    /* Force line breaks to display in min_qualification field in print */
+    .main-table td.col-education,
+    .main-table td.text-center.col-education {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: initial !important;
+      line-height: 1.2 !important;
     }
     
     .main-table tbody tr.data-row {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
     }
     
     .main-table tbody tr.data-row td {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
     }
     
     /* Ensure GANESH font loads for print/PDF - Safari compatible */
@@ -2007,18 +2060,29 @@
       text-align: center !important;
     }
     
-    /* Force city field to not be cropped in print */
-    #city-item {
+    /* Force city field to not be cropped in print - AGGRESSIVE */
+    #city-item,
+    .meta-item-city {
       min-width: 0 !important;
       flex: 1 !important;
       overflow: visible !important;
+      white-space: normal !important;
+      text-overflow: initial !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: none !important;
+      width: auto !important;
     }
     
-    #city-item.long-city {
+    #city-item.long-city,
+    .meta-item-city.long-city {
       justify-content: center !important;
       text-align: center !important;
       overflow: visible !important;
       white-space: normal !important;
+      text-overflow: initial !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
     }
     
     /* Meta item data in print */
@@ -2559,21 +2623,30 @@
   @media print {
     /* Data row height for print/PDF - Second media query */
     .data-row {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    /* Force line breaks to display in min_qualification field in print - Second media query */
+    .main-table td.col-education,
+    .main-table td.text-center.col-education {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: initial !important;
+      line-height: 1.2 !important;
     }
     
     .main-table tbody tr.data-row {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
     }
     
     .main-table tbody tr.data-row td {
-      height: 0.2cm !important;
-      min-height: 0.2cm !important;
-      max-height: 0.2cm !important;
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
     }
     
     body { 
@@ -2910,7 +2983,7 @@
     <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
     <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
 
-      <div class="meta-item-city">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
+      <div class="meta-item-city" id="city-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
     </div>
   </div>
   
@@ -2925,7 +2998,7 @@
         <th colspan="2" style="font-size: 6.3pt !important; font-weight: 900 !important; font-family: Arial, sans-serif !important; color: #000 !important; background: #f8f8f8 !important; border: 1px solid #000 !important; padding: 2px !important; text-align: center !important; vertical-align: middle !important; word-break: break-word !important; overflow: visible !important; box-sizing: border-box !important;">माग संख्या</th>
         <th colspan="2" style="font-size: 6.3pt !important; font-weight: 900 !important; font-family: Arial, sans-serif !important; color: #000 !important; background: #f8f8f8 !important; border: 1px solid #000 !important; padding: 2px !important; text-align: center !important; vertical-align: middle !important; word-break: break-word !important; overflow: visible !important; box-sizing: border-box !important;">मासिक तलब</th>
       </div>
-        <th rowspan="2" class="col-education">कामदारका <br> न्युनतम <br> योग्यता</th>
+        <th rowspan="2" class="col-education">कामदारका <br> न्युनतम योग्यता</th>
 
         <th rowspan="2" class="col-overtime">ओभर <br>टाइम<br> सुविधा</th>
         <th rowspan="2" class="col-hours">प्रतिदिन काम<br> गर्ने घण्टा</th>
@@ -2933,7 +3006,7 @@
         <th rowspan="2" class="col-leave">वार्षिक <br> विदा</th>
         <th rowspan="2" class="col-food">खाने <br>सुविधा</th>
         <th rowspan="2" class="col-housing">बस्ने<br>सुविधा</th>
-        <th rowspan="2" class="col-contract">करार <br> अवधि</th>
+        <th rowspan="2" class="col-contract" style="border: 1px solid black;">करार <br> अवधि</th>
       </tr>
       <!-- Header Row 2 -->
 
@@ -2950,7 +3023,7 @@
     </div>
     </thead>
         <!-- Data Rows - Dynamic from database -->
-    <tbody>
+    <tbody class="meta-body-row" id="meta-body-row">
       {% for position in positions %}
       <tr class="data-row">
         <td>{{ forloop.counter }}</td>
@@ -2961,7 +3034,7 @@
         <td>{{ position.salary_npr|safe }}</td>
         {% if forloop.first %}
         <!-- Common fields - only show in first row and span across all positions -->
-        <td class="text-center col-education" rowspan="{{ positions|length }}">{{ positions.0.min_qualification|safe|linebreaksbr }}</td>
+        <td class="text-center col-education" rowspan="{{ positions|length }}">{{ positions.0.min_qualification|safe }}</td>
         <td class="col-overtime" rowspan="{{ positions|length }}">{{ positions.0.overtime }}</td>
         <td class="col-hours" rowspan="{{ positions|length }}">{{ positions.0.hours_per_day|safe|linebreaksbr }}</td>
         <td class="col-days" rowspan="{{ positions|length }}">{{ positions.0.days_per_week|safe|linebreaksbr }}</td>
@@ -3151,36 +3224,43 @@
           // Call the function when page loads
           document.addEventListener('DOMContentLoaded', handleJapanContent);
           
-          // Ensure each data row is strictly 0.2cm
+          // Ensure each data row is strictly 0.18cm (reduced by 2mm)
           function adjustTbodyHeight() {
             const tbody = document.querySelector('.main-table tbody');
             if (tbody) {
               const dataRows = tbody.querySelectorAll('.data-row');
+              console.log('Found', dataRows.length, 'data rows');
               
               // Allow tbody to grow naturally
               tbody.style.setProperty('height', 'auto', 'important');
               tbody.style.setProperty('min-height', 'auto', 'important');
               tbody.style.setProperty('max-height', 'none', 'important');
               
-              // Set each row to strictly 0.2cm with no padding/margin
-              dataRows.forEach(row => {
-                row.style.setProperty('height', '0.2cm', 'important');
-                row.style.setProperty('min-height', '0.2cm', 'important');
-                row.style.setProperty('max-height', '0.2cm', 'important');
+              // Set each row to strictly 0.18cm with no padding/margin (reduced by 2mm)
+              dataRows.forEach((row, index) => {
+                // Use cssText to completely override any existing styles
+                row.style.cssText += 'height: 0.18cm !important; min-height: 0.18cm !important; max-height: 0.18cm !important; margin: 0px !important; padding: 0px !important;';
+                row.style.setProperty('height', '0.18cm', 'important');
+                row.style.setProperty('min-height', '0.18cm', 'important');
+                row.style.setProperty('max-height', '0.18cm', 'important');
                 row.style.setProperty('margin', '0px', 'important');
                 row.style.setProperty('padding', '0px', 'important');
+                console.log('Set row', index, 'height to 0.18cm');
                 
-                // Set each cell in the row to 0.2cm with no padding/margin
+                // Set each cell in the row to 0.18cm with no padding/margin (reduced by 2mm)
                 const cells = row.querySelectorAll('td');
-                cells.forEach(cell => {
-                  cell.style.setProperty('height', '0.2cm', 'important');
-                  cell.style.setProperty('min-height', '0.2cm', 'important');
-                  cell.style.setProperty('max-height', '0.2cm', 'important');
+                cells.forEach((cell, cellIndex) => {
+                  // Use cssText to completely override any existing styles
+                  cell.style.cssText += 'height: 0.18cm !important; min-height: 0.18cm !important; max-height: 0.18cm !important;';
+                  cell.style.setProperty('height', '0.18cm', 'important');
+                  cell.style.setProperty('min-height', '0.18cm', 'important');
+                  cell.style.setProperty('max-height', '0.18cm', 'important');
                   cell.style.setProperty('overflow', 'hidden', 'important');
                   cell.style.setProperty('line-height', '1.0', 'important');
                   cell.style.setProperty('padding', '0px', 'important');
                   cell.style.setProperty('margin', '0px', 'important');
                   cell.style.setProperty('border-spacing', '0px', 'important');
+                  console.log('Set cell', cellIndex, 'height to 0.18cm');
                   
                   // Don't override font-size for position field (text-left class), min_qualification field (text-center class), or hours/days cells
                   if (!cell.classList.contains('text-left') && !cell.classList.contains('text-center') && !cell.classList.contains('col-hours') && !cell.classList.contains('col-days')) {
@@ -3232,6 +3312,11 @@
             if (hasCalculatedElements) {
               calculateInterviewDate();
             }
+            
+            // Run height adjustment again after other functions to ensure it's not overridden
+            setTimeout(adjustTbodyHeight, 100);
+            setTimeout(adjustTbodyHeight, 500);
+            setTimeout(adjustTbodyHeight, 1000);
             
             // Show content only after everything is processed
             const employmentAd = document.querySelector('.employment-ad');
@@ -4066,6 +4151,20 @@
             dataBrElements.forEach(function(element) {
               element.style.setProperty('display', 'block', 'important');
               element.style.setProperty('margin', '1pt 0', 'important');
+            });
+            
+            // Force line breaks to display in min_qualification field - AGGRESSIVE
+            const minQualCells = document.querySelectorAll('.main-table td.col-education, .main-table td.text-center.col-education');
+            minQualCells.forEach(function(element) {
+              element.style.setProperty('white-space', 'normal', 'important');
+              element.style.setProperty('overflow', 'visible', 'important');
+              element.style.setProperty('text-overflow', 'initial', 'important');
+              element.style.setProperty('line-height', '1.2', 'important');
+              element.style.setProperty('word-wrap', 'break-word', 'important');
+              element.style.setProperty('overflow-wrap', 'break-word', 'important');
+              console.log('Applied line break styles to min_qualification cell:', element.textContent);
+              console.log('Cell innerHTML:', element.innerHTML);
+              console.log('Cell contains <br>:', element.innerHTML.includes('<br>'));
             });
 
             // Apply specific width adjustments for salary columns

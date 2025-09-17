@@ -397,7 +397,7 @@ class JobPositionForm(ProductionSafeForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Set default values for job position fields
-        self.fields['min_qualification'].initial = 'सम्बन्धित काममा दक्ष'
+        self.fields['min_qualification'].initial = 'सम्बन्धित<br>काममा दक्ष'
         self.fields['overtime'].initial = 'कम्पनीको नियमानुसार'
         self.fields['hours_per_day'].initial = '८ घण्टा'
         self.fields['days_per_week'].initial = '६ दिन'
@@ -489,7 +489,7 @@ class JobPositionForm(ProductionSafeForm):
                 ('+2', '+2'),
                 ('SEE', 'SEE'),
                 ('Bachelors', 'Bachelors'),
-                ('सम्बन्धित काममा दक्ष', 'सम्बन्धित काममा दक्ष')
+                ('सम्बन्धित<br>काममा दक्ष', 'सम्बन्धित\nकाममा दक्ष')
             ]),
             'food_provided': forms.Select(attrs={
                 'class': 'form-control'

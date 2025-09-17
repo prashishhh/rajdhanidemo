@@ -8226,12 +8226,12 @@ function setDefaultValues() {
     console.log(`Country value: "${country}"`);
     console.log(`Country field type:`, countryField ? countryField.tagName : 'not found');
     
-    // Set min_qualification defaults
+    // Set min_qualification defaults - FORCE SET regardless of current value
     minQualificationFields.forEach((field, index) => {
         console.log(`Min Qual Field ${index + 1}: Current value = "${field.value}"`);
-        if (field && (!field.value || field.value === '')) {
-            field.value = 'सम्बन्धित काममा दक्ष';
-            console.log(`Set min_qualification ${index + 1} to: सम्बन्धित काममा दक्ष`);
+        if (field) {
+            field.value = 'सम्बन्धित<br>काममा दक्ष';
+            console.log(`FORCE SET min_qualification ${index + 1} to: सम्बन्धित<br>काममा दक्ष`);
             field.dispatchEvent(new Event('change', { bubbles: true }));
         }
     });
@@ -8358,9 +8358,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 500);
 });
 
-// Also run after a short delay to ensure all elements are loaded
+// Also run after a short delay to ensure all elements are loaded and override any clearing functions
 setTimeout(setDefaultValues, 1000);
 setTimeout(setDefaultValues, 2000);
+setTimeout(setDefaultValues, 3000);
+setTimeout(setDefaultValues, 5000);
 
 // Add event listener for country change to update hours_per_day
 document.addEventListener('DOMContentLoaded', function() {
