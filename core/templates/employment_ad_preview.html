@@ -653,7 +653,7 @@
   .main-table th.col-housing br,
   .main-table th.col-contract br {
     display: block;
-    margin: 1pt 0; /* Add small margin between lines */
+    margin: 2.5pt 0; /* Increased margin between lines for better spacing */
   }
 
   /* Apply same styling to corresponding table data cells */
@@ -665,8 +665,8 @@
   .main-table td.col-food,
   .main-table td.col-housing,
   .main-table td.col-contract {
-    font-size: 4pt !important; /* Reduced by 1pt from 5pt */
-    line-height: 5pt !important; /* Increased for better spacing between lines */
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+    line-height: 4.5pt !important; /* Reduced for better spacing between lines */
   }
 
   /* Add spacing between line breaks in data cells */
@@ -679,7 +679,7 @@
   .main-table td.col-housing br,
   .main-table td.col-contract br {
     display: block;
-    margin: 1pt 0; /* Add small margin between lines */
+    margin: 2.5pt 0; /* Increased margin between lines for better spacing */
   }
   
 
@@ -798,7 +798,13 @@
   }
   
   .extra-table td.col-service-fee {
-    font-size: 6.04pt !important;
+    font-size: 5.54pt !important; /* Reduced by 0.5pt from 6.04pt */
+    font-weight: 700 !important;
+  }
+  
+  /* Specific styling for currency amounts in extra table */
+  .extra-table .currency-amount {
+    font-size: 3pt !important; /* Reduced by 2pt from 7pt */
     font-weight: 700 !important;
   }
   
@@ -916,13 +922,13 @@
   /* Center text in yearly leave column */
   .main-table td.col-leave {
     text-align: center !important;
-    font-size: 3pt !important;
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
   }
   
   /* Style overtime column */
   .main-table td.col-overtime {
     text-align: center !important;
-    font-size: 3pt !important;
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
   }
   
   /* More specific rule to override any conflicting styles */
@@ -2319,7 +2325,7 @@
     .main-table th.col-housing br,
     .main-table th.col-contract br {
       display: block;
-      margin: 1pt 0; /* Add small margin between lines */
+      margin: 2.5pt 0; /* Increased margin between lines for better spacing */
     }
 
     /* Apply same styling to corresponding table data cells in print */
@@ -2331,8 +2337,8 @@
     .main-table td.col-food,
     .main-table td.col-housing,
     .main-table td.col-contract {
-      font-size: 4pt !important; /* Reduced by 1pt from 5pt */
-      line-height: 5pt !important; /* Increased for better spacing between lines */
+      font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+      line-height: 4.5pt !important; /* Reduced for better spacing between lines */
     }
 
     /* Add spacing between line breaks in data cells in print */
@@ -2345,7 +2351,7 @@
     .main-table td.col-housing br,
     .main-table td.col-contract br {
       display: block;
-      margin: 1pt 0; /* Add small margin between lines */
+      margin: 2.5pt 0; /* Increased margin between lines for better spacing */
     }
     
     /* Only position header - "कामदारको पद" */
@@ -2416,7 +2422,13 @@
     }
     
     .extra-table td.col-service-fee {
-      font-size: 6.04pt !important;
+      font-size: 5.54pt !important; /* Reduced by 0.5pt from 6.04pt */
+      font-weight: 700 !important;
+    }
+    
+    /* Specific styling for currency amounts in extra table - print */
+    .extra-table .currency-amount {
+      font-size: 3pt !important; /* Reduced by 2pt from 7pt */
       font-weight: 700 !important;
     }
     
@@ -3006,7 +3018,9 @@
         <th rowspan="2" class="col-leave">वार्षिक <br> विदा</th>
         <th rowspan="2" class="col-food">खाने <br>सुविधा</th>
         <th rowspan="2" class="col-housing">बस्ने<br>सुविधा</th>
+      <div>
         <th rowspan="2" class="col-contract" style="border: 1px solid black;">करार <br> अवधि</th>
+      </div>
       </tr>
       <!-- Header Row 2 -->
 
@@ -3278,18 +3292,18 @@
                   if (cell.classList.contains('col-leave')) {
                     cell.style.textAlign = 'center';
                     cell.setAttribute('style', cell.getAttribute('style') + '; text-align: center !important;');
-                    cell.style.setProperty('font-size', '3pt', 'important');
+                    cell.style.setProperty('font-size', '3.5pt', 'important'); /* Reduced by 0.5pt from 4pt */
                   }
                   
                   // Ensure overtime column is centered and has correct font size
                   if (cell.classList.contains('col-overtime')) {
                     cell.style.setProperty('text-align', 'center', 'important');
-                    cell.style.setProperty('font-size', '3pt', 'important');
+                    cell.style.setProperty('font-size', '3.5pt', 'important'); /* Reduced by 0.5pt from 4pt */
                   }
                   
                   // Ensure min_qualification field has correct font size and alignment
                   if (cell.classList.contains('text-center')) {
-                    cell.style.setProperty('font-size', '3pt', 'important');
+                    cell.style.setProperty('font-size', '3.5pt', 'important'); /* Reduced by 0.5pt from 4pt */
                     cell.style.setProperty('text-align', 'center', 'important');
                   }
                 });
@@ -4136,21 +4150,21 @@
             const brElements = document.querySelectorAll('.main-table th.col-education br, .main-table th.col-overtime br, .main-table th.col-hours br, .main-table th.col-days br, .main-table th.col-leave br, .main-table th.col-food br, .main-table th.col-housing br, .main-table th.col-contract br');
             brElements.forEach(function(element) {
               element.style.setProperty('display', 'block', 'important');
-              element.style.setProperty('margin', '1pt 0', 'important');
+              element.style.setProperty('margin', '2.5pt 0', 'important'); /* Increased margin for better spacing */
             });
 
             // Apply same styling to corresponding table data cells (excluding hours and days)
             const multiLineDataCells = document.querySelectorAll('.main-table td.col-education, .main-table td.col-overtime, .main-table td.col-leave, .main-table td.col-food, .main-table td.col-housing, .main-table td.col-contract');
             multiLineDataCells.forEach(function(element) {
-              element.style.setProperty('font-size', '4pt', 'important'); /* Reduced by 1pt from 5pt */
-              element.style.setProperty('line-height', '5pt', 'important'); /* Increased for better spacing */
+              element.style.setProperty('font-size', '3.5pt', 'important'); /* Reduced by 0.5pt from 4pt */
+              element.style.setProperty('line-height', '4.5pt', 'important'); /* Reduced for better spacing */
             });
 
             // Add spacing between line breaks in data cells
             const dataBrElements = document.querySelectorAll('.main-table td.col-education br, .main-table td.col-overtime br, .main-table td.col-hours br, .main-table td.col-days br, .main-table td.col-leave br, .main-table td.col-food br, .main-table td.col-housing br, .main-table td.col-contract br');
             dataBrElements.forEach(function(element) {
               element.style.setProperty('display', 'block', 'important');
-              element.style.setProperty('margin', '1pt 0', 'important');
+              element.style.setProperty('margin', '2.5pt 0', 'important'); /* Increased margin for better spacing */
             });
             
             // Force line breaks to display in min_qualification field - AGGRESSIVE
@@ -4234,7 +4248,14 @@
             // Apply special styling to col-service-fee cells
             const serviceFeeCells = document.querySelectorAll('.extra-table td.col-service-fee');
             serviceFeeCells.forEach(function(element) {
-              element.style.setProperty('font-size', '6.04pt', 'important');
+              element.style.setProperty('font-size', '5.54pt', 'important'); /* Reduced by 0.5pt from 6.04pt */
+              element.style.setProperty('font-weight', '700', 'important');
+            });
+            
+            // Apply special styling to currency amounts
+            const currencyAmountSpans = document.querySelectorAll('.extra-table .currency-amount');
+            currencyAmountSpans.forEach(function(element) {
+              element.style.setProperty('font-size', '3pt', 'important'); /* Reduced by 2pt from 7pt */
               element.style.setProperty('font-weight', '700', 'important');
             });
             
@@ -4467,11 +4488,11 @@
           <td>कामदार आफैले</td>
           <td>बीम हुने/प्रिमियम <br> रोजगारदाताले तिर्ने</td>
           <td>रोजगारदाता कम्पनीले व्यहोर्ने</td>
-          <td>रू. २५९६/- कामदार आफैले</td>
+          <td><span class="currency-amount">रू. २५९६/-</span> कामदार आफैले</td>
           <td>रोजगारदाताले व्यहोर्ने</td>
           <td>रोजगारदाताले व्यहोर्ने</td>
-          <td>रू. ७००/- <br>कामदार आफैले</td>
-          <td>रू. १५००/- <br> कामदार आफैले</td>
+          <td><span class="currency-amount">रू. ७००/-</span> <br>कामदार आफैले</td>
+          <td><span class="currency-amount">रू. १५००/-</span> <br> कामदार आफैले</td>
           <td class="col-service-fee">{% if ad.service_fee %}{{ ad.service_fee }}{% else %}निःशूल्क{% endif %}</td>
         </tr>
       </tbody>
