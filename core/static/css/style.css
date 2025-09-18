@@ -171,6 +171,11 @@
 
 .navigation.scrolled { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
 
+.navigation.has-overflow::after {
+  content: "";
+  display: none;
+}
+
 /* Desktop list */
 .nav-list {
   display: flex !important;
@@ -264,6 +269,17 @@
   .navigation::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 2px; }
   .navigation::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.3); }
 
+  .navigation.has-overflow::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 36px;
+    display: block;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgba(255,255,255,0), #fff 72%);
+  }
+
   .nav-list {
     display: flex !important;
     justify-content: flex-start !important;
@@ -278,6 +294,7 @@
   }
 
   .nav-item { flex-shrink: 0 !important; visibility: visible !important; }
+  .nav-item { scroll-snap-align: start; }
 
   .nav-item a, .search-icon {
     padding: 16px 18px;
@@ -2586,6 +2603,7 @@ body {
         .footer-links {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 30px;
             margin-bottom: 20px;
         }
@@ -2614,7 +2632,7 @@ body {
             .footer-content { grid-template-columns: 1fr; gap: 30px;}
             .footer-right { grid-template-columns: 1fr; gap: 25px;}
             .footer-roles { grid-template-columns: 1fr; gap: 20px; padding: 20px;}
-            .footer-links { flex-direction: column; gap: 15px; }
+            .footer-links { gap: 12px 18px; }
             .footer-bottom { padding: 20px; }
             .top-section { flex-direction: column; gap: 15px; text-align: center; }
             .main-story-card, .related-stories-card, .stay-connected-card { min-width: auto; }
@@ -2631,6 +2649,8 @@ body {
             .footer-logo { font-size: 2rem;}
             .footer-section h3 { font-size: 1.05rem;}
             .footer-roles { padding: 12px; }
+            .footer-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .footer-links a { padding: 10px 6px; }
             .hero-section .hero-container { flex-direction: column; }
             .main-story-image-container img, .main-news-image { height: 140px;}
         }
