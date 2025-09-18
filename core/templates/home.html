@@ -94,7 +94,7 @@
         </svg>
       </li>
     </ul>
-    <div class="hamburger" id="hamburger">
+    <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation menu">
       <span></span>
       <span></span>
       <span></span>
@@ -961,10 +961,27 @@ document.addEventListener('DOMContentLoaded', function() {
   const navMenu = document.getElementById('navMenu');
 
   if (hamburger && navMenu) {
-    hamburger.addEventListener('click', () => {
+    const toggleMenu = () => {
       navMenu.classList.toggle('active');
+      hamburger.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+    };
+
+    hamburger.addEventListener('click', toggleMenu);
+    hamburger.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleMenu();
+      }
     });
   }
+
+  const nav = document.querySelector('.navigation');
+  const updateNavOverflow = () => {
+    if (!nav) return;
+    nav.classList.toggle('has-overflow', nav.scrollWidth > nav.clientWidth + 4);
+  };
+  updateNavOverflow();
+  window.addEventListener('resize', updateNavOverflow);
 
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
@@ -981,6 +998,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   window.addEventListener('scroll', () => {
     const nav = document.querySelector('.navigation');
+    if (!nav) return;
     if (window.scrollY > 50) {
       nav.classList.add('scrolled');
     } else {
