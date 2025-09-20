@@ -1,0 +1,507 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>लुडो खेल (Ludo Game) - राजधानी दैनिक</title>
+    <style>
+        .dice-face {
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: inset 0 3px white, inset 0 -3px #bbb, inset 3px 0 #d7d7d7, inset -3px 0 #d7d7d7, 0 4px 10px rgba(0,0,0,0.2);
+            display: grid;
+            padding: 8px;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 2px;
+            align-items: center;
+            justify-items: center;
+            box-sizing: border-box;
+        }
+        .dice-dot {
+            width: 12px;
+            height: 12px;
+            background-color: #1e293b;
+            border-radius: 50%;
+            box-shadow: inset 0 2px rgba(0,0,0,0.5);
+        }
+        .dice-dot.hidden {
+            background-color: transparent;
+            box-shadow: none;
+        }
+
+        /* Pulsing/bouncing animation for clickable active tokens */
+        @keyframes pulse-bounce {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.8), 0 4px 10px rgba(0,0,0,0.3);
+            }
+            100% {
+                transform: scale(1.25);
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0), 0 6px 15px rgba(0,0,0,0.4);
+            }
+        }
+        
+        .clickable-token {
+            animation: pulse-bounce 0.6s infinite alternate !important;
+            border: 3px solid #ffffff !important;
+            z-index: 10;
+        }
+
+        .ludo-cell {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            box-sizing: border-box;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0;">
+<div style="background-color: #f8f9fa; min-height: 100vh; padding: 40px 20px; font-family: 'Mukta', sans-serif;">
+    <div style="max-width: 900px; margin: 0 auto; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); padding: 40px; text-align: center;">
+        <h1 style="font-weight: 800; color: #1e4080; font-size: 3rem; margin-bottom: 10px;">लुडो (Ludo)</h1>
+        <p style="font-size: 1.2rem; color: #64748b; margin-bottom: 30px;">परिवार र साथीहरूसँग वास्तविक नियमहरू सहित लुडो खेल्नुहोस्!</p>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto 20px;">
+            <div id="ludo-status" style="font-size: 1.5rem; font-weight: bold; color: #ff4d4d; padding: 10px 20px; background: #fff5f5; border-radius: 10px; border: 2px solid #ff4d4d; min-width: 220px; text-align: center; transition: all 0.3s ease;">
+                रातो (Red) को पालो
+            </div>
+            
+            <div style="display: flex; align-items: center;">
+                <button id="ludo-dice-btn" style="background: #1e4080; color: white; border: none; padding: 15px 30px; font-size: 1.2rem; border-radius: 10px; cursor: pointer; font-weight: bold; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(30, 64, 128, 0.3);">
+                    पासा फ्याँक्नुहोस्
+                </button>
+                <div id="ludo-dice-result" style="margin-left: 20px;">
+                    <div class="dice-face" id="dice-container">
+                        <!-- Dice 6 default -->
+                        <div class="dice-dot"></div><div class="dice-dot hidden"></div><div class="dice-dot"></div>
+                        <div class="dice-dot"></div><div class="dice-dot hidden"></div><div class="dice-dot"></div>
+                        <div class="dice-dot"></div><div class="dice-dot hidden"></div><div class="dice-dot"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ludo-board-container" style="display: flex; justify-content: center; margin-bottom: 30px;">
+            <div id="ludo-board" style="display: grid; grid-template-columns: repeat(15, 1fr); gap: 1px; width: 100%; max-width: 600px; aspect-ratio: 1/1; background: #333; border: 4px solid #333; border-radius: 8px; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.15);">
+                <!-- JavaScript will populate 225 cells here -->
+            </div>
+        </div>
+
+        <div style="max-width: 600px; margin: 0 auto; text-align: left; background: #f1f5f9; padding: 25px; border-radius: 12px;">
+            <h3 style="color: #0f172a; margin-bottom: 15px; font-size: 1.4rem;">खेलको नियम (How to Play)</h3>
+            <ul style="color: #475569; font-size: 1.1rem; line-height: 1.8; padding-left: 20px;">
+                <li>प्रत्येक खेलाडीले पालो अनुसार पासा फ्याँक्छन्।</li>
+                <li><strong>६ (⚅) अंक आउँदा मात्र</strong> गोटी घरबाट बाहिर निस्कन्छ।</li>
+                <li>६ अंक आउँदा वा विपक्षीको गोटी काट्दा खेलाडीले पुनः पासा फ्याँक्ने अवसर पाउँछन्।</li>
+                <li>तपाईंको सक्रिय गोटीहरू उफ्रिनेछन्, उनीहरूलाई सार्नका लागि गोटीमा क्लिक गर्नुहोस्!</li>
+            </ul>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <a href="{% url 'home' %}#game-section" style="display: inline-block; padding: 10px 25px; background: #e2e8f0; color: #475569; text-decoration: none; border-radius: 8px; font-weight: bold; margin-right: 15px;">पछाडि जानुहोस् (Back)</a>
+            <button id="ludo-reset-btn" style="background: #dc3545; color: white; border: none; padding: 10px 25px; font-size: 1.1rem; border-radius: 8px; cursor: pointer; font-weight: bold;">फेरि सुरु गर्नुहोस् (Reset Game)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const ludoBoard = document.getElementById('ludo-board');
+    const ludoDiceBtn = document.getElementById('ludo-dice-btn');
+    const ludoDiceResult = document.getElementById('ludo-dice-result');
+    const ludoStatus = document.getElementById('ludo-status');
+    const diceContainer = document.getElementById('dice-container');
+    
+    let currentLudoTurn = 0; // 0: Red, 1: Green, 2: Yellow, 3: Blue
+    let currentDiceValue = null;
+    let hasMovedThisTurn = false;
+    
+    const turnNames = ['रातो (Red)', 'हरियो (Green)', 'पहेंलो (Yellow)', 'निलो (Blue)'];
+    const turnColors = ['#ff4d4d', '#28a745', '#ffc107', '#007bff'];
+    const turnBgColors = ['#fff5f5', '#f0fdf4', '#fefce8', '#eff6ff'];
+
+    // Define 52 track cells in clockwise loop
+    const track = [
+        [6,0], [6,1], [6,2], [6,3], [6,4], [6,5],
+        [5,6], [4,6], [3,6], [2,6], [1,6], [0,6],
+        [0,7],
+        [0,8], [1,8], [2,8], [3,8], [4,8], [5,8],
+        [6,9], [6,10], [6,11], [6,12], [6,13], [6,14],
+        [7,14],
+        [8,14], [8,13], [8,12], [8,11], [8,10], [8,9],
+        [9,8], [10,8], [11,8], [12,8], [13,8], [14,8],
+        [14,7],
+        [14,6], [13,6], [12,6], [11,6], [10,6], [9,6],
+        [8,5], [8,4], [8,3], [8,2], [8,1], [8,0],
+        [7,0]
+    ];
+
+    // Base coordinates for home tokens (4 tokens per player)
+    const baseCoords = [
+        [[2,2], [2,3], [3,2], [3,3]],       // Red (Player 0)
+        [[2,11], [2,12], [3,11], [3,12]],   // Green (Player 1)
+        [[11,11], [11,12], [12,11], [12,12]], // Yellow (Player 2)
+        [[11,2], [11,3], [12,2], [12,3]]     // Blue (Player 3)
+    ];
+
+    // Build unique paths (57 cells total) for each player
+    const playerPaths = [];
+
+    // Red (Player 0) Path
+    const redPath = [];
+    for (let i = 1; i < 52; i++) redPath.push(track[i]);
+    redPath.push(track[0]);
+    redPath.push([7,1], [7,2], [7,3], [7,4], [7,5], [7,6]);
+    playerPaths.push(redPath);
+
+    // Green (Player 1) Path
+    const greenPath = [];
+    for (let i = 14; i < 52; i++) greenPath.push(track[i]);
+    for (let i = 0; i < 14; i++) greenPath.push(track[i]);
+    greenPath.push([1,7], [2,7], [3,7], [4,7], [5,7], [6,7]);
+    playerPaths.push(greenPath);
+
+    // Yellow (Player 2) Path
+    const yellowPath = [];
+    for (let i = 27; i < 52; i++) yellowPath.push(track[i]);
+    for (let i = 0; i < 27; i++) yellowPath.push(track[i]);
+    yellowPath.push([7,13], [7,12], [7,11], [7,10], [7,9], [7,8]);
+    playerPaths.push(yellowPath);
+
+    // Blue (Player 3) Path
+    const bluePath = [];
+    for (let i = 40; i < 52; i++) bluePath.push(track[i]);
+    for (let i = 0; i < 40; i++) bluePath.push(track[i]);
+    bluePath.push([13,7], [12,7], [11,7], [10,7], [9,7], [8,7]);
+    playerPaths.push(bluePath);
+
+    // Tokens state: -1 means in base, >= 0 is index in playerPaths
+    let tokens = [
+        [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }], // Red
+        [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }], // Green
+        [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }], // Yellow
+        [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }]  // Blue
+    ];
+
+    function getLudoCellColor(r, c) {
+        if (r < 6 && c < 6) return '#ff4d4d'; // Red base
+        if (r < 6 && c > 8) return '#28a745'; // Green base
+        if (r > 8 && c < 6) return '#007bff'; // Blue base
+        if (r > 8 && c > 8) return '#ffc107'; // Yellow base
+        if (r > 5 && r < 9 && c > 5 && c < 9) return '#333'; // Center home
+
+        if (r === 7 && c > 0 && c < 6) return '#ff4d4d';
+        if (r === 7 && c > 8 && c < 14) return '#ffc107';
+        if (c === 7 && r > 0 && r < 6) return '#28a745';
+        if (c === 7 && r > 8 && r < 14) return '#007bff';
+
+        if (r === 6 && c === 1) return '#ff4d4d';
+        if (r === 1 && c === 8) return '#28a745';
+        if (r === 13 && c === 6) return '#007bff';
+        if (r === 8 && c === 13) return '#ffc107';
+
+        if (r === 2 && c === 6) return '#e2e8f0'; 
+        if (r === 6 && c === 12) return '#e2e8f0'; 
+        if (r === 8 && c === 2) return '#e2e8f0'; 
+        if (r === 12 && c === 8) return '#e2e8f0'; 
+
+        return '#ffffff';
+    }
+
+    function isSafeCell(r, c) {
+        if (r === 6 && c === 1) return true;
+        if (r === 1 && c === 8) return true;
+        if (r === 13 && c === 6) return true;
+        if (r === 8 && c === 13) return true;
+        if (r === 2 && c === 6) return true;
+        if (r === 6 && c === 12) return true;
+        if (r === 8 && c === 2) return true;
+        if (r === 12 && c === 8) return true;
+        return false;
+    }
+
+    function renderLudoBoard() {
+        ludoBoard.innerHTML = '';
+        const cells = [];
+        
+        // Generate blank board first
+        for (let i = 0; i < 225; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'ludo-cell';
+            const r = Math.floor(i / 15);
+            const c = i % 15;
+            
+            cell.style.backgroundColor = getLudoCellColor(r, c);
+            
+            if (r < 6 && c < 6 && r > 0 && c > 0 && r < 5 && c < 5) cell.style.backgroundColor = '#fff';
+            if (r < 6 && c > 8 && r > 0 && c < 14 && r < 5 && c > 9) cell.style.backgroundColor = '#fff';
+            if (r > 8 && c < 6 && r < 14 && c > 0 && r > 9 && c < 5) cell.style.backgroundColor = '#fff';
+            if (r > 8 && c > 8 && r < 14 && c < 14 && r > 9 && c > 9) cell.style.backgroundColor = '#fff';
+            
+            cells.push(cell);
+            ludoBoard.appendChild(cell);
+        }
+
+        // Map token positions
+        const tokenPositions = {};
+        tokens.forEach((playerTokens, playerId) => {
+            playerTokens.forEach((token, tokenIndex) => {
+                let r, c;
+                if (token.pos === -1) {
+                    [r, c] = baseCoords[playerId][tokenIndex];
+                } else {
+                    [r, c] = playerPaths[playerId][token.pos];
+                }
+                const key = `${r},${c}`;
+                if (!tokenPositions[key]) tokenPositions[key] = [];
+                tokenPositions[key].push({ playerId, tokenIndex });
+            });
+        });
+
+        // Add tokens to matching cells
+        for (let key in tokenPositions) {
+            const [r, c] = key.split(',').map(Number);
+            const cellIndex = r * 15 + c;
+            const cell = cells[cellIndex];
+            const cellTokens = tokenPositions[key];
+            const count = cellTokens.length;
+
+            cellTokens.forEach(({ playerId, tokenIndex }) => {
+                const tokenEl = document.createElement('div');
+                
+                tokenEl.style.borderRadius = '50%';
+                tokenEl.style.border = '2px solid white';
+                tokenEl.style.boxShadow = '0 2px 5px rgba(0,0,0,0.3)';
+                tokenEl.style.transition = 'all 0.2s ease';
+                
+                const colors = ['#dc3545', '#198754', '#ffc107', '#007bff'];
+                tokenEl.style.backgroundColor = colors[playerId];
+                
+                if (count === 1) {
+                    tokenEl.style.width = '70%';
+                    tokenEl.style.height = '70%';
+                    tokenEl.style.margin = '15%';
+                } else if (count <= 2) {
+                    tokenEl.style.width = '42%';
+                    tokenEl.style.height = '42%';
+                } else {
+                    tokenEl.style.width = '30%';
+                    tokenEl.style.height = '30%';
+                }
+
+                // Interaction
+                const isClickable = !hasMovedThisTurn && 
+                                    currentDiceValue !== null && 
+                                    playerId === currentLudoTurn && 
+                                    isValidMove(playerId, tokenIndex, currentDiceValue);
+
+                if (isClickable) {
+                    tokenEl.classList.add('clickable-token');
+                    tokenEl.style.cursor = 'pointer';
+                    tokenEl.addEventListener('click', () => {
+                        moveToken(playerId, tokenIndex, currentDiceValue);
+                    });
+                }
+                
+                cell.appendChild(tokenEl);
+            });
+        }
+    }
+
+    function isValidMove(playerId, tokenIndex, roll) {
+        const token = tokens[playerId][tokenIndex];
+        if (token.pos === -1) {
+            return roll === 6;
+        }
+        return token.pos + roll <= 56;
+    }
+
+    function moveToken(playerId, tokenIndex, roll) {
+        if (hasMovedThisTurn) return;
+        hasMovedThisTurn = true;
+        
+        // Remove animation from all tokens
+        document.querySelectorAll('.clickable-token').forEach(el => {
+            el.className = '';
+            el.style.animation = 'none';
+        });
+
+        const token = tokens[playerId][tokenIndex];
+        const startPos = token.pos;
+        const endPos = startPos === -1 ? 0 : startPos + roll;
+        let currentStep = startPos;
+
+        const interval = setInterval(() => {
+            if (currentStep === -1) {
+                token.pos = 0;
+                currentStep = 0;
+            } else if (currentStep < endPos) {
+                currentStep++;
+                token.pos = currentStep;
+            } else {
+                clearInterval(interval);
+                checkLandingAndNextTurn(playerId, tokenIndex, roll);
+                return;
+            }
+            renderLudoBoard();
+        }, 120);
+    }
+
+    function checkLandingAndNextTurn(playerId, tokenIndex, roll) {
+        const token = tokens[playerId][tokenIndex];
+        const finalPos = token.pos;
+        let captured = false;
+        let reachedGoal = (finalPos === 56);
+
+        if (finalPos === 56) {
+            if (tokens[playerId].every(t => t.pos === 56)) {
+                alert(`बधाई छ! ${turnNames[playerId]} खेलाडीले सम्पूर्ण गोटीहरू पुर्याएर खेल जित्नुभयो!`);
+                initLudo();
+                return;
+            }
+        } else if (finalPos >= 0) {
+            const [r, c] = playerPaths[playerId][finalPos];
+            if (!isSafeCell(r, c)) {
+                // Check capture
+                tokens.forEach((otherPlayerTokens, otherPlayerId) => {
+                    if (otherPlayerId !== playerId) {
+                        otherPlayerTokens.forEach((otherToken) => {
+                            if (otherToken.pos >= 0) {
+                                const [or, oc] = playerPaths[otherPlayerId][otherToken.pos];
+                                if (or === r && oc === c) {
+                                    otherToken.pos = -1; // Send back to base!
+                                    captured = true;
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        }
+
+        if (captured) {
+            ludoStatus.textContent = `काटियो! ${turnNames[playerId]} ले पुनः अवसर पाउनुभयो!`;
+            currentDiceValue = null;
+            hasMovedThisTurn = false;
+            ludoDiceBtn.disabled = false;
+        } else if (roll === 6 || reachedGoal) {
+            ludoStatus.textContent = `${turnNames[playerId]} ले पुनः पासा फ्याँक्नुहोस् (६ वा गोटी पुग्यो)`;
+            currentDiceValue = null;
+            hasMovedThisTurn = false;
+            ludoDiceBtn.disabled = false;
+        } else {
+            currentLudoTurn = (currentLudoTurn + 1) % 4;
+            updateLudoStatus();
+            currentDiceValue = null;
+            hasMovedThisTurn = false;
+            ludoDiceBtn.disabled = false;
+        }
+        renderLudoBoard();
+    }
+
+    function updateLudoStatus() {
+        ludoStatus.textContent = turnNames[currentLudoTurn] + ' को पालो';
+        ludoStatus.style.color = turnColors[currentLudoTurn];
+        ludoStatus.style.borderColor = turnColors[currentLudoTurn];
+        ludoStatus.style.backgroundColor = turnBgColors[currentLudoTurn];
+    }
+
+    function renderCSSDice(number) {
+        const dots = {
+            1: [0,0,0, 0,1,0, 0,0,0],
+            2: [1,0,0, 0,0,0, 0,0,1],
+            3: [1,0,0, 0,1,0, 0,0,1],
+            4: [1,0,1, 0,0,0, 1,0,1],
+            5: [1,0,1, 0,1,0, 1,0,1],
+            6: [1,0,1, 1,0,1, 1,0,1]
+        };
+        const pattern = dots[number] || dots[6];
+        diceContainer.innerHTML = '';
+        pattern.forEach(isDot => {
+            const dotEl = document.createElement('div');
+            dotEl.className = 'dice-dot' + (isDot ? '' : ' hidden');
+            diceContainer.appendChild(dotEl);
+        });
+    }
+
+    ludoDiceBtn.addEventListener('click', () => {
+        ludoDiceBtn.disabled = true;
+        const roll = Math.floor(Math.random() * 6) + 1;
+        
+        let rollAnim = 0;
+        diceContainer.style.transform = 'scale(0.9)';
+        diceContainer.style.transition = 'transform 0.1s';
+        
+        const animInterval = setInterval(() => {
+            renderCSSDice(Math.floor(Math.random() * 6) + 1);
+            rollAnim++;
+            
+            if (rollAnim > 12) {
+                clearInterval(animInterval);
+                renderCSSDice(roll);
+                currentDiceValue = roll;
+                
+                diceContainer.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    diceContainer.style.transform = 'scale(1)';
+                }, 150);
+
+                // Check for valid moves
+                let hasMoves = false;
+                for (let i = 0; i < 4; i++) {
+                    if (isValidMove(currentLudoTurn, i, roll)) {
+                        hasMoves = true;
+                        break;
+                    }
+                }
+
+                if (!hasMoves) {
+                    ludoStatus.textContent = `${turnNames[currentLudoTurn]} - कुनै चाल उपलब्ध छैन!`;
+                    setTimeout(() => {
+                        currentLudoTurn = (currentLudoTurn + 1) % 4;
+                        updateLudoStatus();
+                        currentDiceValue = null;
+                        hasMovedThisTurn = false;
+                        ludoDiceBtn.disabled = false;
+                        renderLudoBoard();
+                    }, 1800);
+                } else {
+                    // Update board to highlight clickable active tokens
+                    renderLudoBoard();
+                }
+            }
+        }, 60);
+    });
+
+    function initLudo() {
+        tokens = [
+            [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }],
+            [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }],
+            [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }],
+            [{ pos: -1 }, { pos: -1 }, { pos: -1 }, { pos: -1 }]
+        ];
+        currentLudoTurn = 0;
+        currentDiceValue = null;
+        hasMovedThisTurn = false;
+        ludoDiceBtn.disabled = false;
+        
+        updateLudoStatus();
+        renderCSSDice(6);
+        renderLudoBoard();
+    }
+
+    document.getElementById('ludo-reset-btn').addEventListener('click', initLudo);
+    initLudo();
+});
+</script>
+</body>
+</html>
+<!-- Optimized Ludo Engine v1.0.1 -->
