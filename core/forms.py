@@ -18,6 +18,32 @@ class SignUpForm(UserCreationForm):
 class JobPositionFormSet(ProductionSafeFormset, BaseInlineFormSet):
     """Custom formset for job positions that handles new positions properly"""
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Convert Nepali numbers to English for display in all forms
+        from .utils import convert_nepali_to_english_numbers
+        
+        for form in self.forms:
+            if form.instance and form.instance.pk:
+                # Override the field values to show converted data
+                original_male = form.instance.male_count
+                original_female = form.instance.female_count
+                original_salary = form.instance.salary_amount
+                
+                # Create custom value methods
+                def make_value_converter(original_value):
+                    def converted_value():
+                        if original_value:
+                            return convert_nepali_to_english_numbers(original_value)
+                        return original_value
+                    return converted_value
+                
+                # Override the field values
+                form.fields['male_count'].value = make_value_converter(original_male)
+                form.fields['female_count'].value = make_value_converter(original_female)
+                form.fields['salary_amount'].value = make_value_converter(original_salary)
+                # Keep salary_npr in Nepali digits as requested
+    
     def clean(self):
         """Custom validation for the formset"""
         cleaned_data = super().clean()
@@ -403,6 +429,51 @@ class JobPositionForm(ProductionSafeForm):
         self.fields['days_per_week'].initial = '६ दिन'
         self.fields['yearly_leave'].initial = 'कम्पनीको नियमानुसार'
         self.fields['contract_duration'].initial = '२ वर्ष'
+        
+        # Convert Nepali numbers to English for specific fields
+        from .utils import convert_nepali_to_english_numbers
+        
+        # Convert existing values if instance exists
+        if self.instance and self.instance.pk:
+            if self.instance.male_count:
+                self.fields['male_count'].initial = convert_nepali_to_english_numbers(self.instance.male_count)
+            if self.instance.female_count:
+                self.fields['female_count'].initial = convert_nepali_to_english_numbers(self.instance.female_count)
+            if self.instance.salary_amount:
+                self.fields['salary_amount'].initial = convert_nepali_to_english_numbers(self.instance.salary_amount)
+            # Keep salary_npr in Nepali digits as requested
+        
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        
+        # Convert English numbers back to Nepali for storage
+        from .utils import convert_nepali_to_english_numbers
+        
+        # Create reverse mapping for English to Nepali
+        english_to_nepali = {
+            '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
+            '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
+        }
+        
+        def convert_english_to_nepali(text):
+            if not text:
+                return text
+            result = str(text)
+            for english, nepali in english_to_nepali.items():
+                result = result.replace(english, nepali)
+            return result
+        
+        # Convert specific fields back to Nepali for storage
+        if 'male_count' in cleaned_data and cleaned_data['male_count']:
+            cleaned_data['male_count'] = convert_english_to_nepali(cleaned_data['male_count'])
+        if 'female_count' in cleaned_data and cleaned_data['female_count']:
+            cleaned_data['female_count'] = convert_english_to_nepali(cleaned_data['female_count'])
+        if 'salary_amount' in cleaned_data and cleaned_data['salary_amount']:
+            cleaned_data['salary_amount'] = convert_english_to_nepali(cleaned_data['salary_amount'])
+        # Keep salary_npr in Nepali digits as requested
+        
+        return cleaned_data
     
     class Meta:
         model = JobPosition

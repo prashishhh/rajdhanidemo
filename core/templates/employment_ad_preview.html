@@ -1,3 +1,4 @@
+{% load number_filters %}
 <!DOCTYPE html>
 <html lang="ne">
 <head>
@@ -3168,9 +3169,9 @@
       <tr class="data-row">
         <td>{{ forloop.counter }}</td>
         <td class="text-left">{{ position.position }}</td>
-        <td class="olympia-data">{{ position.male_count }}</td>
-        <td class="olympia-data">{{ position.female_count }}</td>
-        <td class="olympia-data">{{ position.salary_amount }}</td>
+        <td class="olympia-data">{{ position.male_count|nepali_to_english }}</td>
+        <td class="olympia-data">{{ position.female_count|nepali_to_english }}</td>
+        <td class="olympia-data">{{ position.salary_amount|nepali_to_english }}</td>
         <td>{{ position.salary_npr|safe }}</td>
         {% if forloop.first %}
         <!-- Common fields - only show in first row and span across all positions -->

@@ -42,3 +42,24 @@ def safe_unicode_string(text):
             return text.decode('utf-8', errors='replace')
     return str(text)
 
+
+def convert_nepali_to_english_numbers(text):
+    """
+    Convert Nepali numbers to English numbers in text
+    """
+    if not text:
+        return text
+    
+    # Mapping of Nepali numbers to English numbers
+    nepali_to_english = {
+        '०': '0', '१': '1', '२': '2', '३': '3', '४': '4',
+        '५': '5', '६': '6', '७': '7', '८': '8', '९': '9'
+    }
+    
+    # Convert each Nepali digit to English
+    result = str(text)
+    for nepali, english in nepali_to_english.items():
+        result = result.replace(nepali, english)
+    
+    return result
+

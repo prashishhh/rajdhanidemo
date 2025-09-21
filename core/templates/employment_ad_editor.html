@@ -6730,6 +6730,26 @@ function setupCountryDropdown() {
     const otherCountryInput = document.getElementById('id_other_country');
     const titleField = document.getElementById('id_title');
     
+    // Set up manual edit detection for title field
+    if (titleField) {
+        addEventListenerOnce(titleField, 'input', function(e) {
+            // Only mark as manually edited if this is a real user input (not programmatic)
+            if (e.isTrusted) {
+                this.dataset.manualEdit = 'true';
+            }
+        });
+        
+        addEventListenerOnce(titleField, 'keydown', function(e) {
+            // Mark as manually edited when user presses keys
+            this.dataset.manualEdit = 'true';
+        });
+        
+        addEventListenerOnce(titleField, 'paste', function(e) {
+            // Mark as manually edited when user pastes
+            this.dataset.manualEdit = 'true';
+        });
+    }
+    
     if (countryField && otherCountryField && otherCountryInput) {
         // Use our safe event listener function to prevent duplicates
         addEventListenerOnce(countryField, 'change', function() {
@@ -6738,11 +6758,9 @@ function setupCountryDropdown() {
                 otherCountryInput.required = true;
                 otherCountryInput.focus();
                 
-                // For "Other" country, set a generic title
-                if (titleField) {
+                // For "Other" country, set a generic title only if not manually editing
+                if (titleField && titleField.dataset.manualEdit !== 'true') {
                     titleField.value = 'विदेशमा रोजगारी';
-                    titleField.dispatchEvent(new Event('input', { bubbles: true }));
-                    titleField.dispatchEvent(new Event('change', { bubbles: true }));
                 }
             } else {
                 otherCountryField.style.display = 'none';
@@ -6769,14 +6787,13 @@ function setupCountryDropdown() {
         if (otherCountryInput) {
             addEventListenerOnce(otherCountryInput, 'input', function() {
                 if (this.value.trim()) {
-                    const customTitle = `${this.value.trim()}मा रोजगारी`;
-                    if (titleField) {
+                    // Check if user is manually editing the title
+                    if (titleField && titleField.dataset.manualEdit !== 'true') {
+                        const customTitle = `${this.value.trim()}मा रोजगारी`;
                         titleField.value = customTitle;
-                        titleField.dispatchEvent(new Event('input', { bubbles: true }));
-                        titleField.dispatchEvent(new Event('change', { bubbles: true }));
                     }
-                        }
-      });
+                }
+            });
     } else {
       console.warn('DEBUG: Banner upload element not found');
     }
@@ -6788,6 +6805,11 @@ function setupCountryDropdown() {
 // Function to generate title based on country
 function generateTitleFromCountry(country, titleField) {
     if (!titleField) return;
+    
+    // Check if user is manually editing the title
+    if (titleField.dataset.manualEdit === 'true') {
+        return; // Don't auto-generate title if user is manually editing
+    }
     
     let title = '';
     switch (country) {
@@ -6939,8 +6961,6 @@ function generateTitleFromCountry(country, titleField) {
     
     if (!currentValue || isDefaultTitle) {
         titleField.value = title;
-        titleField.dispatchEvent(new Event('input', { bubbles: true }));
-        titleField.dispatchEvent(new Event('change', { bubbles: true }));
     }
 }
 
