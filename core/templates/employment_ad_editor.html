@@ -513,7 +513,7 @@
                                                     <div class="mb-2">
                                                         <label for="{{ form.company_banner_image.id_for_label }}" class="form-label">ब्यानर इमेज अपलोड गर्नुहोस्</label>
                                                         {{ form.company_banner_image }}
-                                                        <small class="text-muted d-block">सिफारिस: 12cm x 1.2cm (1.2cm उचाइ)</small>
+                                                        <small class="text-muted d-block">सिफारिस: 12cm x 1.2cm (1.2cm उचाइ) - ब्यानर स्वतः 1.2cm उचाइमा फिट हुनेछ</small>
                                                     </div>
                                                 </div>
                                             </div>
@@ -613,7 +613,7 @@
                                             <label class="form-label">ब्यानर पूर्वावलोकन</label>
                                             <div class="banner-preview" id="banner-preview" style="width: 12cm; height: 1.2cm; border: 1px solid #ccc; background: white; display: flex; align-items: center; justify-content: center; overflow: hidden;">
                                                 {% if form.company_banner_image.value %}
-                                                    <img src="{{ form.company_banner_image.value.url }}" alt="Company Banner" class="preview-banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                                                    <img src="{{ form.company_banner_image.value.url }}" alt="Company Banner" class="preview-banner" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
                                                 {% else %}
                                                     <div class="banner-placeholder" style="font-size: 8pt; text-align: center; color: #666;">{{ form.company_banner_text.value|default:"" }}</div>
                                                 {% endif %}
@@ -8816,5 +8816,49 @@ function testSimpleCityExtraction() {
     }
   });
 }
+
+// Banner preview update functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const bannerInput = document.querySelector('input[name="company_banner_image"]');
+    const bannerPreview = document.getElementById('banner-preview');
+    
+    if (bannerInput && bannerPreview) {
+        bannerInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = bannerPreview.querySelector('img');
+                    if (img) {
+                        img.src = e.target.result;
+                        img.style.width = '100%';
+                        img.style.height = '100%';
+                        img.style.objectFit = 'cover';
+                        img.style.objectPosition = 'center';
+                    } else {
+                        // Create new img element if none exists
+                        const newImg = document.createElement('img');
+                        newImg.src = e.target.result;
+                        newImg.alt = 'Company Banner';
+                        newImg.className = 'preview-banner';
+                        newImg.style.width = '100%';
+                        newImg.style.height = '100%';
+                        newImg.style.objectFit = 'cover';
+                        newImg.style.objectPosition = 'center';
+                        
+                        // Remove placeholder if exists
+                        const placeholder = bannerPreview.querySelector('.banner-placeholder');
+                        if (placeholder) {
+                            placeholder.remove();
+                        }
+                        
+                        bannerPreview.appendChild(newImg);
+                    }
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+});
 </script>
 {% endblock %}
