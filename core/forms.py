@@ -442,8 +442,7 @@ class JobPositionForm(ProductionSafeForm):
                 ('NPR', 'Nepali Rupee (रु.)'),
             ]),
             'salary_npr': forms.TextInput(attrs={
-                'class': 'form-control',
-                'readonly': 'readonly'
+                'class': 'form-control'
             }),
             'overtime': forms.Select(attrs={
                 'class': 'form-control'

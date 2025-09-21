@@ -293,10 +293,54 @@ def parse_ocr_text(ocr_text):
     
     # Extract data based on the actual document structure from the provided image
     
-    # Company name - look for "SUCCESS NEPAL MANPOWER AGENCY" or similar
-    company_match = re.search(r'SUCCESS\s+NEPAL\s+MANPOWER\s+AGENCY', ocr_text, re.IGNORECASE)
+    # Company name - extract between 'शहर स्थित' and 'कम्पनीबाट'
+    print(f"DEBUG: Looking for company name between 'शहर स्थित' and 'कम्पनीबाट'")
+    print(f"DEBUG: Full OCR text: {ocr_text}")
+    
+    # Check if the text contains the expected keywords
+    has_shahar = 'शहर' in ocr_text
+    has_sthit = 'स्थित' in ocr_text
+    has_kampani = 'कम्पनी' in ocr_text
+    has_kampani_bat = 'कम्पनीबाट' in ocr_text
+    
+    print(f"DEBUG: Contains 'शहर': {has_shahar}")
+    print(f"DEBUG: Contains 'स्थित': {has_sthit}")
+    print(f"DEBUG: Contains 'कम्पनी': {has_kampani}")
+    print(f"DEBUG: Contains 'कम्पनीबाट': {has_kampani_bat}")
+    
+    # Try multiple patterns for better matching
+    company_match = None
+    
+    # Pattern 1: शहर स्थित COMPANY कम्पनीबाट (more flexible)
+    company_match = re.search(r'शहर\s+स्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
     if company_match:
-        parsed_data['company_name'] = 'SUCCESS NEPAL MANPOWER AGENCY PVT. LTD.'
+        parsed_data['company_name'] = company_match.group(1).strip()
+        print(f"DEBUG: Company name extracted (Pattern 1): '{parsed_data['company_name']}'")
+    else:
+        print(f"DEBUG: Pattern 1 did not match")
+        # Pattern 2: स्थित COMPANY कम्पनीबाट (without शहर)
+        company_match = re.search(r'स्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+        if company_match:
+            parsed_data['company_name'] = company_match.group(1).strip()
+            print(f"DEBUG: Company name extracted (Pattern 2): '{parsed_data['company_name']}'")
+        else:
+            print(f"DEBUG: Pattern 2 did not match")
+            # Pattern 3: शहरस्थित COMPANY कम्पनीबाट (no space)
+            company_match = re.search(r'शहरस्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+            if company_match:
+                parsed_data['company_name'] = company_match.group(1).strip()
+                print(f"DEBUG: Company name extracted (Pattern 3): '{parsed_data['company_name']}'")
+            else:
+                print(f"DEBUG: Pattern 3 did not match")
+                # Pattern 4: More flexible - any text between शहर स्थित and कम्पनीबाट
+                company_match = re.search(r'शहर\s+स्थित\s+([A-Z][^।\n]*?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+                if company_match:
+                    parsed_data['company_name'] = company_match.group(1).strip()
+                    print(f"DEBUG: Company name extracted (Pattern 4): '{parsed_data['company_name']}'")
+                else:
+                    print(f"DEBUG: Pattern 4 did not match")
+                    print(f"DEBUG: No company match found with 'शहर स्थित' patterns")
+                    print(f"DEBUG: No company name found in OCR text")
     
     # Pre Approval Date - look for "2025/08/15" format (as seen in OCR)
     date_match = re.search(r'(\d{4}/\d{2}/\d{2})', ocr_text)
@@ -440,7 +484,7 @@ def parse_ocr_text(ocr_text):
     
     # Set defaults for missing fields
     if not parsed_data.get('company_name'):
-        parsed_data['company_name'] = 'SUCCESS NEPAL MANPOWER AGENCY PVT. LTD.'
+        parsed_data['company_name'] = 'Company Name Not Found'
     if not parsed_data.get('country'):
         parsed_data['country'] = 'Japan'
     if not parsed_data.get('salary_currency'):

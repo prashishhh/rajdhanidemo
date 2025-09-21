@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <title>Employment Advertisement - Dynamic Design</title>
 <style>
-  /* Font Face Declaration for Kalimati - Unicode Devanagari Support */
+  /* Font Face Declaration for Kalimati - Unicode Devanagari Support with Professional Rendering */
   @font-face {
     font-family: 'Kalimati';
     src: url('{{ STATIC_URL }}fonts/Kalimati.ttf') format('truetype');
@@ -13,6 +13,8 @@
     font-display: swap;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
     unicode-range: U+0900-097F, U+0000-00FF;
   }
   
@@ -26,13 +28,17 @@
     unicode-range: U+0900-097F, U+0000-00FF;
   }
   
-  /* Lato font for Company text - Local files */
+  /* Lato font for Company text - Local files with Professional Rendering */
   @font-face {
     font-family: 'Lato';
     src: url('{{ STATIC_URL }}templates/font/lato.regular.ttf') format('truetype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
   }
   
   @font-face {
@@ -41,12 +47,16 @@
     font-weight: 900;
     font-style: normal;
     font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
   }
   
   /* Roboto font for Meta items */
   @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
   
-  /* Olympia-BoldCond font for position text */
+  /* Olympia-BoldCond font for position text with Professional Rendering */
   @font-face {
     font-family: 'Olympia-BoldCond';
     src: url('{{ STATIC_URL }}fonts/olympia-bold.TTF') format('truetype');
@@ -56,9 +66,11 @@
     font-display: swap;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
   }
   
-  /* RajdhaniBold font for table headers */
+  /* RajdhaniBold font for table headers with Professional Rendering */
   @font-face {
     font-family: 'RajdhaniBold';
     src: url('{{ STATIC_URL }}fonts/RajdhaniBold.ttf') format('truetype');
@@ -67,6 +79,8 @@
     font-display: swap;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
   }
   
   body { 
@@ -78,11 +92,79 @@
     padding-top: 400px; /* Increased top padding to move content further down */
   }
   
-  /* PDF mode - adjust positioning for PDF */
+  /* PDF mode - adjust positioning for PDF with professional newspaper print quality */
   {% if pdf_mode %}
   body {
     padding-top: 200px !important; /* Reduced padding for PDF but still some space from top */
+    /* Professional newspaper print quality settings */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    /* Newspaper-specific optimizations */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-variant-ligatures: common-ligatures;
+    font-kerning: normal;
+    font-synthesis: none;
   }
+  
+  /* Ensure all elements maintain exact colors in PDF */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* High-quality image rendering for PDF */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Sharp text rendering for all text elements - Remove shadows for crisp print */
+  h1, h2, h3, h4, h5, h6, p, span, div, td, th, li {
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+  }
+  
+  /* Remove all text shadows and blur effects for PDF */
+  * {
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Additional high-quality rendering for all elements */
+  {% if high_quality %}
+  * {
+    text-rendering: optimizeLegibility !important;
+    font-smooth: always !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Ensure maximum quality for backgrounds and borders */
+  .top-header, .company-section, .position-section, .interview-section, .country-notice {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  {% endif %}
   {% endif %}
   
   /* Iframe mode - reduce padding for iframe embedding */
@@ -1460,11 +1542,27 @@
     margin: 0px !important;
   }
   
-  /* Print-specific styles to ensure light font weights - Updated: 2024-12-19 */
+  /* Print-specific styles with professional quality settings - Updated: 2024-12-19 */
   @media print {
-    /* Add top margin for print to center content on page */
+    /* Professional print quality settings */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      text-shadow: none !important;
+      -webkit-text-stroke: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+    }
+    
     body {
       margin-top: 5cm !important; /* Add top margin for print */
+      font-smooth: always;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
       padding-top: 0 !important; /* Remove padding for print */
     }
     
@@ -2639,9 +2737,25 @@
   }
   
   @media print {
-    /* Add top margin for print to center content on page - Second media query */
+    /* Professional print quality settings - Second media query */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      text-shadow: none !important;
+      -webkit-text-stroke: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+    }
+    
     body {
       margin-top: 5cm !important; /* Add top margin for print */
+      font-smooth: always;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
       padding-top: 0 !important; /* Remove padding for print */
     }
     
@@ -4558,7 +4672,7 @@
       <!-- Display uploaded banner image -->
       <div class="banner-image-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
         {% if pdf_mode %}
-          <img src="data:image/jpeg;base64,{{ ad.company_banner_image_base64 }}" alt="Company Banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+          <img src="data:image/jpeg;base64,{{ ad.company_banner_image_base64 }}" alt="Company Banner" style="max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;">
         {% else %}
           <img src="{{ ad.company_banner_image.url }}" alt="Company Banner" style="max-width: 100%; max-height: 100%; object-fit: contain;">
         {% endif %}
@@ -4568,7 +4682,7 @@
       <div class="company-logo">
         {% if ad.company_logo_image %}
           {% if pdf_mode %}
-            <img src="data:image/jpeg;base64,{{ ad.company_logo_image_base64 }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+            <img src="data:image/jpeg;base64,{{ ad.company_logo_image_base64 }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;">
           {% else %}
             <img src="{{ ad.company_logo_image.url }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
           {% endif %}

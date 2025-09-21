@@ -49,7 +49,7 @@ class PrintService:
     
     def generate_pdf_playwright(self, html_content: str, filename: str = "employment_ad.pdf") -> Optional[bytes]:
         """
-        Generate PDF using Playwright (preferred method)
+        Generate PDF using Playwright with professional-grade settings for InDesign-level quality
         Returns PDF content as bytes or None if failed
         """
         if not self.playwright_available:
@@ -58,28 +58,60 @@ class PrintService:
         
         try:
             with sync_playwright() as p:
-                # Launch browser
-                browser = p.chromium.launch()
-                page = browser.new_page()
+                # Launch browser with professional newspaper printing settings
+                browser = p.chromium.launch(
+                    args=[
+                        '--force-device-scale-factor=3',  # 300 DPI rendering for newspaper quality
+                        '--disable-web-security',
+                        '--disable-features=VizDisplayCompositor',
+                        '--enable-font-antialiasing',
+                        '--disable-background-timer-throttling',
+                        '--disable-backgrounding-occluded-windows',
+                        '--disable-renderer-backgrounding',
+                        '--font-render-hinting=none',  # Disable font hinting for crisp text
+                        '--disable-font-subpixel-positioning',  # Better text rendering
+                        '--enable-gpu-rasterization',
+                        '--enable-zero-copy',
+                        '--disable-gpu-sandbox',
+                        '--high-dpi-support=1',  # Enable high DPI support
+                        '--force-color-profile=srgb',  # Consistent color profile
+                        '--disable-features=TranslateUI',  # Disable unnecessary features
+                        '--disable-ipc-flooding-protection'  # Better performance
+                    ]
+                )
+                
+                # Create page with professional newspaper printing viewport
+                page = browser.new_page(
+                    viewport={'width': 3720, 'height': 5262},  # A4 at 450 DPI for newspaper quality
+                    device_scale_factor=3  # 3x scaling for ultra-crisp rendering
+                )
                 
                 # Set content and wait for fonts to load
                 page.set_content(html_content, wait_until="networkidle")
                 
-                # Wait a bit for any dynamic content
-                page.wait_for_timeout(1000)
+                # Wait for fonts and images to fully load
+                page.wait_for_timeout(2000)
                 
-                # Generate PDF with specific dimensions and settings
+                # Wait for all images to load
+                page.wait_for_function("() => Array.from(document.images).every(img => img.complete)")
+                
+                # Generate PDF with professional newspaper printing settings
                 pdf_content = page.pdf(
                     format="A4",
                     print_background=True,
                     margin={
-                        "top": "0.5cm",
-                        "right": "0.5cm", 
-                        "bottom": "0.5cm",
-                        "left": "0.5cm"
+                        "top": "0.2cm",  # Minimal margins for maximum content
+                        "right": "0.2cm", 
+                        "bottom": "0.2cm",
+                        "left": "0.2cm"
                     },
-                    scale=1.0,
-                    prefer_css_page_size=True
+                    scale=1.0,  # No scaling to maintain exact dimensions
+                    prefer_css_page_size=True,
+                    display_header_footer=False,
+                    tagged=True,  # Enable PDF tags for accessibility
+                    outline=True,  # Enable PDF outline
+                    width="210mm",  # Exact A4 width
+                    height="297mm"   # Exact A4 height
                 )
                 
                 browser.close()
@@ -91,7 +123,7 @@ class PrintService:
     
     def generate_pdf_weasyprint(self, html_content: str, filename: str = "employment_ad.pdf") -> Optional[bytes]:
         """
-        Generate PDF using WeasyPrint (fallback method)
+        Generate PDF using WeasyPrint with professional print settings
         Returns PDF content as bytes or None if failed
         """
         if not self.weasyprint_available:
@@ -105,9 +137,73 @@ class PrintService:
                 temp_html_path = f.name
             
             try:
-                # Generate PDF
+                # Professional CSS for newspaper-quality PDF generation
+                professional_css = weasyprint.CSS(string="""
+                    @page {
+                        size: A4;
+                        margin: 0.2cm;
+                        bleed: 0.3cm;
+                        marks: crop cross;
+                        color-adjust: exact;
+                        resolution: 450dpi;
+                    }
+                    
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                        text-shadow: none !important;
+                        -webkit-text-stroke: none !important;
+                        filter: none !important;
+                        backdrop-filter: none !important;
+                    }
+                    
+                    body {
+                        font-smooth: always;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        text-rendering: optimizeLegibility;
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: crisp-edges;
+                        image-rendering: pixelated;
+                    }
+                    
+                    img {
+                        image-rendering: -webkit-optimize-contrast;
+                        image-rendering: crisp-edges;
+                        image-rendering: pixelated;
+                    }
+                    
+                    /* Ensure sharp text rendering - Remove all shadows and strokes */
+                    h1, h2, h3, h4, h5, h6, p, span, div, td, th, li {
+                        text-rendering: optimizeLegibility;
+                        font-smooth: always;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                        text-shadow: none !important;
+                        -webkit-text-stroke: none !important;
+                        filter: none !important;
+                    }
+                    
+                    /* High-quality font rendering */
+                    @font-face {
+                        font-display: swap;
+                        font-smooth: always;
+                        -webkit-font-smoothing: antialiased;
+                        -moz-osx-font-smoothing: grayscale;
+                    }
+                """)
+                
+                # Generate PDF with newspaper-quality settings
                 pdf_doc = weasyprint.HTML(filename=temp_html_path)
-                pdf_content = pdf_doc.write_pdf()
+                pdf_content = pdf_doc.write_pdf(
+                    stylesheets=[professional_css],
+                    optimize_images=False,  # Don't optimize images to maintain quality
+                    jpeg_quality=100,  # Maximum JPEG quality
+                    png_quality=100,   # Maximum PNG quality
+                    # Additional settings for professional printing
+                    base_url=None,  # Prevent external resource loading issues
+                    presentational_hints=True  # Better CSS support
+                )
                 return pdf_content
             finally:
                 # Clean up temporary file
@@ -258,8 +354,12 @@ class PrintService:
             ad_with_base64 = employment_ad
             if hasattr(employment_ad, 'company_banner_image') and employment_ad.company_banner_image:
                 try:
+                    # Read image with maximum quality preservation
                     with open(employment_ad.company_banner_image.path, 'rb') as img_file:
-                        ad_with_base64.company_banner_image_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                        img_data = img_file.read()
+                        # Convert to base64 with maximum quality
+                        ad_with_base64.company_banner_image_base64 = base64.b64encode(img_data).decode('utf-8')
+                        logger.info(f"Banner image encoded successfully: {len(img_data)} bytes")
                 except Exception as e:
                     logger.warning(f"Could not encode banner image: {e}")
                     ad_with_base64.company_banner_image_base64 = None
@@ -268,21 +368,27 @@ class PrintService:
                 
             if hasattr(employment_ad, 'company_logo_image') and employment_ad.company_logo_image:
                 try:
+                    # Read image with maximum quality preservation
                     with open(employment_ad.company_logo_image.path, 'rb') as img_file:
-                        ad_with_base64.company_logo_image_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+                        img_data = img_file.read()
+                        # Convert to base64 with maximum quality
+                        ad_with_base64.company_logo_image_base64 = base64.b64encode(img_data).decode('utf-8')
+                        logger.info(f"Logo image encoded successfully: {len(img_data)} bytes")
                 except Exception as e:
                     logger.warning(f"Could not encode logo image: {e}")
                     ad_with_base64.company_logo_image_base64 = None
             else:
                 ad_with_base64.company_logo_image_base64 = None
             
-            # Render HTML content with full context
+            # Render HTML content with full context and high-quality settings
             html_content = render_to_string(template_name, {
                 'ad': ad_with_base64,
                 'positions': filtered_positions,
                 'interview_data': interview_data,
                 'country_notice': country_notice,
-                'pdf_mode': True  # Flag for PDF-specific styling
+                'pdf_mode': True,  # Flag for PDF-specific styling
+                'high_quality': True,  # Flag for maximum quality rendering
+                'print_optimized': True  # Flag for print optimization
             })
             
             # Try Playwright first (better quality)

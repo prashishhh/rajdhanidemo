@@ -2477,16 +2477,44 @@ function parseFromOCR(raw){
   m = text.match(/\b(?:Date|मिति)\s*[:\-]?\s*(\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}|\d{1,2}\s+[A-Za-z]+\s*,?\s*\d{4})/i);
   if (m) out.pre_approval_date = m[1];
 
-  // Extract company name - prefer between 'स्थित' and 'कम्पनीबाट' (handles 'शहरस्थित' and 'शहर स्थित')
-  m = text.match(/(?:शहर\s*स्थित|शहरस्थित|स्थित)\s+([^।\n]+?)(?=\s+कम्पनी(?:बाट)?\b|\s+Company\b|\s+CO\.?\b|\s+L\.?L\.?C\.?\b)/i);
-  if (m) {
-    out.company_name = m[1].trim();
+  // Extract company name - prefer between 'शहर स्थित' and 'कम्पनीबाट'
+  console.log('DEBUG: Looking for company name between "शहर स्थित" and "कम्पनीबाट"');
+  
+  // Try multiple patterns for better matching
+  let companyMatch = null;
+  
+  // Pattern 1: शहर स्थित COMPANY कम्पनीबाट (more flexible)
+  companyMatch = text.match(/शहर\s+स्थित\s+([^।\n]+?)\s+कम्पनीबाट/i);
+  if (companyMatch) {
+    out.company_name = companyMatch[1].trim();
+    console.log('DEBUG: Company name extracted (Pattern 1):', out.company_name);
   } else {
-    // Fallback: look for text after "श्री" and before country/address
-    m = text.match(/श्री\s+([^।\n]+?)(?=\s+[A-Z]{2,}\s+मुलुकको|\s+UAE\.P\.|\s+स्थित|\s+।|\s+$)/i);
-    if (m) {
-      out.company_name = m[1].trim();
-      out.company_name = out.company_name.replace(/\s+[A-Z]{2,}\s+मुलुकको.*$/, '');
+    console.log('DEBUG: Pattern 1 did not match');
+    // Pattern 2: स्थित COMPANY कम्पनीबाट (without शहर)
+    companyMatch = text.match(/स्थित\s+([^।\n]+?)\s+कम्पनीबाट/i);
+    if (companyMatch) {
+      out.company_name = companyMatch[1].trim();
+      console.log('DEBUG: Company name extracted (Pattern 2):', out.company_name);
+    } else {
+      console.log('DEBUG: Pattern 2 did not match');
+      // Pattern 3: शहरस्थित COMPANY कम्पनीबाट (no space)
+      companyMatch = text.match(/शहरस्थित\s+([^।\n]+?)\s+कम्पनीबाट/i);
+      if (companyMatch) {
+        out.company_name = companyMatch[1].trim();
+        console.log('DEBUG: Company name extracted (Pattern 3):', out.company_name);
+      } else {
+        console.log('DEBUG: Pattern 3 did not match');
+        // Pattern 4: More flexible - any text between शहर स्थित and कम्पनीबाट
+        companyMatch = text.match(/शहर\s+स्थित\s+([A-Z][^।\n]*?)\s+कम्पनीबाट/i);
+        if (companyMatch) {
+          out.company_name = companyMatch[1].trim();
+          console.log('DEBUG: Company name extracted (Pattern 4):', out.company_name);
+        } else {
+          console.log('DEBUG: Pattern 4 did not match');
+          console.log('DEBUG: No company match found with "शहर स्थित" patterns');
+          console.log('DEBUG: No company name found in OCR text');
+        }
+      }
     }
   }
 
@@ -4910,7 +4938,10 @@ const exchangeRates = {
 function convertToNPR(amount, currency) {
   if (!amount || !currency || !exchangeRates[currency]) return '';
   const rate = exchangeRates[currency];
-  const converted = parseFloat(amount) * rate;
+  
+  // Convert Nepali numbers to English if needed
+  const englishAmount = convertToEnglishNumbers(amount.toString());
+  const converted = parseFloat(englishAmount) * rate;
   return formatNepaliCurrency(converted);
 }
 function formatNepaliCurrency(amount) {
@@ -4926,10 +4957,332 @@ function handleSalaryConversion(formElement) {
     const salaryCurrency = formElement.querySelector('[name*="salary_currency"]');
     const salaryNPR = formElement.querySelector('[name*="salary_npr"]');
     if (salaryAmount && salaryCurrency && salaryNPR) {
-    const nprAmount = convertToNPR(salaryAmount.value, salaryCurrency.value);
-    if (nprAmount) salaryNPR.value = nprAmount;
-  }
+        // Convert Nepali numbers to English for calculation
+        const englishAmount = convertToEnglishNumbers(salaryAmount.value);
+        const nprAmount = convertToNPR(englishAmount, salaryCurrency.value);
+        if (nprAmount) {
+            // Convert the result back to Nepali numbers
+            salaryNPR.value = convertToNepaliNumbers(nprAmount);
+        }
+    }
 }
+
+// Convert English numbers to Nepali numbers
+function convertToNepaliNumbers(text) {
+    const englishToNepali = {
+        '0': '०', '1': '१', '2': '२', '3': '३', '4': '४',
+        '5': '५', '6': '६', '7': '७', '8': '८', '9': '९'
+    };
+    
+    console.log('DEBUG: convertToNepaliNumbers input:', text);
+    const result = text.replace(/[0-9]/g, function(match) {
+        console.log('DEBUG: Converting', match, 'to', englishToNepali[match]);
+        return englishToNepali[match];
+    });
+    console.log('DEBUG: convertToNepaliNumbers output:', result);
+    return result;
+}
+
+// Convert Nepali numbers to English numbers (for calculations)
+function convertToEnglishNumbers(text) {
+    const nepaliToEnglish = {
+        '०': '0', '१': '1', '२': '2', '३': '3', '४': '4',
+        '५': '5', '६': '6', '७': '7', '८': '8', '९': '9'
+    };
+    
+    return text.replace(/[०-९]/g, function(match) {
+        return nepaliToEnglish[match];
+    });
+}
+
+// Validate and convert input to Nepali numbers only
+function handleNepaliNumberInput(input) {
+    let value = input.value;
+    console.log('DEBUG: handleNepaliNumberInput original value:', value);
+    
+    // Remove any non-numeric characters except decimal point and comma
+    value = value.replace(/[^0-9०-९.,]/g, '');
+    console.log('DEBUG: handleNepaliNumberInput after cleanup:', value);
+    
+    // Convert English numbers to Nepali
+    value = convertToNepaliNumbers(value);
+    console.log('DEBUG: handleNepaliNumberInput after conversion:', value);
+    
+    // Update the input value
+    input.value = value;
+    console.log('DEBUG: handleNepaliNumberInput final value:', input.value);
+    
+    return value;
+}
+
+// Make salary fields more interactive with Nepali number support
+function makeSalaryFieldsInteractive() {
+    // Add event listeners to all salary fields
+    const salaryAmountFields = document.querySelectorAll('[name*="salary_amount"]');
+    const salaryNprFields = document.querySelectorAll('[name*="salary_npr"]');
+    const salaryCurrencyFields = document.querySelectorAll('[name*="salary_currency"]');
+    
+    // Also try alternative selectors for formset fields
+    const alternativeNprFields = document.querySelectorAll('input[id*="salary_npr"]');
+    const allNprFields = document.querySelectorAll('input[name*="salary_npr"], input[id*="salary_npr"]');
+    console.log('DEBUG: Alternative salary_npr fields found:', alternativeNprFields.length);
+    console.log('DEBUG: All salary_npr fields found:', allNprFields.length);
+    
+    // Debug: Log field counts
+    console.log('DEBUG: Found salary_amount fields:', salaryAmountFields.length);
+    console.log('DEBUG: Found salary_npr fields:', salaryNprFields.length);
+    console.log('DEBUG: Found salary_currency fields:', salaryCurrencyFields.length);
+    
+    // Make salary_amount fields auto-convert to NPR when changed
+    salaryAmountFields.forEach(field => {
+        field.addEventListener('input', function() {
+            // Convert to Nepali numbers
+            handleNepaliNumberInput(this);
+            
+            const formElement = this.closest('form') || this.closest('.position-form');
+            if (formElement) {
+                handleSalaryConversion(formElement);
+            }
+        });
+        
+        // Prevent non-numeric input
+        field.addEventListener('keypress', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, decimal point, comma
+            if ([8, 9, 27, 13, 46, 44].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        // Add visual feedback
+        field.addEventListener('focus', function() {
+            this.style.backgroundColor = '#fff3cd';
+            this.style.borderColor = '#ffc107';
+        });
+        
+        field.addEventListener('blur', function() {
+            this.style.backgroundColor = '';
+            this.style.borderColor = '';
+        });
+    });
+    
+    // Make salary_npr fields editable with visual feedback
+    salaryNprFields.forEach(field => {
+        console.log('DEBUG: Setting up salary_npr field:', field.name, field.id);
+        
+        field.addEventListener('input', function() {
+            console.log('DEBUG: salary_npr input event triggered:', this.value);
+            // Convert to Nepali numbers
+            handleNepaliNumberInput(this);
+        });
+        
+        // Prevent non-numeric input
+        field.addEventListener('keypress', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, decimal point, comma
+            if ([8, 9, 27, 13, 46, 44].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        field.addEventListener('focus', function() {
+            console.log('DEBUG: salary_npr field focused:', this.name);
+            this.style.backgroundColor = '#fff3cd';
+            this.style.borderColor = '#ffc107';
+            this.removeAttribute('readonly');
+        });
+        
+        field.addEventListener('blur', function() {
+            console.log('DEBUG: salary_npr field blurred:', this.name, 'value:', this.value);
+            this.style.backgroundColor = '';
+            this.style.borderColor = '';
+        });
+        
+        // Add placeholder text
+        if (!field.placeholder) {
+            field.placeholder = 'ने.रु. रकम (नेपाली अंकमा)';
+        }
+    });
+    
+    // Also process alternative fields (formset fields)
+    alternativeNprFields.forEach(field => {
+        console.log('DEBUG: Setting up alternative salary_npr field:', field.name, field.id);
+        
+        field.addEventListener('input', function() {
+            console.log('DEBUG: alternative salary_npr input event triggered:', this.value);
+            // Convert to Nepali numbers
+            handleNepaliNumberInput(this);
+        });
+        
+        // Prevent non-numeric input
+        field.addEventListener('keypress', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, decimal point, comma
+            if ([8, 9, 27, 13, 46, 44].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        field.addEventListener('focus', function() {
+            console.log('DEBUG: alternative salary_npr field focused:', this.name);
+            this.style.backgroundColor = '#fff3cd';
+            this.style.borderColor = '#ffc107';
+            this.removeAttribute('readonly');
+        });
+        
+        field.addEventListener('blur', function() {
+            console.log('DEBUG: alternative salary_npr field blurred:', this.name, 'value:', this.value);
+            this.style.backgroundColor = '';
+            this.style.borderColor = '';
+        });
+        
+        // Add placeholder text
+        if (!field.placeholder) {
+            field.placeholder = 'ने.रु. रकम (नेपाली अंकमा)';
+        }
+    });
+    
+    // Process all NPR fields (comprehensive approach)
+    allNprFields.forEach(field => {
+        // Skip if already processed
+        if (salaryNprFields.includes(field) || alternativeNprFields.includes(field)) {
+            return;
+        }
+        
+        console.log('DEBUG: Setting up comprehensive salary_npr field:', field.name, field.id);
+        
+        field.addEventListener('input', function() {
+            console.log('DEBUG: comprehensive salary_npr input event triggered:', this.value);
+            // Convert to Nepali numbers
+            handleNepaliNumberInput(this);
+        });
+        
+        // Prevent non-numeric input
+        field.addEventListener('keypress', function(e) {
+            // Allow: backspace, delete, tab, escape, enter, decimal point, comma
+            if ([8, 9, 27, 13, 46, 44].indexOf(e.keyCode) !== -1 ||
+                // Allow: Ctrl+A, Ctrl+C, Ctrl+V, Ctrl+X
+                (e.keyCode === 65 && e.ctrlKey === true) ||
+                (e.keyCode === 67 && e.ctrlKey === true) ||
+                (e.keyCode === 86 && e.ctrlKey === true) ||
+                (e.keyCode === 88 && e.ctrlKey === true) ||
+                // Allow: home, end, left, right
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                return;
+            }
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+        });
+        
+        field.addEventListener('focus', function() {
+            console.log('DEBUG: comprehensive salary_npr field focused:', this.name);
+            this.style.backgroundColor = '#fff3cd';
+            this.style.borderColor = '#ffc107';
+            this.removeAttribute('readonly');
+        });
+        
+        field.addEventListener('blur', function() {
+            console.log('DEBUG: comprehensive salary_npr field blurred:', this.name, 'value:', this.value);
+            this.style.backgroundColor = '';
+            this.style.borderColor = '';
+        });
+        
+        // Add placeholder text
+        if (!field.placeholder) {
+            field.placeholder = 'ने.रु. रकम (नेपाली अंकमा)';
+        }
+    });
+    
+    // Make currency fields trigger conversion
+    salaryCurrencyFields.forEach(field => {
+        field.addEventListener('change', function() {
+            const formElement = this.closest('form') || this.closest('.position-form');
+            if (formElement) {
+                handleSalaryConversion(formElement);
+            }
+        });
+    });
+}
+
+// Initialize existing values to Nepali numbers
+function initializeNepaliNumbers() {
+    const salaryAmountFields = document.querySelectorAll('[name*="salary_amount"]');
+    const allNprFields = document.querySelectorAll('input[name*="salary_npr"], input[id*="salary_npr"]');
+    
+    console.log('DEBUG: Initializing Nepali numbers for fields:', {
+        salaryAmount: salaryAmountFields.length,
+        allNpr: allNprFields.length
+    });
+    
+    // Convert existing values to Nepali numbers
+    salaryAmountFields.forEach(field => {
+        if (field.value && /[0-9]/.test(field.value)) {
+            field.value = convertToNepaliNumbers(field.value);
+        }
+    });
+    
+    // Convert all NPR fields
+    allNprFields.forEach(field => {
+        if (field.value && /[0-9]/.test(field.value)) {
+            field.value = convertToNepaliNumbers(field.value);
+        }
+    });
+}
+
+// Initialize salary field interactions when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    makeSalaryFieldsInteractive();
+    initializeNepaliNumbers();
+    setupNumberConversion(); // Also setup other number fields
+    
+    // Test: Try to find and log all salary_npr fields
+    setTimeout(function() {
+        const testFields = document.querySelectorAll('input[name*="salary_npr"], input[id*="salary_npr"]');
+        console.log('DEBUG: Final test - Found salary_npr fields:', testFields.length);
+        testFields.forEach((field, index) => {
+            console.log(`DEBUG: Field ${index + 1}:`, {
+                name: field.name,
+                id: field.id,
+                type: field.type,
+                value: field.value,
+                readonly: field.readOnly,
+                disabled: field.disabled
+            });
+        });
+    }, 1000);
+});
 
 
 // rough converters (optional)
@@ -4959,18 +5312,19 @@ function setupDateConversion() {
 }
 
 /* ===== small helpers you already had (kept) ===== */
-function convertToNepaliNumbers(input) {
+function convertToNepaliNumbersComplete(input) {
   const map = {'0':'०','1':'१','2':'२','3':'३','4':'४','5':'५','6':'६','7':'७','8':'८','9':'९'};
   if (!input) return input;
-  const first = input.charAt(0);
-  return map[first] ? map[first] + input.slice(1) : input;
+  return input.replace(/[0-9]/g, function(match) {
+    return map[match];
+  });
 }
 function setupNumberConversion() {
   const nodes = document.querySelectorAll('input[name*="male_count"], input[name*="female_count"], input[name*="hours_per_day"], input[name*="days_per_week"]');
   nodes.forEach(field => {
     field.addEventListener('input', function() {
-      // Convert Nepali numbers to English numbers
-      this.value = convertNepaliToEnglish(this.value);
+      // Convert English numbers to Nepali numbers
+      this.value = convertToNepaliNumbersComplete(this.value);
     });
   });
 }
