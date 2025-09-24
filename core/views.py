@@ -1277,3 +1277,7 @@ def tic_tac_toe_game(request):
 def chess_game(request):
     """Chess Game View"""
     return render(request, 'chess.html')
+
+def ludo_game(request):
+    """Ludo Game View"""
+    return render(request, 'ludo.html')
