@@ -29,3 +29,8 @@ urlpatterns += [
 urlpatterns += [
     path('chess/', views.chess_game, name='chess_game'),
 ]
+
+# Ludo Path
+urlpatterns += [
+    path('ludo/', views.ludo_game, name='ludo_game'),
+]
