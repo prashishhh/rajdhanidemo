@@ -6,10 +6,13 @@ from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.conf import settings
+from django.core.paginator import Paginator
+from django.urls import reverse
 import os
 import json
 import re
 import requests
+from urllib.parse import urlencode
 from decimal import Decimal
 from .models import EmploymentAd, JobPosition, News, NewsArticle, Meeting, UserProfile, Interview, CurrencyRate
 from .forms import EmploymentAdForm, JobPositionForm, JobPositionFormSet, InterviewFormSet, SignUpForm, NewsForm, MeetingForm
@@ -23,6 +26,119 @@ from django.utils.timezone import localtime
 
 # Ensure Unicode environment is set
 ensure_unicode_environment()
+
+EPAPER_ISSUES = [
+    {
+        "slug": "jestha-11-2083",
+        "date_label": "Jestha-11, 2083",
+        "month": "Jestha",
+        "year": 2083,
+        "title": "Jestha-11, 2083 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Rajdhani National Daily", "summary": "National headlines, lead stories, and major updates."},
+            {"number": 2, "section": "National", "headline": "Inside Nepal", "summary": "Government, public affairs, and social updates."},
+            {"number": 3, "section": "Politics", "headline": "Political Desk", "summary": "Party meetings, parliament briefs, and policy news."},
+            {"number": 4, "section": "Business", "headline": "Market Watch", "summary": "Economy, remittance, jobs, and business coverage."},
+            {"number": 5, "section": "Opinion", "headline": "Editorial Page", "summary": "Columns, editorials, and reader opinion."},
+            {"number": 6, "section": "International", "headline": "World News", "summary": "Regional and global developments."},
+            {"number": 7, "section": "Sports", "headline": "Sports Roundup", "summary": "Football, cricket, and local sports coverage."},
+            {"number": 8, "section": "Entertainment", "headline": "Culture & Lifestyle", "summary": "Cinema, arts, and lifestyle stories."},
+        ],
+    },
+    {
+        "slug": "jestha-09-2083",
+        "date_label": "Jestha-9, 2083",
+        "month": "Jestha",
+        "year": 2083,
+        "title": "Jestha-9, 2083 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Morning Edition", "summary": "Top headlines and city updates."},
+            {"number": 2, "section": "National", "headline": "Main News", "summary": "Public interest stories and national reports."},
+            {"number": 3, "section": "Business", "headline": "Finance Desk", "summary": "Market, banking, and economy notes."},
+            {"number": 4, "section": "Province", "headline": "Province Focus", "summary": "Provincial reporting and district news."},
+            {"number": 5, "section": "Opinion", "headline": "Views", "summary": "Editorials and commentary."},
+            {"number": 6, "section": "Sports", "headline": "Sports", "summary": "Daily sports coverage."},
+        ],
+    },
+    {
+        "slug": "jestha-08-2083",
+        "date_label": "Jestha-8, 2083",
+        "month": "Jestha",
+        "year": 2083,
+        "title": "Jestha-8, 2083 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Lead Stories", "summary": "Top Rajdhani headlines."},
+            {"number": 2, "section": "National", "headline": "National Desk", "summary": "Countrywide news coverage."},
+            {"number": 3, "section": "Economy", "headline": "Economy", "summary": "Economic policy and market movement."},
+            {"number": 4, "section": "World", "headline": "World Desk", "summary": "International briefs."},
+            {"number": 5, "section": "Lifestyle", "headline": "Lifestyle", "summary": "Culture and community features."},
+        ],
+    },
+    {
+        "slug": "baisakh-31-2083",
+        "date_label": "Baisakh-31, 2083",
+        "month": "Baisakh",
+        "year": 2083,
+        "title": "Baisakh-31, 2083 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Rajdhani Epaper", "summary": "Main edition front page."},
+            {"number": 2, "section": "National", "headline": "National Reports", "summary": "Daily national coverage."},
+            {"number": 3, "section": "Business", "headline": "Business", "summary": "Trade and economy stories."},
+            {"number": 4, "section": "Sports", "headline": "Sports", "summary": "Sports highlights."},
+            {"number": 5, "section": "Opinion", "headline": "Opinion", "summary": "Editorial and public views."},
+        ],
+    },
+    {
+        "slug": "baisakh-30-2083",
+        "date_label": "Baisakh-30, 2083",
+        "month": "Baisakh",
+        "year": 2083,
+        "title": "Baisakh-30, 2083 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Daily Edition", "summary": "Top stories and updates."},
+            {"number": 2, "section": "National", "headline": "News", "summary": "National news digest."},
+            {"number": 3, "section": "Province", "headline": "Province", "summary": "Local reports and district coverage."},
+            {"number": 4, "section": "Entertainment", "headline": "Entertainment", "summary": "Arts and culture."},
+        ],
+    },
+    {
+        "slug": "fagun-15-2082",
+        "date_label": "Fagun-15, 2082",
+        "month": "Fagun",
+        "year": 2082,
+        "title": "Fagun-15, 2082 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Archive Edition", "summary": "Archived front page."},
+            {"number": 2, "section": "National", "headline": "Archive News", "summary": "National archive stories."},
+            {"number": 3, "section": "Business", "headline": "Archive Business", "summary": "Business archive page."},
+            {"number": 4, "section": "Opinion", "headline": "Archive Opinion", "summary": "Opinion archive page."},
+        ],
+    },
+    {
+        "slug": "magh-12-2082",
+        "date_label": "Magh-12, 2082",
+        "month": "Magh",
+        "year": 2082,
+        "title": "Magh-12, 2082 | Online Nepali News Portal - Rajdhani Epaper",
+        "pages": [
+            {"number": 1, "section": "Front Page", "headline": "Rajdhani Archive", "summary": "Archived main page."},
+            {"number": 2, "section": "National", "headline": "National", "summary": "Archive national reports."},
+            {"number": 3, "section": "World", "headline": "World", "summary": "International archive."},
+            {"number": 4, "section": "Sports", "headline": "Sports", "summary": "Sports archive."},
+        ],
+    },
+]
+
+
+def _epaper_month_label(issue):
+    return f"{issue['month']} {issue['year']}"
+
+
+def _epaper_url(**params):
+    clean_params = {key: value for key, value in params.items() if value not in ("", None)}
+    query = urlencode(clean_params)
+    return f"{reverse('epaper')}{'?' + query if query else ''}"
+
 
 # OCR and Image Processing
 try:
