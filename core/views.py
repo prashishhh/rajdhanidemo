@@ -286,6 +286,183 @@ def home(request):
     news_combined = sorted(news_combined, key=lambda x: x['datetime'], reverse=True)[:6]
     return render(request, 'home.html', {'news_combined': news_combined})
 
+
+def epaper(request):
+    """E-paper archive and reader with guest page limits."""
+    selected_month = request.GET.get('month', '').strip()
+    roman_query = request.GET.get('q', '').strip()
+    issue_slug = request.GET.get('issue', '').strip()
+
+    month_counts = {}
+    for issue in EPAPER_ISSUES:
+        label = _epaper_month_label(issue)
+        month_counts[label] = month_counts.get(label, 0) + 1
+
+    month_filters = [
+        {
+            'label': label,
+            'count': count,
+            'active': label == selected_month,
+            'url': _epaper_url(month=label, q=roman_query),
+        }
+        for label, count in month_counts.items()
+    ]
+
+    filtered_issues = EPAPER_ISSUES
+    if selected_month:
+        filtered_issues = [
+            issue for issue in filtered_issues
+            if _epaper_month_label(issue) == selected_month
+        ]
+
+    if roman_query:
+        query = roman_query.lower()
+        filtered_issues = [
+            issue for issue in filtered_issues
+            if query in ' '.join([
+                issue['slug'],
+                issue['title'],
+                issue['date_label'],
+                issue['month'],
+                str(issue['year']),
+            ]).lower()
+        ]
+
+    archive_paginator = Paginator(filtered_issues, 5)
+    archive_page_obj = archive_paginator.get_page(request.GET.get('archive_page'))
+
+    active_issue = None
+    if issue_slug:
+        active_issue = next(
+            (issue for issue in filtered_issues if issue['slug'] == issue_slug),
+            None
+        )
+    if active_issue is None and filtered_issues:
+        active_issue = filtered_issues[0]
+
+    try:
+        selected_page_number = int(request.GET.get('page', 1))
+    except (TypeError, ValueError):
+        selected_page_number = 1
+
+    selected_page = None
+    page_links = []
+    previous_page_url = None
+    next_page_url = None
+    guest_page_limit = 2
+    can_read_all = request.user.is_authenticated
+    is_locked_page = False
+
+    def login_url_for(page_number):
+        next_url = _epaper_url(
+            issue=active_issue['slug'],
+            page=page_number,
+            month=selected_month,
+            q=roman_query,
+            archive_page=archive_page_obj.number,
+        )
+        return f"{reverse('login')}?{urlencode({'next': next_url})}"
+
+    if active_issue:
+        total_pages = len(active_issue['pages'])
+        selected_page_number = max(1, min(selected_page_number, total_pages))
+        selected_page = active_issue['pages'][selected_page_number - 1]
+        is_locked_page = not can_read_all and selected_page_number > guest_page_limit
+
+        for page in active_issue['pages']:
+            locked = not can_read_all and page['number'] > guest_page_limit
+            page_links.append({
+                'number': page['number'],
+                'section': page['section'],
+                'locked': locked,
+                'active': page['number'] == selected_page_number,
+                'url': login_url_for(page['number']) if locked else _epaper_url(
+                    issue=active_issue['slug'],
+                    page=page['number'],
+                    month=selected_month,
+                    q=roman_query,
+                    archive_page=archive_page_obj.number,
+                ),
+            })
+
+        if selected_page_number > 1:
+            previous_page = selected_page_number - 1
+            previous_page_url = login_url_for(previous_page) if (
+                not can_read_all and previous_page > guest_page_limit
+            ) else _epaper_url(
+                issue=active_issue['slug'],
+                page=previous_page,
+                month=selected_month,
+                q=roman_query,
+                archive_page=archive_page_obj.number,
+            )
+
+        if selected_page_number < total_pages:
+            next_page = selected_page_number + 1
+            next_page_url = login_url_for(next_page) if (
+                not can_read_all and next_page > guest_page_limit
+            ) else _epaper_url(
+                issue=active_issue['slug'],
+                page=next_page,
+                month=selected_month,
+                q=roman_query,
+                archive_page=archive_page_obj.number,
+            )
+
+    archive_items = []
+    for issue in archive_page_obj.object_list:
+        archive_items.append({
+            **issue,
+            'month_label': _epaper_month_label(issue),
+            'pages_count': len(issue['pages']),
+            'url': _epaper_url(
+                issue=issue['slug'],
+                page=1,
+                month=selected_month,
+                q=roman_query,
+                archive_page=archive_page_obj.number,
+            ),
+        })
+
+    pagination_urls = {
+        'previous': _epaper_url(
+            month=selected_month,
+            q=roman_query,
+            issue=active_issue['slug'] if active_issue else '',
+            page=selected_page_number,
+            archive_page=archive_page_obj.previous_page_number(),
+        ) if archive_page_obj.has_previous() else None,
+        'next': _epaper_url(
+            month=selected_month,
+            q=roman_query,
+            issue=active_issue['slug'] if active_issue else '',
+            page=selected_page_number,
+            archive_page=archive_page_obj.next_page_number(),
+        ) if archive_page_obj.has_next() else None,
+    }
+
+    context = {
+        'issues': archive_items,
+        'archive_page_obj': archive_page_obj,
+        'pagination_urls': pagination_urls,
+        'active_issue': active_issue,
+        'selected_page': selected_page,
+        'selected_page_number': selected_page_number,
+        'page_links': page_links,
+        'previous_page_url': previous_page_url,
+        'next_page_url': next_page_url,
+        'month_filters': month_filters,
+        'selected_month': selected_month,
+        'roman_query': roman_query,
+        'all_months_url': _epaper_url(q=roman_query),
+        'guest_page_limit': guest_page_limit,
+        'can_read_all': can_read_all,
+        'is_locked_page': is_locked_page,
+        'login_url': f"{reverse('login')}?{urlencode({'next': request.get_full_path()})}",
+    }
+    return render(request, 'epaper.html', context)
+
+
 def register(request):
     """Simple signup; logs user in and redirects home."""
     if request.method == 'POST':
