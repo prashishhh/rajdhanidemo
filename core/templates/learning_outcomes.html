@@ -1,0 +1,424 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>सिकाई उपलब्धिहरू (Learning Outcomes) - राजधानी दैनिक</title>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;600;700;800&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e4080;
+            --primary-light: #2d5aa0;
+            --accent: #dc3545;
+            --success: #198754;
+            --warning: #ffc107;
+            --dark: #0f172a;
+            --light: #f8f9fa;
+            --slate: #64748b;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Mukta', 'Outfit', sans-serif;
+            background-color: #f1f5f9;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 60px 40px;
+            border-radius: 24px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(30, 64, 128, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        .badge-academic {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
+
+        .lo-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .lo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+
+        .lo-header {
+            padding: 30px 40px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .lo7-header { background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); }
+        .lo8-header { background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%); }
+        .lo9-header { background: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%); }
+        .lo10-header { background: linear-gradient(135deg, #db2777 0%, #ec4899 100%); }
+
+        .lo-id {
+            font-size: 2rem;
+            font-weight: 800;
+            background: rgba(255,255,255,0.25);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.4);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .lo-title-wrapper {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .lo-title-wrapper h2 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .lo-title-wrapper p {
+            margin: 5px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .lo-status {
+            background: rgba(255,255,255,0.9);
+            color: var(--dark);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .lo-status::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--success);
+        }
+
+        .lo-body {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            background-color: #ffffff;
+        }
+
+        .lo-section {
+            background-color: #f8fafc;
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #f1f5f9;
+        }
+
+        .lo-section h3 {
+            margin-top: 0;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--dark);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .lo-section p {
+            margin: 0;
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: var(--slate);
+        }
+
+        .lo-section ul {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--slate);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .lo-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-action {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.15rem;
+            box-shadow: 0 4px 15px rgba(30, 64, 128, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 64, 128, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            .lo-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .lo-title-wrapper {
+                margin-left: 0;
+            }
+            .lo-body {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Main Dashboard Header -->
+    <header class="header">
+        <span class="badge-academic">सिकाई उपलब्धिहरू (Learning Outcomes)</span>
+        <h1>शैक्षिक तथा इन्टर्नशिप उपलब्धिहरू</h1>
+        <p>राजधानी दैनिक परियोजनामा मेरो सहभागिता र प्राविधिक विकासलाई प्रमाणित गर्ने मुख्य सिकाई उपलब्धिहरू (LO7 - LO10) को विस्तृत विवरण र कार्य प्रमाणहरू यहाँ प्रस्तुत गरिएका छन्।</p>
+    </header>
+
+    <!-- Learning Outcomes Grid -->
+    <div class="grid">
+        
+        <!-- LO7 Card -->
+        <article class="lo-card">
+            <div class="lo-header lo7-header">
+                <div class="lo-id">LO7</div>
+                <div class="lo-title-wrapper">
+                    <h2>Front-End UI Design & Implementation (फ्रेन्ट-इन्ड विकास)</h2>
+                    <p>सिकाई उद्देश्य: I will strengthen my skills in front-end development.</p>
+                </div>
+                <div class="lo-status">Completed (पूर्ण)</div>
+            </div>
+            <div class="lo-body">
+                <div class="lo-section">
+                    <h3>🎯 योजना र विधि (Implementation)</h3>
+                    <p>HTML, CSS, र JavaScript को प्रयोग गरेर उत्तरदायी प्रयोगकर्ता इन्टरफेस (Responsive User Interface) कम्पोनेन्टहरू जस्तै प्रिमियम हेडर, ब्राउजर नेभिगेसन बार, र थप आकर्षक दृश्य कम्पोनेन्टहरू डिजाइन र कार्यान्वयन गरिएको छ।</p>
+                </div>
+                <div class="lo-section">
+                    <h3>💻 हासिल भएका मुख्य नतिजाहरू</h3>
+                    <ul>
+                        <li><strong>होम पोर्टल पुन: संरचना:</strong> राजधानी दैनिकको गृहपृष्ठलाई गुगल फन्ट Mukta/Outfit, ग्रिड लेआउट, र ग्लासमर्फिजम कार्ड शैली प्रयोग गरी प्रिमियम लुक प्रदान गरियो।</li>
+                        <li><strong>उत्तरदायी मेनु (Sticky Navbar):</strong> सबै साना र ठूला स्क्रिनहरूमा सहज रूपमा काम गर्ने स्टिकी नेभिगेसन बार विकास गरियो।</li>
+                        <li><strong>गौती र पासा एनिमेसन:</strong> ३डी बक्स स्याडो सहितको सीएसएस पासा र उफ्रिने (Pulsing) गोटी एनिमेसनहरू।</li>
+                    </ul>
+                </div>
+                <div class="lo-section">
+                    <h3>📁 सिकाई प्रमाण (Evidence)</h3>
+                    <ul>
+                        <li><strong>इन्टरफेस स्क्रिनशटहरू:</strong> मुख्य पृष्ठ र गेमहरूको भिजुअल लेआउटहरू।</li>
+                        <li><strong>भर्सन कन्ट्रोल रेकर्डहरू:</strong> GitHub मा गरिएका फ्रन्ट-इन्ड प्रतिवद्धताहरू (Commits)।</li>
+                        <li><strong>सुपरभाइजर प्रतिक्रिया:</strong> आकर्षक र चलाख डिजाइन निर्माणको प्रमाणीकरण।</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- LO8 Card -->
+        <article class="lo-card">
+            <div class="lo-header lo8-header">
+                <div class="lo-id">LO8</div>
+                <div class="lo-title-wrapper">
+                    <h2>Back-End Core Architecture & PDF Generation (ब्याक-इन्ड विकास)</h2>
+                    <p>सिकाई उद्देश्य: I will strengthen my knowledge of back-end development.</p>
+                </div>
+                <div class="lo-status">Completed (पूर्ण)</div>
+            </div>
+            <div class="lo-body">
+                <div class="lo-section">
+                    <h3>🎯 योजना र विधि (Implementation)</h3>
+                    <p>Django form sets को प्रयोग गरी बहु-कम्पनी विज्ञापन व्यवस्थापन प्रणाली विकास गर्ने, जसले प्रत्येक कम्पनी अन्तर्गत काम र पदहरू थप्न, परिमार्जन गर्न, मेटाउन र पुन: क्रमबद्ध गर्न अनुमति दिन्छ, र यसको प्रभाव वेब प्रिभ्यु र पीडीएफमा सुनिश्चित गर्दछ।</p>
+                </div>
+                <div class="lo-section">
+                    <h3>💻 हासिल भएका मुख्य नतिजाहरू</h3>
+                    <ul>
+                        <li><strong>Django Formsets (`JobPositionFormSet`):</strong> प्रयोगकर्ताले एकै पटकमा धेरै कम्पनीका पदहरू सिर्जना गर्न वा मेटाउन मिल्ने गरी जटिल ब्याक-इन्ड फारम व्यवस्थापन।</li>
+                        <li><strong>पीडीएफ मुद्रण (`PrintService`):</strong> फारमको आधारमा नेपाली भाषा र सटिक बक्स ढाँचामा गतिशील उच्च-गुणस्तरको प्रिन्ट गर्न योग्य PDF उत्पादन प्रणाली।</li>
+                        <li><strong>भ्यालिडेशन र सेक्युरिटी:</strong> गलत डाटा र खाली कोठाहरू स्वचालित रूपमा जाँच गर्ने सुरक्षा संयन्त्र।</li>
+                    </ul>
+                </div>
+                <div class="lo-section">
+                    <h3>📁 सिकाई प्रमाण (Evidence)</h3>
+                    <ul>
+                        <li><strong>बहु-कम्पनी विज्ञापन फारम:</strong> ब्याक-इन्ड डाटाबेस जोडिएका फारमका स्क्रिनशटहरू।</li>
+                        <li><strong>प्रमाणित पीडीएफ:</strong> प्रणालीद्वारा सिर्जना गरिएका प्रत्यक्ष डाउनलोड गर्न योग्य रोजगार पीडीएफहरू।</li>
+                        <li><strong>GitHub Commits:</strong> व्यवस्थित मोडल र सेवा कोड रेकर्डहरू।</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- LO9 Card -->
+        <article class="lo-card">
+            <div class="lo-header lo9-header">
+                <div class="lo-id">LO9</div>
+                <div class="lo-title-wrapper">
+                    <h2>System Deployment & cPanel Hosting (होस्टिङ तथा डिप्लोइमेन्ट)</h2>
+                    <p>सिकाई उद्देश्य: I will develop my deployment and hosting skills.</p>
+                </div>
+                <div class="lo-status">Completed (पूर्ण)</div>
+            </div>
+            <div class="lo-body">
+                <div class="lo-section">
+                    <h3>🎯 योजना र विधि (Implementation)</h3>
+                    <p>cPanel मार्फत राजधानी दैनिकको सबडोमेन (Subdomain) मा सम्पूर्ण प्रोजेक्टलाई सुरक्षित र अनुकूलित रूपमा डिप्लोय गर्ने र यसलाई वास्तविक-विश्व परीक्षणका लागि पहुँचयोग्य बनाउने।</p>
+                </div>
+                <div class="lo-section">
+                    <h3>💻 हासिल भएका मुख्य नतिजाहरू</h3>
+                    <ul>
+                        <li><strong>cPanel WSGI कन्फिगरेशन:</strong> सबडोमेनमा पाइथन एप्लिकेसन चलाउनका लागि WSGI इन्टरफेसको सेटअप।</li>
+                        <li><strong>डाटाबेस माइग्रेसन:</strong> उत्पादन वातावरण (Production Environment) का लागि SQLite/MySQL डाटाबेस माइग्रेसन र सुपरयुजर सिर्जना।</li>
+                        <li><strong>स्टाटिक एसेट्स व्यवस्थापन:</strong> सबै CSS, JS, र तस्विरहरूलाई एकत्रित र कम्प्रेस गर्न `collectstatic` र मिडिया पथको सुरक्षित व्यवस्थापन।</li>
+                    </ul>
+                </div>
+                <div class="lo-section">
+                    <h3>📁 सिकाई प्रमाण (Evidence)</h3>
+                    <ul>
+                        <li><strong>सबडोमेन लिङ्क:</strong> प्रत्यक्ष अनलाइन पहुँचयोग्य सबडोमेन लिङ्क।</li>
+                        <li><strong>cPanel कन्फिगरेशन नोटहरू:</strong> सर्भर सेटअप र वातावरण चर (Environment Variables) सुरक्षित भण्डारण विवरणहरू।</li>
+                        <li><strong>सुपरभाइजर प्रमाण:</strong> डिप्लोइमेन्ट र वास्तविक वातावरण परीक्षणको सफल प्रमाणीकरण।</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+        <!-- LO10 Card -->
+        <article class="lo-card">
+            <div class="lo-header lo10-header">
+                <div class="lo-id">LO10</div>
+                <div class="lo-title-wrapper">
+                    <h2>Interactive Web Features & Game Engine (अन्तरक्रियात्मक सुविधाहरू)</h2>
+                    <p>सिकाई उद्देश्य: I will enhance my skills in building interactive web features and integrating third-party APIs.</p>
+                </div>
+                <div class="lo-status">Completed (पूर्ण)</div>
+            </div>
+            <div class="lo-body">
+                <div class="lo-section">
+                    <h3>🎯 योजना र विधि (Implementation)</h3>
+                    <p>शून्यबाट (Scratch) अन्तरक्रियात्मक खेलहरू डिजाइन र विकास गरी राजधानी दैनिकको वेबसाइटमा सुरक्षित रूपमा एकीकृत गर्ने, र खेलाडीको चाल, पालो र सुरक्षा नियमहरू स्वचालित रूपमा गणना गराउने।</p>
+                </div>
+                <div class="lo-section">
+                    <h3>💻 हासिल भएका मुख्य नतिजाहरू</h3>
+                    <ul>
+                        <li><strong>🎮 वास्तविक नियम सहितको लुडो खेल:</strong> गोटी बाहिर निस्कने (६ अंकको) अवस्था, क्रमिक चाल, गोटी काट्ने (Capture) र सुरक्षित स्थान (Safe Zone) को पूर्ण स्वचालित प्रणाली।</li>
+                        <li><strong>♟️ चेस (Chess) खेल:</strong> `Chess.js` को कडा नियम र `Chessboard.js` इन्टरफेस प्रयोग गरी चेकमेट, चेक, र बराबरी खेल गणना हुने पूर्ण प्रिमियम प्रणाली।</li>
+                        <li><strong>❌ टिक-ट्याक-टो खेल:</strong> जीतको एनिमेसन, पालो अवस्था, र आकर्षक पप-अप सहितको उत्कृष्ट खेल।</li>
+                    </ul>
+                </div>
+                <div class="lo-section">
+                    <h3>📁 सिकाई प्रमाण (Evidence)</h3>
+                    <ul>
+                        <li><strong>खेलका लाइभ भिडियो/स्क्रिनशटहरू:</strong> अन्तरक्रियात्मक खेलका स्क्रिन रेकर्डहरू।</li>
+                        <li><strong>GitHub Commits:</strong> जावास्क्रिप्ट लुप, पाथ एरे र नियम इन्जिनका कोड कमिटहरू।</li>
+                        <li><strong>सुपरभाइजर मूल्याङ्कन:</strong> कोड र प्रयोगकर्ता अनुभवको उत्कृष्ट प्रतिक्रिया।</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+
+    </div>
+
+    <!-- Back to Home Button -->
+    <footer class="footer-action">
+        <a href="{% url 'home' %}" class="back-btn">मुख्य पृष्ठमा फर्कनुहोस्</a>
+    </footer>
+</div>
+
+</body>
+</html>
