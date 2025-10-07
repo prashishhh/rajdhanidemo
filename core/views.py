@@ -1281,3 +1281,7 @@ def chess_game(request):
 def ludo_game(request):
     """Ludo Game View"""
     return render(request, 'ludo.html')
+
+def learning_outcomes(request):
+    """Academic Learning Outcomes Dashboard View"""
+    return render(request, 'learning_outcomes.html')
