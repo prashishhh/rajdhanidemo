@@ -34,3 +34,8 @@ urlpatterns += [
 urlpatterns += [
     path('ludo/', views.ludo_game, name='ludo_game'),
 ]
+
+# Learning Outcomes Path
+urlpatterns += [
+    path('learning-outcomes/', views.learning_outcomes, name='learning_outcomes'),
+]
