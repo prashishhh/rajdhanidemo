@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Epaper - Rajdhani Daily{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/epaper.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="epaper-workspace">
+    <div class="epaper-topbar">
+        <div>
+            <p class="epaper-kicker">Rajdhani News Publication</p>
+            <h1>Today&apos;s E-Paper</h1>
+            <p class="epaper-subtitle">Read the daily PDF-style edition by date, month, and page.</p>
+        </div>
+        <form class="epaper-search" method="get" action="{% url 'epaper' %}">
+            {% if selected_month %}
+            <input type="hidden" name="month" value="{{ selected_month }}">
+            {% endif %}
+            <label for="epaper-search-input">Roman typing</label>
+            <div class="epaper-search-row">
+                <input id="epaper-search-input" type="search" name="q" value="{{ roman_query }}" placeholder="Type baisakh, jestha, 2083...">
+                <button type="submit">Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="epaper-layout">
+        <aside class="epaper-sidebar" aria-label="Epaper archive filters">
+            <div class="epaper-side-section">
+                <h2>Pdf Months</h2>
+                <a class="month-link {% if not selected_month %}active{% endif %}" href="{{ all_months_url }}">
+                    <span>All months</span>
+                    <span>{{ archive_page_obj.paginator.count }}</span>
+                </a>
+                {% for month in month_filters %}
+                <a class="month-link {% if month.active %}active{% endif %}" href="{{ month.url }}">
+                    <span>E-Paper {{ month.label }}</span>
+                    <span>{{ month.count }}</span>
+                </a>
+                {% endfor %}
+            </div>
+
+            <div class="epaper-side-section">
+                <h2>Archive</h2>
+                {% if issues %}
+                    {% for issue in issues %}
+                    <a class="issue-link {% if active_issue.slug == issue.slug %}active{% endif %}" href="{{ issue.url }}">
+                        <span class="issue-date">{{ issue.date_label }}</span>
+                        <span class="issue-title">{{ issue.title }}</span>
+                        <span class="issue-meta">{{ issue.month_label }} | {{ issue.pages_count }} pages</span>
+                    </a>
+                    {% endfor %}
+
+                    <div class="archive-pagination">
+                        {% if pagination_urls.previous %}
+                        <a href="{{ pagination_urls.previous }}">Previous</a>
+                        {% else %}
+                        <span>Previous</span>
+                        {% endif %}
+                        <strong>{{ archive_page_obj.number }} / {{ archive_page_obj.paginator.num_pages }}</strong>
+                        {% if pagination_urls.next %}
+                        <a href="{{ pagination_urls.next }}">Next</a>
+                        {% else %}
+                        <span>Next</span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <p class="empty-state">No e-papers found for this search.</p>
+                {% endif %}
+            </div>
+        </aside>
+
+        <section class="epaper-reader" aria-label="Epaper reader">
+            {% if active_issue %}
+            <div class="reader-toolbar">
+                <div>
+                    <p class="reader-label">Selected edition</p>
+                    <h2>{{ active_issue.date_label }}</h2>
+                </div>
+                <div class="reader-actions">
+                    {% if previous_page_url %}
+                    <a href="{{ previous_page_url }}">Previous page</a>
+                    {% else %}
+                    <span>Previous page</span>
+                    {% endif %}
+                    <strong>Page {{ selected_page_number }}</strong>
+                    {% if next_page_url %}
+                    <a href="{{ next_page_url }}">Next page</a>
+                    {% else %}
+                    <span>Next page</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="reader-shell">
+                <nav class="page-strip" aria-label="Epaper pages">
+                    {% for page in page_links %}
+                    <a class="page-thumb {% if page.active %}active{% endif %} {% if page.locked %}locked{% endif %}" href="{{ page.url }}">
+                        <span class="thumb-page">P{{ page.number }}</span>
+                        <span class="thumb-section">{{ page.section }}</span>
+                        {% if page.locked %}
+                        <span class="thumb-lock">Login</span>
+                        {% endif %}
+                    </a>
+                    {% endfor %}
+                </nav>
+
+                <div class="paper-stage">
+                    {% if not can_read_all %}
+                    <div class="access-note">
+                        Guest access unlocks pages 1-{{ guest_page_limit }}. Login to read every page of every e-paper.
+                    </div>
+                    {% endif %}
+
+                    {% if is_locked_page %}
+                    <div class="locked-panel">
+                        <h3>Login required for this page</h3>
+                        <p>Guests can preview the first {{ guest_page_limit }} pages only. Sign in to continue reading this edition.</p>
+                        <a href="{{ login_url }}">Login to read all pages</a>
+                    </div>
+                    {% else %}
+                    <article class="paper-page" aria-label="Page {{ selected_page_number }} preview">
+                        <header class="paper-masthead">
+                            <div class="paper-logo-wrap">
+                                <img src="{% static 'images/bg.png' %}" alt="" loading="lazy">
+                            </div>
+                            <div>
+                                <p>Rajdhani National Daily</p>
+                                <h3>{{ selected_page.headline }}</h3>
+                                <span>{{ active_issue.date_label }} | {{ selected_page.section }} | Page {{ selected_page.number }}</span>
+                            </div>
+                        </header>
+
+                        <div class="paper-lead">
+                            <h4>{{ selected_page.summary }}</h4>
+                            <p>This reader is arranged like a newspaper e-paper: page thumbnails on the side, a PDF-style page in the center, and archive navigation by month.</p>
+                        </div>
+
+                        <div class="paper-columns">
+                            <div>
+                                <h5>Main Story</h5>
+                                <p>Rajdhani Daily brings daily coverage in a page-by-page digital edition for readers who prefer the printed newspaper layout.</p>
+                                <p>Use the Roman search box to find editions by month name, year, or date label.</p>
+                            </div>
+                            <div>
+                                <h5>Highlights</h5>
+                                <ul>
+                                    <li>PDF month archive</li>
+                                    <li>Page pagination</li>
+                                    <li>Guest and login access control</li>
+                                    <li>Responsive reader layout</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h5>Edition Notes</h5>
+                                <p>Pages beyond the guest preview are protected and route visitors toward login before continuing.</p>
+                                <p>Logged-in users can browse every page across every listed e-paper issue.</p>
+                            </div>
+                        </div>
+                    </article>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="locked-panel">
+                <h3>No e-paper selected</h3>
+                <p>Try another month or clear the Roman search field.</p>
+            </div>
+            {% endif %}
+        </section>
+    </div>
+</section>
+{% endblock %}
