@@ -11,31 +11,17 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('employment-ad-editor/', views.employment_ad_editor, name='employment_ad_editor'),
     path('employment-ad-preview/', views.employment_ad_preview, name='employment_ad_preview'),
+    path('employment-ad-preview-embed/', views.employment_ad_preview_embed, name='employment_ad_preview_embed'),
     path('employment-ad-design/', views.employment_ad_design, name='employment_ad_design'),
     path('download-design-pdf/', views.download_design_pdf, name='download_design_pdf'),
     path('download-pdf/', views.download_pdf, name='download_pdf'),
     path('update-currency-rates/', views.update_currency_rates_view, name='update_currency_rates'),
     path('test-form-submission/', views.test_form_submission, name='test_form_submission'),
+    path('test-pdf-generation/', views.test_pdf_generation, name='test_pdf_generation'),
     path('simple-position-submission/', views.simple_position_submission, name='simple_position_submission'),
-]
-
-# Tic-Tac-Toe Path
-from django.urls import path
-urlpatterns += [
-    path('tic-tac-toe/', views.tic_tac_toe_game, name='tic_tac_toe_game'),
-]
-
-# Chess Path
-urlpatterns += [
-    path('chess/', views.chess_game, name='chess_game'),
-]
-
-# Ludo Path
-urlpatterns += [
+    path('ads/preview.svg', views.ad_preview_svg, name='ad_preview_svg'),
     path('ludo/', views.ludo_game, name='ludo_game'),
-]
-
-# Learning Outcomes Path
-urlpatterns += [
+    path('chess/', views.chess_game, name='chess_game'),
+    path('tic-tac-toe/', views.tic_tac_toe_game, name='tic_tac_toe_game'),
     path('learning-outcomes/', views.learning_outcomes, name='learning_outcomes'),
 ]

@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.conf import settings
 import os
 import json
@@ -13,10 +14,15 @@ from decimal import Decimal
 from .models import EmploymentAd, JobPosition, News, NewsArticle, Meeting, UserProfile, Interview, CurrencyRate
 from .forms import EmploymentAdForm, JobPositionForm, JobPositionFormSet, InterviewFormSet, SignUpForm, NewsForm, MeetingForm
 from .services.print_service import PrintService
+from .utils import ensure_unicode_environment, safe_unicode_string
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django.utils.timezone import localtime
+
+# Ensure Unicode environment is set
+ensure_unicode_environment()
 
 # OCR and Image Processing
 try:
@@ -164,6 +170,10 @@ def home(request):
     news_combined = sorted(news_combined, key=lambda x: x['datetime'], reverse=True)[:6]
     return render(request, 'home.html', {'news_combined': news_combined})
 
+def learning_outcomes(request):
+    """Academic Learning Outcomes Dashboard Portfolio View"""
+    return render(request, 'learning_outcomes.html')
+
 def register(request):
     """Simple signup; logs user in and redirects home."""
     if request.method == 'POST':
@@ -287,10 +297,54 @@ def parse_ocr_text(ocr_text):
     
     # Extract data based on the actual document structure from the provided image
     
-    # Company name - look for "SUCCESS NEPAL MANPOWER AGENCY" or similar
-    company_match = re.search(r'SUCCESS\s+NEPAL\s+MANPOWER\s+AGENCY', ocr_text, re.IGNORECASE)
+    # Company name - extract between 'शहर स्थित' and 'कम्पनीबाट'
+    print(f"DEBUG: Looking for company name between 'शहर स्थित' and 'कम्पनीबाट'")
+    print(f"DEBUG: Full OCR text: {ocr_text}")
+    
+    # Check if the text contains the expected keywords
+    has_shahar = 'शहर' in ocr_text
+    has_sthit = 'स्थित' in ocr_text
+    has_kampani = 'कम्पनी' in ocr_text
+    has_kampani_bat = 'कम्पनीबाट' in ocr_text
+    
+    print(f"DEBUG: Contains 'शहर': {has_shahar}")
+    print(f"DEBUG: Contains 'स्थित': {has_sthit}")
+    print(f"DEBUG: Contains 'कम्पनी': {has_kampani}")
+    print(f"DEBUG: Contains 'कम्पनीबाट': {has_kampani_bat}")
+    
+    # Try multiple patterns for better matching
+    company_match = None
+    
+    # Pattern 1: शहर स्थित COMPANY कम्पनीबाट (more flexible)
+    company_match = re.search(r'शहर\s+स्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
     if company_match:
-        parsed_data['company_name'] = 'SUCCESS NEPAL MANPOWER AGENCY PVT. LTD.'
+        parsed_data['company_name'] = company_match.group(1).strip()
+        print(f"DEBUG: Company name extracted (Pattern 1): '{parsed_data['company_name']}'")
+    else:
+        print(f"DEBUG: Pattern 1 did not match")
+        # Pattern 2: स्थित COMPANY कम्पनीबाट (without शहर)
+        company_match = re.search(r'स्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+        if company_match:
+            parsed_data['company_name'] = company_match.group(1).strip()
+            print(f"DEBUG: Company name extracted (Pattern 2): '{parsed_data['company_name']}'")
+        else:
+            print(f"DEBUG: Pattern 2 did not match")
+            # Pattern 3: शहरस्थित COMPANY कम्पनीबाट (no space)
+            company_match = re.search(r'शहरस्थित\s+([^।\n]+?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+            if company_match:
+                parsed_data['company_name'] = company_match.group(1).strip()
+                print(f"DEBUG: Company name extracted (Pattern 3): '{parsed_data['company_name']}'")
+            else:
+                print(f"DEBUG: Pattern 3 did not match")
+                # Pattern 4: More flexible - any text between शहर स्थित and कम्पनीबाट
+                company_match = re.search(r'शहर\s+स्थित\s+([A-Z][^।\n]*?)\s+कम्पनीबाट', ocr_text, re.IGNORECASE)
+                if company_match:
+                    parsed_data['company_name'] = company_match.group(1).strip()
+                    print(f"DEBUG: Company name extracted (Pattern 4): '{parsed_data['company_name']}'")
+                else:
+                    print(f"DEBUG: Pattern 4 did not match")
+                    print(f"DEBUG: No company match found with 'शहर स्थित' patterns")
+                    print(f"DEBUG: No company name found in OCR text")
     
     # Pre Approval Date - look for "2025/08/15" format (as seen in OCR)
     date_match = re.search(r'(\d{4}/\d{2}/\d{2})', ocr_text)
@@ -434,7 +488,7 @@ def parse_ocr_text(ocr_text):
     
     # Set defaults for missing fields
     if not parsed_data.get('company_name'):
-        parsed_data['company_name'] = 'SUCCESS NEPAL MANPOWER AGENCY PVT. LTD.'
+        parsed_data['company_name'] = 'Company Name Not Found'
     if not parsed_data.get('country'):
         parsed_data['country'] = 'Japan'
     if not parsed_data.get('salary_currency'):
@@ -469,7 +523,7 @@ def employment_ad_editor(request):
     employment_ad, created = EmploymentAd.objects.get_or_create(
         id=1,
         defaults={
-            'title': 'रोजगारी विज्ञापन',
+            'title': '',
             'company_name': '',
             'pre_approval_date': '',
             'chalani_no': '',
@@ -477,25 +531,25 @@ def employment_ad_editor(request):
             'city': '',
             'country': '',
             'application_deadline': '',
-            'medical_cost_local': 'कामदारले तिर्ने',
-            'medical_cost_foreign': 'कामदारले तिर्ने',
-            'insurance_local': 'कामदारले तिर्ने',
-            'insurance_employment': 'कामदारले तिर्ने',
-            'air_ticket': 'कामदारले तिर्ने',
-            'visa_fee': 'कामदारले तिर्ने',
-            'visa_stamp_fee': 'कामदारले तिर्ने',
-            'recruitment_fee': 'कामदारले तिर्ने',
-            'welfare_fund': 'रु. ७०० /-',
-            'labor_fee': 'कामदारले तिर्ने रु. १५०० /-',
-            'service_fee': 'कामदारले तिर्ने',
-            'extra_notes': 'उल्लेखित राशि भन्दा बाहेक अन्य कुनै रकम लिइने छैन। कामदार छनोट भएपछि आवश्यक कागजात र प्रक्रिया पूरा गर्नुपर्नेछ।',
-            'company_logo_text': 'LOGO',
-            'company_banner_title': 'BEST EMPLOYMENT HR SOLUTION',
-            'company_address': 'ठेगाना: Kathmandu-9, Gaushala, Nepal.',
-            'company_phone': 'फोन: +977-1-5922788',
-            'company_email': 'इमेल: info@besthr.com.np, bestemploymenthr123@gmail.com',
-            'company_website': 'वेब: www.besthr.com.np',
-            'license_number': 'Gov. Lic. Number 1714/081/082',
+            'medical_cost_local': '',
+            'medical_cost_foreign': '',
+            'insurance_local': '',
+            'insurance_employment': '',
+            'air_ticket': '',
+            'visa_fee': '',
+            'visa_stamp_fee': '',
+            'recruitment_fee': '',
+            'welfare_fund': '',
+            'labor_fee': '',
+            'service_fee': '',
+            'extra_notes': '',
+            'company_logo_text': '',
+            'company_banner_title': '',
+            'company_address': '',
+            'company_phone': '',
+            'company_email': '',
+            'company_website': '',
+            'license_number': '',
         }
     )
     
@@ -665,51 +719,125 @@ def employment_ad_editor(request):
                     messages.error(request, error_msg)
         
         elif form_type == "edit":
-            # Handle main form submission
-            form = EmploymentAdForm(request.POST, request.FILES, instance=employment_ad)
-            if form.is_valid():
-                # Get interview data from form
-                nepali_date = form.cleaned_data.get('nepali_date', '')
-                gregorian_date = form.cleaned_data.get('gregorian_date', '')
-                interview_time = form.cleaned_data.get('interview_time', '')
-                interview_location = form.cleaned_data.get('interview_location', '')
+            # Handle main form submission (now includes both main info and positions)
+            try:
+                form = EmploymentAdForm(request.POST, request.FILES, instance=employment_ad)
+                formset = JobPositionFormSet(request.POST, instance=employment_ad)
                 
-                # Save the main form
-                form.save()
+                # Debug: Print form data
+                print(f"📋 DEBUG: Form data: {request.POST}")
+                print(f"🔑 DEBUG: All POST keys: {list(request.POST.keys())}")
+                print(f"🎯 DEBUG: Interview-related keys: {[k for k in request.POST.keys() if 'interview' in k]}")
+                print(f"📅 DEBUG: Date-related keys: {[k for k in request.POST.keys() if 'date' in k.lower()]}")
+                print(f"✅ DEBUG: Form is_valid: {form.is_valid()}")
+                print(f"✅ DEBUG: Formset is_valid: {formset.is_valid()}")
                 
-                # Update or create interview information
-                if nepali_date or gregorian_date or interview_time or interview_location:
-                        interview, created = Interview.objects.get_or_create(
-                            employment_ad=employment_ad,
-                            order=0,
-                            defaults={
-                                'interview_type': 'अन्तर्वार्ता',
-                                'nepali_date': nepali_date,
-                                'gregorian_date': gregorian_date,
-                                'time': interview_time,
-                                'location': interview_location,
-                                'template': 'अन्तरवार्ता मिति {nepali_date} ({gregorian_date}) {location} हुनेछ।'
-                            }
+                if form.is_valid() and formset.is_valid():
+                    print(f"✅ DEBUG: Form validation passed - processing interview custom text")
+                    
+                    # Handle banner image clear field with robust validation
+                    try:
+                        clear_field = request.POST.get('company_banner_image_clear')
+                        print(f"DEBUG: company_banner_image_clear = {clear_field}")
+                        
+                        # ALWAYS clear banner image when clear field is present (manual mode selected)
+                        if clear_field == 'on':
+                            print("DEBUG: Clearing banner image - manual mode selected")
+                            employment_ad.company_banner_image = None
+                            employment_ad.save()
+                            print("DEBUG: Banner image cleared")
+                        
+                        # Additional check: if manual banner fields have custom values, also clear
+                        manual_banner_title = request.POST.get('company_banner_title', '').strip()
+                        manual_banner_address = request.POST.get('company_address', '').strip()
+                        manual_banner_phone = request.POST.get('company_phone', '').strip()
+                        
+                        # Check for custom values (not default values)
+                        has_custom_values = (
+                            (manual_banner_title and manual_banner_title != "BEST EMPLOYMENT HR SOLUTION") or
+                            (manual_banner_address and manual_banner_address != "ठेगाना: Kathmandu-9, Gaushala, Nepal.") or
+                            (manual_banner_phone and manual_banner_phone != "फोन: +977-1-5922788")
                         )
                         
-                        if not created:
-                            # Update existing interview
-                            interview.nepali_date = nepali_date
-                            interview.gregorian_date = gregorian_date
-                            interview.time = interview_time
-                            interview.location = interview_location
-                            interview.template = 'अन्तरवार्ता मिति {nepali_date} ({gregorian_date}) {location} हुनेछ।'
-                            interview.save()
-                
-                # Check if this is an AJAX request
-                if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-                    from django.http import JsonResponse
-                    return JsonResponse({'success': True, 'message': 'मुख्य जानकारी सफलतापूर्वक सेभ गरियो!'})
+                        if has_custom_values:
+                            print("DEBUG: Manual banner fields with custom values detected, ensuring banner image is cleared")
+                            employment_ad.company_banner_image = None
+                            employment_ad.save()
+                            print("DEBUG: Banner image cleared due to custom manual fields")
+                            
+                    except Exception as e:
+                        print(f"ERROR: Failed to handle banner image clearing: {e}")
+                        # Continue processing even if banner clearing fails
+                    
+                    # Save the main form
+                    form.save()
+                    
+                    # Process positions and inherit common fields from first position
+                    positions = formset.save(commit=False)
+                    
+                    if positions:
+                        # Get common fields from first position
+                        first_position = positions[0]
+                        common_fields = {
+                            'overtime': first_position.overtime,
+                            'hours_per_day': first_position.hours_per_day,
+                            'days_per_week': first_position.days_per_week,
+                            'yearly_leave': first_position.yearly_leave,
+                            'min_qualification': first_position.min_qualification,
+                            'food_provided': first_position.food_provided,
+                            'housing_provided': first_position.housing_provided,
+                            'contract_duration': first_position.contract_duration,
+                        }
+                        
+                        # Apply common fields to all positions
+                        for position in positions:
+                            for field_name, field_value in common_fields.items():
+                                if field_value:  # Only apply if first position has a value
+                                    setattr(position, field_name, field_value)
+                            position.save()
+                    else:
+                        # No positions, just save the formset normally
+                        formset.save()
+                    
+                    # Interview data is now handled by the custom text field only
+                    print(f"✅ DEBUG: Interview custom text will be saved via form.save()")
+                    
+                    # Check if this is an AJAX request
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        from django.http import JsonResponse
+                        return JsonResponse({'success': True, 'message': 'मुख्य जानकारी र पदहरू सफलतापूर्वक सेभ गरियो!'})
+                    else:
+                        messages.success(request, 'Employment advertisement and positions updated successfully!')
+                        return redirect('employment_ad_editor')
                 else:
-                    messages.success(request, 'Employment advertisement updated successfully!')
-                    return redirect('employment_ad_editor')
-            else:
-                error_msg = 'त्रुटि: कृपया सबै आवश्यक फिल्डहरू भर्नुहोस्।'
+                    # Debug form errors
+                    print(f"DEBUG: Form errors: {form.errors}")
+                    print(f"DEBUG: Formset errors: {formset.errors}")
+                    print(f"DEBUG: Formset non-form errors: {formset.non_form_errors()}")
+                    
+                    # Create detailed error message
+                    error_details = []
+                    if form.errors:
+                        error_details.append(f"Form errors: {form.errors}")
+                    if formset.errors:
+                        error_details.append(f"Formset errors: {formset.errors}")
+                    if formset.non_form_errors():
+                        error_details.append(f"Formset non-form errors: {formset.non_form_errors()}")
+                    
+                    error_msg = 'त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्।'
+                    if error_details:
+                        error_msg += f" Details: {'; '.join(error_details)}"
+                    
+                    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                        from django.http import JsonResponse
+                        return JsonResponse({'success': False, 'error': error_msg})
+                    else:
+                        messages.error(request, error_msg)
+                    
+            except Exception as e:
+                # Catch any unexpected errors
+                print(f"DEBUG: Unexpected error in form submission: {str(e)}")
+                error_msg = f'त्रुटि भयो। कृपया पुनः प्रयास गर्नुहोस्। Error: {str(e)}'
                 if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                     from django.http import JsonResponse
                     return JsonResponse({'success': False, 'error': error_msg})
@@ -805,24 +933,17 @@ def employment_ad_editor(request):
         form = EmploymentAdForm(instance=employment_ad)
         formset = JobPositionFormSet(instance=employment_ad)
     
-    # Set default interview data (not from database)
-    interview_data = {
-        'nepali_date': '२०८१/१२/१८',
-        'gregorian_date': '31 मार्च, 2025',
-        'interview_hour': '',
-        'interview_time': '',
-        'interview_location': 'म्यानपावरको कार्यालय बसुन्धारामा',
-    }
+    # Interview data is now handled by custom text field only
+    print(f"✅ DEBUG: Using only interview_custom_text field")
     
     # Populate form with interview data
-    form.initial.update(interview_data)
+    form.initial.update({})
     
     context = {
         'form': form,
         'formset': formset,
         'employment_ad': employment_ad,
         'positions': employment_ad.positions.all().order_by('order'),  # Get existing positions
-        'interview_data': interview_data,
         'ocr_text': ocr_text,
         'parsed_data': parsed_data,
     }
@@ -892,6 +1013,7 @@ def update_currency_rates_view(request):
     
     return JsonResponse({'success': False, 'message': 'Invalid request method'})
 
+@xframe_options_exempt
 def employment_ad_preview(request):
     """Preview the employment advertisement with proper country-based notices"""
     
@@ -922,6 +1044,44 @@ def employment_ad_preview(request):
     # Generate country-specific notice
     country_notice = get_country_specific_notice(employment_ad.country)
     
+    # Check if this is being loaded in an iframe
+    is_iframe = request.GET.get('iframe', False)
+    
+    context = {
+        'ad': employment_ad,
+        'positions': positions,
+        'interview_data': interview_data,
+        'country_notice': country_notice,
+        'is_iframe': is_iframe,
+    }
+    
+    return render(request, 'employment_ad_preview.html', context)
+
+@xframe_options_exempt
+def employment_ad_preview_embed(request):
+    """Preview the employment advertisement for embedding in iframe"""
+    
+    employment_ad = get_object_or_404(EmploymentAd, id=1)
+    
+    # Clean up any duplicate positions before displaying
+    cleanup_duplicate_positions(employment_ad)
+    
+    positions = employment_ad.positions.all().order_by('order')
+    
+    # Get interview data if it exists
+    try:
+        interview = Interview.objects.filter(employment_ad=employment_ad).first()
+        interview_data = {
+            'nepali_date': interview.nepali_date if interview else '',
+            'gregorian_date': interview.gregorian_date if interview else '',
+            'location': interview.location if interview else '',
+        } if interview else {}
+    except:
+        interview_data = {}
+    
+    # Generate country-specific notice
+    country_notice = get_country_specific_notice(employment_ad.country)
+    
     context = {
         'ad': employment_ad,
         'positions': positions,
@@ -929,7 +1089,7 @@ def employment_ad_preview(request):
         'country_notice': country_notice,
     }
     
-    return render(request, 'employment_ad_preview.html', context)
+    return render(request, 'employment_ad_preview_embed.html', context)
 
 def download_pdf(request):
     """Download employment advertisement as PDF"""
@@ -962,9 +1122,9 @@ def download_pdf(request):
         'country_notice': country_notice,
     }
     
-    # Generate PDF using the print service
+    # Generate PDF using the print service with the exact same template as preview
     print_service = PrintService()
-    pdf_content = print_service.generate_employment_ad_pdf(employment_ad)
+    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, template_name="employment_ad_preview.html")
     
     if pdf_content:
         response = HttpResponse(pdf_content, content_type='application/pdf')
@@ -1018,9 +1178,9 @@ def download_design_pdf(request):
         'country_notice': country_notice,
     }
     
-    # Generate PDF using the print service with the new design template
+    # Generate PDF using the print service with the preview template (design template doesn't exist)
     print_service = PrintService()
-    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, 'employment_ad_design.html')
+    pdf_content = print_service.generate_employment_ad_pdf(employment_ad, 'employment_ad_preview.html')
     
     if pdf_content:
         response = HttpResponse(pdf_content, content_type='application/pdf')
@@ -1108,91 +1268,67 @@ def get_country_specific_notice(country):
     country_notices = {
         # Middle East countries - same notice
         'Kuwait': {
-           
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-        ४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         'UAE': {
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला  सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         'Saudi Arabia': {
-            
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         'Qatar': {
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         'Oman': {
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         'Bahrain': {
-            'content': '''<p><b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b>१. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।
-४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।
-५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।
-
-६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।</p>'''
+            'content': '''<b>बैदेशिक रोजगार बिभागबाट गराइएको जानकारी:</b> १. आङ्खनो नाममा भिषा प्राप्त भएको सुनिश्चित गर्नुहोस् ।२. आफु काम गर्न जाने मुलुकमा रहेको नेपाली कुटनैतिक नियोगको सम्पर्क ठेगाना र फोन नं.हरु साथमा राख्नुहोला । आफू कठिनाईमा पुर्दा सम्पर्क गर्न सजिलो हुन्छ ।३. यस विज्ञापन (सूचना) मा उल्लेख भएको सेवा, सुविधा र तुलबुको बारेमा स्पष्ट हुनुहोस् ।४. विदेश जानु अघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा तथा सुबिधा र अन्य शर्तबारे राम्रो सँग पढेर मात्र सम्झौता पत्रमा हस्ताक्षर गर्नुहोला र सो को एक (१) प्रति आफुसँग राख्नुहोला ।५. काममा विदेश जादा नेपालकै विमानस्थल प्रयोग गर्नुहोला, अन्यथा ठगिने सम्भावना हुन्छ ।६. यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरेमा बैदेशिक रोजगार विभाग, ताहचलमा सम्पर्क गर्नुहोला ।'''
         },
         # Japan - specific trainee notice
         'Japan': {
             'title': 'जापानमा प्रशिक्षार्थी कामदारको लागि विशेष सूचना',
-            'content': '''प्रशिक्षार्थीको आवश्यक न्यूनतम योग्यता र काम गरेको अनुभव :
-(क) नेपाली नागरिक हुनुपर्ने ।
-(ख) प्रशिक्षार्थीको उमेर १८ वर्ष पुरा भई ४० वर्ष ननाघेको हुनुपर्नेछ ।
-(ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतका निकायहरुमा ३ वर्ष पूर्व दर्ता भई संचालन भईरहेको औद्योगिक प्रतिष्ठान, उद्योग व्यवसाय, कलकारखाना, कृषि सहकारी, सामुदायिक संघसंस्था, होटल पर्यटन व्यवसाय अर्थात सेवा तथा वस्तु उत्पादन व्यवसाय जस्ता क्षेत्रमा कम्तीमा २ वर्ष काम गरेको अनुभव हुनुपर्ने ।
-(घ) निर्माण सम्बन्धी कामको निमित्त सम्बन्धित उद्योग, उद्यम वा सम्बन्धित विषयको संस्थामा कम्तिमा दुई वर्ष काम गरेको अनुभव हुनुपर्ने ।
-(ङ) प्रशिक्षार्थीले जापानमा प्रशिक्षार्थी कामदारको रुपमा जान खोजेको विषयमा नै नेपालको उद्योग प्रतिष्ठान, संस्था वा निकायहरुमा काम गरिरहेको हुनुपर्ने ।
-(च) जापानी भाषा तथा संस्कृतिका सम्बन्धमा तालिम लिएको हुनुपर्ने ।
+            'content': '''<b>प्रशिक्षार्थीको आवश्यकता न्यूनतम योग्यता र काम गरेको अनुभव:</b>
+<p>
+(क) नेपाली नागरिक हुनुपर्ने । (ख) प्रशिक्षणको उमेर १८ वर्ष पूरा भई २६ वर्ष ननाघेको हुनुपर्ने । 
+(ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व वा अहिले सञ्चालन भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योग, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा काम गरेको अनुभव भएको हुनुपर्ने । 
+(घ) निर्माण क्षेत्रमा काम गर्ने निर्माण सम्बन्धी उद्योग वा सम्बन्धित विषयका संस्थामा कम्तिमा दुई वर्ष काम गरेको अनुभव हुनुपर्ने । 
+(ङ) प्रशिक्षणको विषय अनुसार काम गरेको अनुभव भएको र नेपालकै उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव हुनुपर्ने । 
+(च) जापानी भाषा तथा संस्कृतिको सामान्य ज्ञान भएको हुनुपर्ने ।
+</p>
 
-दरखास्त साथ पेश गर्नुपर्ने आवश्यक कागजातहरू :
-(क) नेपाली नागरिकताको प्रमाणपत्रको प्रमाणित प्रतिलिपि ।
-(ख) राहदानी प्रमाणपत्रको प्रमाणित प्रतिलिपि ।
-(ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतका निकायहरुमा ३ वर्ष पूर्व दर्ता भई संचालन भईरहेको औद्योगिक प्रतिष्ठान, उद्योग व्यवसाय, कलकारखाना, कृषि सहकारी, सामुदायिक संघसंस्था, होटल पर्यटन व्यवसाय अर्थात सेवा तथा वस्तु उत्पादन व्यवसाय जस्ता क्षेत्रमा कम्तीमा २ वर्ष काम गरेको अनुभव सम्बन्धी प्रमाणपत्रको प्रमाणित प्रतिलिपि ।
-(घ) कामदार जापानमा प्रशिक्षार्थी कामदारको रुपमा जान खोजेको विषयमा नै नेपालको उद्योग प्रतिष्ठान, निकाय वा संस्थामा काम गरिरहेको हुनुपर्नेछ ।
-(ङ) जापानी भाषा तथा संस्कृतिका सम्बन्धमा तालिम लिई उत्तीर्ण गरेको प्रमाणपत्रको प्रमाणित प्रतिलिपि ।
-(च) अभिमुखीकरण तालिम लिएको सक्कल प्रमाणपत्र ।
-(छ) नेपालमा आफु कार्यरत रहेको सम्बन्धित उद्योग प्रतिष्ठान, निकाय वा संस्थाको सिफारिस र नेपाल फर्किएपछि सम्बन्धित उद्योगमा नै काम गर्ने भनी आफु कार्यरत संस्था वा निकायसमक्ष गरेको प्रतिवद्धता सम्बन्धी कागजको प्रतिलिपि ।
+<b>दरखास्त साथ पेश गर्ने आवश्यक कागजातहरू:</b>
+<p>
+(क) नेपाली नागरिकताको प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(ख) शैक्षिक प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योगसंस्था, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा कम्तिमा २ वर्ष काम गरेको अनुभव सम्बन्धी प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(घ) सम्बन्धित विषयमा प्रशिक्षण प्राप्त गरेको प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(ङ) प्रशिक्षणको विषयमा कामदारको रुपमा जान खोजेको विषयमा नेपालका उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(च) प्रशिक्षणको विषय अनुसार जापानी भाषा तथा संस्कृतिको सम्बन्धमा तालिम लिएको हुनुपर्ने प्रमाणपत्रको प्रमाणित प्रतिलिपि । 
+(छ) नेपालीमा हाल कार्यरत रहेको सम्बन्धित उद्योग प्रतिष्ठान, निकाय वा संस्थाको सिफारिस र नेपाल फर्किएपछि पनि सोही कार्यक्षेत्र वा निकाय समक्ष काम गर्ने प्रतिवद्धतासहितको प्रमाणित कागजात पेश गर्नु पर्ने ।
+</p>
 
-१) दरखास्त बुझाउनु पर्ने अन्तिम मिति : स्थान यस प्रालिको कार्यालय, यो सूचना प्रकाशित भएको मितिले ७ दिन भित्र ।
-२) प्रशिक्षार्थीले तिर्नुपर्ने (सेवा शुल्क, यातायात, भिषा तथा प्रवर्द्धन खर्च समेतको) कुल खर्च : रु. ५०,०००/- ।
-३) प्रशिक्षार्थी छनौट गर्ने तरीका, मिति र स्थान अन्तर्वार्ता : मिति २०८१/१२/१८ गते (31 March, 2025) प्रधान कार्यालय बसुन्धारामा हुनेछ ।
+<b>१) दरखास्त बुझाउने स्थान र मिति: यस संस्थाको कार्यालयमा यो सूचना प्रकाशित भएको मितिले १५ दिन भित्र । </b>
 
-नोट : जापानी भाषा स्पष्टसँग बोल्न, पढ्न र लेख्न सक्ने हुनुपर्नेछ ।
+<b>२) परीक्षाशुल्क: निर्धारित बैंकमार्फत बुझाउनुपर्नेछ । परीक्षाशुल्क रकम रू. ५०००।– </b>
 
-बैदेशिक रोजगार विभागबाट गराइएको जानकारी :
-१) आफ्नो नाममा भिषा प्राप्त भई जाने निश्चित भएपछि मात्र कम्पनीमै गई रकम बुझाउनुहोस् ।
-२) आफुले बुझाएको रकमको भरपाई अनिवार्य रुपमा लिनुहोस् ।
-३) आफु काम गर्न जाने मुलुकमा रहेको नेपाली कूटनीतिक नियोगको सम्पर्क ठेगाना र फोन नम्बरहरु साथमा राख्नुहोस् ।
-४) यस विज्ञापन सूचनामा उल्लेख भएको भन्दा बढी रकम कसैलाई नदिनुहोस् ।
-५) विदेश जानुअघि अभिमुखीकरण तालिम अनिवार्य लिनुहोस् ।
-६) अनिवार्य रुपमा विमा गराउनुहोस् ।
-७) विदेश जानुअघि आफू जाने मुलुक, काम दिने कम्पनी, पाउने सेवा सुविधा र अन्य शर्तबारे राम्ररी पढेर मात्र सम्झौतामा हस्ताक्षर गर्नुहोस् । सोको एक प्रति आफुसँग राख्नुहोस् ।
-८) श्रम स्वीकृतिविना वैदेशिक रोजगारीमा नजानुहोस् ।
-९) वैदेशिक रोजगारमा जाँदा नेपालका एयरपोर्ट प्रयोग गर्नुहोस् ।
-१०) बैदेशिक रोजगारमा कुनै दलालको भनाईमा विश्वास नगर्नुहोस् ।
-११) इजाजतप्राप्त रोजगार प्रा.लि. मा आफै गई आवश्यक कुरा बुझ्नुहोस् । अन्यथा ठगिने सम्भावना हुन्छ ।
-१२) यस विज्ञापन सम्बन्धमा थप केही बुझ्नुपरे वैदेशिक रोजगार विभाग ताहाचलमा सम्पर्क राख्नुहोस् ।
-१३) काम गर्न गएको कम्पनी छाडी वा भागी अन्यत्र नजानुहोस् ।
-१४) काम गर्न गएको मुलुकमा कानुन पालना गर्नुहोस् ।
-१५) करार अवधि सकिएपछि स्वदेश फर्कनुहोस् ।'''
+<b>३) लिखित परीक्षा:२०७८ साल माघ ३१ गते बिहान १०:०० बजे अनलाइन आप्रवासी कार्यालयमा हुनेछ । लिखित परीक्षामा सहभागी हुन आउनेले आफ्नो नागरिकता प्रमाणपत्रको प्रतिलिपि ल्याउनुपर्नेछ । </b>
+
+<b>वैदेशिक रोजगार विभागद्वारा जारी गरिएको जानकारी:</b>
+<p>
+१. आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा कुनै त्रुटि भएमा तुरुन्तै सच्याउनुहोस् ।<br>
+२. आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात सुरक्षित राख्नुहोस् ।<br>
+३. यस विज्ञापन सम्बन्धमा उल्झन भएमा विभागले कुनै जिम्मेवारी लिने छैन ।<br>
+४. विदेश जानु अघि अभिमुखीकरण तालिम लिनु पर्नेछ ।<br>
+५. विदेश जानु अघि श्रम सम्झौता अनिवार्य रुपमा गर्नुपर्नेछ ।<br>
+६. विदेश जानु अघि बीमा कम्पनीमा बीमा गर्नुपर्नेछ ।<br>
+७. विदेश जानु अघि कुनै दलाल वा एजेन्टलाई पैसा दिनु हुने छैन ।<br>
+८. पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट आफैंले बुझी लिनुहोस् ।<br>
+९. सीधै विमानस्थलमा जानुहोस् ।<br>
+१०. पासपोर्टमा समस्या भएमा विभागमा सम्पर्क गर्नुहोस् ।
+</p> <br>
+
+<b>नोट: जापानी भाषा N4 स्तरको ज्ञान भएकोलाई प्राथमिकता दिइनेछ ।</b>'''
         }
     }
     
@@ -1270,18 +1406,85 @@ def simple_position_submission(request):
     
     return JsonResponse({"success": False, "message": "GET request not allowed"})
 
-def tic_tac_toe_game(request):
-    """Tic-Tac-Toe Game View"""
-    return render(request, 'tic_tac_toe.html')
 
-def chess_game(request):
-    """Chess Game View"""
-    return render(request, 'chess.html')
+def ad_preview_svg(request):
+    """Preview SVG template with sample data"""
+    from django.template.loader import render_to_string
+    
+    t = {
+        "country": "जापान",
+        "company": "Ideal International Recruitment",
+        "pre_approval_date": "2025/08/17",
+        "chalani_no": "60243265",
+        "lot_no": "327122",
+        "city": "Tokyo",
+
+        "position": "Welder",
+        "male": "5",
+        "female": "2",
+        "salary_kd": "120",
+        "salary_npr": "39,600",
+        "overtime": "Yes",
+        "hours_per_day": "8",
+        "days_per_week": "6",
+        "yearly_leave": "14",
+        "min_qualification": "SLC पास",
+        "eating": "दिन्छ",
+        "sleeping": "दिन्छ",
+        "tenure": "2 वर्ष",
+
+        "notice_text": "यहाँ नोटिसको लिखत आउनेछ।"
+    }
+
+    # Optional: split notice into lines for tspans
+    notice_lines = [line for line in t.get("notice_text","").splitlines() if line.strip()]
+
+    svg = render_to_string("ads/ad_template.svg", {"t": t, "notice_lines": notice_lines})
+    return HttpResponse(svg, content_type="image/svg+xml")
+
+def test_pdf_generation(request):
+    """Test PDF generation and show which library is being used"""
+    from core.services.print_service import PrintService
+    from core.models import EmploymentAd
+    
+    service = PrintService()
+    ad = EmploymentAd.objects.first()
+    
+    # Check which libraries are available
+    status = {
+        'playwright_available': service.playwright_available,
+        'weasyprint_available': service.weasyprint_available,
+        'reportlab_available': service.reportlab_available,
+    }
+    
+    # Try to generate PDF
+    pdf_content = None
+    error_message = None
+    
+    if ad:
+        try:
+            pdf_content = service.generate_employment_ad_pdf(ad)
+        except Exception as e:
+            error_message = str(e)
+    
+    context = {
+        'status': status,
+        'pdf_generated': pdf_content is not None,
+        'pdf_size': len(pdf_content) if pdf_content else 0,
+        'error_message': error_message,
+        'ad': ad,
+    }
+    
+    return render(request, 'test_pdf_generation.html', context)
 
 def ludo_game(request):
-    """Ludo Game View"""
+    """Render the dedicated Ludo game page"""
     return render(request, 'ludo.html')
 
-def learning_outcomes(request):
-    """Academic Learning Outcomes Dashboard View"""
-    return render(request, 'learning_outcomes.html')
+def chess_game(request):
+    """Render the dedicated Chess game page"""
+    return render(request, 'chess.html')
+
+def tic_tac_toe_game(request):
+    """Render the dedicated Tic-Tac-Toe game page"""
+    return render(request, 'tic_tac_toe.html')

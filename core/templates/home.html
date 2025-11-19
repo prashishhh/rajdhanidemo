@@ -82,7 +82,14 @@
       <li class="nav-item"><a href="#sports">कला/संस्कृति</a></li>
       <li class="nav-item"><a href="#opinion">खेलकुद</a></li>
       <li class="nav-item"><a href="#migration">ग्यालरी </a></li>
-      <li class="nav-item"><a href="#migration">अन्य</a></li>
+      <li class="nav-item"><a href="#game-section">अन्य</a>
+        <ul class="submenu">
+          <li><a href="{% url 'tic_tac_toe_game' %}">टिक-ट्याक-टो खेल</a></li>
+          <li><a href="{% url 'ludo_game' %}">लुडो खेल</a></li>
+          <li><a href="{% url 'chess_game' %}">चेस खेल</a></li>
+          <li><a href="{% url 'learning_outcomes' %}" style="font-weight: bold; color: #dc3545;">सिकाई उपलब्धिहरू (LO)</a></li>
+        </ul>
+      </li>
       <li class="nav-item"><a href="{% url 'employment_ad_editor' %}">📋 रोजगारी विज्ञापन</a></li>
 
       <li class="nav-item"><a href="{% url 'login' %}">लगइन</a></li>
@@ -847,6 +854,43 @@
   </main>
 
   
+
+<!-- Game Portal Section in Nepali -->
+<section id="game-section" class="game-section" style="padding: 60px 20px; max-width: 1200px; margin: 0 auto; text-align: center; font-family: 'Mukta', sans-serif;">
+  <div style="margin-bottom: 40px;">
+    <h2 style="font-weight: 800; color: #1e4080; font-size: 2.5rem; display: inline-block; position: relative;">
+      खेल खण्ड (Games Section)
+      <span style="display: block; width: 60%; height: 4px; background: #dc3545; margin: 10px auto 0; border-radius: 2px;"></span>
+    </h2>
+    <p style="font-size: 1.2rem; color: #64748b; margin-top: 15px;">आफ्नो मनपर्ने खेल छान्नुहोस् र खेल्नुहोस्</p>
+  </div>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+    <!-- Ludo Card -->
+    <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'" onclick="window.location.href='{% url 'ludo_game' %}'">
+      <div style="font-size: 4rem; margin-bottom: 20px;">🎲</div>
+      <h3 style="font-weight: 700; color: #1e4080; font-size: 1.8rem; margin-bottom: 10px;">लुडो (Ludo)</h3>
+      <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 20px;">परिवार र साथीहरूसँग रमाइलो गर्न क्लासिक लुडो खेल्नुहोस्।</p>
+      <button style="background: #198754; color: white; border: none; padding: 10px 25px; font-size: 1.1rem; border-radius: 25px; cursor: pointer; transition: background 0.3s; font-weight: bold;">खेल्नुहोस्</button>
+    </div>
+
+    <!-- Tic-Tac-Toe Card -->
+    <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'" onclick="window.location.href='{% url 'tic_tac_toe_game' %}'">
+      <div style="font-size: 4rem; margin-bottom: 20px;">❌⭕</div>
+      <h3 style="font-weight: 700; color: #1e4080; font-size: 1.8rem; margin-bottom: 10px;">टिक-ट्याक-टो खेल</h3>
+      <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 20px;">आफ्नो दिमाग लगाउनुहोस् र टिक-ट्याक-टोमा जित्नुहोस्।</p>
+      <button style="background: #0d6efd; color: white; border: none; padding: 10px 25px; font-size: 1.1rem; border-radius: 25px; cursor: pointer; transition: background 0.3s; font-weight: bold;">खेल्नुहोस्</button>
+    </div>
+
+    <!-- Chess Card -->
+    <div style="background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.05); transition: all 0.3s ease; cursor: pointer;" onmouseover="this.style.transform='translateY(-10px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.12)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.08)'" onclick="window.location.href='{% url 'chess_game' %}'">
+      <div style="font-size: 4rem; margin-bottom: 20px;">♟️</div>
+      <h3 style="font-weight: 700; color: #1e4080; font-size: 1.8rem; margin-bottom: 10px;">चेस (Chess)</h3>
+      <p style="color: #6c757d; font-size: 1.1rem; margin-bottom: 20px;">रणनीतिक सोचको साथ राजा बचाउनुहोस् र विपक्षी को हराउनुहोस्।</p>
+      <button style="background: #dc3545; color: white; border: none; padding: 10px 25px; font-size: 1.1rem; border-radius: 25px; cursor: pointer; transition: background 0.3s; font-weight: bold;">खेल्नुहोस्</button>
+    </div>
+  </div>
+</section>
 
   <footer class="footer">
     <div class="footer-content">
