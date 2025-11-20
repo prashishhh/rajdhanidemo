@@ -1,210 +1,10 @@
-{% load number_filters %}
-{% load static %}
-<!DOCTYPE html>
-<html lang="ne">
-<head>
-<meta charset="utf-8">
-<title>Employment Advertisement - Dynamic Design</title>
-<!-- External CSS -->
-<link rel="stylesheet" href="{% static 'css/employment_ad_preview.css' %}">
-<!-- Conditional CSS for PDF mode (must stay inline for Django template processing) -->
-{% if pdf_mode %}
-<style>
-  body { 
-    padding-top: 200px !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    font-smooth: always;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-    font-variant-ligatures: common-ligatures;
-    font-kerning: normal;
-    font-synthesis: none;
-  }
-  * {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-    text-shadow: none !important;
-    -webkit-text-stroke: none !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-  }
-  img {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    image-rendering: pixelated;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  h1, h2, h3, h4, h5, h6, p, span, div, td, th, li {
-    text-rendering: optimizeLegibility;
-    font-smooth: always;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-shadow: none !important;
-    -webkit-text-stroke: none !important;
-  }
-  {% if high_quality %}
-  * {
-    text-rendering: optimizeLegibility !important;
-    font-smooth: always !important;
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
-    text-shadow: none !important;
-    -webkit-text-stroke: none !important;
-    filter: none !important;
-    backdrop-filter: none !important;
-  }
-  .top-header, .company-section, .position-section, .interview-section, .country-notice {
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-  {% endif %}
-  {% endif %}
-  
-  {% if is_iframe %}
-<style>
-  body {
-    padding-top: 50px !important;
-  }
-</style>
-{% endif %}
-</head>
-<body>
 
-<div class="employment-ad">
-  <div class="main-content">
-    <!-- Top Header - Centered title only -->
-  <div class="top-header">
-    <div class="header-left">
-      {% if ad.title and ad.title.strip %}
-        {% if "जापान" in ad.title %}Japan{% elif "दुबई" in ad.title %}Dubai{% elif "कतार" in ad.title %}Qatar{% elif "साउदी अरब" in ad.title %}Saudi Arabia{% elif "मलेशिया" in ad.title %}Malaysia{% elif "सिङ्गापुर" in ad.title %}Singapore{% elif "कोरिया" in ad.title %}Korea{% elif "ताइवान" in ad.title %}Taiwan{% elif "हङकङ" in ad.title %}Hong Kong{% elif "मकाउ" in ad.title %}Macau{% elif "भारत" in ad.title %}India{% elif "चीन" in ad.title %}China{% elif "थाइल्यान्ड" in ad.title %}Thailand{% elif "भिएतनाम" in ad.title %}Vietnam{% elif "फिलिपिन्स" in ad.title %}Philippines{% elif "इन्डोनेसिया" in ad.title %}Indonesia{% elif "बङ्गलादेश" in ad.title %}Bangladesh{% elif "श्रीलङ्का" in ad.title %}Sri Lanka{% elif "पाकिस्तान" in ad.title %}Pakistan{% elif "अफगानिस्तान" in ad.title %}Afghanistan{% elif "इरान" in ad.title %}Iran{% elif "इराक" in ad.title %}Iraq{% elif "कुवेत" in ad.title %}Kuwait{% elif "बहराइन" in ad.title %}Bahrain{% elif "ओमान" in ad.title %}Oman{% elif "युएई" in ad.title %}UAE{% elif "जोर्डन" in ad.title %}Jordan{% elif "लेबनान" in ad.title %}Lebanon{% elif "तुर्की" in ad.title %}Turkey{% elif "इजरायल" in ad.title %}Israel{% elif "मिस्र" in ad.title %}Egypt{% elif "लिबिया" in ad.title %}Libya{% elif "सुडान" in ad.title %}Sudan{% elif "इथियोपिया" in ad.title %}Ethiopia{% elif "केन्या" in ad.title %}Kenya{% elif "तान्जानिया" in ad.title %}Tanzania{% elif "युगान्डा" in ad.title %}Uganda{% elif "रुवान्डा" in ad.title %}Rwanda{% elif "दक्षिण अफ्रिका" in ad.title %}South Africa{% elif "नाइजेरिया" in ad.title %}Nigeria{% elif "घाना" in ad.title %}Ghana{% elif "सेनेगल" in ad.title %}Senegal{% elif "मोरक्को" in ad.title %}Morocco{% elif "अल्जेरिया" in ad.title %}Algeria{% elif "ट्युनिसिया" in ad.title %}Tunisia{% elif "रूस" in ad.title %}Russia{% elif "युक्रेन" in ad.title %}Ukraine{% elif "पोल्यान्ड" in ad.title %}Poland{% elif "जर्मनी" in ad.title %}Germany{% elif "फ्रान्स" in ad.title %}France{% elif "इटाली" in ad.title %}Italy{% elif "स्पेन" in ad.title %}Spain{% elif "पोर्चुगल" in ad.title %}Portugal{% elif "नेदरल्यान्ड" in ad.title %}Netherlands{% elif "बेल्जियम" in ad.title %}Belgium{% elif "स्विजरल्यान्ड" in ad.title %}Switzerland{% elif "अस्ट्रिया" in ad.title %}Austria{% elif "स्विडेन" in ad.title %}Sweden{% elif "नर्वे" in ad.title %}Norway{% elif "डेनमार्क" in ad.title %}Denmark{% elif "फिनल्यान्ड" in ad.title %}Finland{% elif "आइसल्यान्ड" in ad.title %}Iceland{% elif "आयरल्यान्ड" in ad.title %}Ireland{% elif "युनाइटेड किङ्गडम" in ad.title %}United Kingdom{% elif "क्यानाडा" in ad.title %}Canada{% elif "अमेरिका" in ad.title %}United States{% elif "मेक्सिको" in ad.title %}Mexico{% elif "ब्राजिल" in ad.title %}Brazil{% elif "अर्जेन्टिना" in ad.title %}Argentina{% elif "चिली" in ad.title %}Chile{% elif "पेरु" in ad.title %}Peru{% elif "कोलम्बिया" in ad.title %}Colombia{% elif "भेनेजुएला" in ad.title %}Venezuela{% elif "इक्वाडोर" in ad.title %}Ecuador{% elif "बोलिभिया" in ad.title %}Bolivia{% elif "पाराग्वे" in ad.title %}Paraguay{% elif "उरुग्वे" in ad.title %}Uruguay{% elif "अस्ट्रेलिया" in ad.title %}Australia{% elif "न्युजिल्यान्ड" in ad.title %}New Zealand{% elif "फिजी" in ad.title %}Fiji{% elif "पापुवा न्युगिनी" in ad.title %}Papua New Guinea{% elif "सोलोमन टापु" in ad.title %}Solomon Islands{% elif "वानुअतु" in ad.title %}Vanuatu{% elif "सामोआ" in ad.title %}Samoa{% elif "टोङ्गा" in ad.title %}Tonga{% elif "किरिबाटी" in ad.title %}Kiribati{% elif "तुवालु" in ad.title %}Tuvalu{% elif "नाउरु" in ad.title %}Nauru{% elif "पलाउ" in ad.title %}Palau{% elif "मार्शल टापु" in ad.title %}Marshall Islands{% elif "माइक्रोनेसिया" in ad.title %}Micronesia{% elif "ग्वाम" in ad.title %}Guam{% elif "उत्तरी मारियाना टापु" in ad.title %}Northern Mariana Islands{% elif "अमेरिकी सामोआ" in ad.title %}American Samoa{% elif "हवाई" in ad.title %}Hawaii{% elif "अलास्का" in ad.title %}Alaska{% elif "ग्रीनल्यान्ड" in ad.title %}Greenland{% elif "फरो टापु" in ad.title %}Faroe Islands{% elif "जान मेयेन" in ad.title %}Jan Mayen{% elif "स्वालबार्ड" in ad.title %}Svalbard{% elif "नोरफोक टापु" in ad.title %}Norfolk Island{% elif "क्रिसमस टापु" in ad.title %}Christmas Island{% elif "कोकोस टापु" in ad.title %}Cocos Islands{% elif "हर्ड टापु" in ad.title %}Heard Island{% elif "म्याकडोनाल्ड टापु" in ad.title %}McDonald Islands{% elif "अस्ट्रेलियाली एन्टार्क्टिका" in ad.title %}Australian Antarctic Territory{% elif "ब्रिटिश एन्टार्क्टिका" in ad.title %}British Antarctic Territory{% elif "फ्रान्सेली एन्टार्क्टिका" in ad.title %}French Antarctic Territory{% elif "नर्वेजियन एन्टार्क्टिका" in ad.title %}Norwegian Antarctic Territory{% elif "अर्जेन्टिनी एन्टार्क्टिका" in ad.title %}Argentine Antarctic Territory{% elif "चिली एन्टार्क्टिका" in ad.title %}Chilean Antarctic Territory{% elif "अमेरिकी एन्टार्क्टिका" in ad.title %}US Antarctic Territory{% elif "रूसी एन्टार्क्टिका" in ad.title %}Russian Antarctic Territory{% elif "जापानी एन्टार्क्टिका" in ad.title %}Japanese Antarctic Territory{% elif "दक्षिण कोरियाली एन्टार्क्टिका" in ad.title %}South Korean Antarctic Territory{% elif "उत्तर कोरियाली एन्टार्क्टिका" in ad.title %}North Korean Antarctic Territory{% elif "चिनियाँ एन्टार्क्टिका" in ad.title %}Chinese Antarctic Territory{% elif "भारतीय एन्टार्क्टिका" in ad.title %}Indian Antarctic Territory{% elif "पाकिस्तानी एन्टार्क्टिका" in ad.title %}Pakistani Antarctic Territory{% elif "बङ्गलादेशी एन्टार्क्टिका" in ad.title %}Bangladeshi Antarctic Territory{% elif "श्रीलङ्काली एन्टार्क्टिका" in ad.title %}Sri Lankan Antarctic Territory{% elif "अफगानी एन्टार्क्टिका" in ad.title %}Afghan Antarctic Territory{% elif "इरानी एन्टार्क्टिका" in ad.title %}Iranian Antarctic Territory{% elif "इराकी एन्टार्क्टिका" in ad.title %}Iraqi Antarctic Territory{% elif "कुवेती एन्टार्क्टिका" in ad.title %}Kuwaiti Antarctic Territory{% elif "बहराइनी एन्टार्क्टिका" in ad.title %}Bahraini Antarctic Territory{% elif "ओमानी एन्टार्क्टिका" in ad.title %}Omani Antarctic Territory{% elif "युएई एन्टार्क्टिका" in ad.title %}UAE Antarctic Territory{% elif "जोर्डनी एन्टार्क्टिका" in ad.title %}Jordanian Antarctic Territory{% elif "लेबनानी एन्टार्क्टिका" in ad.title %}Lebanese Antarctic Territory{% elif "तुर्की एन्टार्क्टिका" in ad.title %}Turkish Antarctic Territory{% elif "इजरायली एन्टार्क्टिका" in ad.title %}Israeli Antarctic Territory{% elif "मिस्री एन्टार्क्टिका" in ad.title %}Egyptian Antarctic Territory{% elif "लिबियाली एन्टार्क्टिका" in ad.title %}Libyan Antarctic Territory{% elif "सुडानी एन्टार्क्टिका" in ad.title %}Sudanese Antarctic Territory{% elif "इथियोपियाली एन्टार्क्टिका" in ad.title %}Ethiopian Antarctic Territory{% elif "केन्याली एन्टार्क्टिका" in ad.title %}Kenyan Antarctic Territory{% elif "तान्जानियाली एन्टार्क्टिका" in ad.title %}Tanzanian Antarctic Territory{% elif "युगान्डाली एन्टार्क्टिका" in ad.title %}Ugandan Antarctic Territory{% elif "रुवान्डाली एन्टार्क्टिका" in ad.title %}Rwandan Antarctic Territory{% elif "दक्षिण अफ्रिकाली एन्टार्क्टिका" in ad.title %}South African Antarctic Territory{% elif "नाइजेरियाली एन्टार्क्टिका" in ad.title %}Nigerian Antarctic Territory{% elif "घानाली एन्टार्क्टिका" in ad.title %}Ghanaian Antarctic Territory{% elif "सेनेगाली एन्टार्क्टिका" in ad.title %}Senegalese Antarctic Territory{% elif "मोरक्काली एन्टार्क्टिका" in ad.title %}Moroccan Antarctic Territory{% elif "अल्जेरियाली एन्टार्क्टिका" in ad.title %}Algerian Antarctic Territory{% elif "ट्युनिसियाली एन्टार्क्टिका" in ad.title %}Tunisian Antarctic Territory{% else %}{{ ad.title }}{% endif %} मा रोजगारी
-      {% elif ad.country and ad.country.strip %}
-        {% if "जापान" in ad.country %}Japan{% elif "दुबई" in ad.country %}Dubai{% elif "कतार" in ad.country %}Qatar{% elif "साउदी अरब" in ad.country %}Saudi Arabia{% elif "मलेशिया" in ad.country %}Malaysia{% elif "सिङ्गापुर" in ad.country %}Singapore{% elif "कोरिया" in ad.country %}Korea{% elif "ताइवान" in ad.country %}Taiwan{% elif "हङकङ" in ad.country %}Hong Kong{% elif "मकाउ" in ad.country %}Macau{% elif "भारत" in ad.country %}India{% elif "चीन" in ad.country %}China{% elif "थाइल्यान्ड" in ad.country %}Thailand{% elif "भिएतनाम" in ad.country %}Vietnam{% elif "फिलिपिन्स" in ad.country %}Philippines{% elif "इन्डोनेसिया" in ad.country %}Indonesia{% elif "बङ्गलादेश" in ad.country %}Bangladesh{% elif "श्रीलङ्का" in ad.country %}Sri Lanka{% elif "पाकिस्तान" in ad.country %}Pakistan{% elif "अफगानिस्तान" in ad.country %}Afghanistan{% elif "इरान" in ad.country %}Iran{% elif "इराक" in ad.country %}Iraq{% elif "कुवेत" in ad.country %}Kuwait{% elif "बहराइन" in ad.country %}Bahrain{% elif "ओमान" in ad.country %}Oman{% elif "युएई" in ad.country %}UAE{% elif "जोर्डन" in ad.country %}Jordan{% elif "लेबनान" in ad.country %}Lebanon{% elif "तुर्की" in ad.country %}Turkey{% elif "इजरायल" in ad.country %}Israel{% elif "मिस्र" in ad.country %}Egypt{% elif "लिबिया" in ad.country %}Libya{% elif "सुडान" in ad.country %}Sudan{% elif "इथियोपिया" in ad.country %}Ethiopia{% elif "केन्या" in ad.country %}Kenya{% elif "तान्जानिया" in ad.country %}Tanzania{% elif "युगान्डा" in ad.country %}Uganda{% elif "रुवान्डा" in ad.country %}Rwanda{% elif "दक्षिण अफ्रिका" in ad.country %}South Africa{% elif "नाइजेरिया" in ad.country %}Nigeria{% elif "घाना" in ad.country %}Ghana{% elif "सेनेगल" in ad.country %}Senegal{% elif "मोरक्को" in ad.country %}Morocco{% elif "अल्जेरिया" in ad.country %}Algeria{% elif "ट्युनिसिया" in ad.country %}Tunisia{% elif "रूस" in ad.country %}Russia{% elif "युक्रेन" in ad.country %}Ukraine{% elif "पोल्यान्ड" in ad.country %}Poland{% elif "जर्मनी" in ad.country %}Germany{% elif "फ्रान्स" in ad.country %}France{% elif "इटाली" in ad.country %}Italy{% elif "स्पेन" in ad.country %}Spain{% elif "पोर्चुगल" in ad.country %}Portugal{% elif "नेदरल्यान्ड" in ad.country %}Netherlands{% elif "बेल्जियम" in ad.country %}Belgium{% elif "स्विजरल्यान्ड" in ad.country %}Switzerland{% elif "अस्ट्रिया" in ad.country %}Austria{% elif "स्विडेन" in ad.country %}Sweden{% elif "नर्वे" in ad.country %}Norway{% elif "डेनमार्क" in ad.country %}Denmark{% elif "फिनल्यान्ड" in ad.country %}Finland{% elif "आइसल्यान्ड" in ad.country %}Iceland{% elif "आयरल्यान्ड" in ad.country %}Ireland{% elif "युनाइटेड किङ्गडम" in ad.country %}United Kingdom{% elif "क्यानाडा" in ad.country %}Canada{% elif "अमेरिका" in ad.country %}United States{% elif "मेक्सिको" in ad.country %}Mexico{% elif "ब्राजिल" in ad.country %}Brazil{% elif "अर्जेन्टिना" in ad.country %}Argentina{% elif "चिली" in ad.country %}Chile{% elif "पेरु" in ad.country %}Peru{% elif "कोलम्बिया" in ad.country %}Colombia{% elif "भेनेजुएला" in ad.country %}Venezuela{% elif "इक्वाडोर" in ad.country %}Ecuador{% elif "बोलिभिया" in ad.country %}Bolivia{% elif "पाराग्वे" in ad.country %}Paraguay{% elif "उरुग्वे" in ad.country %}Uruguay{% elif "अस्ट्रेलिया" in ad.country %}Australia{% elif "न्युजिल्यान्ड" in ad.country %}New Zealand{% elif "फिजी" in ad.country %}Fiji{% elif "पापुवा न्युगिनी" in ad.country %}Papua New Guinea{% elif "सोलोमन टापु" in ad.country %}Solomon Islands{% elif "वानुअतु" in ad.country %}Vanuatu{% elif "सामोआ" in ad.country %}Samoa{% elif "टोङ्गा" in ad.country %}Tonga{% elif "किरिबाटी" in ad.country %}Kiribati{% elif "तुवालु" in ad.country %}Tuvalu{% elif "नाउरु" in ad.country %}Nauru{% elif "पलाउ" in ad.country %}Palau{% elif "मार्शल टापु" in ad.country %}Marshall Islands{% elif "माइक्रोनेसिया" in ad.country %}Micronesia{% elif "ग्वाम" in ad.country %}Guam{% elif "उत्तरी मारियाना टापु" in ad.country %}Northern Mariana Islands{% elif "अमेरिकी सामोआ" in ad.country %}American Samoa{% elif "हवाई" in ad.country %}Hawaii{% elif "अलास्का" in ad.country %}Alaska{% elif "ग्रीनल्यान्ड" in ad.country %}Greenland{% elif "फरो टापु" in ad.country %}Faroe Islands{% elif "जान मेयेन" in ad.country %}Jan Mayen{% elif "स्वालबार्ड" in ad.country %}Svalbard{% elif "नोरफोक टापु" in ad.country %}Norfolk Island{% elif "क्रिसमस टापु" in ad.country %}Christmas Island{% elif "कोकोस टापु" in ad.country %}Cocos Islands{% elif "हर्ड टापु" in ad.country %}Heard Island{% elif "म्याकडोनाल्ड टापु" in ad.country %}McDonald Islands{% elif "अस्ट्रेलियाली एन्टार्क्टिका" in ad.country %}Australian Antarctic Territory{% elif "ब्रिटिश एन्टार्क्टिका" in ad.country %}British Antarctic Territory{% elif "फ्रान्सेली एन्टार्क्टिका" in ad.country %}French Antarctic Territory{% elif "नर्वेजियन एन्टार्क्टिका" in ad.country %}Norwegian Antarctic Territory{% elif "अर्जेन्टिनी एन्टार्क्टिका" in ad.country %}Argentine Antarctic Territory{% elif "चिली एन्टार्क्टिका" in ad.country %}Chilean Antarctic Territory{% elif "अमेरिकी एन्टार्क्टिका" in ad.country %}US Antarctic Territory{% elif "रूसी एन्टार्क्टिका" in ad.country %}Russian Antarctic Territory{% elif "जापानी एन्टार्क्टिका" in ad.country %}Japanese Antarctic Territory{% elif "दक्षिण कोरियाली एन्टार्क्टिका" in ad.country %}South Korean Antarctic Territory{% elif "उत्तर कोरियाली एन्टार्क्टिका" in ad.country %}North Korean Antarctic Territory{% elif "चिनियाँ एन्टार्क्टिका" in ad.country %}Chinese Antarctic Territory{% elif "भारतीय एन्टार्क्टिका" in ad.country %}Indian Antarctic Territory{% elif "पाकिस्तानी एन्टार्क्टिका" in ad.country %}Pakistani Antarctic Territory{% elif "बङ्गलादेशी एन्टार्क्टिका" in ad.country %}Bangladeshi Antarctic Territory{% elif "श्रीलङ्काली एन्टार्क्टिका" in ad.country %}Sri Lankan Antarctic Territory{% elif "अफगानी एन्टार्क्टिका" in ad.country %}Afghan Antarctic Territory{% elif "इरानी एन्टार्क्टिका" in ad.country %}Iranian Antarctic Territory{% elif "इराकी एन्टार्क्टिका" in ad.country %}Iraqi Antarctic Territory{% elif "कुवेती एन्टार्क्टिका" in ad.country %}Kuwaiti Antarctic Territory{% elif "बहराइनी एन्टार्क्टिका" in ad.country %}Bahraini Antarctic Territory{% elif "ओमानी एन्टार्क्टिका" in ad.country %}Omani Antarctic Territory{% elif "युएई एन्टार्क्टिका" in ad.country %}UAE Antarctic Territory{% elif "जोर्डनी एन्टार्क्टिका" in ad.country %}Jordanian Antarctic Territory{% elif "लेबनानी एन्टार्क्टिका" in ad.country %}Lebanese Antarctic Territory{% elif "तुर्की एन्टार्क्टिका" in ad.country %}Turkish Antarctic Territory{% elif "इजरायली एन्टार्क्टिका" in ad.country %}Israeli Antarctic Territory{% elif "मिस्री एन्टार्क्टिका" in ad.country %}Egyptian Antarctic Territory{% elif "लिबियाली एन्टार्क्टिका" in ad.country %}Libyan Antarctic Territory{% elif "सुडानी एन्टार्क्टिका" in ad.country %}Sudanese Antarctic Territory{% elif "इथियोपियाली एन्टार्क्टिका" in ad.country %}Ethiopian Antarctic Territory{% elif "केन्याली एन्टार्क्टिका" in ad.country %}Kenyan Antarctic Territory{% elif "तान्जानियाली एन्टार्क्टिका" in ad.country %}Tanzanian Antarctic Territory{% elif "युगान्डाली एन्टार्क्टिका" in ad.country %}Ugandan Antarctic Territory{% elif "रुवान्डाली एन्टार्क्टिका" in ad.country %}Rwandan Antarctic Territory{% elif "दक्षिण अफ्रिकाली एन्टार्क्टिका" in ad.country %}South African Antarctic Territory{% elif "नाइजेरियाली एन्टार्क्टिका" in ad.country %}Nigerian Antarctic Territory{% elif "घानाली एन्टार्क्टिका" in ad.country %}Ghanaian Antarctic Territory{% elif "सेनेगाली एन्टार्क्टिका" in ad.country %}Senegalese Antarctic Territory{% elif "मोरक्काली एन्टार्क्टिका" in ad.country %}Moroccan Antarctic Territory{% elif "अल्जेरियाली एन्टार्क्टिका" in ad.country %}Algerian Antarctic Territory{% elif "ट्युनिसियाली एन्टार्क्टिका" in ad.country %}Tunisian Antarctic Territory{% else %}{{ ad.country }}{% endif %} मा रोजगारी
-      {% else %}
-        देश मा रोजगारी
-      {% endif %}
-    </div>
-    {% if ad.right_section_text %}
-    <div class="header-right">{{ ad.right_section_text }}</div>
-    {% endif %}
-  </div>
-  
-  <!-- Meta Information -->
-  <div class="meta-bar">
-    <div class="company-container">
-      <div class="company-row" id="company-row">
-        <span class="company-label">Company:</span>
-        <span class="lato-black-text">{% if ad.company_name %}{{ ad.company_name }}{% else %}कुनै कम्पनी{% endif %}</span>
-      </div>
-    </div>
-    <div class="meta-items-row" id="meta-items-row">
-    <div class="meta-item">Pre Approval Date: <b>{% if ad.pre_approval_date %}{{ ad.pre_approval_date }}{% else %}कुनै मिति{% endif %}</b></div>
-    <div class="meta-item">Chalani No.: <b>{% if ad.chalani_no %}{{ ad.chalani_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
-    <div class="meta-item">LOT No.: <b>{% if ad.lot_no %}{{ ad.lot_no }}{% else %}कुनै नम्बर{% endif %}</b></div>
 
-      <div class="meta-item-city" id="city-item">City: <b>{% if ad.city %}{{ ad.city }}{% else %}कुनै शहर{% endif %}</b></div>
-    </div>
-  </div>
-  
-  <!-- Main Table -->
-  <table class="main-table" id="main-table">
-    <!-- Header Row 1 -->
-    <thead>
-      <tr>
-        <th rowspan="2" class="col-sn"><span class="sn-line1">सि.</span><span class="sn-line2">नं.</span></th>
-        <th rowspan="2" class="col-position">कामदारको पद</th>
-      <div class="nope">
-        <th colspan="2" style="font-size: 6.3pt !important; font-weight: 900 !important; font-family: Arial, sans-serif !important; color: #000 !important; background: #f8f8f8 !important; border: 1px solid #000 !important; padding: 2px !important; text-align: center !important; vertical-align: middle !important; word-break: break-word !important; overflow: visible !important; box-sizing: border-box !important;">माग संख्या</th>
-        <th colspan="2" style="font-size: 6.3pt !important; font-weight: 900 !important; font-family: Arial, sans-serif !important; color: #000 !important; background: #f8f8f8 !important; border: 1px solid #000 !important; padding: 2px !important; text-align: center !important; vertical-align: middle !important; word-break: break-word !important; overflow: visible !important; box-sizing: border-box !important;">मासिक तलब</th>
-      </div>
-        <th rowspan="2" class="col-education">कामदारका <br> न्युनतम योग्यता</th>
+// ===== Script // Script 1 =====
 
-        <th rowspan="2" class="col-overtime">ओभर <br>टाइम<br> सुविधा</th>
-        <th rowspan="2" class="col-hours">प्रतिदिन काम<br> गर्ने घण्टा</th>
-        <th rowspan="2" class="col-days">हप्तामा काम<br> गर्ने दिन</th>
-        <th rowspan="2" class="col-leave">वार्षिक <br> विदा</th>
-        <th rowspan="2" class="col-food">खाने <br>सुविधा</th>
-        <th rowspan="2" class="col-housing">बस्ने<br>सुविधा</th>
-      <div>
-        <th rowspan="2" class="col-contract" style="border: 1px solid black;">करार <br> अवधि</th>
-      </div>
-      </tr>
-      <!-- Header Row 2 -->
+// Script 2
 
-    <div>
-      <tr>
-        <th class="col-gender">पुरुष</th>
-        <th class="col-gender">महिला</th>
-        <th class="col-salary">
-          <!-- Simple test -->
-          {{ positions.0.salary_currency|default:"KD" }}
-        </th>
-        <th class="col-salary">ने.रु.</th>
-      </tr>
-    </div>
-    </thead>
-        <!-- Data Rows - Dynamic from database -->
-    <tbody class="meta-body-row" id="meta-body-row">
-      {% for position in positions %}
-      <tr class="data-row">
-        <td>{{ forloop.counter }}</td>
-        <td class="text-left">{{ position.position }}</td>
-        <td class="olympia-data">{{ position.male_count|nepali_to_english }}</td>
-        <td class="olympia-data">{{ position.female_count|nepali_to_english }}</td>
-        <td class="olympia-data">{{ position.salary_amount|nepali_to_english }}</td>
-        <td>{{ position.salary_npr|safe }}</td>
-        {% if forloop.first %}
-        <!-- Common fields - only show in first row and span across all positions -->
-        <td class="text-center col-education" rowspan="{{ positions|length }}">{{ positions.0.min_qualification|safe }}</td>
-        <td class="col-overtime" rowspan="{{ positions|length }}">{{ positions.0.overtime }}</td>
-        <td class="col-hours" rowspan="{{ positions|length }}">{{ positions.0.hours_per_day|safe|linebreaksbr }}</td>
-        <td class="col-days" rowspan="{{ positions|length }}">{{ positions.0.days_per_week|safe|linebreaksbr }}</td>
-        <td class="col-leave" style="text-align: center !important;" rowspan="{{ positions|length }}">{{ positions.0.yearly_leave }}</td>
-        <td class="col-food-house" rowspan="{{ positions|length }}">{{ positions.0.food_provided }}</td>
-        <td class="col-food-house" rowspan="{{ positions|length }}">{{ positions.0.housing_provided }}</td>
-        <td class="col-contract-duration" rowspan="{{ positions|length }}">{% if positions.0.contract_duration %}{{ positions.0.contract_duration|slice:":2" }}<br>वर्ष{% endif %}</td>
-        {% endif %}
-        </tr>
-      {% empty %}
-      <!-- No positions exist - show empty table -->
-      <tr class="data-row">
-        <td colspan="13" style="text-align: center; color: #999;">कुनै पदहरू फेला परेनन्</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  
-  <!-- Interview Section -->
-  <div class="interview-section">
-      
-    {% if ad.interview_custom_text %}
-      <!-- Manual interview text from user - clean and simple, same structure as automatic -->
-      <span id="interview-date-text" class="interview-custom-text-content" style="white-space: pre-wrap !important; word-wrap: break-word !important; overflow-wrap: break-word !important; display: block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; margin: 0 !important; padding: 0 !important; background: transparent !important; border: none !important; font-family: 'Arial Black', Arial, 'Noto Sans Devanagari', Hind, sans-serif !important; font-weight: 900 !important; font-size: 7pt !important; line-height: 1.2 !important; overflow: visible !important; text-overflow: initial !important; height: auto !important; min-height: auto !important; max-height: none !important;">{{ ad.interview_custom_text }}</span>
-    {% elif ad.interview_nepali_date and ad.interview_gregorian_date and ad.interview_location %}
-      <!-- Manual interview details from EmploymentAd model -->
-      <span id="interview-date-text">
-        अन्तरवार्ता मिति <span id="calculated-interview-date">{{ ad.interview_nepali_date }}</span> गते (<span id="calculated-interview-date-english">{{ ad.interview_gregorian_date }}</span>) {{ ad.interview_location }} हुनेछ ।
-      </span>
-    {% else %}
-      <!-- Calculate interview date from pre_approval_date if available -->
-      {% if ad.pre_approval_date and ad.pre_approval_date != 'None' %}
-        <span id="interview-date-text">
-          अन्तरवार्ता मिति <span id="calculated-interview-date">निर्धारण गर्नुहोस्</span> गते (<span id="calculated-interview-date-english">निर्धारण गर्नुहोस्</span>) हुनेछ ।
-      </span>
-    {% else %}
-      <!-- Default message when no interview info is provided -->
-      <span id="interview-date-text">
-        अन्तरवार्ता मिति जानकारी उपलब्ध छैन
-      </span>
-      {% endif %}
-          
-        <script>
+
           // Simple interview section styling - clean and minimal
           function normalizeInterviewSectionStyling() {
             const interviewSection = document.querySelector('.interview-section');
@@ -787,37 +587,35 @@
               element.style.setProperty('text-align', 'right', 'important');
             });
             
-            // Apply Kalimati font to interview section - FIXED HEIGHT to prevent layout misalignment
+            // Apply Kalimati font to interview section - ALLOW MULTIPLE LINES
             const interviewSections = document.querySelectorAll('.interview-section');
             interviewSections.forEach(function(element) {
               element.style.setProperty('background', '#000', 'important');
               element.style.setProperty('color', '#fff', 'important');
-              element.style.setProperty('padding', '0px', 'important');
+              element.style.setProperty('padding', '0.02cm 0.1cm', 'important'); // Minimal vertical padding
               element.style.setProperty('margin', '0px', 'important');
               element.style.setProperty('margin-bottom', '0px', 'important');
               element.style.setProperty('border', 'none', 'important');
               element.style.setProperty('text-align', 'center', 'important');
-              // FIXED HEIGHT - prevent expansion when custom text is entered
-              element.style.setProperty('height', '0.4cm', 'important');
-              element.style.setProperty('min-height', '0.4cm', 'important');
-              element.style.setProperty('max-height', '0.4cm', 'important');
-              element.style.setProperty('overflow', 'hidden', 'important');
-              element.style.setProperty('white-space', 'nowrap', 'important');
-              element.style.setProperty('text-overflow', 'ellipsis', 'important');
-              element.style.setProperty('display', 'flex', 'important');
-              element.style.setProperty('align-items', 'center', 'important');
-              element.style.setProperty('justify-content', 'center', 'important');
+              // ALLOW MULTIPLE LINES - allow expansion when custom text is entered
+              element.style.setProperty('height', 'auto', 'important');
+              element.style.setProperty('min-height', 'auto', 'important'); // No minimum height - fit content exactly
+              element.style.setProperty('max-height', 'none', 'important');
+              element.style.setProperty('overflow', 'visible', 'important');
+              element.style.setProperty('white-space', 'normal', 'important');
+              element.style.setProperty('word-wrap', 'break-word', 'important');
+              element.style.setProperty('overflow-wrap', 'break-word', 'important');
+              element.style.setProperty('display', 'block', 'important'); // Changed from flex to block
               element.style.setProperty('box-sizing', 'border-box', 'important');
               element.style.setProperty('position', 'relative', 'important');
               element.style.setProperty('isolation', 'isolate', 'important');
-              element.style.setProperty('contain', 'layout size style', 'important');
-              element.style.setProperty('flex-shrink', '0', 'important');
-              element.style.setProperty('flex-grow', '0', 'important');
+              element.style.setProperty('contain', 'layout style', 'important'); // Removed 'size' to allow growth
+              element.style.setProperty('text-overflow', 'initial', 'important'); // NO ELLIPSIS
               element.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
               element.style.setProperty('font-size', '7pt', 'important');
               element.style.setProperty('font-weight', '900', 'important');
               element.style.setProperty('font-weight', 'bold', 'important'); // Fallback
-              element.style.setProperty('line-height', '0.4cm', 'important');
+              element.style.setProperty('line-height', '1.2', 'important'); // Allow line spacing
               element.style.setProperty('letter-spacing', '-0.05em', 'important'); /* Tracking: -5 */
               element.style.setProperty('font-kerning', 'auto', 'important'); /* Kerning: Metrics */
               element.style.setProperty('text-rendering', 'optimizeLegibility', 'important');
@@ -826,51 +624,83 @@
               element.style.setProperty('font-synthesis', 'none', 'important');
               element.style.setProperty('-webkit-text-stroke', '0.01em transparent', 'important');
               
-              // Also make all child elements bold and constrain them
+              // Also make all child elements bold and allow wrapping
               const childElements = element.querySelectorAll('*');
               childElements.forEach(function(child) {
+                // Skip br tags - they need special handling
+                if (child.tagName === 'BR') {
+                  return;
+                }
                 child.style.setProperty('font-weight', '900', 'important');
                 child.style.setProperty('font-weight', 'bold', 'important');
                 child.style.setProperty('font-family', '"Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif', 'important');
-                // Ensure child elements don't break the layout
-                child.style.setProperty('overflow', 'hidden', 'important');
-                child.style.setProperty('text-overflow', 'ellipsis', 'important');
-                child.style.setProperty('white-space', 'nowrap', 'important');
+                // Allow child elements to wrap and preserve line breaks
+                child.style.setProperty('overflow', 'visible', 'important');
+                child.style.setProperty('white-space', 'pre-wrap', 'important'); // Preserve line breaks and wrap
+                child.style.setProperty('word-wrap', 'break-word', 'important');
+                child.style.setProperty('overflow-wrap', 'break-word', 'important');
                 child.style.setProperty('max-width', '100%', 'important');
                 child.style.setProperty('width', '100%', 'important');
                 child.style.setProperty('text-align', 'center', 'important');
-                child.style.setProperty('vertical-align', 'middle', 'important');
-                child.style.setProperty('line-height', '0.4cm', 'important');
+                child.style.setProperty('line-height', '1.2', 'important'); // Tighter line height
                 child.style.setProperty('box-sizing', 'border-box', 'important');
               });
               
-              // Specifically handle the interview text content
+              // Specifically handle the interview text content - ALLOW MULTIPLE LINES
               const interviewText = element.querySelector('#interview-date-text');
               if (interviewText) {
-                interviewText.style.setProperty('overflow', 'hidden', 'important');
-                interviewText.style.setProperty('text-overflow', 'ellipsis', 'important');
-                interviewText.style.setProperty('white-space', 'nowrap', 'important');
-                interviewText.style.setProperty('max-width', '100%', 'important');
-                interviewText.style.setProperty('width', '100%', 'important');
-                interviewText.style.setProperty('display', 'block', 'important');
-                interviewText.style.setProperty('text-align', 'center', 'important');
-                interviewText.style.setProperty('line-height', '0.4cm', 'important');
-                interviewText.style.setProperty('box-sizing', 'border-box', 'important');
+                // Check if it's manual custom text (has interview-custom-text-content class)
+                if (interviewText.classList.contains('interview-custom-text-content')) {
+                  // Manual text - apply pre-wrap styling
+                  interviewText.style.setProperty('overflow', 'visible', 'important');
+                  interviewText.style.setProperty('white-space', 'pre-wrap', 'important'); // Preserve line breaks and wrap
+                  interviewText.style.setProperty('word-wrap', 'break-word', 'important');
+                  interviewText.style.setProperty('overflow-wrap', 'break-word', 'important');
+                  interviewText.style.setProperty('max-width', '100%', 'important');
+                  interviewText.style.setProperty('width', '100%', 'important');
+                  interviewText.style.setProperty('display', 'block', 'important');
+                  interviewText.style.setProperty('text-align', 'center', 'important');
+                  interviewText.style.setProperty('line-height', '1.2', 'important'); // Tighter line height
+                  interviewText.style.setProperty('box-sizing', 'border-box', 'important');
+                  interviewText.style.setProperty('margin', '0', 'important');
+                  interviewText.style.setProperty('padding', '0', 'important'); // No padding on text
+                } else {
+                  // Automatic text - just ensure it's styled correctly
+                  interviewText.style.setProperty('display', 'block', 'important');
+                  interviewText.style.setProperty('text-align', 'center', 'important');
+                  interviewText.style.setProperty('margin', '0', 'important');
+                  interviewText.style.setProperty('padding', '0', 'important');
+                }
               }
               
-              // Handle custom text content specifically
-              const customTextContent = element.querySelector('.interview-custom-text-content');
+              // Handle custom text content specifically - ALLOW MULTIPLE LINES
+              // Now the custom text is directly in #interview-date-text with class interview-custom-text-content
+              const customTextContent = element.querySelector('#interview-date-text.interview-custom-text-content');
               if (customTextContent) {
-                customTextContent.style.setProperty('overflow', 'hidden', 'important');
-                customTextContent.style.setProperty('text-overflow', 'ellipsis', 'important');
-                customTextContent.style.setProperty('white-space', 'nowrap', 'important');
-                customTextContent.style.setProperty('max-width', '100%', 'important');
+                // Force white-space to pre-wrap to preserve line breaks
+                customTextContent.style.cssText = 'white-space: pre-wrap !important; word-wrap: break-word !important; overflow-wrap: break-word !important; display: block !important; width: 100% !important; max-width: 100% !important; text-align: center !important; margin: 0 !important; padding: 0 !important; background: transparent !important; border: none !important; font-family: "Arial Black", Arial, "Noto Sans Devanagari", Hind, sans-serif !important; font-weight: 900 !important; font-size: 7pt !important; line-height: 1.2 !important; box-sizing: border-box !important; overflow: visible !important; height: auto !important; min-height: auto !important; max-height: none !important; text-overflow: initial !important;';
+                
+                // Also set individually to ensure they stick
+                customTextContent.style.setProperty('white-space', 'pre-wrap', 'important');
+                customTextContent.style.setProperty('word-wrap', 'break-word', 'important');
+                customTextContent.style.setProperty('overflow-wrap', 'break-word', 'important');
+                customTextContent.style.setProperty('display', 'block', 'important');
                 customTextContent.style.setProperty('width', '100%', 'important');
-                customTextContent.style.setProperty('display', 'inline-block', 'important');
+                customTextContent.style.setProperty('max-width', '100%', 'important');
                 customTextContent.style.setProperty('text-align', 'center', 'important');
-                customTextContent.style.setProperty('vertical-align', 'middle', 'important');
-                customTextContent.style.setProperty('line-height', '0.4cm', 'important');
-                customTextContent.style.setProperty('box-sizing', 'border-box', 'important');
+                customTextContent.style.setProperty('overflow', 'visible', 'important');
+                customTextContent.style.setProperty('height', 'auto', 'important');
+                customTextContent.style.setProperty('min-height', 'auto', 'important');
+                customTextContent.style.setProperty('max-height', 'none', 'important');
+                customTextContent.style.setProperty('text-overflow', 'initial', 'important'); // NO ELLIPSIS
+                
+                // Debug: log the content to see if newlines are present
+                console.log('Interview custom text content:', customTextContent.textContent);
+                console.log('Interview custom text innerHTML:', customTextContent.innerHTML);
+                console.log('Has newlines:', customTextContent.textContent.includes('\n'));
+                console.log('Computed white-space:', window.getComputedStyle(customTextContent).whiteSpace);
+                console.log('Computed overflow:', window.getComputedStyle(customTextContent).overflow);
+                console.log('Computed text-overflow:', window.getComputedStyle(customTextContent).textOverflow);
               }
             });
             
@@ -1512,7 +1342,7 @@
           
           // Function to calculate interview date (8 days after pre-approval)
           function calculateInterviewDate() {
-          const preApprovalDate = '{{ ad.pre_approval_date }}';
+            const preApprovalDate = '{{ ad.pre_approval_date }}';
             const calculatedNepaliDate = document.getElementById('calculated-interview-date');
             const calculatedEnglishDate = document.getElementById('calculated-interview-date-english');
             
@@ -1523,21 +1353,21 @@
             
             if (preApprovalDate && preApprovalDate !== 'None' && preApprovalDate !== '') {
               try {
-            const date = new Date(preApprovalDate);
+                const date = new Date(preApprovalDate);
                 if (!isNaN(date.getTime())) {
-            date.setDate(date.getDate() + 8);
-            
-            // Format English date as "30 August, 2025"
-            const englishOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-            const englishDate = date.toLocaleDateString('en-US', englishOptions);
-            
-            // Convert to Nepali date
-            const nepaliDate = gregorianToNepali(date);
-            const nepaliDateString = `${nepaliDate.year}/${nepaliDate.month}/${nepaliDate.day}`;
-            
+                  date.setDate(date.getDate() + 8);
+                  
+                  // Format English date as "30 August, 2025"
+                  const englishOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+                  const englishDate = date.toLocaleDateString('en-US', englishOptions);
+                  
+                  // Convert to Nepali date
+                  const nepaliDate = gregorianToNepali(date);
+                  const nepaliDateString = `${nepaliDate.year}/${nepaliDate.month}/${nepaliDate.day}`;
+                  
                   calculatedNepaliDate.textContent = nepaliDateString;
                   calculatedEnglishDate.textContent = englishDate;
-          } else {
+                } else {
                   calculatedNepaliDate.textContent = 'निर्धारण गर्नुहोस्';
                   calculatedEnglishDate.textContent = 'निर्धारण गर्नुहोस्';
                 }
@@ -1564,131 +1394,65 @@
             // DOM is already loaded, run immediately
             calculateInterviewDate();
           }
-        </script>
-      {% endif %}
-  </div>
+        
+
+
+// NUCLEAR APPROACH - Force colspan header styles with multiple attempts
+function forceColspanStyles() {
+  console.log('NUCLEAR - Starting colspan style enforcement');
   
-  <!-- Extra Information Section -->
-  <div class="extra-section">
-    <table class="extra-table">
-      <thead>
-        <tr>
-          <th>स्वदेशमा गरिने मेडिकल खर्च <br> कस्ले व्यहोर्ने र कति लाग्ने</th>
-          <th>विदेशमा गरिने मेडिकल खर्च कस्ले व्यहोर्ने</th>
-          <th>स्वदेशमा गरिने म्यादेजीवन बीमा कस्ले व्यहोर्ने र कति लाग्ने</th>
-          <th class="col-insurance">रोजगारमा बीमा हुने/नहुने <br> र प्रिमियर कसले व्यहोर्ने</th>
-          <th>कामदारलाई हवाई टिकट <br> कस्ले दिने र कति लाग्ने</th>
-          <th>सामाजिक सुरक्षाकोष</th>
-          <th>भिषा शुल्क कसले व्यहोर्ने</th>
-          <th>भिषा स्ट्याम्पी <br> शुल्क कसले व्यहोर्ने</th>
-          <th>अभिमुखिकरण शुल्क कति लाग्ने र कस्ले व्यहोर्ने</th>
-          <th>कल्याणकारी कोष सम्बन्धी व्यवस्था</th>
-          <th class="col-service-fee">शेवा शुल्क</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>कामदार आफैले</td>
-          <td>रोजगादाताले व्यहोर्ने</td>
-          <td>कामदार आफैले</td>
-          <td>बीम हुने/प्रिमियम <br> रोजगारदाताले तिर्ने</td>
-          <td>रोजगारदाता कम्पनीले व्यहोर्ने</td>
-          <td><span class="currency-amount">रू. २५९६/-</span> कामदार आफैले</td>
-          <td>रोजगारदाताले व्यहोर्ने</td>
-          <td>रोजगारदाताले व्यहोर्ने</td>
-          <td><span class="currency-amount">रू. ७००/-</span> <br>कामदार आफैले</td>
-          <td><span class="currency-amount">रू. १५००/-</span> <br> कामदार आफैले</td>
-          <td class="col-service-fee">{% if ad.service_fee %}{{ ad.service_fee }}{% else %}निःशूल्क{% endif %}</td>
-        </tr>
-      </tbody>
-    </table>
+  // Try multiple selectors
+  const selectors = [
+    '.main-table thead tr th[colspan="2"]',
+    'th[colspan="2"]',
+    '#main-table thead tr th[colspan="2"]',
+    'table th[colspan="2"]'
+  ];
+  
+  selectors.forEach(function(selector, index) {
+    const elements = document.querySelectorAll(selector);
+    console.log('NUCLEAR - Selector', index, selector, 'found', elements.length, 'elements');
     
-    <!-- Condensed Notice Text -->
-    <div class="extra-note">
-      {% if ad.extra_notes %}
-        <!-- Manual notice from user -->
-        {{ ad.extra_notes|safe }}
-      {% else %}
-        <!-- Country-specific automatic notice -->
-        {% if country_notice %}
-          <div class="notice-content" id="notice-content">
-            {{ country_notice.content|safe }}
-          </div>
-        {% else %}
-          <!-- Default Japan content format -->
-          <p><b>प्रशिक्षार्थीको आवश्यकता न्यूनतम योग्यता र काम गरेको अनुभव:</b> (क) नेपाली नागरिक हुनुपर्ने । (ख) प्रशिक्षणको उमेर १८ वर्ष पूरा भई २६ वर्ष ननाघेको हुनुपर्ने । (ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व वा अहिले सञ्चालन भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योग, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा काम गरेको अनुभव भएको हुनुपर्ने । (घ) निर्माण क्षेत्रमा काम गर्ने निर्माण सम्बन्धी उद्योग वा सम्बन्धित विषयका संस्थामा कम्तिमा दुई वर्ष काम गरेको अनुभव हुनुपर्ने । (ङ) प्रशिक्षणको विषय अनुसार काम गरेको अनुभव भएको र नेपालकै उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव हुनुपर्ने । (च) जापानी भाषा तथा संस्कृतिको सामान्य ज्ञान भएको हुनुपर्ने ।</p>
+    elements.forEach(function(element, elemIndex) {
+      console.log('NUCLEAR - Applying to element', elemIndex, element.textContent);
+      
+      // Multiple approaches to force the styles
+      element.style.setProperty('font-size', '6.3pt', 'important');
+      element.style.setProperty('font-weight', '900', 'important');
+      element.style.setProperty('font-family', 'Arial, sans-serif', 'important');
+      
+      element.style.fontSize = '6.3pt';
+      element.style.fontWeight = '900';
+      element.style.fontFamily = 'Arial, sans-serif';
+      
+      // Set attributes directly
+      const currentStyle = element.getAttribute('style') || '';
+      element.setAttribute('style', currentStyle + '; font-size: 6.3pt !important; font-weight: 900 !important; font-family: Arial, sans-serif !important;');
+      
+      // Force with CSS class
+      element.classList.add('force-colspan-style');
+      
+      console.log('NUCLEAR - Applied styles to', element.textContent);
+      console.log('NUCLEAR - Element style:', element.getAttribute('style'));
+    });
+  });
+}
 
-          <p><b>दरखास्त साथ पेश गर्ने आवश्यक कागजातहरू:</b> (क) नेपाली नागरिकताको प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ख) शैक्षिक प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ग) प्रशिक्षार्थी नेपाल सरकारको उद्योग मन्त्रालय अन्तर्गतको निकायहरू वा यस पूर्व भइसकेका उद्योग व्यवसाय, कलकारखाना, ढुंढी सहकारी, साना/कुटिर उद्योगसंस्था, होटल पर्यटन व्यवसाय तथा अन्य व्यवसाय क्षेत्रमा कम्तिमा २ वर्ष काम गरेको अनुभव सम्बन्धी प्रमाणपत्रको प्रमाणित प्रतिलिपि । (घ) सम्बन्धित विषयमा प्रशिक्षण प्राप्त गरेको प्रमाणपत्रको प्रमाणित प्रतिलिपि । (ङ) प्रशिक्षणको विषयमा कामदारको रुपमा जान खोजेको विषयमा नेपालका उद्योग प्रतिष्ठान, संस्था वा निकायहरूमा काम गरेको अनुभव प्रमाणपत्रको प्रमाणित प्रतिलिपि । (च) प्रशिक्षणको विषय अनुसार जापानी भाषा तथा संस्कृतिको सम्बन्धमा तालिम लिएको हुनुपर्ने प्रमाणपत्रको प्रमाणित प्रतिलिपि । (छ) अनुभवीहरूको लागि प्रशिक्षणको विषय अनुसार नेपालमै काम गरिरहेको उद्योग प्रतिष्ठान, निकाय वा संस्थाको सिफारिस र नेपाल फर्किएपछि पनि सोही कार्यक्षेत्र वा निकाय समक्ष काम गर्ने प्रतिवद्धतासहितको प्रमाणित कागजात पेश गर्नु पर्ने ।</p>
-
-          <p><b>१) दरखास्त दाखिला गर्ने स्थान र मिति:</b> यस संस्थाको कार्यालयमा यो सूचना प्रकाशित भएको मितिले १५ दिन भित्र ।</p>
-
-          <p><b>२) परीक्षाशुल्क:</b> निर्धारित बैंक खाता नम्बरमा जम्मा गर्नुपर्नेछ । परीक्षाशुल्क रकम रू. ५०००।–</p>
-
-          <p><b>३) लिखित परीक्षा:</b> २०७८ साल माघ ३१ गते बिहान १०:०० बजे अनलाइन आप्रवासी कार्यालयमा आयोजित हुनेछ । परीक्षा दिन आउने परीक्षार्थीले आफ्नो नागरिकता प्रमाणपत्रको प्रतिलिपि ल्याउनुपर्नेछ ।</p>
-
-          <p><b>वैदेशिक रोजगार विभागद्वारा जारी गरिएको जानकारी:</b><br>
-          १. आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा कुनै त्रुटि भएमा तुरुन्तै सच्याउनुहोस् ।<br>
-          २. आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात सुरक्षित राख्नुहोस् ।<br>
-          ३. यस विज्ञापन सम्बन्धमा उल्झन भएमा विभागले कुनै जिम्मेवारी लिने छैन ।<br>
-          ४. विदेश जानु अघि अभिमुखीकरण तालिम लिनु पर्नेछ ।<br>
-          ५. विदेश जानु अघि श्रम सम्झौता अनिवार्य रुपमा गर्नुपर्नेछ ।<br>
-          ६. विदेश जानु अघि बीमा कम्पनीमा बीमा गर्नुपर्नेछ ।<br>
-          ७. विदेश जानु अघि कुनै दलाल वा एजेन्टलाई पैसा दिनु हुने छैन ।<br>
-          ८. पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट आफैंले बुझी लिनुहोस् ।<br>
-          ९. सीधै विमानस्थलमा जानुहोस् ।<br>
-          १०. पासपोर्टमा समस्या भएमा विभागमा सम्पर्क गर्नुहोस् ।</p>
-
-          <p><b>नोट:</b> जापानी भाषा N4 स्तरको ज्ञान भएकोलाई प्राथमिकता दिइनेछ ।</p>
-        {% endif %}
-      {% endif %}
-    </div>
-    </div>
-  </div>
+// Run immediately
+document.addEventListener('DOMContentLoaded', function() {
+  forceColspanStyles();
   
-  <!-- Company Banner - ATTACHED -->
-  <div class="company-banner">
-    {% if ad.company_banner_image %}
-      <!-- Display uploaded banner image -->
-      <div class="banner-image-container" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-        {% if pdf_mode %}
-          <img src="data:image/jpeg;base64,{{ ad.company_banner_image_base64 }}" alt="Company Banner" style="width: 100%; height: 100%; object-fit: cover; object-position: center; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;">
-        {% else %}
-          <img src="{{ ad.company_banner_image.url }}" alt="Company Banner" style="width: 100%; height: 100%; object-fit: cover; object-position: center;">
-        {% endif %}
-      </div>
-    {% else %}
-      <!-- Manual entry or default banner layout with company info -->
-      <div class="company-logo">
-        {% if ad.company_logo_image %}
-          {% if pdf_mode %}
-            <img src="data:image/jpeg;base64,{{ ad.company_logo_image_base64 }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated;">
-          {% else %}
-            <img src="{{ ad.company_logo_image.url }}" alt="Company Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-          {% endif %}
-        {% else %}
-          <div>{{ ad.company_logo_text|default:"LOGO" }}</div>
-        {% endif %}
-      </div>
-      
-      <div class="company-info">
-        <h1>{% if ad.company_banner_title %}{{ ad.company_banner_title }}{% else %}कुनै कम्पनी{% endif %}</h1>
-        <p>
-          {% if ad.company_address %}{{ ad.company_address }}{% else %}कुनै ठेगाना{% endif %} • {% if ad.company_phone %}{{ ad.company_phone }}{% else %}कुनै फोन{% endif %}<br>
-          {% if ad.company_email %}{{ ad.company_email }}{% else %}कुनै इमेल{% endif %} • {% if ad.company_website %}{{ ad.company_website }}{% else %}कुनै वेब{% endif %}
-        </p>
-      </div>
-      
-      <div class="license-box">
-        {% if ad.license_number %}{{ ad.license_number }}{% else %}कुनै लाइसेन्स{% endif %}
-      </div>
-    {% endif %}
-  </div>
-</div>
+  // Run again after 500ms
+  setTimeout(forceColspanStyles, 500);
+  
+  // Run again after 1000ms
+  setTimeout(forceColspanStyles, 1000);
+  
+  // Run again after 2000ms
+  setTimeout(forceColspanStyles, 2000);
+});
 
-
-
-
-<!-- External JavaScript -->
-<script src="{% static 'js/employment_ad_preview.js' %}"></script>
-</body>
-</html>
+// Also run on window load
+window.addEventListener('load', function() {
+  forceColspanStyles();
+});

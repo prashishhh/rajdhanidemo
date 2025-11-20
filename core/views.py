@@ -721,16 +721,15 @@ def employment_ad_editor(request):
                 formset = JobPositionFormSet(request.POST, instance=employment_ad)
                 
                 # Debug: Print form data
-                print(f"DEBUG: Form data: {request.POST}")
-                print(f"DEBUG: Form is_valid: {form.is_valid()}")
-                print(f"DEBUG: Formset is_valid: {formset.is_valid()}")
+                print(f"📋 DEBUG: Form data: {request.POST}")
+                print(f"🔑 DEBUG: All POST keys: {list(request.POST.keys())}")
+                print(f"🎯 DEBUG: Interview-related keys: {[k for k in request.POST.keys() if 'interview' in k]}")
+                print(f"📅 DEBUG: Date-related keys: {[k for k in request.POST.keys() if 'date' in k.lower()]}")
+                print(f"✅ DEBUG: Form is_valid: {form.is_valid()}")
+                print(f"✅ DEBUG: Formset is_valid: {formset.is_valid()}")
                 
                 if form.is_valid() and formset.is_valid():
-                    # Get interview data from form
-                    nepali_date = request.POST.get('interview_nepali_date', '')
-                    gregorian_date = request.POST.get('interview_gregorian_date', '')
-                    interview_time = request.POST.get('interview_time', '')
-                    interview_location = request.POST.get('interview_location', '')
+                    print(f"✅ DEBUG: Form validation passed - processing interview custom text")
                     
                     # Handle banner image clear field with robust validation
                     try:
@@ -796,29 +795,8 @@ def employment_ad_editor(request):
                         # No positions, just save the formset normally
                         formset.save()
                     
-                    # Update or create interview information
-                    if nepali_date or gregorian_date or interview_time or interview_location:
-                        interview, created = Interview.objects.get_or_create(
-                            employment_ad=employment_ad,
-                            order=0,
-                            defaults={
-                                'interview_type': 'अन्तर्वार्ता',
-                                'nepali_date': nepali_date,
-                                'gregorian_date': gregorian_date,
-                                'time': interview_time,
-                                'location': interview_location,
-                                'template': 'अन्तरवार्ता मिति {nepali_date} ({gregorian_date}) {location} हुनेछ।'
-                            }
-                        )
-                        
-                        if not created:
-                            # Update existing interview
-                            interview.nepali_date = nepali_date
-                            interview.gregorian_date = gregorian_date
-                            interview.time = interview_time
-                            interview.location = interview_location
-                            interview.template = 'अन्तरवार्ता मिति {nepali_date} ({gregorian_date}) {location} हुनेछ।'
-                            interview.save()
+                    # Interview data is now handled by the custom text field only
+                    print(f"✅ DEBUG: Interview custom text will be saved via form.save()")
                     
                     # Check if this is an AJAX request
                     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -951,24 +929,17 @@ def employment_ad_editor(request):
         form = EmploymentAdForm(instance=employment_ad)
         formset = JobPositionFormSet(instance=employment_ad)
     
-    # Set default interview data (not from database)
-    interview_data = {
-        'nepali_date': '',
-        'gregorian_date': '',
-        'interview_hour': '',
-        'interview_time': '',
-        'interview_location': '',
-    }
+    # Interview data is now handled by custom text field only
+    print(f"✅ DEBUG: Using only interview_custom_text field")
     
     # Populate form with interview data
-    form.initial.update(interview_data)
+    form.initial.update({})
     
     context = {
         'form': form,
         'formset': formset,
         'employment_ad': employment_ad,
         'positions': employment_ad.positions.all().order_by('order'),  # Get existing positions
-        'interview_data': interview_data,
         'ocr_text': ocr_text,
         'parsed_data': parsed_data,
     }

@@ -1,0 +1,3277 @@
+
+  /* Font Face Declaration for Kalimati - Unicode Devanagari Support with Professional Rendering */
+  @font-face {
+    font-family: 'Kalimati';
+    src: url('../../static/fonts/Kalimati.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+    unicode-range: U+0900-097F, U+0000-00FF;
+  }
+  
+  /* Fallback for Kalimati */
+  @font-face {
+    font-family: 'Kalimati-Fallback';
+    src: url('../../static/fonts/Kalimati.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0900-097F, U+0000-00FF;
+  }
+  
+  /* Lato font for Company text - Local files with Professional Rendering */
+  @font-face {
+    font-family: 'Lato';
+    src: url('../../templates/font/lato.regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+  }
+  
+  @font-face {
+    font-family: 'Lato';
+    src: url('../../templates/font/Lato-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+  }
+  
+  /* Roboto font for Meta items */
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');
+  
+  /* Olympia-BoldCond font for position text with Professional Rendering */
+  @font-face {
+    font-family: 'Olympia-BoldCond';
+    src: url('../../static/fonts/olympia-bold.TTF') format('truetype');
+    font-weight: 900; /* Bold weight */
+    font-style: normal;
+    font-stretch: condensed; /* Condensed variant */
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+  }
+  
+  /* RajdhaniBold font for table headers with Professional Rendering */
+  @font-face {
+    font-family: 'RajdhaniBold';
+    src: url('../../static/fonts/RajdhaniBold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+  }
+  
+  body { 
+    margin: 20px auto; 
+    font-family: "Noto Sans Devanagari", "Hind", "Arial", sans-serif; 
+    background: #f0f0f0;
+    max-width: 100%;
+    padding: 0 0px;
+    padding-top: 400px; /* Increased top padding to move content further down */
+  }
+  
+  /* PDF mode - adjust positioning for PDF with professional newspaper print quality */
+  {% if pdf_mode %}
+  body {
+    padding-top: 200px !important; /* Reduced padding for PDF but still some space from top */
+    /* Professional newspaper print quality settings */
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    /* Newspaper-specific optimizations */
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    font-variant-ligatures: common-ligatures;
+    font-kerning: normal;
+    font-synthesis: none;
+  }
+  
+  /* Ensure all elements maintain exact colors in PDF */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* High-quality image rendering for PDF */
+  img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  
+  /* Sharp text rendering for all text elements - Remove shadows for crisp print */
+  h1, h2, h3, h4, h5, h6, p, span, div, td, th, li {
+    text-rendering: optimizeLegibility;
+    font-smooth: always;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+  }
+  
+  /* Remove all text shadows and blur effects for PDF */
+  * {
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Additional high-quality rendering for all elements */
+  {% if high_quality %}
+  * {
+    text-rendering: optimizeLegibility !important;
+    font-smooth: always !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: none !important;
+    filter: none !important;
+    backdrop-filter: none !important;
+  }
+  
+  /* Ensure maximum quality for backgrounds and borders */
+  .top-header, .company-section, .position-section, .interview-section, .country-notice {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  {% endif %}
+  {% endif %}
+  
+  /* Iframe mode - reduce padding for iframe embedding */
+  {% if is_iframe %}
+  body {
+    padding-top: 50px !important; /* Minimal padding for iframe */
+  }
+  {% endif %}
+  
+
+  
+  /* Top Header - Single row with centered title and right section */
+  .top-header {
+    background: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 6px;
+    font-weight: 900;
+    font-size: 7pt;
+    height: 0.4cm;
+    max-height: 0.4cm;
+    min-height: 0.4cm;
+    box-sizing: border-box;
+    margin-bottom: 0px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .header-left {
+    text-align: center;
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 0.4cm !important;
+    font-weight: 900 !important; /* Maximum bold weight */
+    font-weight: bold !important; /* Additional bold fallback */
+    text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor, 0 0.3px 0 currentColor, 0 -0.3px 0 currentColor !important;
+    font-style: normal !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke */
+    text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+  }
+  
+  
+  /* Force Kalimati font in all contexts */
+  .header-left * {
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+  }
+
+  .header-right {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 6.5pt !important;
+    font-weight: 800 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important;
+    -webkit-text-stroke: 0.01em transparent !important;
+    text-align: right;
+  }
+  
+
+  
+  /* Meta Information Bar */
+  .meta-bar {
+    background: #fff;
+    border-top: 0.5px solid #000;
+    border-bottom: none;
+    font-size: 5pt;
+    box-sizing: border-box;
+    height: 0.75cm;
+    max-height: 0.75cm;
+    min-height: 0.75cm;
+    overflow: hidden;
+    padding-top: 0.08cm;
+  }
+  
+  .company-container {
+    display: flex;
+    align-items: center;
+    height: 0.3cm;
+  }
+  
+  .company-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0px 3px !important;
+    font-family: "Lato", Arial, sans-serif !important;
+    font-size: 9.8pt !important;
+    line-height: 12.512pt !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-align: center !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
+    border-bottom: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important; /* Take up available space */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  .company-row.long-name {
+    justify-content: flex-start !important;
+    text-align: left !important;
+  }
+  
+  /* Company label - Lato Regular */
+  .company-label {
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 8pt !important;
+    font-weight: 900 !important; /* Maximum bold weight */
+    font-weight: bold !important; /* Additional bold fallback */
+    text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+    font-style: normal !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+    text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  /* Lato Black text class */
+  .lato-black-text {
+    font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-weight: 900 !important;         /* Maximum black */
+    font-weight: bold !important; /* Additional bold fallback */
+    font-size: 7pt !important;        /* Increased from 6pt */
+    line-height: 8pt !important;    /* Increased from 7pt */
+    text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+    font-style: normal !important;
+    letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+    word-spacing: 0.1em !important; /* Wider word spacing */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+    text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  /* More specific selector to ensure styles are applied */
+  .meta-bar .company-container .company-row {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0px 3px !important;
+    font-family: "Lato", Arial, sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 8pt !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-align: center !important;
+    height: 0.2cm !important;
+    min-height: 0.2cm !important;
+    max-height: 0.2cm !important;
+    border-bottom: none !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    flex: 1 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  .company-right-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0px 3px;
+    font-size: 4pt;
+    font-weight: 600;
+    text-align: right;
+    height: 0.4cm;
+    min-height: 0.4cm;
+    max-height: 0.4cm;
+    border-bottom: none;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 2cm; /* Fixed width for right section */
+  }
+  
+  .meta-items-row {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr 1fr 1fr;
+    gap: 0.1cm;
+    height: 0.3cm;
+    min-height: 0.3cm;
+    max-height: 0.4cm;
+    width: 100%;
+    overflow: hidden;
+    margin-top: 0.05cm;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 6pt !important;
+    font-weight: 800 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  /* Adjust grid when city is long - keep uniform gaps */
+  .meta-items-row.long-city {
+    grid-template-columns: 1.2fr 1fr 1fr 1.3fr;
+    gap: 0.1cm;
+  }
+  
+  .meta-item {
+    padding: 0px 1px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 5.5pt !important;
+    font-weight: 800 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  .meta-item-city {
+    padding: 0px 1px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Roboto", Arial, sans-serif !important;
+    font-size: 5.5pt !important;
+    font-weight: 800 !important;
+    line-height: 4.5pt !important;
+    letter-spacing: 0 !important;
+    word-spacing: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+
+  
+  .meta-item b {
+    font-weight: 700;
+  }
+  
+  /* City field with smaller font 
+  .meta-item:last-child {
+    font-size: 4pt;
+  }
+  
+  /* City field responsive behavior - even smaller when long */
+  .meta-item:last-child.long-city {
+    font-size: 3pt;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  /* Force city field to not be cropped - AGGRESSIVE */
+  #city-item,
+  .meta-item-city {
+    min-width: 0 !important;
+    flex: 1 !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    text-overflow: initial !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: none !important;
+    width: auto !important;
+  }
+  
+  #city-item.long-city,
+  .meta-item-city.long-city {
+    justify-content: center !important;
+    text-align: center !important;
+    overflow: visible !important;
+    white-space: normal !important;
+    text-overflow: initial !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* Main Table */
+  .main-table {
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    border-collapse: collapse !important;
+    border-spacing: 0px !important;
+    font-size: 4pt;
+    line-height: 1;
+    margin: 0px !important;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 0.9cm;
+    height: auto !important; /* Allow table to grow vertically */
+    table-layout: fixed;
+    overflow: visible !important; /* Allow table to grow */
+    border-right: none; /* Remove right border from main table */
+    box-sizing: border-box; /* Ensure border is included in width calculation */
+  }
+  
+  /* Center the entire employment ad container */
+  .employment-ad {
+    width: 12cm;
+    max-width: 12cm;
+    min-width: 12cm;
+    min-height: 4.9cm; /* Minimum height, can grow */
+    height: auto !important; /* Allow container to grow */
+    background: #fff;
+    border: 1px solid #000;
+    box-sizing: border-box;
+    overflow: visible !important; /* Allow container to grow */
+    font-size: 6pt;
+    /* Production optimizations for smooth rendering */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    will-change: auto;
+    line-height: 1;
+    margin: 0 auto; /* Center horizontally */
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .main-table th,
+  .main-table td {
+    border: 1px solid #000;
+    padding: 2px;
+    text-align: center;
+    vertical-align: middle;
+    word-break: break-word;
+    overflow: visible; /* Changed from hidden to visible */
+    box-sizing: border-box;
+  }
+  
+  .main-table thead tr:first-child th {
+    border-top: 0.5px solid #000;
+  }
+  
+  .main-table thead {
+    height: 0.5cm;
+    max-height: 0.5cm;
+  }
+  
+  .main-table thead tr {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table thead tr:first-child {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table thead tr:last-child {
+    height: 0.25cm;
+    max-height: 0.25cm;
+  }
+  
+  .main-table th:first-child,
+  .main-table td:first-child {
+    border-left: none;
+  }
+  
+  .main-table th:last-child,
+  .main-table td:last-child {
+    border-right: none;
+  }
+  
+  .main-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .main-table tbody {
+    max-height: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  /* Meta Body Row - Height reduced by reducing individual data-row heights */
+  .meta-body-row {
+    /* Height is now controlled by individual data-row heights (0.18cm instead of 0.2cm) */
+  }
+  
+  /* Force height reduction with maximum specificity */
+  .main-table tbody.meta-body-row tr.data-row,
+  .main-table tbody.meta-body-row tr.data-row td {
+    height: 0.18cm !important;
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  /* Ultra-specific rule to override everything */
+  table.main-table tbody#meta-body-row tr.data-row td {
+    height: 0.18cm !important;
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  /* Force line breaks to display in min_qualification field - ULTRA SPECIFIC */
+  table.main-table tbody tr.data-row td.col-education,
+  table.main-table tbody tr.data-row td.text-center.col-education,
+  .main-table td.col-education,
+  .main-table td.text-center.col-education {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: initial !important;
+    line-height: 1.2 !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  .main-table td {
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+    overflow: hidden !important;
+    line-height: 1.0 !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    border-spacing: 0px !important;
+    font-size: 4pt !important;
+  }
+  
+  .main-table th {
+    background: #f8f8f8;
+    font-family: 'RajdhaniBold', Arial, sans-serif !important;
+    font-weight: normal; /* Regular style but font itself is bold-weighted */
+    font-size: 5pt !important;
+    line-height: 4pt !important; /* Leading = 4pt, tighter than font size */
+    height: 0.25cm;
+    min-height: 0.25cm;
+    max-height: none; /* Allow height to grow if needed */
+    box-sizing: border-box;
+    padding: 2px;
+    overflow: visible; /* Changed from hidden to visible */
+    vertical-align: middle;
+    letter-spacing: 0 !important; /* Tracking: 0 */
+    font-kerning: none !important; /* Manual kerning off */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+  }
+
+  /* Specific styling for serial number and position columns */
+  .main-table th.col-sn {
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    font-weight: 800 !important; /* Original font weight for serial number */
+    font-size: 5pt !important; /* Original font size for serial number */
+    line-height: 4pt !important; /* Original line height for serial number */
+  }
+
+  .main-table th.col-position {
+    font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    font-weight: 900 !important; /* Increased font weight */
+    font-size: 9pt !important; /* Increased by 2pt from 7pt to 9pt */
+    line-height: 8pt !important; /* Increased proportionally */
+  }
+
+  /* Increase font size for hours and days data cells */
+  .main-table td.col-hours,
+  .main-table td.col-days {
+    font-size: 7pt !important; /* Increased by 4pt from 4pt to 8pt */
+    line-height: 9pt !important; /* Increased proportionally */
+  }
+
+  /* Add gap between सि. and नं. in serial number using spans */
+  .main-table th.col-sn .sn-line1 {
+    display: block;
+    margin-bottom: 3pt !important; /* Gap between सि. and नं. */
+  }
+  
+  .main-table th.col-sn .sn-line2 {
+    display: block;
+    margin-top: 0;
+  }
+
+  /* Specific styling for multi-line headers with reduced font size and spacing */
+  .main-table th.col-education,
+  .main-table th.col-overtime,
+  .main-table th.col-hours,
+  .main-table th.col-days,
+  .main-table th.col-leave,
+  .main-table th.col-food,
+  .main-table th.col-housing,
+  .main-table th.col-contract {
+    font-size: 4pt !important; /* Reduced by 1pt from 5pt */
+    line-height: 5pt !important; /* Increased for better spacing between lines */
+  }
+
+  /* Add spacing between line breaks in these headers */
+  .main-table th.col-education br,
+  .main-table th.col-overtime br,
+  .main-table th.col-hours br,
+  .main-table th.col-days br,
+  .main-table th.col-leave br,
+  .main-table th.col-food br,
+  .main-table th.col-housing br,
+  .main-table th.col-contract br {
+    display: block;
+    margin: 2.5pt 0; /* Increased margin between lines for better spacing */
+  }
+
+  /* Apply same styling to corresponding table data cells */
+  .main-table td.col-education,
+  .main-table td.col-overtime,
+  .main-table td.col-hours,
+  .main-table td.col-days,
+  .main-table td.col-leave,
+  .main-table td.col-food,
+  .main-table td.col-housing,
+  .main-table td.col-contract {
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+    line-height: 4.5pt !important; /* Reduced for better spacing between lines */
+  }
+
+  /* Add spacing between line breaks in data cells */
+  .main-table td.col-education br,
+  .main-table td.col-overtime br,
+  .main-table td.col-hours br,
+  .main-table td.col-days br,
+  .main-table td.col-leave br,
+  .main-table td.col-food br,
+  .main-table td.col-housing br,
+  .main-table td.col-contract br {
+    display: block;
+    margin: 2.5pt 0; /* Increased margin between lines for better spacing */
+  }
+  
+
+  
+  .main-table th.col-position {
+    font-weight: 900;
+    font-size: 8pt;
+  }
+  
+  .main-table th.col-salary {
+    font-weight: 900;
+    font-size: 4pt;
+  }
+  
+  .main-table thead th[colspan="2"] {
+    font-weight: 900 !important;
+    font-size: 5pt !important;
+  }
+  
+  .main-table th.col-gender {
+    font-weight: 900;
+    font-size: 4pt;
+  }
+  
+  .main-table .text-left {
+    text-align: left;
+    font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
+    font-size: 7pt !important;
+    line-height: 8pt !important; /* Leading = font size for single-line spacing */
+    font-weight: 900 !important; /* Bold weight to match InDesign */
+    font-stretch: condensed !important; /* Condensed variant */
+    text-transform: uppercase !important; /* Uppercase like InDesign */
+    letter-spacing: 0 !important; /* Tracking: 0 */
+    font-kerning: auto !important; /* Kerning: Metrics (default) */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+  }
+  
+  .main-table .text-center {
+    text-align: center !important;
+    font-size: 3pt !important;
+  }
+  
+  /* Olympia font for specific data cells (male_count, female_count, salary_amount) */
+  .main-table .olympia-data {
+    font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
+    font-size: 6.5pt !important;
+    line-height: 6.5pt !important;
+    font-weight: 900 !important; /* Bold weight */
+    font-stretch: condensed !important; /* Condensed variant */
+    text-transform: uppercase !important; /* Uppercase */
+    letter-spacing: 0 !important; /* Tracking: 0 */
+    font-kerning: auto !important; /* Kerning: Metrics (default) */
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+    -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+    text-align: center !important;
+  }
+  
+  .main-table td.text-left {
+    font-weight: 400 !important;
+    font-size: 7pt !important;
+    padding-left: 2px !important;
+  }
+  
+  .main-table td:nth-child(3),
+  .main-table td:nth-child(4),
+  .main-table td:nth-child(12),
+  .main-table td:nth-child(13) {
+    font-weight: 700;
+    font-size: 6pt;
+  }
+  
+  /* Food and Housing columns - 12.5px font size */
+  .col-food-house {
+    font-size: 12.5px !important;
+    font-weight: 900 !important;
+  }
+  
+  /* Contract Duration column - 8pt font size */
+  .col-contract-duration {
+    font-size: 7pt !important;
+    font-weight: 800 !important;
+  }
+  
+  /* Extra section table - 3.54pt font size */
+  .extra-table {
+    font-size: 3.54pt !important;
+  }
+  
+  .extra-table th,
+  .extra-table td {
+    font-size: 3.04pt !important;
+    font-weight: 200 !important;
+  }
+  
+  .extra-table th {
+    font-size: 3pt !important;
+    font-weight: 500 !important;
+    line-height: 4pt !important;
+    letter-spacing: 0 !important;
+    font-kerning: auto !important;
+  }
+  
+  .extra-table td {
+    line-height: 1.2 !important;
+  }
+  
+  .extra-table td:has(br) {
+    line-height: 1.4 !important;
+  }
+  
+  .extra-table td.col-service-fee {
+    font-size: 5.54pt !important; /* Reduced by 0.5pt from 6.04pt */
+    font-weight: 700 !important;
+  }
+  
+  /* Specific styling for currency amounts in extra table */
+  .extra-table .currency-amount {
+    font-size: 3pt !important; /* Reduced by 2pt from 7pt */
+    font-weight: 700 !important;
+  }
+  
+  /* Column widths for extra-table */
+  .extra-table th:nth-child(1),
+  .extra-table td:nth-child(1) {
+    width: 1.30cm !important;
+    min-width: 1.30cm !important;
+    max-width: 1.30cm !important;
+  }
+  
+  .extra-table th:nth-child(2),
+  .extra-table td:nth-child(2) {
+    width: 1.10cm !important;
+    min-width: 1.10cm !important;
+    max-width: 1.10cm !important;
+  }
+  
+  .extra-table th:nth-child(3),
+  .extra-table td:nth-child(3) {
+    width: 1.40cm !important;
+    min-width: 1.40cm !important;
+    max-width: 1.40cm !important;
+  }
+  
+  .extra-table th:nth-child(4),
+  .extra-table td:nth-child(4) {
+    width: 1.20cm !important;
+    min-width: 1.20cm !important;
+    max-width: 1.20cm !important;
+  }
+  
+  .extra-table th:nth-child(5),
+  .extra-table td:nth-child(5) {
+    width: 1.20cm !important;
+    min-width: 1.20cm !important;
+    max-width: 1.20cm !important;
+  }
+  
+  .extra-table th:nth-child(6),
+  .extra-table td:nth-child(6) {
+    width: 0.75cm !important;
+    min-width: 0.75cm !important;
+    max-width: 0.75cm !important;
+  }
+  
+  .extra-table th:nth-child(7),
+  .extra-table td:nth-child(7) {
+    width: 0.75cm !important;
+    min-width: 0.75cm !important;
+    max-width: 0.75cm !important;
+  }
+  
+  .extra-table th:nth-child(8),
+  .extra-table td:nth-child(8) {
+    width: 0.90cm !important;
+    min-width: 0.90cm !important;
+    max-width: 0.90cm !important;
+  }
+  
+  .extra-table th:nth-child(9),
+  .extra-table td:nth-child(9) {
+    width: 1.10cm !important;
+    min-width: 1.10cm !important;
+    max-width: 1.10cm !important;
+  }
+  
+  .extra-table th:nth-child(10),
+  .extra-table td:nth-child(10) {
+    width: 1.00cm !important;
+    min-width: 1.00cm !important;
+    max-width: 1.00cm !important;
+  }
+  
+  .extra-table th:nth-child(11),
+  .extra-table td:nth-child(11) {
+    width: 0.90cm !important;
+    min-width: 0.90cm !important;
+    max-width: 0.90cm !important;
+  }
+  
+  .main-table td:nth-child(5),
+  .main-table td:nth-child(6) {
+    font-weight: 700;
+    font-size: 4pt; /* Reduced from 5pt to 4pt */
+  }
+  
+  /* Column widths optimized for 12cm */
+  .col-sn { width: 3%; }
+  .col-position { width: 25%; } /* Reduced from 28% to 25% */
+  .col-gender { width: 0.5%; } /* Reduced further from 1% to 0.5% */
+  .col-salary { width: 18%; } /* Increased from 15% to 18% */
+  .col-overtime { width: 5%; } /* Reduced from 6% to 5% */
+  .col-hours { width: 5%; }
+  .col-days { width: 5%; }
+  .col-leave { width: 6%; } /* Increased from 5% to 6% */
+  .col-education { width: 6%; } /* Increased from 5% to 6% */
+  .col-food { width: 5%; }
+  .col-housing { width: 4%; }
+  .col-contract { width: 6%; } /* Reduced from 7% to 6% */
+  
+  /* Specific width adjustments for salary columns */
+  .main-table td:nth-child(5) { /* salary_amount - olympia-data */
+    width: 6% !important;
+    min-width: 6% !important;
+    max-width: 6% !important;
+  }
+  
+  .main-table td:nth-child(6) { /* salary_npr */
+    width: 12% !important;
+    min-width: 12% !important;
+    max-width: 12% !important;
+  }
+  
+  /* Center text in yearly leave column */
+  .main-table td.col-leave {
+    text-align: center !important;
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+  }
+  
+  /* Style overtime column */
+  .main-table td.col-overtime {
+    text-align: center !important;
+    font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+  }
+  
+  /* More specific rule to override any conflicting styles */
+  .main-table tbody tr.data-row td.col-leave {
+    text-align: center !important;
+  }
+  
+  /* Remove bold from specific column headers */
+  .main-table th.col-education,
+  .main-table th.col-overtime,
+  .main-table th.col-hours,
+  .main-table th.col-days,
+  .main-table th.col-leave,
+  .main-table th.col-food,
+  .main-table th.col-housing,
+  .main-table th.col-contract {
+    font-weight: normal;
+    
+    font-size: 3pt; /* Reduced by 1pt from default 3pt */
+  }
+  
+  /* Ensure contract column text fits properly */
+  .main-table th.col-contract,
+.main-table td.col-contract {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  font-size: 2.5pt; /* Increased from 1.5pt to be readable */
+  padding: 0px 1px; /* Add a tiny bit of padding to prevent text from touching the borders */
+  max-width: 100%;
+  white-space: normal; /* Change from nowrap to normal to allow wrapping */
+  border-right: none; /* Remove right border */
+}
+  /* Data Row */
+  .data-row {
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+    margin: 0px !important;
+    padding: 0px !important;
+  }
+  
+  /* More specific rules to ensure data-row height is applied */
+  .main-table tbody tr.data-row {
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  .main-table tbody tr.data-row td {
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+  }
+  
+  .data-row td {
+    vertical-align: middle !important;
+    font-size: 6.5pt !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+    min-height: 0.18cm !important;
+    max-height: 0.18cm !important;
+    overflow: hidden !important;
+    line-height: 1.0 !important;
+    border-spacing: 0px !important;
+  }
+  
+  /* Interview Section - FIXED HEIGHT to prevent layout misalignment */
+  .interview-section {
+    background: #000 !important;
+    color: #fff !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    margin-bottom: 0px !important; /* Ensure no bottom margin */
+    border: none !important;
+    font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-size: 7pt !important;
+    text-align: center !important;
+    font-weight: 900 !important;
+    font-weight: bold !important; /* Fallback for better browser support */
+    line-height: 7pt !important;
+    letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
+    font-kerning: auto !important; /* Kerning: Metrics (automatic) */
+    height: 0.4cm !important; /* FIXED HEIGHT - prevents expansion */
+    min-height: 0.4cm !important;
+    max-height: 0.4cm !important; /* FIXED MAX HEIGHT - prevents expansion */
+    overflow: hidden !important; /* HIDDEN - prevents content from breaking layout */
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-rendering: optimizeLegibility !important;
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    font-synthesis: none !important;
+    -webkit-text-stroke: 0.01em transparent !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Interview section text content - allow multiple lines */
+  .interview-section #interview-date-text,
+  .interview-section .interview-text-wrapper,
+  .interview-section .interview-custom-text-content {
+    overflow: visible !important;
+    white-space: pre-wrap !important; /* Preserve line breaks and wrap text */
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    display: block !important;
+    text-align: center !important;
+    line-height: 1.2 !important; /* Tighter line height to reduce space between lines */
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important; /* No padding on text content */
+    font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 7pt !important;
+    text-overflow: initial !important; /* NO ELLIPSIS */
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+  }
+  
+  /* Override pre tag default styling - MAXIMUM SPECIFICITY */
+  html body .employment-ad .main-content .interview-section pre,
+  html body .employment-ad .interview-section pre,
+  body .employment-ad .main-content .interview-section pre,
+  body .employment-ad .interview-section pre,
+  .employment-ad .main-content .interview-section pre,
+  .employment-ad .interview-section pre,
+  .interview-section pre,
+  .interview-section .interview-custom-text-content,
+  .interview-section #interview-date-text pre,
+  .interview-section .interview-text-wrapper pre {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    font-weight: 900 !important;
+    font-size: 7pt !important;
+    white-space: pre-wrap !important; /* Preserve line breaks and allow wrapping */
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-height: none !important;
+    text-align: center !important;
+    line-height: 1.2 !important; /* Tighter line height to reduce space between lines */
+    box-sizing: border-box !important;
+    text-overflow: initial !important; /* NO ELLIPSIS - show all text */
+  }
+  
+  /* Ensure br tags work properly in interview section */
+  .interview-section br {
+    display: block !important;
+    content: "" !important;
+    margin: 0.02cm 0 !important; /* Minimal margin between lines */
+    line-height: 1.2 !important;
+  }
+  
+  /* Ensure interview section doesn't affect other sections */
+  .interview-section {
+    position: relative !important;
+    isolation: isolate !important;
+    contain: layout style !important; /* Removed 'size' to allow growth */
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+  }
+  
+  /* MAXIMUM SPECIFICITY - Force interview section styling - ALLOW MULTIPLE LINES */
+  body .employment-ad .main-content .interview-section,
+  body .employment-ad .interview-section,
+  .employment-ad .main-content .interview-section,
+  .employment-ad .interview-section,
+  .interview-section {
+    background: #000 !important;
+    color: #fff !important;
+    padding: 0.02cm 0.1cm !important; /* Minimal vertical padding, keep horizontal */
+    margin: 0px !important;
+    margin-bottom: 0px !important;
+    border: none !important;
+    text-align: center !important;
+    height: auto !important; /* ALLOW GROWTH */
+    min-height: auto !important; /* No minimum height - fit content exactly */
+    max-height: none !important; /* NO MAX HEIGHT LIMIT */
+    overflow: visible !important; /* VISIBLE - allows expansion */
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    display: block !important; /* BLOCK - allows proper line breaks */
+    box-sizing: border-box !important;
+    position: relative !important;
+    isolation: isolate !important;
+    contain: layout style !important; /* Removed 'size' to allow growth */
+    text-overflow: initial !important; /* NO ELLIPSIS */
+  }
+  
+  /* Interview Section - Make all text content bold and clean */
+  .interview-section,
+  .interview-section > span,
+  .interview-section #interview-date-text {
+    font-weight: 900 !important;
+    font-weight: bold !important; /* Fallback for better browser support */
+    font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
+    text-align: center !important;
+  }
+  .extra-section {
+    border-top: none;
+    font-size: 2.5pt;
+    margin-top: 0px; /* No top margin */
+    margin-bottom: 0px; /* No bottom margin */
+    padding-top: 0px;
+    padding-bottom: 0px; /* No bottom padding */
+    min-height: 0.65cm;
+    max-height: none; /* Allow unlimited height for longer content */
+    overflow: visible;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  
+  .extra-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .extra-table th,
+  .extra-table td {
+    border: 0.15px solid #000;
+    padding: 0.25px 0.5px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 3pt;
+    line-height: 1;
+    word-break: break-word;
+    font-weight: 100 !important;
+  }
+  
+  .extra-table th {
+    background: #f8f8f8;
+    font-weight: 100 !important;
+    height: 0.35cm; /* Increased height */
+  }
+  
+  .extra-table td {
+    height: 0.3cm; /* Increased height */
+  }
+  
+  .extra-table td:last-child {
+    font-weight: 100 !important;
+    font-size: 2.5pt;
+  }
+  
+  .extra-table th:first-child,
+  .extra-table td:first-child {
+    border-left: none;
+  }
+  
+  .extra-table th:last-child,
+  .extra-table td:last-child {
+    border-right: none;
+  }
+  
+  .extra-note {
+    padding: 2px 4px !important;
+    margin: 0px !important;
+    font-size: 3.54pt !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    text-justify: initial !important;
+    border: none;
+    background: #fff;
+    min-height: 0.4cm; /* Minimum height for short content (Middle East notices) */
+    max-height: none; /* Allow unlimited height for longer content (Japan notice) */
+    overflow: visible; /* Changed from auto to visible */
+    word-wrap: break-word;
+    display: block !important;
+    width: 100% !important;
+    overflow-wrap: break-word;
+    font-weight: 200;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    /* Dynamic height based on content */
+    height: auto;
+  }
+  
+  /* Force left alignment for all extra-note content */
+  .extra-note {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  .extra-note * {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content should not be justified - left aligned */
+  .extra-note.japan-content {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content bold headers should be on their own line */
+  .extra-note.japan-content b {
+    display: block !important;
+    margin-bottom: 4px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content paragraphs should have proper spacing */
+  .extra-note.japan-content p {
+    margin-bottom: 8px !important;
+    display: block !important;
+    text-align: left !important;
+    text-justify: initial !important;
+    line-height: 1.4 !important;
+  }
+  
+  /* Override body center alignment for Japan content */
+  body .extra-note.japan-content {
+    text-align: left !important;
+  }
+  
+  body .extra-note.japan-content * {
+    text-align: left !important;
+  }
+  
+  /* Japan content paragraphs should be left aligned and maintain proper formatting */
+  .extra-note.japan-content p,
+  .extra-note.japan-content div,
+  .extra-note.japan-content b,
+  .extra-note.japan-content span {
+    text-align: left !important;
+    text-justify: initial !important;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Japan content bold headers should be on their own line */
+  .extra-note.japan-content b {
+    display: block !important;
+    margin-bottom: 2px !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Japan content paragraphs should have proper spacing */
+  .extra-note.japan-content p {
+    margin-bottom: 4px !important;
+    display: block !important;
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Override any inline styles that might be applied */
+  .extra-note.japan-content[style*="text-align: justify"] {
+    text-align: left !important;
+  }
+  
+  .extra-note.japan-content p[style*="text-align: justify"],
+  .extra-note.japan-content b[style*="text-align: justify"] {
+    text-align: left !important;
+  }
+  
+  /* Override body center alignment with maximum specificity */
+  body .extra-note.japan-content,
+  body .extra-note.japan-content *,
+  body .extra-note.japan-content p,
+  body .extra-note.japan-content b,
+  body .extra-note.japan-content div,
+  body .extra-note.japan-content span {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Maximum specificity override for body center alignment */
+  body div.extra-note,
+  body div.extra-note *,
+  body div.extra-note p,
+  body div.extra-note b,
+  body div.extra-note div,
+  body div.extra-note span {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Nuclear option - override everything in extra-note */
+  .extra-note,
+  .extra-note *,
+  .extra-note p,
+  .extra-note div,
+  .extra-note span,
+  .extra-note br,
+  .extra-note strong,
+  .extra-note em,
+  .extra-note i,
+  .extra-note u {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Preserve bold formatting */
+  .extra-note b,
+  .extra-note strong {
+    font-weight: bold !important;
+    display: block !important;
+    margin-bottom: 4px !important;
+    text-align: left !important;
+  }
+  
+  /* Force left alignment on bold elements with maximum specificity */
+  body .extra-note b,
+  body .extra-note strong,
+  body div.extra-note b,
+  body div.extra-note strong {
+    text-align: left !important;
+    text-justify: initial !important;
+  }
+  
+  /* Override any center alignment on bold elements */
+  .extra-note b[style*="center"],
+  .extra-note strong[style*="center"],
+  .extra-note b[style*="justify"],
+  .extra-note strong[style*="justify"] {
+    text-align: left !important;
+  }
+  
+  /* Force left alignment on all extra-note content */
+  .extra-note * {
+    text-align: left !important;
+  }
+  
+  /* Preserve paragraph formatting */
+  .extra-note p {
+    display: block !important;
+    margin: 0px 0px 6px 0px !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    font-weight: normal !important;
+    width: 100% !important;
+  }
+  
+  /* Ensure bold elements in paragraphs are properly formatted */
+  .extra-note p b {
+    font-weight: bold !important;
+    display: inline !important;
+    margin-bottom: 0 !important;
+  }
+  
+  /* Force numbered items to be on separate lines */
+  .extra-note:not(:empty) {
+    text-align: left !important;
+  }
+  
+  .extra-note:not(:empty) * {
+    text-align: left !important;
+    display: block !important;
+  }
+  
+  /* Force left alignment for Japan content regardless of class */
+  .extra-note:has(:contains('यस संस्थाको कार्यालयमा')),
+  .extra-note:has(:contains('वैदेशिक रोजगार विभागद्वारा')),
+  .extra-note:has(:contains('जापानी भाषा N4 स्तरको')),
+  .extra-note:has(:contains('आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा')),
+  .extra-note:has(:contains('आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात')),
+  .extra-note:has(:contains('यस विज्ञापन सम्बन्धमा उल्झन भएमा')),
+  .extra-note:has(:contains('विदेश जानु अघि अभिमुखीकरण तालिम')),
+  .extra-note:has(:contains('विदेश जानु अघि श्रम सम्झौता')),
+  .extra-note:has(:contains('विदेश जानु अघि बीमा कम्पनीमा')),
+  .extra-note:has(:contains('विदेश जानु अघि कुनै दलाल वा एजेन्टलाई')),
+  .extra-note:has(:contains('पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट')),
+  .extra-note:has(:contains('सीधै विमानस्थलमा जानुहोस्')),
+  .extra-note:has(:contains('पासपोर्टमा समस्या भएमा विभागमा')) {
+    text-align: left !important;
+  }
+  
+  .extra-note:has(:contains('यस संस्थाको कार्यालयमा')) *,
+  .extra-note:has(:contains('वैदेशिक रोजगार विभागद्वारा')) *,
+  .extra-note:has(:contains('जापानी भाषा N4 स्तरको')) *,
+  .extra-note:has(:contains('आफ्नो नाममा निष्काशन भई जारी गरिएको पासपोर्टमा')) *,
+  .extra-note:has(:contains('आफ्नो दस्तावेज र काममा प्रयोग हुने कागजात')) *,
+  .extra-note:has(:contains('यस विज्ञापन सम्बन्धमा उल्झन भएमा')) *,
+  .extra-note:has(:contains('विदेश जानु अघि अभिमुखीकरण तालिम')) *,
+  .extra-note:has(:contains('विदेश जानु अघि श्रम सम्झौता')) *,
+  .extra-note:has(:contains('विदेश जानु अघि बीमा कम्पनीमा')) *,
+  .extra-note:has(:contains('विदेश जानु अघि कुनै दलाल वा एजेन्टलाई')) *,
+  .extra-note:has(:contains('पासपोर्ट, श्रम अनुमति, करारपत्र, टिकट')) *,
+  .extra-note:has(:contains('सीधै विमानस्थलमा जानुहोस्')) *,
+  .extra-note:has(:contains('पासपोर्टमा समस्या भएमा विभागमा')) * {
+    text-align: left !important;
+  }
+  
+  /* Force left alignment for numbered lists (1. 2. 3. etc.) */
+  .extra-note:has(:contains('१.')) *,
+  .extra-note:has(:contains('२.')) *,
+  .extra-note:has(:contains('३.')) *,
+  .extra-note:has(:contains('४.')) *,
+  .extra-note:has(:contains('५.')) *,
+  .extra-note:has(:contains('६.')) *,
+  .extra-note:has(:contains('७.')) *,
+  .extra-note:has(:contains('८.')) *,
+  .extra-note:has(:contains('९.')) *,
+  .extra-note:has(:contains('१०.')) * {
+    text-align: left !important;
+  }
+  
+  /* Universal left alignment for all extra-note content */
+  .extra-note {
+    text-align: left !important;
+  }
+  
+  .extra-note * {
+    text-align: left !important;
+  }
+  
+  /* Override any justify alignment */
+  .extra-note[style*="justify"],
+  .extra-note *[style*="justify"] {
+    text-align: left !important;
+  }
+  
+  /* Force proper formatting for numbered lists */
+  .extra-note:contains('१.'),
+  .extra-note:contains('२.'),
+  .extra-note:contains('३.'),
+  .extra-note:contains('४.'),
+  .extra-note:contains('५.'),
+  .extra-note:contains('६.'),
+  .extra-note:contains('७.'),
+  .extra-note:contains('८.'),
+  .extra-note:contains('९.'),
+  .extra-note:contains('१०.') {
+    text-align: left !important;
+  }
+  
+  /* Force block display for numbered items */
+  .extra-note *:contains('१.'),
+  .extra-note *:contains('२.'),
+  .extra-note *:contains('३.'),
+  .extra-note *:contains('४.'),
+  .extra-note *:contains('५.'),
+  .extra-note *:contains('६.'),
+  .extra-note *:contains('७.'),
+  .extra-note *:contains('८.'),
+  .extra-note *:contains('९.'),
+  .extra-note *:contains('१०.') {
+    display: block !important;
+    text-align: left !important;
+    margin-bottom: 2px !important;
+  }
+  
+  /* Production-ready: Prevent layout shifts and ensure stable rendering */
+  * {
+    box-sizing: border-box;
+  }
+  
+  .employment-ad * {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000;
+    perspective: 1000;
+  }
+  
+  /* Prevent any visual changes during load */
+  .employment-ad {
+    visibility: visible;
+    opacity: 1;
+    transition: none;
+  }
+  
+  .employment-ad.loaded {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Responsive behavior for different notice lengths */
+  .extra-note:has(.notice-content) {
+    /* When notice-content is present (country-specific notices) */
+    min-height: 0.6cm; /* Slightly larger minimum for country notices */
+  }
+  
+  .extra-note:not(:has(.notice-content)) {
+    /* When only manual extra_notes are present */
+    min-height: 0.4cm; /* Smaller minimum for manual notes */
+  }
+  
+  .extra-note h4 {
+    margin: 0;
+    font-size: 3.5pt;
+    font-weight: 200 !important;
+    color:black;
+  }
+  
+  /* Style HTML tags in extra-note for manual notices */
+  .extra-note h1 {
+    font-size: 4.5pt !important;
+    font-weight: bold !important;
+    margin: 4px 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+  }
+  
+  .extra-note h2 {
+    font-size: 4pt !important;
+    font-weight: bold !important;
+    margin: 3px 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+  }
+  
+  .extra-note h3 {
+    font-size: 3.75pt !important;
+    font-weight: bold !important;
+    margin: 3px 0 !important;
+    padding: 0 !important;
+    display: block !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+  }
+  
+  .extra-note p {
+    display: block !important;
+    margin: 4px 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    line-height: 1.4 !important;
+    font-weight: normal !important;
+    font-size: 3.54pt !important;
+  }
+  
+  .extra-note b,
+  .extra-note strong {
+    font-weight: bold !important;
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  
+  .extra-note br {
+    display: block !important;
+    content: "" !important;
+    margin: 2px 0 !important;
+  }
+  
+  /* Center the note section */
+  .extra-note b:last-child {
+    text-align: left !important;
+    display: inline !important;
+    width: auto !important;
+    padding: 0px !important;
+    margin: 0px !important;
+  }
+  
+  /* Print-specific styles with professional quality settings - Updated: 2024-12-19 */
+  @media print {
+    /* Professional print quality settings */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      text-shadow: none !important;
+      -webkit-text-stroke: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+    }
+    
+    body {
+      margin-top: 5cm !important; /* Add top margin for print */
+      font-smooth: always;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+      padding-top: 0 !important; /* Remove padding for print */
+    }
+    
+    /* Data row height for print/PDF */
+    .data-row {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    /* Force line breaks to display in min_qualification field in print */
+    .main-table td.col-education,
+    .main-table td.text-center.col-education {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: initial !important;
+      line-height: 1.2 !important;
+    }
+    
+    .main-table tbody tr.data-row {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    .main-table tbody tr.data-row td {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    /* Ensure GANESH font loads for print/PDF - Safari compatible */
+    @font-face {
+      font-family: 'GANESH';
+      src: url('{{ STATIC_URL }}fonts/GANESH.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'GANESH-Safari';
+      src: url('{{ STATIC_URL }}fonts/GANESH.TTF') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    /* Lato font for print - Local files */
+    @font-face {
+      font-family: 'Lato';
+      src: url('../../templates/font/lato.regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    @font-face {
+      font-family: 'Lato';
+      src: url('../../templates/font/Lato-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-weight: 100 !important;
+      font-family: Arial, sans-serif !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .extra-table th {
+      font-weight: 100 !important;
+    }
+    
+    .extra-table td:last-child {
+      font-weight: 100 !important;
+    }
+    
+    .extra-note {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+      padding: 2px 4px !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      display: inline !important;
+      width: auto !important;
+    }
+    
+    .extra-note h4 {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+  }
+  
+        .notice-content {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      display: block !important;
+      width: 100% !important;
+      line-height: 1.4 !important;
+    }
+    
+    .extra-note *,
+    .notice-content * {
+      text-align: left !important;
+      text-justify: initial !important;
+      display: block !important;
+      width: 100% !important;
+      padding: 0px !important;
+      margin: 0px 0px 4px 0px !important;
+      line-height: 1.4 !important;
+      margin-left: 0px !important;
+      margin-right: 0px !important;
+      margin-top: 0px !important;
+      margin-bottom: 0px !important;
+      position: relative !important;
+      left: 0px !important;
+      right: 0px !important;
+    }
+    
+    .notice-content {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+      display: block !important;
+      width: 100% !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Left align the note section in print */
+    .extra-note b:last-child {
+      text-align: left !important;
+      display: inline !important;
+      width: auto !important;
+      padding: 0px !important;
+      margin: 0px !important;
+    }
+    
+    .main-table td.text-left {
+      font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important; /* Leading = font size for single-line spacing */
+      font-weight: 900 !important; /* Bold weight to match InDesign */
+      font-stretch: condensed !important; /* Condensed variant */
+      text-transform: uppercase !important; /* Uppercase like InDesign */
+      letter-spacing: 0 !important; /* Tracking: 0 */
+      font-kerning: auto !important; /* Kerning: Metrics (default) */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .main-table .text-center {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    .main-table td.col-leave,
+    .main-table td.col-overtime {
+      font-weight: 200 !important;
+      font-family: Arial, sans-serif !important;
+    }
+    
+    /* Print-specific font size for hours and days cells to match review */
+    .main-table td.col-hours,
+    .main-table td.col-days {
+      font-size: 6pt !important;
+      line-height: 9pt !important;
+    }
+    
+    /* Force all text to be lighter */
+    body, div, span, td, th, p, h1, h2, h3, h4, h5, h6 {
+      font-weight: 200 !important;
+    }
+    
+    /* Specific overrides for elements that need different weights */
+    .main-table td.text-left {
+      font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important; /* Leading = font size for single-line spacing */
+      font-weight: 900 !important; /* Bold weight to match InDesign */
+      font-stretch: condensed !important; /* Condensed variant */
+      text-transform: uppercase !important; /* Uppercase like InDesign */
+      letter-spacing: 0 !important; /* Tracking: 0 */
+      font-kerning: auto !important; /* Kerning: Metrics (default) */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-weight: 100 !important;
+    }
+    
+    /* Olympia font for specific data cells in print */
+    .main-table .olympia-data {
+      font-family: 'Olympia-BoldCond', Arial, sans-serif !important;
+      font-size: 6pt !important;
+      line-height: 6.5pt !important;
+      font-weight: 900 !important; /* Bold weight */
+      font-stretch: condensed !important; /* Condensed variant */
+      text-transform: uppercase !important; /* Uppercase */
+      letter-spacing: 0 !important; /* Tracking: 0 */
+      font-kerning: auto !important; /* Kerning: Metrics (default) */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em transparent !important; /* Slight stroke for better rendering */
+      text-align: center !important;
+    }
+    
+    /* Header-left with InDesign specifications */
+    .header-left {
+      text-align: center !important;
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 0.4cm !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.3px 0 0 currentColor, -0.3px 0 0 currentColor, 0 0.3px 0 currentColor, 0 -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke */
+      text-shadow: 0.2px 0.2px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+    }
+    
+    
+    /* Force Kalimati font in print/PDF */
+    .header-left * {
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+    }
+    
+    .header-right {
+      position: absolute !important;
+      right: 6px !important;
+      top: 50% !important;
+      transform: translateY(-50%) !important;
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important;
+      -webkit-text-stroke: 0.01em transparent !important;
+      text-align: right !important;
+    }
+    
+    /* Company container */
+    .company-container {
+      display: flex !important;
+      align-items: center !important;
+      height: 0.3cm !important;
+    }
+    
+    /* Company row */
+    .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* More specific selector for print */
+    .meta-bar .company-container .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Company label in print - Lato Regular */
+    .company-label {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Lato Black text in print */
+    .lato-black-text {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Meta items row */
+    .meta-items-row {
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      margin-top: 0.15cm !important;
+      gap: 0.1cm !important;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .meta-item {
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      padding: 0px 1px !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    .meta-item:last-child {
+      font-size: 4pt !important;
+      font-weight: 500 !important;
+    }
+    
+    /* Meta item labels (names) */
+    .meta-item b {
+      font-size: 6pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Meta bar */
+    .meta-bar {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+      height: 0.75cm !important;
+      max-height: 0.75cm !important;
+      min-height: 0.75cm !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding-top: 0.08cm !important;
+    }
+    
+    /* Company container in print */
+    .company-container {
+      display: flex !important;
+      align-items: center !important;
+      height: 0.3cm !important;
+    }
+    
+    /* Company row in print */
+    .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* More specific selector for second print media query */
+    .meta-bar .company-container .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Company label in print - Lato Regular */
+    .company-label {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Lato Black text in print */
+    .lato-black-text {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Meta items row in print */
+    .meta-items-row {
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      height: 0.4cm !important;
+      max-height: 0.4cm !important;
+      min-height: 0.4cm !important;
+      display: grid !important;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr !important;
+      gap: 0.1cm !important;
+      overflow: hidden !important;
+      margin-top: 0.15cm !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Adjust grid when city is long in print - keep uniform gaps */
+    .meta-items-row.long-city {
+      grid-template-columns: 1.2fr 1fr 1fr 1.3fr !important;
+      gap: 0.1cm !important;
+    }
+    
+    /* Meta items in print */
+    .meta-item {
+      font-family: "Roboto", Arial, sans-serif !important;
+      font-size: 6pt !important;
+      font-weight: 800 !important;
+      line-height: 4.5pt !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      padding: 0px 1px !important;
+      text-align: left !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: flex-start !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* City field with smaller font in print */
+    .meta-item:last-child {
+      font-size: 4pt !important;
+      font-weight: 500 !important;
+    }
+    
+    /* City field responsive behavior in print */
+    .meta-item:last-child.long-city {
+      font-size: 3pt !important;
+      justify-content: center !important;
+      text-align: center !important;
+    }
+    
+    /* Force city field to not be cropped in print - AGGRESSIVE */
+    #city-item,
+    .meta-item-city {
+      min-width: 0 !important;
+      flex: 1 !important;
+      overflow: visible !important;
+      white-space: normal !important;
+      text-overflow: initial !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      max-width: none !important;
+      width: auto !important;
+    }
+    
+    #city-item.long-city,
+    .meta-item-city.long-city {
+      justify-content: center !important;
+      text-align: center !important;
+      overflow: visible !important;
+      white-space: normal !important;
+      text-overflow: initial !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+    }
+    
+    /* Meta item data in print */
+    .meta-item b {
+      font-size: 6pt !important;
+      font-weight: 600 !important;
+    }
+    
+    /* Japan content should not be justified in print - left aligned */
+    .extra-note.japan-content {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content bold headers should be on their own line in print */
+    .extra-note.japan-content b {
+      display: block !important;
+      margin-bottom: 4px !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content paragraphs should have proper spacing in print */
+    .extra-note.japan-content p {
+      margin-bottom: 8px !important;
+      display: block !important;
+      text-align: left !important;
+      text-justify: initial !important;
+      line-height: 1.4 !important;
+    }
+    
+    /* Override body center alignment for Japan content in print */
+    body .extra-note.japan-content {
+      text-align: left !important;
+    }
+    
+    body .extra-note.japan-content * {
+      text-align: left !important;
+    }
+    
+    .extra-note.japan-content p,
+    .extra-note.japan-content div,
+    .extra-note.japan-content b,
+    .extra-note.japan-content span {
+      text-align: left !important;
+      text-justify: initial !important;
+      display: block !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 1.2 !important;
+    }
+    
+    /* Japan content bold headers should be on their own line in print */
+    .extra-note.japan-content b {
+      display: block !important;
+      margin-bottom: 2px !important;
+      font-weight: bold !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Japan content paragraphs should have proper spacing in print */
+    .extra-note.japan-content p {
+      margin-bottom: 4px !important;
+      display: block !important;
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Override any inline styles that might be applied in print */
+    .extra-note.japan-content[style*="text-align: justify"] {
+      text-align: left !important;
+    }
+    
+    .extra-note.japan-content p[style*="text-align: justify"],
+    .extra-note.japan-content b[style*="text-align: justify"] {
+      text-align: left !important;
+    }
+    
+    /* Universal left alignment for all extra-note content in print */
+    .extra-note {
+      text-align: left !important;
+    }
+    
+    .extra-note * {
+      text-align: left !important;
+    }
+    
+    /* Override any justify alignment in print */
+    .extra-note[style*="justify"],
+    .extra-note *[style*="justify"] {
+      text-align: left !important;
+    }
+    
+    /* Nuclear option for print - override everything in extra-note */
+    .extra-note,
+    .extra-note *,
+    .extra-note p,
+    .extra-note div,
+    .extra-note span,
+    .extra-note br,
+    .extra-note strong,
+    .extra-note em,
+    .extra-note i,
+    .extra-note u {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Preserve bold formatting in print */
+    .extra-note b,
+    .extra-note strong {
+      font-weight: bold !important;
+      display: block !important;
+      margin-bottom: 4px !important;
+      text-align: left !important;
+    }
+    
+    /* Force left alignment on bold elements in print with maximum specificity */
+    body .extra-note b,
+    body .extra-note strong,
+    body div.extra-note b,
+    body div.extra-note strong {
+      text-align: left !important;
+      text-justify: initial !important;
+    }
+    
+    /* Override any center alignment on bold elements in print */
+    .extra-note b[style*="center"],
+    .extra-note strong[style*="center"],
+    .extra-note b[style*="justify"],
+    .extra-note strong[style*="justify"] {
+      text-align: left !important;
+    }
+    
+    /* Force left alignment on all extra-note content in print */
+    .extra-note * {
+      text-align: left !important;
+    }
+    
+    /* Preserve paragraph formatting in print */
+    .extra-note p {
+      display: block !important;
+      margin-bottom: 8px !important;
+      text-align: left !important;
+      line-height: 1.4 !important;
+      font-weight: normal !important;
+    }
+    
+    /* Ensure bold elements in paragraphs are properly formatted in print */
+    .extra-note p b {
+      font-weight: bold !important;
+      display: inline !important;
+      margin-bottom: 0 !important;
+    }
+    
+    /* Force numbered items to be on separate lines in print */
+    .extra-note:not(:empty) {
+      text-align: left !important;
+    }
+    
+    .extra-note:not(:empty) * {
+      text-align: left !important;
+      display: block !important;
+    }
+    
+    /* Table headers with RajdhaniBold font */
+    .main-table th {
+      font-family: 'RajdhaniBold', Arial, sans-serif !important;
+      font-weight: normal !important; /* Regular style but font itself is bold-weighted */
+      font-size: 5pt !important;
+      line-height: 4pt !important; /* Leading = 4pt, tighter than font size */
+      letter-spacing: 0 !important; /* Tracking: 0 */
+      font-kerning: none !important; /* Manual kerning off */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+
+    /* Specific styling for serial number and position columns in print */
+    .main-table th.col-sn {
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+      font-weight: 800 !important; /* Original font weight for serial number */
+      font-size: 5pt !important; /* Original font size for serial number */
+      line-height: 4pt !important; /* Original line height for serial number */
+    }
+
+    .main-table th.col-position {
+      font-family: "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", "Arial", sans-serif !important;
+      font-weight: 900 !important; /* Increased font weight */
+      font-size: 9pt !important; /* Increased by 2pt from 7pt to 9pt */
+      line-height: 8pt !important; /* Increased proportionally */
+    }
+
+    /* Increase font size for hours and days data cells in print */
+    .main-table td.col-hours,
+    .main-table td.col-days {
+      font-size: 7pt !important; /* Increased by 4pt from 4pt to 8pt */
+      line-height: 9pt !important; /* Increased proportionally */
+    }
+
+    /* Add gap between सि. and नं. in serial number using spans in print */
+    .main-table th.col-sn .sn-line1 {
+      display: block;
+      margin-bottom: 3pt !important; /* Gap between सि. and नं. */
+    }
+    
+    .main-table th.col-sn .sn-line2 {
+      display: block;
+      margin-top: 0;
+    }
+
+    /* Specific styling for multi-line headers with reduced font size and spacing in print */
+    .main-table th.col-education,
+    .main-table th.col-overtime,
+    .main-table th.col-hours,
+    .main-table th.col-days,
+    .main-table th.col-leave,
+    .main-table th.col-food,
+    .main-table th.col-housing,
+    .main-table th.col-contract {
+      font-size: 4pt !important; /* Reduced by 1pt from 5pt */
+      line-height: 5pt !important; /* Increased for better spacing between lines */
+    }
+
+    /* Add spacing between line breaks in these headers in print */
+    .main-table th.col-education br,
+    .main-table th.col-overtime br,
+    .main-table th.col-hours br,
+    .main-table th.col-days br,
+    .main-table th.col-leave br,
+    .main-table th.col-food br,
+    .main-table th.col-housing br,
+    .main-table th.col-contract br {
+      display: block;
+      margin: 2.5pt 0; /* Increased margin between lines for better spacing */
+    }
+
+    /* Apply same styling to corresponding table data cells in print */
+    .main-table td.col-education,
+    .main-table td.col-overtime,
+    .main-table td.col-hours,
+    .main-table td.col-days,
+    .main-table td.col-leave,
+    .main-table td.col-food,
+    .main-table td.col-housing,
+    .main-table td.col-contract {
+      font-size: 3.5pt !important; /* Reduced by 0.5pt from 4pt */
+      line-height: 4.5pt !important; /* Reduced for better spacing between lines */
+    }
+
+    /* Add spacing between line breaks in data cells in print */
+    .main-table td.col-education br,
+    .main-table td.col-overtime br,
+    .main-table td.col-hours br,
+    .main-table td.col-days br,
+    .main-table td.col-leave br,
+    .main-table td.col-food br,
+    .main-table td.col-housing br,
+    .main-table td.col-contract br {
+      display: block;
+      margin: 2.5pt 0; /* Increased margin between lines for better spacing */
+    }
+    
+    /* Only position header - "कामदारको पद" */
+    .main-table th.col-position {
+      font-size: 7pt !important;
+      font-weight: normal !important;
+    }
+    
+    /* Colspan 2 headers - increased font size */
+    .main-table thead th[colspan="2"] {
+      font-size: 6pt !important;
+      font-weight: 1000 !important;
+    }
+    
+    /* Second row headers - increased font size */
+    .main-table th.col-gender,
+    .main-table th.col-salary {
+      font-size: 5.3pt !important;
+      font-weight: 550 !important;
+    }
+    
+    /* Specific data cells - increased font size */
+    .main-table td:nth-child(3), /* male_count */
+    .main-table td:nth-child(4), /* female_count */
+    .main-table td:nth-child(5), /* salary_amount */
+    .main-table td:nth-child(6) { /* salary_npr */
+      font-size: 6pt !important;
+      font-weight: 550 !important;
+    }
+    
+    /* Food and Housing columns - 12.5px font size for PDF */
+    .col-food-house {
+      font-size: 12.5px !important;
+      font-weight: 900 !important;
+    }
+    
+    /* Contract Duration column - 8pt font size for PDF */
+    .col-contract-duration {
+      font-size: 7pt !important;
+      font-weight: 800 !important;
+    }
+    
+    /* Extra section table - 3.54pt font size for PDF */
+    .extra-table {
+      font-size: 3.54pt !important;
+    }
+    
+    .extra-table th,
+    .extra-table td {
+      font-size: 3.04pt !important;
+      font-weight: 200 !important;
+    }
+    
+    .extra-table th {
+      font-size: 3pt !important;
+      font-weight: 500 !important;
+      line-height: 4pt !important;
+      letter-spacing: 0 !important;
+      font-kerning: auto !important;
+    }
+    
+    .extra-table td {
+      line-height: 1.2 !important;
+    }
+    
+    .extra-table td:has(br) {
+      line-height: 1.4 !important;
+    }
+    
+    .extra-table td.col-service-fee {
+      font-size: 5.54pt !important; /* Reduced by 0.5pt from 6.04pt */
+      font-weight: 700 !important;
+    }
+    
+    /* Specific styling for currency amounts in extra table - print */
+    .extra-table .currency-amount {
+      font-size: 3pt !important; /* Reduced by 2pt from 7pt */
+      font-weight: 700 !important;
+    }
+    
+    /* Column widths for extra-table in print */
+    .extra-table th:nth-child(1),
+    .extra-table td:nth-child(1) {
+      width: 1.30cm !important;
+      min-width: 1.30cm !important;
+      max-width: 1.30cm !important;
+    }
+    
+    .extra-table th:nth-child(2),
+    .extra-table td:nth-child(2) {
+      width: 1.10cm !important;
+      min-width: 1.10cm !important;
+      max-width: 1.10cm !important;
+    }
+    
+    .extra-table th:nth-child(3),
+    .extra-table td:nth-child(3) {
+      width: 1.40cm !important;
+      min-width: 1.40cm !important;
+      max-width: 1.40cm !important;
+    }
+    
+    .extra-table th:nth-child(4),
+    .extra-table td:nth-child(4) {
+      width: 1.20cm !important;
+      min-width: 1.20cm !important;
+      max-width: 1.20cm !important;
+    }
+    
+    .extra-table th:nth-child(5),
+    .extra-table td:nth-child(5) {
+      width: 1.20cm !important;
+      min-width: 1.20cm !important;
+      max-width: 1.20cm !important;
+    }
+    
+    .extra-table th:nth-child(6),
+    .extra-table td:nth-child(6) {
+      width: 0.75cm !important;
+      min-width: 0.75cm !important;
+      max-width: 0.75cm !important;
+    }
+    
+    .extra-table th:nth-child(7),
+    .extra-table td:nth-child(7) {
+      width: 0.75cm !important;
+      min-width: 0.75cm !important;
+      max-width: 0.75cm !important;
+    }
+    
+    .extra-table th:nth-child(8),
+    .extra-table td:nth-child(8) {
+      width: 0.90cm !important;
+      min-width: 0.90cm !important;
+      max-width: 0.90cm !important;
+    }
+    
+    .extra-table th:nth-child(9),
+    .extra-table td:nth-child(9) {
+      width: 1.10cm !important;
+      min-width: 1.10cm !important;
+      max-width: 1.10cm !important;
+    }
+    
+    .extra-table th:nth-child(10),
+    .extra-table td:nth-child(10) {
+      width: 1.00cm !important;
+      min-width: 1.00cm !important;
+      max-width: 1.00cm !important;
+    }
+    
+    .extra-table th:nth-child(11),
+    .extra-table td:nth-child(11) {
+      width: 0.90cm !important;
+      min-width: 0.90cm !important;
+      max-width: 0.90cm !important;
+    }
+  }
+  
+        .notice-content {
+        font-size: 3.54pt !important;
+        line-height: 1.0 !important;
+        color:#000;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        font-weight: 200;
+        text-align: left !important;
+        display: block !important;
+        display: block !important;
+      }
+      
+      .notice-paragraph {
+        margin: 0 !important;
+        padding: 0 !important;
+        text-align: left !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        font-size: 3.54pt !important;
+        line-height: 1.0 !important;
+        page-break-inside: avoid;
+      }
+      
+      .notice-paragraph:last-child {
+        margin-bottom: 0;
+  }
+  
+  /* Main content wrapper */
+  .main-content {
+    flex: 1;
+    overflow: visible;
+    padding-bottom: 1.2cm; /* Reserve space for the absolutely positioned banner */
+  }
+  
+  /* Company Banner - Pinned to bottom */
+  .company-banner {
+    background: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0px;
+    margin: 0px;
+    border-top: 0.5px solid #000;
+    height: 1.2cm;
+    min-height: 1.2cm;
+    max-height: 1.2cm;
+    overflow: hidden;
+    box-sizing: border-box;
+    line-height: 1;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+  }
+  
+  .company-logo {
+    background: #fff;
+    color: #000;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 2pt;
+    border: 1px solid #fff;
+    overflow: hidden;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .company-info {
+    text-align: center;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .company-info h1 {
+    margin: 0 0 0px 0;
+    font-size: 4pt;
+    font-weight: 900;
+    letter-spacing: 0.1px;
+  }
+  
+  .company-info p {
+    margin: 0;
+    font-size: 2pt;
+    line-height: 1;
+  }
+  
+  .license-box {
+    background: white;
+    border: black;
+    text-align: center;
+    padding: 0px;
+    font-size: 2pt;
+    font-weight: 700;
+    line-height: 1;
+    height: 0.3cm !important;
+    max-height: 0.3cm !important;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin: 0px;
+  }
+  
+  @media print {
+    /* Professional print quality settings - Second media query */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      text-shadow: none !important;
+      -webkit-text-stroke: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
+    }
+    
+    body {
+      margin-top: 5cm !important; /* Add top margin for print */
+      font-smooth: always;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: pixelated;
+      padding-top: 0 !important; /* Remove padding for print */
+    }
+    
+    /* Data row height for print/PDF - Second media query */
+    .data-row {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    /* Force line breaks to display in min_qualification field in print - Second media query */
+    .main-table td.col-education,
+    .main-table td.text-center.col-education {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: initial !important;
+      line-height: 1.2 !important;
+    }
+    
+    .main-table tbody tr.data-row {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    .main-table tbody tr.data-row td {
+      height: 0.18cm !important; /* Reduced from 0.2cm to 0.18cm (2mm reduction) */
+      min-height: 0.18cm !important;
+      max-height: 0.18cm !important;
+    }
+    
+    body { 
+      margin: 0; 
+      padding: 0; 
+      background: #fff; 
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .employment-ad { 
+      box-shadow: none; 
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    /* Interview section print styles */
+    .interview-section {
+      background: #000 !important;
+      color: #fff !important;
+      padding: 0px !important;
+      margin: 0px !important;
+      margin-bottom: 0px !important; /* Ensure no bottom margin */
+      border: none !important;
+      font-family: "Arial Black", "Arial", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      text-align: center !important;
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Fallback for better browser support */
+      line-height: 0.4cm !important;
+      letter-spacing: -0.05em !important; /* Tracking: -5 (equivalent to -5/1000em) */
+      font-kerning: auto !important; /* Kerning: Metrics (automatic) */
+      height: 0.4cm !important; /* FIXED HEIGHT for print */
+      min-height: 0.4cm !important;
+      max-height: 0.4cm !important; /* FIXED MAX HEIGHT for print */
+      overflow: hidden !important; /* HIDDEN - prevents expansion in print */
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+      position: relative !important;
+      isolation: isolate !important;
+      contain: layout size style !important;
+      flex-shrink: 0 !important;
+      flex-grow: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important;
+      -webkit-text-stroke: 0.01em transparent !important;
+    }
+    
+    /* Interview section text content in print */
+    .interview-section #interview-date-text,
+    .interview-section .interview-custom-text-content {
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      white-space: nowrap !important;
+      max-width: 100% !important;
+      width: 100% !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+      line-height: 0.4cm !important;
+      box-sizing: border-box !important;
+    }
+    
+    /* Interview Section Print - Make all text content bold */
+    .interview-section,
+    .interview-section *,
+    .interview-section span,
+    .interview-section #interview-date-text,
+    .interview-section #calculated-interview-date,
+    .interview-section #calculated-interview-date-english {
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Fallback for better browser support */
+    }
+    
+    /* MAXIMUM SPECIFICITY FOR PRINT - Force interview section styling */
+    body .employment-ad .main-content .interview-section,
+    body .employment-ad .interview-section,
+    .employment-ad .main-content .interview-section,
+    .employment-ad .interview-section,
+    .interview-section {
+      background: #000 !important;
+      color: #fff !important;
+      padding: 0px !important;
+      margin: 0px !important;
+      margin-bottom: 0px !important;
+      border: none !important;
+      text-align: center !important;
+      height: 0.4cm !important; /* FIXED HEIGHT for print */
+      min-height: 0.4cm !important;
+      max-height: 0.4cm !important; /* FIXED MAX HEIGHT for print */
+      overflow: hidden !important; /* HIDDEN - prevents expansion in print */
+      white-space: nowrap !important;
+      text-overflow: ellipsis !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      box-sizing: border-box !important;
+    }
+    
+    /* Ensure extra-section fits within container in print */
+    .extra-section {
+      width: 100% !important;
+    }
+    .extra-note {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    /* Meta bar in second print media query */
+    .meta-bar {
+      font-size: 5pt !important;
+      font-weight: 500 !important;
+      height: 0.75cm !important;
+      max-height: 0.75cm !important;
+      min-height: 0.75cm !important;
+      overflow: hidden !important;
+      display: flex !important;
+      flex-direction: column !important;
+      padding-top: 0.08cm !important;
+    }
+    
+    /* Company container in second print media query */
+    .company-container {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      width: 100%;
+    }
+    
+    /* Company row in second print media query */
+    .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* More specific selector for second print media query */
+    .meta-bar .company-container .company-row {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 0px 3px !important;
+      font-family: "Lato", Arial, sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 600 !important; /* Semi-bold for better visibility in print */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-align: center !important;
+      height: 0.3cm !important;
+      min-height: 0.3cm !important;
+      max-height: 0.3cm !important;
+      border-bottom: none !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      white-space: nowrap !important;
+      overflow: hidden !important;
+      text-overflow: ellipsis !important;
+      flex: 1 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Company label in second print media query - Lato Regular */
+    .company-label {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      font-weight: 900 !important; /* Maximum bold weight */
+      font-weight: bold !important; /* Additional bold fallback */
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      font-style: normal !important;
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Lato Black text in second print media query */
+    .lato-black-text {
+      font-family: "Arial Black", "Arial", "Kalimati", "Kalimati-Fallback", "Noto Sans Devanagari", "Hind", sans-serif !important;
+      font-weight: 900 !important;
+      font-weight: bold !important; /* Additional bold fallback */
+      font-size: 7pt !important;
+      line-height: 8pt !important;
+      text-shadow: 0.5px 0 0 currentColor, -0.5px 0 0 currentColor, 0 0.5px 0 currentColor, 0 -0.5px 0 currentColor, 0.3px 0.3px 0 currentColor, -0.3px -0.3px 0 currentColor !important;
+      font-style: normal !important;
+      letter-spacing: 0.05em !important; /* Wider letter spacing for newspaper style */
+      word-spacing: 0.1em !important; /* Wider word spacing */
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+      font-synthesis: none !important; /* Prevent browser from synthesizing bold */
+      -webkit-text-stroke: 0.01em black !important; /* Thinner stroke for black text */
+      text-shadow: 0.3px 0.3px 0px rgba(0,0,0,0.2) !important; /* Subtle shadow for depth */
+      letter-spacing: 0 !important;
+      word-spacing: 0 !important;
+      text-rendering: optimizeLegibility !important;
+      -webkit-font-smoothing: antialiased !important;
+      -moz-osx-font-smoothing: grayscale !important;
+    }
+    
+    /* Ensure stable print rendering */
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    
+    /* Print-specific font size for hours and days cells to match review */
+    .main-table td.col-hours,
+    .main-table td.col-days {
+      font-size: 6pt !important;
+      line-height: 9pt !important;
+    }
+  }
+  
+  /* ULTRA SPECIFIC - Force colspan header styles */
+  .main-table thead tr th[colspan="2"] {
+    font-size: 6pt !important;
+    font-weight: 1000 !important;
+  }
+  
+  /* MAXIMUM SPECIFICITY - Force colspan header styles */
+  body .employment-ad .main-content .main-table thead tr th[colspan="2"] {
+    font-size: 6pt !important;
+    font-weight: 1000 !important;
+  }
+  
+  /* BRUTE FORCE - Force colspan header styles */
+  .main-table thead tr th[colspan="2"] {
+    font-size: 6pt !important;
+    font-weight: 1000 !important;
+    font-size: 6pt !important;
+    font-weight: 1000 !important;
+  }
+  
+  /* CSS CLASS FORCE - Force colspan header styles */
+  .force-colspan-style {
+    font-size: 6pt !important;
+    font-weight: 1000 !important;
+  }
+  
+  /* NUCLEAR OPTION - Force colspan header styles with maximum specificity */
+  body .employment-ad .main-content .main-table thead tr th[colspan="2"] {
+    font-size: 6.3pt !important;
+    font-weight: 900 !important;
+    font-family: Arial, sans-serif !important;
+    color: #000 !important;
+    background: #f8f8f8 !important;
+    border: 1px solid #000 !important;
+    padding: 2px !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    word-break: break-word !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* NUCLEAR OPTION 2 - Force with ID selector */
+  #main-table thead tr th[colspan="2"] {
+    font-size: 6.3pt !important;
+    font-weight: 900 !important;
+    font-family: Arial, sans-serif !important;
+  }
+  
+  /* NUCLEAR OPTION - Ultra-specific interview section styling */
+  html body .employment-ad .main-content .interview-section,
+  html body .employment-ad .interview-section,
+  body .employment-ad .main-content .interview-section,
+  body .employment-ad .interview-section,
+  .employment-ad .main-content .interview-section,
+  .employment-ad .interview-section,
+  .interview-section {
+    background: #000 !important;
+    background-color: #000 !important;
+    color: #fff !important;
+    color: white !important;
+    padding: 0.1cm 0.2cm !important;
+    margin: 0px !important;
+    margin-bottom: 0px !important;
+    border: none !important;
+    text-align: center !important;
+    min-height: 0.4cm !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    display: block !important; /* Changed from flex to block to allow proper line breaks */
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    position: relative !important;
+    isolation: isolate !important;
+    contain: layout style !important;
+  }
+  
+  /* Force text content inside interview section to preserve line breaks - MAXIMUM SPECIFICITY */
+  html body .employment-ad .main-content .interview-section > *,
+  html body .employment-ad .interview-section > *,
+  body .employment-ad .main-content .interview-section > *,
+  body .employment-ad .interview-section > *,
+  .employment-ad .main-content .interview-section > *,
+  .employment-ad .interview-section > *,
+  .interview-section > * {
+    white-space: pre-wrap !important;
+  }
+  
+  /* Specifically target pre tags with even more specificity */
+  html body .employment-ad .main-content .interview-section pre.interview-custom-text-content,
+  html body .employment-ad .interview-section pre.interview-custom-text-content,
+  body .employment-ad .main-content .interview-section pre.interview-custom-text-content,
+  body .employment-ad .interview-section pre.interview-custom-text-content,
+  .employment-ad .main-content .interview-section pre.interview-custom-text-content,
+  .employment-ad .interview-section pre.interview-custom-text-content,
+  .interview-section pre.interview-custom-text-content {
+    white-space: pre-wrap !important; /* Preserve line breaks and allow wrapping */
+  }

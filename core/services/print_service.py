@@ -24,9 +24,9 @@ except ImportError:
 try:
     import weasyprint
     WEASYPRINT_AVAILABLE = True
-except ImportError:
+except (ImportError, OSError) as e:
     WEASYPRINT_AVAILABLE = False
-    logger.warning("WeasyPrint not available. Install with: pip install weasyprint")
+    logger.warning(f"WeasyPrint not available: {e}. Install GTK3 runtime for Windows or use Playwright/ReportLab instead.")
 
 try:
     import reportlab
